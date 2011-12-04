@@ -1,0 +1,11 @@
+fix up little little bugs .
+  -doing some today - 22/11/11 [DONE]
+
+making the spinQuery Async - [DONE] [24/11/11]
+making everything else as async as possible
+  -doing today - 25/11/11
+
+
+
+create First Start html page
+further improve gibberish function
