@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0"?>
 <!-- ***** BEGIN LICENSE BLOCK *****
  * Version: MIT/X11 License
@@ -63,69 +62,3 @@
   </setting>
 
 </box>
-=======
-<?xml version="1.0"?>
-<!-- ***** BEGIN LICENSE BLOCK *****
- * Version: MIT/X11 License
- * 
- * Copyright (c) 2011 Girish Sharma
- * 
- * Permission is hereby granted, free of charge, to any person obtaining copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * Contributor:
- *   Girish Sharma <scrapmachines@gmail.com> (Creator)
- *
- * ***** END LICENSE BLOCK ***** -->
-
-<box xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
-  <setting pref="extensions.UIEnhancer.enhanceURLBar"
-    title="Enhance the URLBar User Interface"
-    type="bool">
-    Implements an UI similar to Windows Address Bar UI.
-  </setting>
-
-  <setting pref="extensions.UIEnhancer.removeGibberish"
-    title="Replace insignificant url parts with useful info."
-    type="bool">
-    Experimental feature.
-  </setting>
-
-  <setting pref="extensions.UIEnhancer.bringBookmarksUp"
-    title="Bring Bookmarks Toolbar up and combine with UrlBar"
-    type="bool"/>
-
-  <setting pref="extensions.UIEnhancer.urlBarWidth"
-    title="Width of UrlBar (if above setting enabled)"
-    type="string">
-    Default is "700px"
-  </setting>
-
-  <setting pref="extensions.UIEnhancer.animationSpeed"
-    title="Animation Speed"
-    type="radio">
-      <radiogroup>
-        <radio value="normal" label="Normal"/>
-        <radio value="fast" label="Fast"/>
-        <radio value="none" label="No Animation"/>
-      </radiogroup> 
-  </setting>
-
-</box>
->>>>>>> 4a320848e59e943498a96da7ad79d42bdb7825e9
