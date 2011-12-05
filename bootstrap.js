@@ -733,8 +733,8 @@ function changeUI(window) {
         }
         scrolledStack = tempHandledStack;
       }
-      if (scrolledStack.previousSibling != null && scrolledStack.previousSibling.firstChild.url != lastScrolledUrl) {
-        lastScrolledUrl = scrolledStack.previousSibling.firstChild.url;
+      if (scrolledStack.previousSibling != null && scrolledStack.previousSibling.url != lastScrolledUrl) {
+        lastScrolledUrl = scrolledStack.previousSibling.url;
         tempHandledStack = null;
         if (scrolledStack.previousSibling == null)
           return;
