@@ -170,6 +170,7 @@ function changeUI(window) {
   let indexB4Scrolling = null;
   let currentScrolledIndex = null;
   let relatedScrolledArray = [];
+  let lastScrolledUrl = "";
   unload(function() {
     let popupStack = mainPopupSelectedIndex = settingsStartIndex = redRemoved = null;
     let lastUpdatedTime = lastScrolledTime = lastUsefulPart = ctrlMouseHover = null;
@@ -730,9 +731,10 @@ function changeUI(window) {
         while (tempHandledStack.parentNode != null && tempHandledStack.parentNode != enhancedURLBar) {
           tempHandledStack = tempHandledStack.parentNode;
         }
-      }
-      if (tempHandledStack != scrolledStack) {
         scrolledStack = tempHandledStack;
+      }
+      if (scrolledStack.previousSibling != null && scrolledStack.previousSibling.firstChild.url != lastScrolledUrl) {
+        lastScrolledUrl = scrolledStack.previousSibling.firstChild.url;
         tempHandledStack = null;
         if (scrolledStack.previousSibling == null)
           return;
@@ -755,7 +757,7 @@ function changeUI(window) {
           handleScroll([event]);
         }, [event]);
       }
-      else
+      else if (scrolledStack.previousSibling != null)
         handleScroll([event]);
     });
 
