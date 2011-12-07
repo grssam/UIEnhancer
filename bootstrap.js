@@ -757,8 +757,21 @@ function changeUI(window) {
           handleScroll([event]);
         }, [event]);
       }
-      else if (scrolledStack.previousSibling != null)
+      else if (scrolledStack.previousSibling != null) {
+        currentScrolledIndex = null;
+        Array.some(relatedScrolledArray, function(relatedPart, index) {
+          if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+            .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
+              currentScrolledIndex = index;
+              return true;
+          }
+        });
+        if (currentScrolledIndex == null)
+          return;
+        if (!mouseScrolled)
+          indexB4Scrolling = currentScrolledIndex;
         handleScroll([event]);
+      }
     });
 
     // Mouseover Handling Function
