@@ -1095,16 +1095,16 @@ function changeUI(window) {
       args[args.length] = resultArray;
       callback.call(callback, args);
     }
-    let url1,url2,part1,part2,urlmatch,p1,itemsB4 = 0;
-    let i = currentI || 0;
-    while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > 1) {
+    let url1,url2,part1,part2,urlmatch,p1,itemsB4 = min(currentI,3);
+    let i = (currentI != null?currentI:0);
+    while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > 0) {
       url1 = resultArray[i][1];
       part1 = resultArray[i][0];
       url2 = i != 0?resultArray[i - 1][1]:url1;
       part2 = i != 0?resultArray[i - 1][0]:part1;
-      p1 = part1.replace(/[^0-9]/g,"");
-      if (i == length || part1 == part2 || p1*1 - part2.replace(/[^0-9]/g,"")*1 > delta) {
-        part2 = part1.replace(/[0-9]/g,"") + (p1*1 - delta)*1;
+      p1 = part1.replace(/[^0-9]/g,"")*1;
+      if (i == length || part1 == part2 || p1 - part2.replace(/[^0-9]/g,"")*1 > delta) {
+        part2 = part1.replace(/[0-9]/g,"") + (p1 - delta)*1;
         if (part1.replace(/[0-9 ]/g,"").length > 0)
           urlmatch = url1.match(new RegExp("("+part1.replace(/[0-9 ]/g,"").toLowerCase()
             +")([_= ])?([0-9]{1,})"));
@@ -1114,11 +1114,11 @@ function changeUI(window) {
           break;
         if (urlmatch.length != 4)
           break;
-        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1*1 - delta)*1));
+        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
         resultArray.splice(i,0,[part2,url2,""]);
         currentI++;
       }
-      if (i > 0) i--;
+      else if (i > 0) i--;
       itemsB4++;
     }
     if (itemsB4 < currentI) {
@@ -1132,9 +1132,9 @@ function changeUI(window) {
       part1 = resultArray[i - 1][0];
       url2 = i != length?resultArray[i][1]:url1;
       part2 = i != length?resultArray[i][0]:part1;
-      p1 = part1.replace(/[^0-9]/g,"");
-      if (i == length || part2.replace(/[^0-9]/g,"")*1 - p1*1 > delta) {
-        part2 = part1.replace(/[0-9]/g,"") + (p1*1 + delta)*1;
+      p1 = part1.replace(/[^0-9]/g,"")*1;
+      if (i == length || part2.replace(/[^0-9]/g,"")*1 - p1 > delta) {
+        part2 = part1.replace(/[0-9]/g,"") + (p1 + delta)*1;
         if (part1.replace(/[0-9 ]/g,"").length > 0)
           urlmatch = url1.match(new RegExp("("+part1.replace(/[0-9 ]/g,"").toLowerCase()
             +")([_= ])?([0-9]{1,})"));
@@ -1144,7 +1144,7 @@ function changeUI(window) {
           break;
         if (urlmatch.length != 4)
           continue;
-        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1*1 + delta)*1));
+        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
         resultArray.splice(i,0,[part2,url2,""]);
         length++;
       }
