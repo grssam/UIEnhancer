@@ -1635,6 +1635,7 @@ function changeUI(window) {
       });
       listen(window, gURLBar, "focus", function() {
         reset(1);
+        gURLBar.selectTextRange(0, gURLBar.value.length);
       });
       listen(window, gURLBar, "blur", function() {
         reset(0);
