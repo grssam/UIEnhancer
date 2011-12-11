@@ -1465,14 +1465,14 @@ function changeUI(window) {
 
   // Global functions used in updateURL 
   let currentTime;
-  let urlValue, origURL;
+  let urlValue;
   let urlArray_updateURL;
   let counter = 0;
   let initial = 0;
   let isSetting_updateURL = null;
   let iCountry, iLabel = "";
   unload(function() {
-    currentTime = urlValue = origVal = urlArray_updateURL = counter = null;
+    currentTime = urlValue = urlArray_updateURL = counter = null;
     initial = isSetting_updateURL = iCountry = iLabel = null;
   }, window);
 
@@ -1488,8 +1488,7 @@ function changeUI(window) {
       return;
 
     origIdentity.collapsed = false;
-    urlValue = getURI().spec.search("about") == 0 ? getURI().spec : gURLBar.value;
-    origURL = getURI().spec;
+    urlValue = getURI().spec;
     counter = 0;
     initial = 0;
     urlPartArray = [];
@@ -1497,29 +1496,7 @@ function changeUI(window) {
     isSetting_updateURL = null;
 
     // Splitting the url/gURLBar urlValue by "/"
-    if (urlValue.search(">") >= 0 && urlValue.search(">") < 3 && !(urlValue.search("about") == 0)) {
-      initial = origURL.indexOf("://") > 0 ? origURL.indexOf("://") + 3: 0;
-      urlArray_updateURL = origURL.split(/[\/?#&]/).filter(function(origVal) {
-        if(origVal.match(/(https?:)/))
-          return false;
-        else if (origVal == "") {
-          counter++;
-          return false;
-        }
-        let {length} = urlPartArray;
-        if (length == 0)
-          urlPartArray.push(origURL.slice(0, initial + origVal.length));
-        else
-          urlPartArray.push(origURL.slice(0, counter + origVal.length
-            + urlPartArray[length - 1].length));
-        if (settingsStartIndex == null
-          && urlPartArray[length].split(/[&\?#]+/).length > 1)
-            settingsStartIndex = length;
-        length = null;
-        return true;
-      });
-    }
-    else if (urlValue.search("about") == 0) {
+    if (urlValue.search("about") == 0) {
       urlArray_updateURL = urlValue.split(":");
       urlPartArray[0] = urlValue.slice(0, urlValue.indexOf(":"));
       urlPartArray[1] = urlValue;
@@ -1557,8 +1534,8 @@ function changeUI(window) {
     if (origILabel.value.search(" ") < 0)
       iLabel = urlArray_updateURL[0];
     else
-      iLabel = origILabel.value;
-    iCountry = origICountryLabel.value;
+      iLabel = origILabel.value || "";
+    iCountry = origICountryLabel.value || "";
 
     // Checking now the first element of the Array
     // for its similarity with the iLabel
