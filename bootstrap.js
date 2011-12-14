@@ -142,6 +142,7 @@ function changeUI(window) {
   let hiddenParts = [];
   let partsWidth = 0;
   let newDocumentLoaded = false;
+  let refreshRelatedArray = false;
   let tabChanged = false;
   unload(function() {
     let url = urlPartArray = partPointer = arrowMouseDown = tabChanged = null;
@@ -733,7 +734,9 @@ function changeUI(window) {
         }
         scrolledStack = tempHandledStack;
       }
-      if (scrolledStack.previousSibling != null && scrolledStack.previousSibling.getAttribute("url") != lastScrolledUrl) {
+      if (scrolledStack.previousSibling != null && 
+        (scrolledStack.previousSibling.getAttribute("url") != lastScrolledUrl || refreshRelatedArray)) {
+        refreshRelatedArray = false;
         lastScrolledUrl = scrolledStack.previousSibling.getAttribute("url");
         tempHandledStack = null;
         if (scrolledStack.previousSibling == null)
@@ -1586,6 +1589,7 @@ function changeUI(window) {
 
         onLocationChange: function(aProgress, aRequest, aURI) {
           newDocumentLoaded = true;
+          refreshRelatedArray = true;
           async(function() {
             if (!tabChanged) {
               origIdentity.collapsed = false;
