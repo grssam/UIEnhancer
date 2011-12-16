@@ -1474,9 +1474,10 @@ function changeUI(window) {
   let initial = 0;
   let isSetting_updateURL = null;
   let iCountry, iLabel = "";
+  let identityBlockVisible;
   unload(function() {
-    currentTime = urlValue = urlArray_updateURL = counter = null;
-    initial = isSetting_updateURL = iCountry = iLabel = null;
+    initial = currentTime = urlValue = urlArray_updateURL = counter = null;
+    identityBlockVisible = isSetting_updateURL = iCountry = iLabel = null;
   }, window);
 
   // Function to change urlBar's UI
@@ -1489,6 +1490,13 @@ function changeUI(window) {
       lastUpdatedTime = currentTime.getTime();
     if (gURLBar.focused)
       return;
+
+    // checking if the identity block is visible or not (prior firefox 12)
+    try {
+      identityBlockVisible = (getComputedStyle($('identity-box')).visibility == "visible");
+    } catch(ex) {
+      identityBlockVisible = false;
+    }
 
     origIdentity.collapsed = false;
     urlValue = getURI().spec;
@@ -1533,38 +1541,42 @@ function changeUI(window) {
       urlArray_updateURL[index] = urlVal.replace(/[\-_=+]/g, " ");
     });
 
-    iLabel = "";
-    if (origILabel.value.search(" ") < 0)
-      iLabel = urlArray_updateURL[0];
-    else
-      iLabel = origILabel.value || "";
-    iCountry = origICountryLabel.value || "";
+    if (identityBlockVisible) {
+      iLabel = "";
+      if (origILabel.value.search(" ") < 0)
+        iLabel = urlArray_updateURL[0];
+      else
+        iLabel = origILabel.value || "";
+      iCountry = origICountryLabel.value || "";
 
-    // Checking now the first element of the Array
-    // for its similarity with the iLabel
-    if (urlArray_updateURL[1] != null && 
-      iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
-        urlArray_updateURL.splice(1,1);
-        urlPartArray.splice(1,1);
-        if (settingsStartIndex != null && settingsStartIndex >= 1)
-          settingsStartIndex--;
+      // Checking now the first element of the Array
+      // for its similarity with the iLabel
+      if (urlArray_updateURL[1] != null && 
+        iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
+          urlArray_updateURL.splice(1,1);
+          urlPartArray.splice(1,1);
+          if (settingsStartIndex != null && settingsStartIndex >= 1)
+            settingsStartIndex--;
+      }
+
+      //trimming the iLabel to 50 characters
+      iLabel = trimWord(iLabel, 54);
     }
-
-    //trimming the iLabel to 50 characters
-    iLabel = trimWord(iLabel, 54);
     async(function() {
       // resetting the enhancedURLBar
       reset(0);
       redRemoved = 0;
-      identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-      identityCountryLabel.value = iCountry;
-      identityLabel.collapsed = (iLabel.length == 0);
-      identityCountryLabel.collapsed = (iCountry.length == 0);
+      if (identityBlockVisible) {
+        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+        identityCountryLabel.value = iCountry;
+        identityLabel.collapsed = (iLabel.length == 0);
+        identityCountryLabel.collapsed = (iCountry.length == 0);
+      }
       urlArray_updateURL.forEach(function(urlVal, index) {
         isSetting_updateURL = false;
         // Test Case to check gibberish function
         [urlVal, isSetting_updateURL] = replaceGibberishText(urlVal, urlArray_updateURL, index);
-        if (index == 0 && iLabel == urlVal && urlArray_updateURL[1] != null)
+        if (index == 0 && iLabel == urlVal && urlArray_updateURL[1] != null && identityBlockVisible)
           addPart(urlVal, urlPartArray[index], true, isSetting_updateURL, index == urlArray_updateURL.length - 1);
         else
           addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
