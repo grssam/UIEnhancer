@@ -1092,7 +1092,7 @@ function changeUI(window) {
 
   // Helper function used to fill missing entries in the relatedArray
   // only if the relatedArray is full of similar pattern
-  function fillMissingEntries(resultArray, delta, currentI, callback, args) {
+  function fillMissingEntries(resultArray, preURL, delta, currentI, callback, args) {
     let {length} = resultArray;
     if (length == 0) {
       args[args.length] = resultArray;
@@ -1101,7 +1101,7 @@ function changeUI(window) {
     let url1,url2,part1,part2,urlmatch,p1,itemsB4 = min(currentI,3);
     let i = (currentI != null?currentI:0);
     while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > 0) {
-      url1 = resultArray[i][1];
+      url1 = resultArray[i][1].replace(preURL, "");
       part1 = resultArray[i][0];
       url2 = i != 0?resultArray[i - 1][1]:url1;
       part2 = i != 0?resultArray[i - 1][0]:part1;
@@ -1117,7 +1117,7 @@ function changeUI(window) {
           break;
         if (urlmatch.length != 4)
           break;
-        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
+        url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
         resultArray.splice(i,0,[part2,url2,""]);
         currentI++;
       }
@@ -1131,7 +1131,7 @@ function changeUI(window) {
     i = currentI + 1 || 1;
     length = resultArray.length;
     while ((currentI != null && i - currentI <= 7) || length <= 15) {
-      url1 = resultArray[i - 1][1];
+      url1 = resultArray[i - 1][1].replace(preURL, "");
       part1 = resultArray[i - 1][0];
       url2 = i != length?resultArray[i][1]:url1;
       part2 = i != length?resultArray[i][0]:part1;
@@ -1147,7 +1147,7 @@ function changeUI(window) {
           break;
         if (urlmatch.length != 4)
           continue;
-        url2 = url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
+        url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
         resultArray.splice(i,0,[part2,url2,""]);
         length++;
       }
@@ -1219,8 +1219,8 @@ function changeUI(window) {
           .replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
         let matching = false;
         let partURL,relatedVal,tempVal;
+        partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
         resultArray.forEach(function({url,title}, i) {
-          partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
           relatedVal = "";
           url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
           relatedVal = url.slice(partURL.length, url.length).replace(/[\-_=]/g," ");
@@ -1290,9 +1290,9 @@ function changeUI(window) {
         }
         resultArray = null;
         if (similarPattern && delta != 9999)
-          fillMissingEntries(returnArray, delta, currentUrlIndex, aCallback, aArgs);
+          fillMissingEntries(returnArray, partURL, delta, currentUrlIndex, aCallback, aArgs);
         else if (similarPattern && returnArray.length == 1)
-          fillMissingEntries(returnArray, 1, currentUrlIndex, aCallback, aArgs);
+          fillMissingEntries(returnArray, partURL, 1, currentUrlIndex, aCallback, aArgs);
         else {
           // Calling the callback function for Async operations
           aArgs[aArgs.length] = returnArray;
@@ -1493,7 +1493,7 @@ function changeUI(window) {
 
     // checking if the identity block is visible or not (prior firefox 12)
     try {
-      identityBlockVisible = (getComputedStyle($('identity-box')).visibility == "visible");
+      identityBlockVisible = (window.getComputedStyle($("identity-box")).visibility == "visible");
     } catch(ex) {
       identityBlockVisible = false;
     }
