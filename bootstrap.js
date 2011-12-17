@@ -1561,28 +1561,24 @@ function changeUI(window) {
 
       //trimming the iLabel to 50 characters
       iLabel = trimWord(iLabel, 54);
+      identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+      identityCountryLabel.value = iCountry;
+      identityLabel.collapsed = (iLabel.length == 0);
+      identityCountryLabel.collapsed = (iCountry.length == 0);
     }
-    async(function() {
-      // resetting the enhancedURLBar
-      reset(0);
-      redRemoved = 0;
-      if (identityBlockVisible) {
-        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-        identityCountryLabel.value = iCountry;
-        identityLabel.collapsed = (iLabel.length == 0);
-        identityCountryLabel.collapsed = (iCountry.length == 0);
-      }
-      urlArray_updateURL.forEach(function(urlVal, index) {
-        isSetting_updateURL = false;
-        // Test Case to check gibberish function
-        [urlVal, isSetting_updateURL] = replaceGibberishText(urlVal, urlArray_updateURL, index);
-        if (index == 0 && iLabel == urlVal && urlArray_updateURL[1] != null && identityBlockVisible)
-          addPart(urlVal, urlPartArray[index], true, isSetting_updateURL, index == urlArray_updateURL.length - 1);
-        else
-          addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
-      });
-      updateLook();
-    }, 10);
+    // resetting the enhancedURLBar
+    reset(0);
+    redRemoved = 0;
+    urlArray_updateURL.forEach(function(urlVal, index) {
+      isSetting_updateURL = false;
+      // Test Case to check gibberish function
+      [urlVal, isSetting_updateURL] = replaceGibberishText(urlVal, urlArray_updateURL, index);
+      if (index == 0 && iLabel == urlVal && urlArray_updateURL[1] != null && identityBlockVisible)
+        addPart(urlVal, urlPartArray[index], true, isSetting_updateURL, index == urlArray_updateURL.length - 1);
+      else
+        addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
+    });
+    updateLook();
   }
 
   function enhanceURLBar() {
@@ -2139,24 +2135,6 @@ function install(data, reason) AddonManager.getAddonByID(data.id, function(addon
     firstRunAfterInstall = true;
   else
     firstRunAfterInstall = false;
-  /* if (reason != 5 && reason != 7)
-    return;
-
-  // Load various javascript includes for helper functions
-  ["helper", "pref"].forEach(function(fileName) {
-    let fileURI = addon.getResourceURI("scripts/" + fileName + ".js");
-    Services.scriptloader.loadSubScript(fileURI.spec, global);
-  });
-
-  watchWindows(function(window) {
-    if (pref("installedVersion")*1 >= data.version*1)
-      return;
-    window.openUILinkIn(addon.getResourceURI("FirstStart/FirstStart.html").spec, "tab");
-    let {async} = makeWindowHelpers(window);
-    async(function() {
-      setPref("installedVersion", data.version);
-    });
-  }); */
 });
 
 function uninstall() {}
