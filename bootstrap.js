@@ -410,7 +410,7 @@ function changeUI(window) {
       isSetting = true;
     if (index > 0) {
       let v = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{3,4}$/, ""));
-      if (v == true && redRemoved == 0) {
+      if (v.toString() == "true" && redRemoved == 0) {
         let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
         urlArray.slice(1).forEach(function(gibberVal) baseString.push(gibberVal));
         let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
@@ -421,7 +421,7 @@ function changeUI(window) {
         }
         redRemoved++;
       }
-      else if (v != false && v != true) {
+      else if (v.toString() != "false" && v.toString() != "true") {
         let valParts = gibberVal.split(" ");
         valParts = valParts.filter(function (part, i) {
           if (v.indexOf(i) >= 0)
