@@ -45,6 +45,7 @@ pref.defaults = {
   bringBookmarksUp: true,
   urlBarWidth: "700",
   animationSpeed: "normal",
+  useSmallIcons: false,
   enhanceURLBar: true,
   removeGibberish: false,
   installedVersion: "0.0"

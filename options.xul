@@ -45,6 +45,12 @@
     title="Bring Bookmarks Toolbar up and combine with UrlBar"
     type="bool"/>
 
+  <setting pref="extensions.UIEnhancer.useSmallIcons"
+    title="Use small icons to save space"
+    type="bool">
+    Transfers icons from after the lovation bar to Bookmarks Toolbar.
+  </setting>
+
   <setting pref="extensions.UIEnhancer.urlBarWidth"
     title="Width of UrlBar (if above setting enabled)"
     type="string">

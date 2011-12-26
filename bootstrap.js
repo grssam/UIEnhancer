@@ -1698,6 +1698,7 @@ function changeUI(window) {
   let isAfterUrl = false;
   let currentURLBarWidth = 0;
   let spaceAfterBookmarks = 0;
+  let bookmarksWidth = 0;
   let recheckOnTabChange = false;
   function max(n1, n2) n1>n2?n1:n2;
   function min(n1, n2) n1<n2?n1:n2;
@@ -1745,8 +1746,7 @@ function changeUI(window) {
     origBTStyle = bookmarksToolbar.style;
 
     origCollapsedState = bookmarksToolbar.collapsed;
-    if (bookmarksToolbar.collapsed)
-      enableBookmarksToolbar();
+    enableBookmarksToolbar();
 
     $("TabsToolbar").style.background = "rgba(255,255,255,0)";
     try {
@@ -1794,7 +1794,8 @@ function changeUI(window) {
       enoughSpace = false;
 
     if (enoughSpace) {
-      handleRest();
+      if (pref("useSmallIcons"))
+        handleRest();
       try {
         $("search-container").style.minWidth = $("search-container").style.maxWidth
           = $("search-container").style.width = 250 + "px";
@@ -1812,13 +1813,33 @@ function changeUI(window) {
       return;
     }
     // Calculating widths for various elements
+    bookmarksWidth = 0;
     try {
-      let bookmarksWidth = 20;
-      if ($("personal-bookmarks").nextSibling != null)
-        bookmarksWidth += window.innerWidth - $("personal-bookmarks").nextSibling.boxObject.x;
+      if ($("personal-bookmarks").nextSibling != null && pref("useSmallIcons"))
+        bookmarksWidth += 20 + window.innerWidth - $("personal-bookmarks").nextSibling.boxObject.x;
       if ($("bookmarks-menu-button") != null)
         bookmarksWidth += $("bookmarks-menu-button").boxObject.width;
       spaceAfterBookmarks = bookmarksWidth;
+      if (!pref("useSmallIcons")) {
+        bookmarksWidth += 15;
+        let d = $("urlbar-container").nextSibling;
+        let someThingB4 = false;
+        while (d != null) {
+          if ((d.id == "reload-button" || d.id == "stop-button") && !someThingB4) {
+            d = d.nextSibling;
+            continue;
+          }
+          if (d.id == "search-container") {
+            d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
+            spaceAfterBookmarks += 260;
+          }
+          else
+            spaceAfterBookmarks += (d.boxObject.width +
+              1*window.getComputedStyle(d).marginLeft.replace("px", "") +
+              1*window.getComputedStyle(d).marginRight.replace("px", ""));
+          d = d.nextSibling;
+        }
+      }
       if ($("PlacesToolbarItems").lastChild != null) {
         bookmarksWidth += $("PlacesToolbarItems").lastChild.boxObject.x +
           $("PlacesToolbarItems").lastChild.boxObject.width;
@@ -1830,30 +1851,34 @@ function changeUI(window) {
       if (firstRunAfterInstall) {
         firstRunAfterInstall = false;
         if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
-            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+            Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
+              10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
         else
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
             10*Math.floor(max(urlBar.boxObject.width - bookmarksWidth, 500 +
             (window.screen.width - 1200)/4)/10));
       }
       else if (normalStartup) {
         normalStartup = false;
         if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
-            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+            Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
+              10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
       }
     } catch (ex) {}
     currentURLBarWidth = pref("urlBarWidth");
     urlBar.removeAttribute("max-width");
     urlBar.style.maxWidth = currentURLBarWidth + "px";
     paddingBottom = (nHeight - (pHeight>=26?24:pHeight))/2;
-    newMargin = "" + (-nHeight) + "px 0px 0px " + (pref("urlBarWidth")*1 + max(gURLBar.boxObject.x*1, 70)*1 + 10) +
-      "px; min-height: " + (nHeight - 2*paddingBottom) + "px; padding: " + paddingBottom + "px 0px;" +
-      "max-height: " + nHeight + "px;";
+    newMargin = "" + (-nHeight) + "px " + (pref("useSmallIcons")?0:
+      $("bookmarks-menu-button") != null? spaceAfterBookmarks -
+      $("bookmarks-menu-button").boxObject.width: spaceAfterBookmarks)
+      + "px 0px " + (pref("urlBarWidth")*1 + max(gURLBar.boxObject.x*1, 70)*1 + 10) +
+      "px; min-height: " + (nHeight - 2*paddingBottom) + "px; padding: " +
+      paddingBottom + "px 0px; max-height: " + nHeight + "px;";
     if (enoughSpace)
       bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-        + " margin: " + newMargin + " border: none !important;");
+        + " margin: " + newMargin + " border: none !important;"
+        + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
     bookmarkStyle = bookmarksToolbar.style;
     limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth")*1);
     // Setting the collapse state according to nav-bar's
@@ -1891,13 +1916,15 @@ function changeUI(window) {
         if (enoughSpace) {
           bookmarksToolbar.setAttribute("style", "margin: " + newMargin
             + "; background: " + bookmarkStyle.background
-            + "; border:  " + bookmarkStyle.border
+            + "; border: " + bookmarkStyle.border
+            + (pref("useSmallIcons")?"":"; max-width: " + bookmarksWidth + "px !important")
             + "; opacity:0;-moz-transition-property: opacity; "
             + "-moz-transition-duration: " + max(timeInterval - 100, 0)
             + "ms;-moz-transition-delay: 0ms;");
-          afterURLBar.forEach(function(d) {
-            d.transferTo($("nav-bar"));
-          });
+          if (pref("useSmallIcons"))
+            afterURLBar.forEach(function(d) {
+              d.transferTo($("nav-bar"));
+            });
         }
         async(function() {
           if ($("urlbar-display-box").nextSibling.boxObject.x > limitXBig)
@@ -1922,12 +1949,14 @@ function changeUI(window) {
           bookmarksToolbar.setAttribute("style", "margin: " + newMargin
             + "; background: " + bookmarkStyle.background
             + "; border: " + bookmarkStyle.border
+            + (pref("useSmallIcons")?"":"; max-width: " + bookmarksWidth + "px !important")
             + "; opacity:1;-moz-transition-property: opacity; "
             + "-moz-transition-duration: " + max(timeInterval - 150, 0)
             + "ms;-moz-transition-delay: " + max(timeInterval - 75, 0) + "ms;");
-          afterURLBar.forEach(function(d) {
-            d.transferTo(bookmarksToolbar);
-          });
+          if (pref("useSmallIcons"))
+            afterURLBar.forEach(function(d) {
+              d.transferTo(bookmarksToolbar);
+            });
         }
       }
     }, 200);
@@ -1943,9 +1972,10 @@ function changeUI(window) {
     if (pref("urlBarWidth")*1 + spaceAfterBookmarks > window.innerWidth -
       urlBar.boxObject.x - 100*(isAfterUrl?1:0) && enoughSpace) {
         enoughSpace = false;
-        afterURLBar.forEach(function(d) {
-          d.transferTo($("nav-bar"));
-        });
+        if (pref("useSmallIcons"))
+          afterURLBar.forEach(function(d) {
+            d.transferTo($("nav-bar"));
+          });
         try {
           bookmarksToolbar.setAttribute("style", origBTStyle);
         } catch (ex) {}
@@ -1955,16 +1985,19 @@ function changeUI(window) {
         enoughSpace = true;
         if (!firstRun) {
           bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-            + " margin: " + newMargin + "border : none !important;");
-          if (afterURLBar.length == 0)
+            + " margin: " + newMargin + "border : none !important;"
+            + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
+          if (afterURLBar.length == 0 && pref("useSmallIcons"))
             handleRest();
           firstRun = true;
         }
         bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-          + " margin: " + newMargin + "border : none !important;");
-        afterURLBar.forEach(function(d) {
-          d.transferTo(bookmarksToolbar);
-        });
+          + " margin: " + newMargin + "border : none !important;"
+          + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
+        if (pref("useSmallIcons"))
+          afterURLBar.forEach(function(d) {
+            d.transferTo(bookmarksToolbar);
+          });
     }
   }
 
@@ -2138,11 +2171,15 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // Watch for preference changes to reprocess the keyword data
   pref.observe([
     "bringBookmarksUp",
+    "useSmallIcons",
     "urlBarWidth",
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish"
   ], reload);
+  pref.observe([
+    "useSmallIcons"
+  ], specialReload);
 
   function reload() {
     unload();
@@ -2151,11 +2188,20 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     watchWindows(changeUI);
     pref.observe([
       "bringBookmarksUp",
+      "useSmallIcons",
       "urlBarWidth",
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar"
     ], reload);
+    pref.observe([
+      "useSmallIcons"
+    ], specialReload);
+  }
+
+  function specialReload() {
+    firstRunAfterInstall = true;
+    normalStartup = false;
   }
 });
 
