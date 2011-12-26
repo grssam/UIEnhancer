@@ -38,6 +38,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
 let gAddon;
 let firstRunAfterInstall = false;
+let normalStartup = false;
 
 // Class for handling the changing and revertign of various DOM elements
 function handleDOM(object, newParent, insertFirst) {
@@ -80,7 +81,7 @@ function handleDOM(object, newParent, insertFirst) {
  
   this.removeClass = function(cls) {
     if (this.hasClass(cls))
-      this.obj.className=this.obj.className.replace(new RegExp('(\\s|^)'+cls+'(\\s|$)'),' ');
+      this.obj.className = this.obj.className.replace(new RegExp('(\\s|^)'+cls+'(\\s|$)'),' ');
   };
 
   this.transferTo = function(newP, newSib) {
@@ -316,8 +317,9 @@ function changeUI(window) {
       });
       if (result == 0)
         return false;
-      else if (result == parts.length)
-        return true;
+      else if ((result >= 0.5*parts.length && parts.length < 5)
+        || (result >= 0.75*parts.length && parts.length >= 5))
+          return true;
       else
         return gibberishIndexArray;
     }
@@ -410,7 +412,7 @@ function changeUI(window) {
       isSetting = true;
     if (index > 0) {
       let v = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{3,4}$/, ""));
-      if (v == true && redRemoved == 0) {
+      if (v.toString() == "true" && redRemoved == 0) {
         let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
         urlArray.slice(1).forEach(function(gibberVal) baseString.push(gibberVal));
         let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
@@ -421,7 +423,7 @@ function changeUI(window) {
         }
         redRemoved++;
       }
-      else if (v != false && v != true) {
+      else if (v.toString() != "false" && v.toString() != "true") {
         let valParts = gibberVal.split(" ");
         valParts = valParts.filter(function (part, i) {
           if (v.indexOf(i) >= 0)
@@ -1618,10 +1620,6 @@ function changeUI(window) {
         identityLabel.collapsed = false;
         tabChanged = true;
         updateURL();
-        if (recheckOnTabChange) {
-          recheckOnTabChange = false;
-          async(setupBookmarksUI);
-        }
       });
       listen(window, gURLBar, "focus", function() {
         reset(1);
@@ -1698,8 +1696,8 @@ function changeUI(window) {
   let enoughSpace = true;
   let firstRun = false;
   let isAfterUrl = false;
-  let searchBarWidth = 0;
   let currentURLBarWidth = 0;
+  let spaceAfterBookmarks = 0;
   let recheckOnTabChange = false;
   function max(n1, n2) n1>n2?n1:n2;
   function min(n1, n2) n1<n2?n1:n2;
@@ -1717,10 +1715,8 @@ function changeUI(window) {
         d = d.nextSibling;
         continue;
       }
-      if (d.id == "search-container") {
-        searchBarWidth = max(d.boxObject.width*1, 250);
-        d.style.minWidth = d.style.width = d.style.maxWidth = searchBarWidth + "px";
-      }
+      if (d.id == "search-container")
+        d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
       someThingB4 = true;
       let b = d;
       d = d.nextSibling;
@@ -1733,15 +1729,24 @@ function changeUI(window) {
     }, window);
   }
 
-  function setupBookmarksUI() {
+  function enableBookmarksToolbar() {
+    try {
+      $("toolbar-context-menu").openPopup();
+      $("toolbar-context-menu").hidePopup();
+      $("toggle_PersonalToolbar").setAttribute("checked",true);
+      $("toggle_PersonalToolbar").doCommand();
+    } catch (ex) {}
+  }
 
+  function setupBookmarksUI() {
     urlBar = $("urlbar");
     origURLStyle = urlBar.style;
     bookmarksToolbar = $("PersonalToolbar");
     origBTStyle = bookmarksToolbar.style;
 
     origCollapsedState = bookmarksToolbar.collapsed;
-    bookmarksToolbar.collapsed = $("nav-bar").collapsed;;
+    if (bookmarksToolbar.collapsed)
+      enableBookmarksToolbar();
 
     $("TabsToolbar").style.background = "rgba(255,255,255,0)";
     try {
@@ -1784,50 +1789,64 @@ function changeUI(window) {
         }, window);
     }
 
-    // Checking if we even have space to brng bookmarks tolbar up
+    // Checking if we even have space to bring bookmarks toolbar up
     if (window.innerWidth - urlBar.boxObject.x - 100*(isAfterUrl?1:0) < pref("urlBarWidth")*1)
       enoughSpace = false;
 
     if (enoughSpace) {
       handleRest();
       try {
-        $("search-container").style.minWidth = searchBarWidth + "px";
+        $("search-container").style.minWidth = $("search-container").style.maxWidth
+          = $("search-container").style.width = 250 + "px";
       } catch(ex) {}
     }
-    // Removing the dependency of browser.css
-    try {
-      if (firstRunAfterInstall) {
-        firstRunAfterInstall = false;
-        let bookmarksWidth =  searchBarWidth + 70;
-        if ($("PlacesToolbarItems").lastChild != null)
-          bookmarksWidth += $("PlacesToolbarItems").lastChild.boxObject.x +
-            $("PlacesToolbarItems").lastChild.boxObject.width;
-        if ($("PlacesToolbarItems").firstChild != null)
-          bookmarksWidth -= $("PlacesToolbarItems").firstChild.boxObject.x;
-        if ($("bookmarks-menu-button") != null)
-          bookmarksWidth += $("bookmarks-menu-button").boxObject.width;
-        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
-            (urlBar.boxObject.width - bookmarksWidth));
-        else
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
-            max(urlBar.boxObject.width - bookmarksWidth, 500 + (window.screen.width
-            - 1200)/4));
-      }
-    } catch (ex) {}
-    currentURLBarWidth = pref("urlBarWidth");
-    urlBar.removeAttribute("max-width");
-    urlBar.style.maxWidth = currentURLBarWidth + "px";
+    // Setting paddings, widths and heights used for bookmarks toolbar
     let paddingBottom = 0;
     let pHeight = $("PersonalToolbar").boxObject.height;
     let nHeight = $("nav-bar").boxObject.height;
     if (pHeight == 0)
       pHeight = 26;
     if (nHeight == 0) {
-      nHeight = ($("navigator-toolbox").getAttribute("iconsize") == "small"? 26:36);
       // Most probably we are on a In-content UI Page
-      recheckOnTabChange = true;
+      recheckOnTabChange = normalStartup = true;
+      return;
     }
+    // Calculating widths for various elements
+    try {
+      let bookmarksWidth = 20;
+      if ($("personal-bookmarks").nextSibling != null)
+        bookmarksWidth += window.innerWidth - $("personal-bookmarks").nextSibling.boxObject.x;
+      if ($("bookmarks-menu-button") != null)
+        bookmarksWidth += $("bookmarks-menu-button").boxObject.width;
+      spaceAfterBookmarks = bookmarksWidth;
+      if ($("PlacesToolbarItems").lastChild != null) {
+        bookmarksWidth += $("PlacesToolbarItems").lastChild.boxObject.x +
+          $("PlacesToolbarItems").lastChild.boxObject.width;
+        if ($("PlacesToolbarItems").firstChild != null)
+          bookmarksWidth -= $("PlacesToolbarItems").firstChild.boxObject.x;
+      }
+      else
+        bookmarksWidth += 200;
+      if (firstRunAfterInstall) {
+        firstRunAfterInstall = false;
+        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
+            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+        else
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
+            10*Math.floor(max(urlBar.boxObject.width - bookmarksWidth, 500 +
+            (window.screen.width - 1200)/4)/10));
+      }
+      else if (normalStartup) {
+        normalStartup = false;
+        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" + 
+            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+      }
+    } catch (ex) {}
+    currentURLBarWidth = pref("urlBarWidth");
+    urlBar.removeAttribute("max-width");
+    urlBar.style.maxWidth = currentURLBarWidth + "px";
     paddingBottom = (nHeight - (pHeight>=26?24:pHeight))/2;
     newMargin = "" + (-nHeight) + "px 0px 0px " + (pref("urlBarWidth")*1 + max(gURLBar.boxObject.x*1, 70)*1 + 10) +
       "px; min-height: " + (nHeight - 2*paddingBottom) + "px; padding: " + paddingBottom + "px 0px;" +
@@ -1837,6 +1856,8 @@ function changeUI(window) {
         + " margin: " + newMargin + " border: none !important;");
     bookmarkStyle = bookmarksToolbar.style;
     limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth")*1);
+    // Setting the collapse state according to nav-bar's
+    bookmarksToolbar.collapsed = $("nav-bar").collapsed;
     unload(function() {
       urlBar.setAttribute("style", origURLStyle);
       $("PersonalToolbar").setAttribute("style", origBTStyle);
@@ -1912,9 +1933,15 @@ function changeUI(window) {
     }, 200);
   }
 
+  let lastResizeTime = 0, currentResizeTime = 0;
   function windowResized() {
-    if (pref("urlBarWidth")*1 > window.innerWidth - urlBar.boxObject.x -
-      100*(isAfterUrl?1:0) && enoughSpace) {
+    currentResizeTime = (new Date()).getTime();
+    if (currentResizeTime - lastResizeTime > 200 && !firstRunAfterInstall)
+      lastResizeTime = currentResizeTime;
+    else
+      return;
+    if (pref("urlBarWidth")*1 + spaceAfterBookmarks > window.innerWidth -
+      urlBar.boxObject.x - 100*(isAfterUrl?1:0) && enoughSpace) {
         enoughSpace = false;
         afterURLBar.forEach(function(d) {
           d.transferTo($("nav-bar"));
@@ -1923,13 +1950,14 @@ function changeUI(window) {
           bookmarksToolbar.setAttribute("style", origBTStyle);
         } catch (ex) {}
     }
-    else if (pref("urlBarWidth")*1 < window.innerWidth - urlBar.boxObject.x -
-      100*(isAfterUrl?1:0) && !enoughSpace) {
+    else if (pref("urlBarWidth")*1 + spaceAfterBookmarks < window.innerWidth -
+      urlBar.boxObject.x - 100*(isAfterUrl?1:0) && !enoughSpace) {
         enoughSpace = true;
         if (!firstRun) {
           bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
             + " margin: " + newMargin + "border : none !important;");
-          handleRest();
+          if (afterURLBar.length == 0)
+            handleRest();
           firstRun = true;
         }
         bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
@@ -2049,6 +2077,10 @@ function changeUI(window) {
     listen(window, bookmarksToolbar, "mouseout", onBookmarksMouseOut);
     listen(window, bookmarksToolbar, "mouseover", function(event) {onBookmarksMouseOver(event)});
     listen(window, gBrowser.tabContainer, "TabSelect", function() {
+      if (recheckOnTabChange) {
+        recheckOnTabChange = false;
+        async(setupBookmarksUI);
+      }
       async(function() {
         bookmarksToolbar.collapsed = $("nav-bar").collapsed;
       });
@@ -2092,12 +2124,15 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   if (reason == 5 || reason == 7)
     firstRunAfterInstall = true;
   else
-    firstRunAfterInstall = false;
+    normalStartup = true;
+
   // Load various javascript includes for helper functions
   ["helper", "pref"].forEach(function(fileName) {
     let fileURI = addon.getResourceURI("scripts/" + fileName + ".js");
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
+  // Apply the changes in UI
+  watchWindows(changeUI);
 
   Cu.import("resource://services-sync/util.js");
   // Watch for preference changes to reprocess the keyword data
@@ -2112,6 +2147,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   function reload() {
     unload();
     // Watch for preference changes to reprocess the keyword data
+    normalStartup = true;
+    watchWindows(changeUI);
     pref.observe([
       "bringBookmarksUp",
       "urlBarWidth",
@@ -2119,10 +2156,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "removeGibberish",
       "enhanceURLBar"
     ], reload);
-    watchWindows(changeUI);
   }
-
-  watchWindows(changeUI);
 });
 
 function shutdown(data, reason) {
@@ -2134,7 +2168,7 @@ function install(data, reason) AddonManager.getAddonByID(data.id, function(addon
   if (reason == 5 || reason == 7)
     firstRunAfterInstall = true;
   else
-    firstRunAfterInstall = false;
+    normalStartup = true;
 });
 
 function uninstall() {}
