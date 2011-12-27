@@ -1851,8 +1851,8 @@ function changeUI(window) {
       if (firstRunAfterInstall) {
         firstRunAfterInstall = false;
         if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-            Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
-              10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
+            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
         else
           Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
             10*Math.floor(max(urlBar.boxObject.width - bookmarksWidth, 500 +
@@ -1861,8 +1861,8 @@ function changeUI(window) {
       else if (normalStartup) {
         normalStartup = false;
         if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-            Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
-              10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
+          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
+            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
       }
     } catch (ex) {}
     currentURLBarWidth = pref("urlBarWidth");
