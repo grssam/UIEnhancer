@@ -308,13 +308,13 @@ function changeUI(window) {
       let result = 0;
       let partResult = 0;
       let gibberishIndexArray = [];
-      parts.forEach(function(part, index) {
-        partResult = gibberish(part) == true? 1: 0;
+      for (let i = 0; i < parts.length; i++) {
+        partResult = gibberish(parts[i]) == true? 1: 0;
         result += partResult;
         if (partResult == 1) {
-          gibberishIndexArray.push(index);
+          gibberishIndexArray.push(i);
         }
-      });
+      }
       if (result == 0)
         return false;
       else if ((result >= 0.5*parts.length && parts.length < 5)
@@ -369,11 +369,13 @@ function changeUI(window) {
     function checkBaseMatch(base) {
       base = base.toLowerCase().replace(/[\[\]+\-\\\/\(\)\%'\?]+/g, "");
       let ret = false;
-      baseString.forEach(function(redVal) {
-        redVal = redVal.toLowerCase();
-        if (base.search(redVal) >= 0 || redVal.search(base) >=0)
-          ret = true;
-      });
+      for (let i = 0; i < baseString.length; i++) {
+        baseString[i] = baseString[i].toLowerCase();
+        try {
+          if (base.search(baseString[i]) >= 0 || baseString[i].search(base) >=0)
+            ret = true;
+        } catch (ex) {}
+      }
       return ret;
     }
 
@@ -471,12 +473,11 @@ function changeUI(window) {
     highlightPart(hiddenStack, true, true);
     hiddenStack.lastChild.style.padding = "2px";
     // Show the different hidden parts as per their heirarchy
-    let part;
-    hiddenParts.forEach(function(hidenVal, index) {
-      part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-part-" + index);
+    for (let i = 0; i < hiddenParts.length; i++) {
+      let part = document.createElementNS(XUL, "menuitem");
+      part.setAttribute("id", "popup-part-" + i);
       part.setAttribute("class", "menuitem-iconic");
-      part.setAttribute("label", hidenVal);
+      part.setAttribute("label", hiddenParts[i]);
       if (mainPopup.firstChild)
         mainPopup.insertBefore(part, mainPopup.firstChild);
       else
@@ -490,7 +491,7 @@ function changeUI(window) {
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
         hiddenStack.lastChild.style.padding = "2px";
-        handleTextClick(urlPartArray[index], null, null, e.ctrlKey);
+        handleTextClick(urlPartArray[i], null, null, e.ctrlKey);
       }, false);
       part.addEventListener("click", function(e) {
         if (e.button != 1)
@@ -501,9 +502,9 @@ function changeUI(window) {
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
         hiddenStack.lastChild.style.padding = "2px";
-        handleTextClick(urlPartArray[index], null, null, true);
+        handleTextClick(urlPartArray[i], null, null, true);
       }, false);
-    });
+    }
     part = null;
     mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
       mainPopup.lastChild);
@@ -568,20 +569,21 @@ function changeUI(window) {
     if (currentScrolledIndex != indexB4Scrolling) {
       partPointer = scrolledStack;
       mouseScrolled = true;
-      relatedScrolledArray[currentScrolledIndex][0].split(" > ").forEach(function(scrollVal, index) {
-        addPart(scrollVal, relatedScrolledArray[currentScrolledIndex][1], false, false,
-          index == relatedScrolledArray[currentScrolledIndex][0].split(" > ").length - 1);
+      let scrollVal = relatedScrolledArray[currentScrolledIndex][0].split(" > ");
+      for (let i = 0; i < scrollVal.length; i++) {
+        addPart(scrollVal[i], relatedScrolledArray[currentScrolledIndex][1], false, false,
+          i == relatedScrolledArray[currentScrolledIndex][0].split(" > ").length - 1);
         if (partPointer != null) {
           highlightPart(partPointer.previousSibling, true, true);
-          if (index == 0)
+          if (i == 0)
             scrolledStack = partPointer.previousSibling;
         }
         else {
           highlightPart(enhancedURLBar.lastChild, true, true);
-          if (index == 0)
+          if (i == 0)
             scrolledStack = enhancedURLBar.lastChild;
         }
-      });
+      }
     }
     else if (currentScrolledIndex == indexB4Scrolling){
       mouseScrolled = false;
@@ -1222,13 +1224,15 @@ function changeUI(window) {
         let matching = false;
         let partURL,relatedVal,tempVal;
         partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
-        resultArray.forEach(function({url,title}, i) {
+        for (let i = 0; i < resultArray.length; i++) {
+          let url = resultArray[i].url;
+          let title = resultArray[i].title;
           relatedVal = "";
           url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
           relatedVal = url.slice(partURL.length, url.length).replace(/[\-_=]/g," ");
           if (relatedVal == "/" || relatedVal == "" || !relatedVal[0].match(/[\/?#&:]/)) {
             reduceIndex++;
-            return;
+            continue;
           }
           // Correcting the value to match the global styling
           relatedVal = relatedVal.slice(1).replace(/[\-_=+]/g, " ").split(/[&\/?#]+/g)
@@ -1266,7 +1270,7 @@ function changeUI(window) {
           });
           if (matching) {
             reduceIndex++;
-            return;
+            continue;
           }
           else {
             if (url.toLowerCase() == currentURL.toLowerCase()) {
@@ -1275,7 +1279,7 @@ function changeUI(window) {
             }
             returnArray.push([relatedVal,url,title]);
           }
-        });
+        }
         if (!hasCurrentUrl && concernedStack != enhancedURLBar.lastChild) {
           relatedVal = "";
           let tempS = concernedStack.nextSibling;
@@ -1322,9 +1326,9 @@ function changeUI(window) {
     arrowedStack.lastChild.value = "v";
     highlightPart(arrowedStack, "partial", true);
     // Show the diff history results for that part
-    resultArray.forEach(function(resultPart, index) {
-      let arrowVal = resultPart[0];
-      let url = resultPart[1];
+    for (let i = 0; i < resultArray.length; i++) {
+      let arrowVal = resultArray[i][0];
+      let url = resultArray[i][1];
       let part = document.createElementNS(XUL, "menuitem");
       part.setAttribute("id", "popup-suggestion");
       part.setAttribute("class", "menuitem-iconic");
@@ -1368,7 +1372,7 @@ function changeUI(window) {
           handleTextClick(url, null, null, true);
       }, false);
       mainPopup.appendChild(part);
-    });
+    }
 
     if (mainPopup.firstChild == null) {
       let part = document.createElementNS(XUL, "menuitem");
@@ -1406,7 +1410,8 @@ function changeUI(window) {
       return null;
     function totalLength(parts) {
       let result = 0;
-      parts.forEach(function (p) result += p.length + 1);
+      for (let i = 0; i < parts.length; i++)
+        result += parts[i].length + 1;
       return --result;
     }
     limit = limit || 40;
@@ -1539,9 +1544,8 @@ function changeUI(window) {
       });
     }
 
-    urlArray_updateURL.forEach(function(urlVal, index) {
-      urlArray_updateURL[index] = urlVal.replace(/[\-_=+]/g, " ");
-    });
+    for (let i = 0; i < urlArray_updateURL.length; i++)
+      urlArray_updateURL[i] = urlArray_updateURL[i].replace(/[\-_=+]/g, " ");
 
     if (identityBlockVisible) {
       iLabel = "";
@@ -1571,7 +1575,9 @@ function changeUI(window) {
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
-    urlArray_updateURL.forEach(function(urlVal, index) {
+    let urlVal;
+    for (let index = 0; index < urlArray_updateURL.length; index++) {
+      urlVal = urlArray_updateURL[index];
       isSetting_updateURL = false;
       // Test Case to check gibberish function
       [urlVal, isSetting_updateURL] = replaceGibberishText(urlVal, urlArray_updateURL, index);
@@ -1579,7 +1585,7 @@ function changeUI(window) {
         addPart(urlVal, urlPartArray[index], true, isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
-    });
+    }
     updateLook();
   }
 

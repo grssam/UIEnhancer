@@ -49,7 +49,7 @@ function spinQueryAsync(connection, {names, params, query}, {callback, args}) {
   // Nothing to do with no query
   if (query == null) {
     args[args.length] = allResults;
-    callback.call(callback, args);
+    callback(args);
     return;
   }
 
@@ -67,7 +67,7 @@ function spinQueryAsync(connection, {names, params, query}, {callback, args}) {
     handleCompletion: function handleCompletion(reason) {
       if (reason != Ci.mozIStorageStatementCallback.REASON_ERROR) {
         args[args.length] = allResults;
-        callback.call(callback, args);
+        callback(args);
       }
     },
 
