@@ -47,7 +47,7 @@ pref.defaults = {
   animationSpeed: "normal",
   useSmallIcons: false,
   enhanceURLBar: true,
-  removeGibberish: false,
+  removeGibberish: true,
   installedVersion: "0.0"
 };
 

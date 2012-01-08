@@ -292,9 +292,9 @@ function changeUI(window) {
 
   // Function to detect gibberish words or words containing gibberish part
   function gibberish(string) {
-    // Returns true or false for fully gibberish or non gibberish respectively
-    // But if gibberishness is very less, say two words out of a sentance of 10 words
-    // Then the function returns the output as an array of each gibberish word's index
+    // Returns false for non gibberish, but for partial gibberish words
+    // the function returns the output as an array of each gibberish word's index
+    // Returns true/false for single words
     let parts = string.split(" ");
     if (parts.length > 1) {
       // code to deterimine if the word is gibberish on the whole
@@ -304,24 +304,20 @@ function changeUI(window) {
       for (let i = 0; i < parts.length; i++) {
         partResult = gibberish(parts[i]) == true? 1: 0;
         result += partResult;
-        if (partResult == 1) {
+        if (partResult == 1)
           gibberishIndexArray.push(i);
-        }
       }
       if (result == 0)
         return false;
-      else if ((result >= 0.5*parts.length && parts.length < 5)
-        || (result >= 0.75*parts.length && parts.length >= 5))
-          return true;
       else
         return gibberishIndexArray;
     }
-    else if (string.split(".").length > 1) {
+    else if (string.split(".").length > 1 && string.split(".").length < 4) {
       let result = gibberish(string.replace(".", " "));
-      if (result == true)
-        return true;
-      else
+      if (result == false)
         return false;
+      else
+        return true;
     }
     else {
       // Array containing WhiteList Words
@@ -407,22 +403,29 @@ function changeUI(window) {
     if (settingsStartIndex != null && index >= settingsStartIndex)
       isSetting = true;
     if (index > 0) {
-      let v = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{3,4}$/, ""));
-      if (v.toString() == "true" && redRemoved == 0) {
-        let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
-        urlArray.slice(1).forEach(function(gibberVal) baseString.push(gibberVal));
-        let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
-        if (tempVal != " " && tempVal != "" && tempVal.toLowerCase() != "problem loading page") {
-          gibberVal = tempVal;
-          isSetting = false;
-          tempVal = null;
-        }
-        redRemoved++;
+      let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
+      let partsLength = gibberVal.split(" ").length;
+      if (gibberResult.toString() != "false" && redRemoved == 0
+        && (gibberResult == true
+        || (gibberResult >= 0.5*partsLength && partsLength < 5)
+        || (gibberResult >= 0.75*partsLength && partsLength >= 5))) {
+          let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
+          urlArray.slice(1).forEach(function(gibberVal, i) {
+            if (i != index - 1)
+              baseString.push(gibberVal);
+          });
+          let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
+          if (tempVal != " " && tempVal != "" && tempVal.toLowerCase() != "problem loading page") {
+            gibberVal = tempVal;
+            isSetting = false;
+            tempVal = null;
+          }
+          redRemoved++;
       }
-      else if (v.toString() != "false" && v.toString() != "true") {
+      else if (gibberResult.toString() != "false") {
         let valParts = gibberVal.split(" ");
         valParts = valParts.filter(function (part, i) {
-          if (v.indexOf(i) >= 0)
+          if (gibberResult.indexOf(i) >= 0)
             return false;
           else
             return true;
@@ -967,14 +970,14 @@ function changeUI(window) {
         enhancedURLBar.lastChild.firstChild.setAttribute("value",
           trimWord(enhancedURLBar.lastChild.firstChild.getAttribute("value"),
           (getMaxWidth() - partsWidth + enhancedURLBar.lastChild.firstChild
-          .boxObject.width - 10)/pixelPerWord));
+          .boxObject.width)/pixelPerWord));
       else {
         let tempPart = enhancedURLBar.lastChild;
-        while (partsWidth > getMaxWidth() - 10 && !tempPart && tempPart != scrolledStack) {
+        while (partsWidth > getMaxWidth() && !tempPart && tempPart != scrolledStack) {
           partsWidth -= tempPart.boxObject.width;
           if (getMaxWidth() - partsWidth >= 30) {
             tempPart.firstChild.setAttribute("value", trimWord(
-              tempPart.firstChild.getAttribute("value"), (getMaxWidth() - 10
+              tempPart.firstChild.getAttribute("value"), (getMaxWidth()
               - partsWidth)/pixelPerWord));
             partsWidth += tempPart.boxObject.width;
             tempPart = tempPart.previousSibling;
@@ -1207,7 +1210,7 @@ function changeUI(window) {
           relatedVal = relatedVal.slice(1).replace(/[\-_=+]/g, " ").split(/[&\/?#]+/g)
             .filter(function(v) { return v.length > 0;});
           Array.some(relatedVal, function(v, index) {
-            if (gibberish(v) == true) {
+            if (gibberish(v) != false) {
               if (title != null && title.length > 0) {
                 tempVal = trimWord(removeRedundantText(url.split(/[\/?&#]/)
                   .filter(function(v) { return v.length > 0;}), title), 75);
