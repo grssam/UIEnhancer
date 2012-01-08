@@ -410,7 +410,6 @@ function changeUI(window) {
       let v = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{3,4}$/, ""));
       if (v.toString() == "true" && redRemoved == 0) {
         let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
-        urlArray.splice(index, 1);
         urlArray.slice(1).forEach(function(gibberVal) baseString.push(gibberVal));
         let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
         if (tempVal != " " && tempVal != "" && tempVal.toLowerCase() != "problem loading page") {
@@ -525,10 +524,7 @@ function changeUI(window) {
     }
     // compute the width of enhancedURLBar first
     partsWidth = 0;
-    try {
-      partsWidth = enhanceURLBar.lastChild.boxObject.x - enhanceURLBar.firstChild.boxObject.x
-        + enhanceURLBar.lastChild.boxObject.width;
-    } catch (ex) {}
+    Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
 
     if (partsWidth > getMaxWidth())
       enhancedURLBar.style.width = maxWidth + "px";
@@ -886,7 +882,6 @@ function changeUI(window) {
       lastUsefulPart = partVal;
 
     if (partPointer != null) {
-      partsWidth -= partPointer.boxObject.width;
       if (domain == false) {
         partPointer.firstChild.style.display = "-moz-box";
         partPointer.setAttribute("isDomain", false);
@@ -921,26 +916,22 @@ function changeUI(window) {
     }
     // Hiding the first parts on overflow if not mouseScrolled
     // else trimming the last parts further more
-    if (partsWidth > getMaxWidth() - 10 && !mouseScrolled) {
+    if (partsWidth > getMaxWidth() && !mouseScrolled) {
       let tempPart = null;
-      while (partsWidth > getMaxWidth() - 10) {
-        try {
-          tempPart = enhancedURLBar.firstChild;
-        } catch(ex) {
+      while (partsWidth > getMaxWidth()) {
+        if (enhancedURLBar.firstChild == null)
           break;
-        }
+        tempPart = enhancedURLBar.firstChild;
         if (tempPart.lastChild.value == "«")
           tempPart = tempPart.nextSibling;
         partsWidth -= tempPart.boxObject.width;
         hiddenParts.push(tempPart.firstChild.value);
         enhancedURLBar.removeChild(tempPart);
-        tempPart = null;
       }
+      tempPart = null;
       // If only one element in hiddenParts , bring it back if iLabel is same
       if (hiddenParts.length == 1 &&
         hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
-          let tStack = createStack(trimWord(hiddenParts[0]), urlPartArray[0], "domain", false);
-          partsWidth += tStack.boxObject.width;
           if (enhancedURLBar.firstChild.lastChild.value == "«") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
             enhancedURLBar.firstChild.setAttribute("isDomain", true);
@@ -952,20 +943,24 @@ function changeUI(window) {
             enhancedURLBar.firstChild.setAttribute("isHiddenArrow", false);
             enhancedURLBar.firstChild.setAttribute("url", urlPartArray[0]);
           }
-          else
+          else {
+            let tStack = createStack(trimWord(hiddenParts[0]), urlPartArray[0], "domain", false);
+            partsWidth += tStack.boxObject.width;
             enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
-          tStack = null;
+            tStack = null;
+          }
       }
-      else if (enhancedURLBar.firstChild != null && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
-        let tStack = createStack(trimWord(partVal), partURL, partType, true);
-        partsWidth += tStack.boxObject.width;
-        enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
-        tStack = null;
+      else if (hiddenParts.length > 0 && enhancedURLBar.firstChild != null
+        && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
+          let tStack = createStack(trimWord(partVal), partURL, partType, true);
+          partsWidth += tStack.boxObject.width;
+          enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
+          tStack = null;
       }
     }
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
-    else if (partsWidth > getMaxWidth() - 10 && mouseScrolled) {
+    else if (partsWidth > getMaxWidth() && mouseScrolled) {
       let pixelPerWord = enhancedURLBar.lastChild.firstChild.boxObject.width/
         enhancedURLBar.lastChild.firstChild.getAttribute("value").length;
       if (scrolledStack == enhancedURLBar.lastChild)
@@ -994,7 +989,7 @@ function changeUI(window) {
       pixelPerWord = null;
     }
     // If space is available, utilize it by completely showing the last useful part
-    if (lastPart == true && lastUsefulPart != null) {
+    if (lastPart && lastUsefulPart != null) {
       clearRest();
       if (mouseScrolled)
         return;
@@ -1004,13 +999,13 @@ function changeUI(window) {
       }
       if (tempP == null || tempP.getAttribute("isDomain") == "true")
         return;
-      let width = tempP.boxObject.width;
+      let width = tempP.firstChild.boxObject.width;
       tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart,
-        (getMaxWidth() - partsWidth + width - 15)/
+        (getMaxWidth() - partsWidth + width)/
         (width/tempP.firstChild.getAttribute("value").length)));
       lastUsefulPart = null;
     }
-    else
+    else if (lastPart)
       clearRest();
   }
 
@@ -1034,7 +1029,7 @@ function changeUI(window) {
 
   function clearRest() {
     let tempPointer;
-    while (partPointer && partPointer.parentNode == enhancedURLBar) {
+    while (partPointer) {
       tempPointer = partPointer;
       partPointer = partPointer.nextSibling;
       enhancedURLBar.removeChild(tempPointer);
