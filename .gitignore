@@ -1,9 +1,7 @@
 *.xpi
 *.zip
 *.png
-
+*.txt
 FirstStart/
 
 images/
-
-*.txt
