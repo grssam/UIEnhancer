@@ -39,6 +39,8 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 let gAddon;
 let firstRunAfterInstall = false;
 let normalStartup = false;
+let reload = function() {};
+let recheckOnTabChange = false;
 
 // Class for handling the changing and revertign of various DOM elements
 function handleDOM(object, newParent, insertFirst) {
@@ -208,7 +210,6 @@ function changeUI(window) {
 
   origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
   origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
-
   origILabel.collapsed = true;
   origICountryLabel.collapsed = true;
 
@@ -236,9 +237,6 @@ function changeUI(window) {
   }, window);
 
   // Calculating the width to be subtracted from gURLBar width
-  let urlBarLastPart = $("urlbar-display-box").parentNode.lastChild;
-  let extraWidth = urlBarLastPart.boxObject.x + urlBarLastPart.boxObject.width -
-    $("urlbar-display-box").nextSibling.boxObject.x + 20;
   let maxWidth = 0;
   // Add stuff around the original urlbar input box
   let enhancedURLBar = document.createElementNS(XUL, "stack");
@@ -253,24 +251,19 @@ function changeUI(window) {
   unload(function() {
     enhancedURLBar.parentNode.removeChild(enhancedURLBar);
     enhanceURLBar = null;
-    urlBarLastPart = null;
   }, window);
-
   setOpacity(0);
 
   function getMaxWidth() {
-    let width = 0;
-    urlBarLastPart = $("urlbar-display-box").parentNode.lastChild;
-    extraWidth = urlBarLastPart.boxObject.x + urlBarLastPart.boxObject.width -
-      $("urlbar-display-box").nextSibling.boxObject.x + 20;
-    if (pref("bringBookmarksUp"))
-      width = pref("urlBarWidth").replace("px", "")*1 - extraWidth - origIdentity.boxObject.width - 60;
-    else if (gURLBar.style.maxWidth.replace("px", "")*1 > 300)
-      width = (gURLBar.style.maxWidth.replace("px", "")*1 - extraWidth - origIdentity.boxObject.width - 60);
-    else
-      width = (gURLBar.boxObject.width - extraWidth - origIdentity.boxObject.width - 60);
-    maxWidth = width;
-    return width;
+    let (udb = $("urlbar-display-box")) {
+      maxWidth = udb.nextSibling.boxObject.x - origIdentity.boxObject.x
+        - origIdentity.boxObject.width - 60;
+      if (pref("bringBookmarksUp") && pref("animationSpeed") != "none"
+        && maxWidth > pref("urlBarWidth")*1 - 100)
+          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 60
+            - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x;
+    }
+    return maxWidth;
   }
 
   // Helper function to convert url's names to proper words.
@@ -332,6 +325,7 @@ function changeUI(window) {
     }
     else {
       // Array containing WhiteList Words
+      // Populate it regularily
       let whiteList = ["http","https","id","aurora"];
       // code to determine if a single word is gibberish or not
       let numAlpha = 0; // Basically non numeric characters
@@ -416,6 +410,7 @@ function changeUI(window) {
       let v = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{3,4}$/, ""));
       if (v.toString() == "true" && redRemoved == 0) {
         let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
+        urlArray.splice(index, 1);
         urlArray.slice(1).forEach(function(gibberVal) baseString.push(gibberVal));
         let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
         if (tempVal != " " && tempVal != "" && tempVal.toLowerCase() != "problem loading page") {
@@ -505,15 +500,14 @@ function changeUI(window) {
         handleTextClick(urlPartArray[i], null, null, true);
       }, false);
     }
-    part = null;
     mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
       mainPopup.lastChild);
 
     // Show the popup below the arrows
     mainPopup.openPopup(enhancedURLBar.firstChild, "after_start");
     popupStack = hiddenStack;
-    gBrowser.addEventListener("click", hideMainPopup = function() {
-      gBrowser.removeEventListener("click", hideMainPopup, false);
+    gBrowser.addEventListener("mousedown", hideMainPopup = function() {
+      gBrowser.removeEventListener("mousedown", hideMainPopup, false);
       try {
         mainPopup.hidePopup();
       } catch (ex) {}
@@ -531,7 +525,10 @@ function changeUI(window) {
     }
     // compute the width of enhancedURLBar first
     partsWidth = 0;
-    Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
+    try {
+      partsWidth = enhanceURLBar.lastChild.boxObject.x - enhanceURLBar.firstChild.boxObject.x
+        + enhanceURLBar.lastChild.boxObject.width;
+    } catch (ex) {}
 
     if (partsWidth > getMaxWidth())
       enhancedURLBar.style.width = maxWidth + "px";
@@ -887,7 +884,9 @@ function changeUI(window) {
       partType = "null";
     if (partType != "domain" && partType != "setting")
       lastUsefulPart = partVal;
-    if (partPointer != null && partPointer.firstChild.value == trimWord(partVal)) {
+
+    if (partPointer != null) {
+      partsWidth -= partPointer.boxObject.width;
       if (domain == false) {
         partPointer.firstChild.style.display = "-moz-box";
         partPointer.setAttribute("isDomain", false);
@@ -906,6 +905,8 @@ function changeUI(window) {
         partPointer.lastChild.style.color = "rgb(125,125,125)";
         partPointer.setAttribute("isSetting", true);
       }
+      if (partPointer.firstChild.value != trimWord(partVal))
+        partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
       partPointer.lastChild.setAttribute("value",">");
       partPointer.setAttribute("isHiddenArrow", false);
@@ -914,35 +915,7 @@ function changeUI(window) {
     }
     else {
       let addedStack = createStack(trimWord(partVal), partURL, partType, false);
-      // Adding the addedStack either replacing current element or to the end
-      if (partPointer != null && partPointer.parentNode == enhancedURLBar) {
-        if (domain == false) {
-          partPointer.firstChild.style.display = "-moz-box";
-          partPointer.setAttribute("isDomain", false);
-        }
-        else if (domain == true) {
-          partPointer.firstChild.style.display = "none";
-          partPointer.setAttribute("isDomain", true);
-        }
-        if (isSetting == false) {
-          partPointer.firstChild.style.color = "rgb(30,30,30)";
-          partPointer.lastChild.style.color = "rgb(50,50,50)";
-          partPointer.setAttribute("isSetting", false);
-        }
-        else if (isSetting == true) {
-          partPointer.firstChild.style.color = "rgb(100,100,100)";
-          partPointer.lastChild.style.color = "rgb(125,125,125)";
-          partPointer.setAttribute("isSetting", true);
-        }
-        partPointer.firstChild.setAttribute("value", trimWord(partVal));
-        partPointer.lastChild.setAttribute("value",">");
-        partPointer.setAttribute("isHiddenArrow", false);
-        partPointer.setAttribute("url", partURL);
-        partPointer = partPointer.nextSibling;
-      }
-      else
-        enhancedURLBar.appendChild(addedStack);
-
+      enhancedURLBar.appendChild(addedStack);
       partsWidth += addedStack.boxObject.width;
       addedStack = null;
     }
@@ -983,7 +956,7 @@ function changeUI(window) {
             enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
       }
-      else if (enhancedURLBar.firstChild != null && enhancedURLBar.firstChild.lastChild.value != "«") {
+      else if (enhancedURLBar.firstChild != null && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
         let tStack = createStack(trimWord(partVal), partURL, partType, true);
         partsWidth += tStack.boxObject.width;
         enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
@@ -1020,6 +993,7 @@ function changeUI(window) {
       }
       pixelPerWord = null;
     }
+    // If space is available, utilize it by completely showing the last useful part
     if (lastPart == true && lastUsefulPart != null) {
       clearRest();
       if (mouseScrolled)
@@ -1100,7 +1074,7 @@ function changeUI(window) {
     let {length} = resultArray;
     if (length == 0) {
       args[args.length] = resultArray;
-      callback.call(callback, args);
+      callback(args);
     }
     let url1,url2,part1,part2,urlmatch,p1,itemsB4 = min(currentI,3);
     let i = (currentI != null?currentI:0);
@@ -1159,7 +1133,7 @@ function changeUI(window) {
     }
     p1 = part1 = part2 = url1 = url2 = null;
     args[args.length] = resultArray;
-    callback.call(callback, args);
+    callback(args);
   }
 
   // Helper function used to get related history items
@@ -1303,7 +1277,7 @@ function changeUI(window) {
           // Calling the callback function for Async operations
           aArgs[aArgs.length] = returnArray;
           returnArray = null;
-          aCallback.call(aCallback, aArgs);
+          aCallback(aArgs);
         }
       },
       args : [concernedStack, aCallback, aArgs]
@@ -1325,6 +1299,10 @@ function changeUI(window) {
     arrowMouseDown = true;
     arrowedStack.lastChild.value = "v";
     highlightPart(arrowedStack, "partial", true);
+    // Adding the base domain if domain in Identity Box
+    if (arrowedStack.getAttribute("isDomain") == "true")
+      resultArray.push([arrowedStack.firstChild.getAttribute("value"),
+        arrowedStack.getAttribute("url"),""]);
     // Show the diff history results for that part
     for (let i = 0; i < resultArray.length; i++) {
       let arrowVal = resultArray[i][0];
@@ -1372,6 +1350,10 @@ function changeUI(window) {
           handleTextClick(url, null, null, true);
       }, false);
       mainPopup.appendChild(part);
+    }
+    if (arrowedStack.getAttribute("isDomain") == "true") {
+      mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
+        mainPopup.lastChild);
     }
 
     if (mainPopup.firstChild == null) {
@@ -1555,22 +1537,21 @@ function changeUI(window) {
         iLabel = origILabel.value || "";
       iCountry = origICountryLabel.value || "";
 
-      // Checking now the first element of the Array
-      // for its similarity with the iLabel
-      if (urlArray_updateURL[1] != null && 
-        iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
-          urlArray_updateURL.splice(1,1);
-          urlPartArray.splice(1,1);
-          if (settingsStartIndex != null && settingsStartIndex >= 1)
-            settingsStartIndex--;
-      }
-
       //trimming the iLabel to 50 characters
       iLabel = trimWord(iLabel, 54);
       identityLabel.value = makeCapital(iLabel.replace("www.", ""));
       identityCountryLabel.value = iCountry;
       identityLabel.collapsed = (iLabel.length == 0);
       identityCountryLabel.collapsed = (iCountry.length == 0);
+    }
+    // Checking now the first element of the Array
+    // for its similarity with the iLabel
+    if (urlArray_updateURL[1] != null && 
+      iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
+        urlArray_updateURL.splice(1,1);
+        urlPartArray.splice(1,1);
+        if (settingsStartIndex != null && settingsStartIndex >= 1)
+          settingsStartIndex--;
     }
     // resetting the enhancedURLBar
     reset(0);
@@ -1606,12 +1587,11 @@ function changeUI(window) {
         onLocationChange: function(aProgress, aRequest, aURI) {
           newDocumentLoaded = true;
           refreshRelatedArray = true;
+          if (!tabChanged)
+            origIdentity.collapsed = identityLabel.collapsed = false;
           async(function() {
-            if (!tabChanged) {
-              origIdentity.collapsed = false;
-              identityLabel.collapsed = false;
+            if (!tabChanged)
               updateURL();
-            }
             else
               tabChanged = false;
           }, 10);
@@ -1625,7 +1605,7 @@ function changeUI(window) {
         origIdentity.collapsed = false;
         identityLabel.collapsed = false;
         tabChanged = true;
-        updateURL();
+        async(updateURL);
       });
       listen(window, gURLBar, "focus", function() {
         reset(1);
@@ -1633,7 +1613,8 @@ function changeUI(window) {
       });
       listen(window, gURLBar, "blur", function() {
         reset(0);
-        async(updateURL, 210);
+        if (!tabChanged)
+          async(updateURL, pref("animationSpeed") != "none"?210: 10);
       });
       listen(window, gURLBar, "mouseout", function() {
         if (ctrlMouseHover && !gURLBar.focused) {
@@ -1705,7 +1686,7 @@ function changeUI(window) {
   let currentURLBarWidth = 0;
   let spaceAfterBookmarks = 0;
   let bookmarksWidth = 0;
-  let recheckOnTabChange = false;
+  let currentTabsOnTop = true;
   function max(n1, n2) n1>n2?n1:n2;
   function min(n1, n2) n1<n2?n1:n2;
   unload(function() {
@@ -1740,6 +1721,16 @@ function changeUI(window) {
     try {
       $("toolbar-context-menu").openPopup();
       $("toolbar-context-menu").hidePopup();
+      let (tabsOnTop = $("toolbar-context-menu").firstChild) {
+        while (tabsOnTop != null) {
+          if (tabsOnTop.getAttribute("label") == "Tabs on Top")
+            break;
+          else
+            tabsOnTop = tabsOnTop.nextSibling;
+        }
+        if (tabsOnTop != null)
+          currentTabsOnTop = tabsOnTop.getAttribute("checked");
+      }
       $("toggle_PersonalToolbar").setAttribute("checked",true);
       $("toggle_PersonalToolbar").doCommand();
     } catch (ex) {}
@@ -1818,6 +1809,10 @@ function changeUI(window) {
       recheckOnTabChange = normalStartup = true;
       return;
     }
+    // Dont do anything until page changed
+    // if we are on about:addons page and changing values
+    if (recheckOnTabChange)
+      return;
     // Calculating widths for various elements
     bookmarksWidth = 0;
     try {
@@ -2125,18 +2120,32 @@ function changeUI(window) {
       });
     });
     // Event listener to detect window's dimension change
-    //listen(window, window, "resize", windowResized);
     window.addEventListener("resize",windowResized);
     unload(function() {
       window.removeEventListener("resize", windowResized, false);
     }, window);
-
     unload(function() {
       addBookmarkListeners = function() {};
       try {
         gURLBar.removeEventListener("mousemove", temp, false);
       } catch(ex) {}
     }, window);
+    listen(window, $("toolbar-context-menu"), "click", function() {
+      async(function() {
+        bookmarksToolbar.collapsed = $("nav-bar").collapsed;
+      });
+      async(function() {
+        let tabsOnTop = $("toolbar-context-menu").firstChild;
+        while (tabsOnTop != null) {
+          if (tabsOnTop.getAttribute("accesskey") == "T")
+            break;
+          else
+            tabsOnTop = tabsOnTop.nextSibling;
+        }
+        if (tabsOnTop && tabsOnTop.getAttribute("checked") != currentTabsOnTop) 
+          reload();
+      }, 50);
+    });
   }
 
   if(!pref("bringBookmarksUp")) {
@@ -2178,16 +2187,18 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   pref.observe([
     "bringBookmarksUp",
     "useSmallIcons",
-    "urlBarWidth",
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish"
   ], reload);
   pref.observe([
+    "urlBarWidth",
+  ], reloadOnTabChange);
+  pref.observe([
     "useSmallIcons"
   ], specialReload);
 
-  function reload() {
+  reload = function() {
     unload();
     // Watch for preference changes to reprocess the keyword data
     normalStartup = true;
@@ -2195,11 +2206,13 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     pref.observe([
       "bringBookmarksUp",
       "useSmallIcons",
-      "urlBarWidth",
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar"
     ], reload);
+    pref.observe([
+      "urlBarWidth",
+    ], reloadOnTabChange);
     pref.observe([
       "useSmallIcons"
     ], specialReload);
@@ -2208,6 +2221,10 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   function specialReload() {
     firstRunAfterInstall = true;
     normalStartup = false;
+  }
+
+  function reloadOnTabChange() {
+    recheckOnTabChange = true;
   }
 });
 
