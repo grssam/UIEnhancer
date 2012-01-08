@@ -295,7 +295,7 @@ function changeUI(window) {
     // Returns false for non gibberish, but for partial gibberish words
     // the function returns the output as an array of each gibberish word's index
     // Returns true/false for single words
-    let parts = string.split(" ");
+    let parts = string.split(/[ _]/g);
     if (parts.length > 1) {
       // code to deterimine if the word is gibberish on the whole
       let result = 0;
@@ -404,11 +404,11 @@ function changeUI(window) {
       isSetting = true;
     if (index > 0) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
-      let partsLength = gibberVal.split(" ").length;
+      let partsLength = gibberVal.split(/[ _]/g).length;
       if (gibberResult.toString() != "false" && redRemoved == 0
         && (gibberResult == true
-        || (gibberResult >= 0.5*partsLength && partsLength < 5)
-        || (gibberResult >= 0.75*partsLength && partsLength >= 5))) {
+        || (gibberResult.length >= 0.5*partsLength && partsLength < 5)
+        || (gibberResult.length >= 0.75*partsLength && partsLength >= 5))) {
           let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
           urlArray.slice(1).forEach(function(gibberVal, i) {
             if (i != index - 1)
@@ -423,7 +423,7 @@ function changeUI(window) {
           redRemoved++;
       }
       else if (gibberResult.toString() != "false") {
-        let valParts = gibberVal.split(" ");
+        let valParts = gibberVal.split(/[ _]/g);
         valParts = valParts.filter(function (part, i) {
           if (gibberResult.indexOf(i) >= 0)
             return false;
@@ -917,11 +917,15 @@ function changeUI(window) {
       partsWidth += addedStack.boxObject.width;
       addedStack = null;
     }
+    // Clearing rest of the parts if lastPart
+    if (lastPart)
+      clearRest();
     // Hiding the first parts on overflow if not mouseScrolled
     // else trimming the last parts further more
     if (partsWidth > getMaxWidth() && !mouseScrolled) {
       let tempPart = null;
-      while (partsWidth > getMaxWidth()) {
+      let isDomainHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true";
+      while (partsWidth > getMaxWidth() - (isDomainHidden? 15: 0)) {
         if (enhancedURLBar.firstChild == null)
           break;
         tempPart = enhancedURLBar.firstChild;
@@ -993,7 +997,6 @@ function changeUI(window) {
     }
     // If space is available, utilize it by completely showing the last useful part
     if (lastPart && lastUsefulPart != null) {
-      clearRest();
       if (mouseScrolled)
         return;
       let tempP = enhancedURLBar.lastChild;
@@ -1008,8 +1011,6 @@ function changeUI(window) {
         (width/tempP.firstChild.getAttribute("value").length)));
       lastUsefulPart = null;
     }
-    else if (lastPart)
-      clearRest();
   }
 
   // Function to reset the enhancedURLBar
