@@ -38,7 +38,8 @@
   <setting pref="extensions.UIEnhancer.removeGibberish"
     title="Replace insignificant url parts with useful info."
     type="bool">
-    Experimental feature.
+    Provides Rich information about the page in place of random token values in a url.
+    Helpful specially for pinned tabs.
   </setting>
 
   <setting pref="extensions.UIEnhancer.bringBookmarksUp"
@@ -54,7 +55,7 @@
   <setting pref="extensions.UIEnhancer.urlBarWidth"
     title="Width of UrlBar (if above setting enabled)"
     type="string">
-    Default is "700px"
+    Only input the number without px or pixel.
   </setting>
 
   <setting pref="extensions.UIEnhancer.animationSpeed"

@@ -258,10 +258,10 @@ function changeUI(window) {
     let (udb = $("urlbar-display-box")) {
       maxWidth = udb.nextSibling.boxObject.x - origIdentity.boxObject.x
         - origIdentity.boxObject.width - 60;
-      if (pref("bringBookmarksUp") && pref("animationSpeed") != "none"
-        && maxWidth > pref("urlBarWidth")*1 - 100)
-          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 60
-            - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x;
+      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
+        maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 160
+          - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x
+          - udb.parentNode.lastChild.boxObject.width;
     }
     return maxWidth;
   }
@@ -925,15 +925,16 @@ function changeUI(window) {
     if (partsWidth > getMaxWidth() && !mouseScrolled) {
       let tempPart = null;
       let isDomainHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true";
-      while (partsWidth > getMaxWidth() - (isDomainHidden? 15: 0)) {
-        if (enhancedURLBar.firstChild == null)
-          break;
-        tempPart = enhancedURLBar.firstChild;
-        if (tempPart.lastChild.value == "«")
-          tempPart = tempPart.nextSibling;
-        partsWidth -= tempPart.boxObject.width;
-        hiddenParts.push(tempPart.firstChild.value);
-        enhancedURLBar.removeChild(tempPart);
+      while (partsWidth > getMaxWidth() -
+        (isDomainHidden || (hiddenParts.length > 0)? 15: 0)) {
+          if (enhancedURLBar.firstChild == null)
+            break;
+          tempPart = enhancedURLBar.firstChild;
+          if (tempPart.lastChild.value == "«")
+            tempPart = tempPart.nextSibling;
+          partsWidth -= tempPart.boxObject.width;
+          hiddenParts.push(tempPart.firstChild.value);
+          enhancedURLBar.removeChild(tempPart);
       }
       tempPart = null;
       // If only one element in hiddenParts , bring it back if iLabel is same
@@ -1006,9 +1007,18 @@ function changeUI(window) {
       if (tempP == null || tempP.getAttribute("isDomain") == "true")
         return;
       let width = tempP.firstChild.boxObject.width;
-      tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart,
-        (getMaxWidth() - partsWidth + width)/
-        (width/tempP.firstChild.getAttribute("value").length)));
+      let chars = (getMaxWidth() - partsWidth + width - 20)/
+        (width/tempP.firstChild.getAttribute("value").length);
+      if (chars > tempP.firstChild.getAttribute("value").length) {
+        tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart, chars));
+        // Updating the part to get real width and repeating for further accuracy
+        partsWidth += tempP.firstChild.boxObject.width - width;
+        width = tempP.firstChild.boxObject.width;
+        tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart,
+          (getMaxWidth() - partsWidth + width - 20)/
+          (width/tempP.firstChild.getAttribute("value").length)));
+        partsWidth += tempP.firstChild.boxObject.width - width;
+      }
       lastUsefulPart = null;
     }
   }
