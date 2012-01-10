@@ -1252,9 +1252,10 @@ function changeUI(window) {
           relatedVal = "";
           url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
           relatedVal = url.slice(partURL.length, url.length).replace(/[\-_=]/g," ");
-          if (relatedVal == "/" || relatedVal == "" || !relatedVal[0].match(/[\/?#&:]/)) {
-            reduceIndex++;
-            continue;
+          if (relatedVal.match(/^[[\/?#&: ]{1}[[\/?#&: ]{0,1}$/) != null
+            || !(relatedVal.length > 0 && relatedVal[0].match(/[\/?#&:]/))) {
+              reduceIndex++;
+              continue;
           }
           // Correcting the value to match the global styling
           relatedVal = relatedVal.slice(1).replace(/[\-_=+]/g, " ").split(/[&\/?#]+/g)
