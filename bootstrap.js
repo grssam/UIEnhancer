@@ -1843,8 +1843,9 @@ function changeUI(window) {
       if (pref("useSmallIcons"))
         handleRest();
       try {
-        $("search-container").style.minWidth = $("search-container").style.maxWidth
-          = $("search-container").style.width = 250 + "px";
+        if ($("search-container").parentNode == bookmarksToolbar && pref("useSmallIcons"))
+          $("search-container").style.minWidth = $("search-container").style.maxWidth
+            = $("search-container").style.width = 250 + "px";
       } catch(ex) {}
     }
     // Setting paddings, widths and heights used for bookmarks toolbar
