@@ -1673,13 +1673,17 @@ function changeUI(window) {
           return;
         }
       });
-      listen(window, gBrowser, "DOMTitleChanged", function() {
-        if (!gURLBar.focused && newDocumentLoaded) {
-          origIdentity.collapsed = false;
-          identityLabel.collapsed = false;
-          updateURL();
-          newDocumentLoaded = false;
-        }
+      listen(window, gBrowser, "DOMTitleChanged", function(e) {
+        async(function() {
+          if (!gURLBar.focused && newDocumentLoaded) {
+            if (e.target.title != gBrowser.contentDocument.title)
+              return;
+            origIdentity.collapsed = false;
+            identityLabel.collapsed = false;
+            updateURL();
+            newDocumentLoaded = false;
+          }
+        });
       });
       function $(id) document.getElementById(id);
     }
