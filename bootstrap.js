@@ -182,7 +182,6 @@ function changeUI(window) {
     let relatedScrolledArray = null;
   }, window);
 
-  // XXX Force a QI until bug 609139 is fixed
   let {DBConnection} = PlacesUtils.history.QueryInterface(Ci.nsPIPlacesDatabase);
 
   // Get references to existing UI elements
@@ -197,15 +196,15 @@ function changeUI(window) {
   identityLabel.setAttribute("collapsed",false);
   identityLabel.setAttribute("flex", 1);
   identityLabel.setAttribute("style",origILabel.style);
-  identityLabel.style.padding = "0";
-  identityLabel.style.margin = "0";
+  identityLabel.style.padding = "0px";
+  identityLabel.style.margin = "0px";
 
   let identityCountryLabel = document.createElementNS(XUL, "label");
   identityCountryLabel.setAttribute("id", "enhanced-identity-icon-country-label");
   identityCountryLabel.setAttribute("collapsed", false);
   identityCountryLabel.setAttribute("flex", 1);
   identityCountryLabel.setAttribute("style", origICountryLabel.style);
-  identityCountryLabel.style.padding = "0";
+  identityCountryLabel.style.padding = "0px";
   identityCountryLabel.style.margin = "0px 0px 0px 4px";
 
   origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
@@ -236,7 +235,6 @@ function changeUI(window) {
     identityLabel = identityCountryLabel = null;
   }, window);
 
-  // Calculating the width to be subtracted from gURLBar width
   let maxWidth = 0;
   // Add stuff around the original urlbar input box
   let enhancedURLBar = document.createElementNS(XUL, "stack");
@@ -246,8 +244,10 @@ function changeUI(window) {
   enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
   enhancedURLBar.style.overflow = "hidden";
   enhancedURLBar.style.display = "-moz-box";
-  enhancedURLBar.style.padding = "3px 0px";
-  enhancedURLBar.style.margin = "-3px 0px -4px -3px";
+  enhancedURLBar.style.padding = "0px";
+  enhancedURLBar.style.margin = "-1px 0px -1px -3px";
+  enhancedURLBar.style.maxHeight = (gURLBar.boxObject.height) + "px";
+
   unload(function() {
     enhancedURLBar.parentNode.removeChild(enhancedURLBar);
     enhanceURLBar = null;
@@ -447,7 +447,7 @@ function changeUI(window) {
       gBrowser.removeEventListener("click", hideMainPopup, false);
       highlightPart(popupStack, false, false, true);
       if (popupStack.lastChild.value == "«")
-        popupStack.lastChild.style.padding = "2px";
+        popupStack.lastChild.style.padding = "2px 2px 1px 1px";
       else
         popupStack.lastChild.value = ">";
     }
@@ -462,13 +462,13 @@ function changeUI(window) {
       clearPopup();
       arrowMouseDown = false;
       highlightPart(hiddenStack, false, false);
-      hiddenStack.lastChild.style.padding = "2px";
+      hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
       return;
     }
     clearPopup();
     arrowMouseDown = true;
     highlightPart(hiddenStack, true, true);
-    hiddenStack.lastChild.style.padding = "2px";
+    hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
     // Show the different hidden parts as per their heirarchy
     for (let i = 0; i < hiddenParts.length; i++) {
       let part = document.createElementNS(XUL, "menuitem");
@@ -487,7 +487,7 @@ function changeUI(window) {
         } catch(ex) {}
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
-        hiddenStack.lastChild.style.padding = "2px";
+        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
         handleTextClick(urlPartArray[i], null, null, e.ctrlKey);
       }, false);
       part.addEventListener("click", function(e) {
@@ -498,7 +498,7 @@ function changeUI(window) {
         } catch(ex) {}
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
-        hiddenStack.lastChild.style.padding = "2px";
+        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
         handleTextClick(urlPartArray[i], null, null, true);
       }, false);
     }
@@ -515,7 +515,7 @@ function changeUI(window) {
       } catch (ex) {}
       arrowMouseDown = false;
       highlightPart(hiddenStack, false, false);
-      hiddenStack.lastChild.style.padding = "2px";
+      hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
     });
   }
 
@@ -649,13 +649,13 @@ function changeUI(window) {
         highlightedObj.lastChild.style.border = "1px solid rgba(100,110,150,0.75)";
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow =
         "inset 1px 2px 1px rgba(120,130,160,0.8)";
-      highlightedObj.firstChild.style.padding = "3px 0px 1px 2px";
-      highlightedObj.lastChild.style.padding = "2px 3px 2px 2px";
+      highlightedObj.firstChild.style.padding = "3px 0px 0px 2px";
+      highlightedObj.lastChild.style.padding = "2px 3px 1px 2px";
     }
     else {
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow = "";
-      highlightedObj.firstChild.style.padding = "2px 1px 2px 1px";
-      highlightedObj.lastChild.style.padding = "2px 1px 2px 2px";
+      highlightedObj.firstChild.style.padding = "2px 1px 1px 1px";
+      highlightedObj.lastChild.style.padding = "2px 1px 1px 2px";
     }
     gradient = null;
   }
@@ -666,6 +666,7 @@ function changeUI(window) {
     createdStack.setAttribute("id", "enhanced-urlBar-stack");
     createdStack.style.padding = "0px";
     createdStack.style.margin = "0px";
+    createdStack.style.maxHeight = (gURLBar.boxObject.height - 2) + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
@@ -682,8 +683,9 @@ function changeUI(window) {
     let tempS = document.createElementNS(XUL, "label");
     tempS.setAttribute("value", createVal);
     tempS.setAttribute("id", "enhanced-urlBar-stack-text");
-    tempS.style.padding = "2px 1px 2px 1px";
-    tempS.style.margin = "-3px 0px -2px 0px";
+    tempS.style.padding = "2px 1px 1px 1px";
+    tempS.style.margin = "0px";
+    tempS.style.minHeight = (gURLBar.boxObject.height - 4) + "px";
     tempS.style.backgroundImage = "rgba(255,255,255,0)";
     tempS.style.display = "-moz-box";
     tempS.style.color = "rgb(30,30,30)";
@@ -699,11 +701,12 @@ function changeUI(window) {
     let tempArrow = document.createElementNS(XUL, "label");
     tempArrow.setAttribute("id", "enhanced-urlBar-stack-arrow");
     tempArrow.setAttribute("value", ">");
-    tempArrow.style.padding = "2px 1px 2px 2px";
+    tempArrow.style.margin = "0px";
+    tempArrow.style.minHeight = (gURLBar.boxObject.height - 4) + "px";
     if (partType != "domain" && !hiddenArrow)
-      tempArrow.style.margin = "-3px 0px -2px -1px";
+      tempArrow.style.padding = "2px 1px 1px 2px";
     else
-      tempArrow.style.margin = "-3px 0px -2px 0px";
+      tempArrow.style.padding = "2px 2px 1px 2px";
     tempArrow.style.color = "rgb(50,50,50)";
     if (partType == "setting")
       tempArrow.style.color = "rgb(125,125,125)";
@@ -714,7 +717,6 @@ function changeUI(window) {
     if (hiddenArrow) {
       tempArrow.setAttribute("value", "«");
       tempArrow.style.color = "rgb(50,50,50)";
-      tempArrow.style.padding = "2px";
       createdStack.setAttribute("isHiddenArrow", true);
     }
     else
@@ -821,7 +823,7 @@ function changeUI(window) {
         highlightPart(createdStack, "partial", true);
       else {
         highlightPart(createdStack, true, true);
-        createdStack.lastChild.style.padding = "2px";
+        createdStack.lastChild.style.padding = "2px 2px 1px 2px";
       }
     });
     // Mousedown Handling Function
@@ -856,7 +858,7 @@ function changeUI(window) {
     listen(window, createdStack, "mouseout", function(e) {
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true") {
         highlightPart(createdStack, false, false);
-        createdStack.lastChild.style.padding = "2px";
+        createdStack.lastChild.style.padding = "2px 2px 1px 2px";
         return;
       }
       textMouseDown = false;
