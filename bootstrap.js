@@ -802,8 +802,10 @@ function changeUI(window) {
 
     // Mouseover Handling Function
     listen(window, createdStack.firstChild, "mouseover", function(e) {
-      if (e.target.parentNode.getAttribute("isHiddenArrow") == "true")
-        return;
+      if (e.target.parentNode.getAttribute("isHiddenArrow") == "true"
+        || (e.target.parentNode.getAttribute("lastArrowHidden") == "true"
+        && arrowMouseDown))
+          return;
       if (e.ctrlKey) {
         hideEnhancedURLBar();
         return;
@@ -869,6 +871,8 @@ function changeUI(window) {
         createdStack.lastChild.style.padding = "2px 2px 1px 2px";
         return;
       }
+      if (arrowMouseDown && e.target.parentNode.getAttribute("lastArrowHidden") == "true")
+        return;
       textMouseDown = false;
       if (mouseScrolled) {
         async(function() {
