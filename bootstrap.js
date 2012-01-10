@@ -414,7 +414,7 @@ function changeUI(window) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
       let partsLength = gibberVal.split(/[ _]/g).length;
       if (gibberResult.toString() != "false" && redRemoved == 0
-        && (gibberResult == true
+        && (gibberResult.toString() == "true"
         || (gibberResult.length >= 0.5*partsLength && partsLength < 5)
         || (gibberResult.length >= 0.75*partsLength && partsLength >= 5))) {
           let baseString = urlArray[0].split(".").slice(0,urlArray[0].split(".").length - 1);
@@ -430,7 +430,7 @@ function changeUI(window) {
           }
           redRemoved++;
       }
-      else if (gibberResult.toString() != "false") {
+      else if (gibberResult.toString() != "false" && gibberResult.toString() != "true") {
         let valParts = gibberVal.split(/[ _]/g);
         valParts = valParts.filter(function (part, i) {
           if (gibberResult.indexOf(i) >= 0)
@@ -941,6 +941,7 @@ function changeUI(window) {
       partPointer.setAttribute("url", partURL);
       partPointer.lastChild.setAttribute("value",">");
       partPointer.setAttribute("isHiddenArrow", false);
+      partPointer.lastChild.style.padding = "2px 1px 1px 2px";
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
