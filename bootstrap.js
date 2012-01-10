@@ -564,6 +564,13 @@ function changeUI(window) {
     }
     if (currentScrolledIndex != indexB4Scrolling) {
       partPointer = scrolledStack;
+      let (tempPart = enhancedURLBar.firstChild) {
+        partsWidth = 0;
+        while (tempPart != partPointer) {
+          partsWidth += tempPart.boxObject.width;
+          tempPart = tempPart.nextSibling;
+        }
+      }
       mouseScrolled = true;
       let scrollVal = relatedScrolledArray[currentScrolledIndex][0].split(" > ");
       for (let i = 0; i < scrollVal.length; i++) {
@@ -585,6 +592,11 @@ function changeUI(window) {
       mouseScrolled = false;
       updateURL();
       highlightPart(scrolledStack, true, true);
+      partPointer = scrolledStack.nextSibling;
+      while (partPointer != null) {
+        highlightPart(partPointer, false, false);
+        partPointer = partPointer.nextSibling;
+      }
       partPointer = enhancedURLBar.firstChild;
     }
     delta = null;
@@ -969,13 +981,13 @@ function changeUI(window) {
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
     else if (partsWidth > getMaxWidth() && mouseScrolled) {
-      let pixelPerWord = enhancedURLBar.lastChild.firstChild.boxObject.width/
-        enhancedURLBar.lastChild.firstChild.getAttribute("value").length;
+      let pixelPerWord = scrolledStack.firstChild.boxObject.width/
+        scrolledStack.firstChild.getAttribute("value").length;
       if (scrolledStack == enhancedURLBar.lastChild)
-        enhancedURLBar.lastChild.firstChild.setAttribute("value",
-          trimWord(enhancedURLBar.lastChild.firstChild.getAttribute("value"),
-          (getMaxWidth() - partsWidth + enhancedURLBar.lastChild.firstChild
-          .boxObject.width)/pixelPerWord));
+        scrolledStack.firstChild.setAttribute("value",
+          trimWord(scrolledStack.firstChild.getAttribute("value"),
+          (getMaxWidth() - partsWidth + scrolledStack.firstChild.boxObject.width)
+          /pixelPerWord));
       else {
         let tempPart = enhancedURLBar.lastChild;
         while (partsWidth > getMaxWidth() && !tempPart && tempPart != scrolledStack) {
