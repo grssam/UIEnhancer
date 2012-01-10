@@ -669,6 +669,7 @@ function changeUI(window) {
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
+    createdStack.setAttribute("lastArrowHidden", false);
     if (partType == "setting")
       createdStack.setAttribute("isSetting", true);
     else
@@ -808,6 +809,8 @@ function changeUI(window) {
         hideEnhancedURLBar();
         return;
       }
+      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true")
+        return;
       if (arrowMouseDown && e.target.parentNode.getAttribute("isHiddenArrow") == "false") {
         createdStack.lastChild.value = "v";
         getAsyncRelatedArray(createdStack, handleArrowClick, [createdStack, false]);
@@ -831,6 +834,8 @@ function changeUI(window) {
         handleTextClick("", createdStack, true, true);
     });
     listen(window, createdStack.lastChild, "mousedown", function(e) {
+      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true")
+        return;
       if (e.button == 0) {
         if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
           getAsyncRelatedArray(createdStack, handleArrowClick, [createdStack, true]);
@@ -875,9 +880,11 @@ function changeUI(window) {
     });
 
     unload(function() {
-      createdStack.removeChild(tempArrow);
-      createdStack.removeChild(tempS);
-      createdStack = temp = tempS;
+      if (createdStack) {
+        createdStack.removeChild(tempArrow);
+        createdStack.removeChild(tempS);
+        createdStack = temp = tempS = null;
+      }
     }, window);
     return createdStack;
   }
@@ -919,7 +926,9 @@ function changeUI(window) {
         partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
       partPointer.lastChild.setAttribute("value",">");
+      partPointer.lastChild.style.display = "-moz-box";
       partPointer.setAttribute("isHiddenArrow", false);
+      partPointer.setAttribute("lastArrowHidden", false);
       partsWidth += partPointer.boxObject.width;
       partPointer = partPointer.nextSibling;
     }
@@ -1589,6 +1598,21 @@ function changeUI(window) {
         addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
     }
     updateLook();
+    // Removing last arrow if no suggestion possible
+    getAsyncRelatedArray(enhancedURLBar.lastChild,function([urlPart, resultArray]) {
+      if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length) != urlPart)
+        return;
+      if (resultArray.length == 0) {
+        enhancedURLBar.lastChild.lastChild.style.display = "none";
+        enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
+      }
+      else {
+        enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
+        enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
+      }
+      // Updating look again
+      updateLook();
+    }, [urlPartArray[urlPartArray.length - 1]]);
   }
 
   function enhanceURLBar() {
