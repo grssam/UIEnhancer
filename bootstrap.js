@@ -175,6 +175,7 @@ function changeUI(window) {
   let currentScrolledIndex = null;
   let relatedScrolledArray = [];
   let lastScrolledUrl = "";
+  let restyleEnhancedURLBarOnTabChange = false;
   unload(function() {
     let popupStack = mainPopupSelectedIndex = settingsStartIndex = redRemoved = null;
     let lastUpdatedTime = lastScrolledTime = lastUsefulPart = ctrlMouseHover = null;
@@ -239,14 +240,21 @@ function changeUI(window) {
   // Add stuff around the original urlbar input box
   let enhancedURLBar = document.createElementNS(XUL, "stack");
   origInput.parentNode.insertBefore(enhancedURLBar, origInput);
-  enhancedURLBar.setAttribute("id", "enhanced-urlBar");
-  enhancedURLBar.setAttribute("flex", 0);
-  enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
-  enhancedURLBar.style.overflow = "hidden";
-  enhancedURLBar.style.display = "-moz-box";
-  enhancedURLBar.style.padding = "0px";
-  enhancedURLBar.style.margin = "-1px 0px -1px -3px";
-  enhancedURLBar.style.maxHeight = (gURLBar.boxObject.height) + "px";
+  function setupEnhancedURLBarUI() {
+    enhancedURLBar.setAttribute("id", "enhanced-urlBar");
+    enhancedURLBar.setAttribute("flex", 0);
+    enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
+    enhancedURLBar.style.overflow = "hidden";
+    enhancedURLBar.style.display = "-moz-box";
+    enhancedURLBar.style.padding = "0px";
+    enhancedURLBar.style.margin = "-1px 0px -1px -3px";
+    enhancedURLBar.style.maxHeight = (gURLBar.boxObject.height) + "px";
+  }
+
+  if (gURLBar.boxObject.height > 0)
+    setupEnhancedURLBarUI();
+  else
+    restyleEnhancedURLBarOnTabChange = true;
 
   unload(function() {
     enhancedURLBar.parentNode.removeChild(enhancedURLBar);
@@ -928,9 +936,11 @@ function changeUI(window) {
         partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
       partPointer.lastChild.setAttribute("value",">");
-      partPointer.lastChild.style.display = "-moz-box";
       partPointer.setAttribute("isHiddenArrow", false);
-      partPointer.setAttribute("lastArrowHidden", false);
+      if (!lastPart) {
+        partPointer.lastChild.style.display = "-moz-box";
+        partPointer.setAttribute("lastArrowHidden", false);
+      }
       partsWidth += partPointer.boxObject.width;
       partPointer = partPointer.nextSibling;
     }
@@ -1174,7 +1184,8 @@ function changeUI(window) {
       names: ["url","title"],
       query: "SELECT * " +
              "FROM moz_places " +
-             "WHERE url LIKE '%" + concernedStack.getAttribute("url") + "%' " +
+             "WHERE url LIKE '%" + concernedStack.getAttribute("url")
+             .replace(/^(https?:\/\/)?(www\.)?/,"") + "%' " +
              "ORDER BY frecency DESC " +
              "LIMIT 15",
     }, {
@@ -1505,11 +1516,11 @@ function changeUI(window) {
   function updateURL() {
     // Ignoring function call if under 50ms
     currentTime = new Date();
-    if (currentTime.getTime() - lastUpdatedTime < 100 && !newDocumentLoaded)
+    if (currentTime.getTime() - lastUpdatedTime < 50 && !newDocumentLoaded)
       return;
     else
       lastUpdatedTime = currentTime.getTime();
-    if (gURLBar.focused)
+    if (gURLBar.focused || $("nav-bar").boxObject.height == 0)
       return;
 
     // checking if the identity block is visible or not (prior firefox 12)
@@ -1526,7 +1537,6 @@ function changeUI(window) {
     urlPartArray = [];
     settingsStartIndex = null;
     isSetting_updateURL = null;
-
     // Splitting the url/gURLBar urlValue by "/"
     if (urlValue.search("about") == 0) {
       urlArray_updateURL = urlValue.split(":");
@@ -1601,20 +1611,23 @@ function changeUI(window) {
     }
     updateLook();
     // Removing last arrow if no suggestion possible
-    getAsyncRelatedArray(enhancedURLBar.lastChild,function([urlPart, resultArray]) {
-      if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length) != urlPart)
-        return;
-      if (resultArray.length == 0) {
-        enhancedURLBar.lastChild.lastChild.style.display = "none";
-        enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
-      }
-      else {
-        enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
-        enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
-      }
-      // Updating look again
-      updateLook();
-    }, [urlPartArray[urlPartArray.length - 1]]);
+    if (enhancedURLBar.lastChild && enhancedURLBar.firstChild)
+      getAsyncRelatedArray(enhancedURLBar.lastChild,function([urlPart, resultArray]) {
+        if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
+          .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
+          .replace(/^(https?:\/\/)?(www\.)?/, ""))
+            return;
+        if (resultArray.length == 0) {
+          enhancedURLBar.lastChild.lastChild.style.display = "none";
+          enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
+        }
+        else {
+          enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
+          enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
+        }
+        // Updating look again
+        updateLook();
+      }, [urlPartArray[urlPartArray.length - 1]]);
   }
 
   function enhanceURLBar() {
@@ -1652,6 +1665,10 @@ function changeUI(window) {
         origIdentity.collapsed = false;
         identityLabel.collapsed = false;
         tabChanged = true;
+        if (restyleEnhancedURLBarOnTabChange) {
+          restyleEnhancedURLBarOnTabChange = false;
+          setupEnhancedURLBarUI();
+        }
         async(updateURL);
       });
       listen(window, gURLBar, "focus", function() {
@@ -1692,6 +1709,7 @@ function changeUI(window) {
 
     handleURLBarEvents();
     updateURL();
+    let DOMLoaded = function () {};
     window.addEventListener("DOMContentLoaded", DOMLoaded = function() {
       window.removeEventListener("DOMContentLoaded", DOMLoaded, false);
       updateURL();
