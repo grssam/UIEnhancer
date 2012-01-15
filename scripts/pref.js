@@ -48,6 +48,7 @@ pref.defaults = {
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
+  userStylePath: "",
   removeGibberish: true
 };
 

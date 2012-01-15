@@ -2453,7 +2453,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // Function to load stylesheets
   function loadStyles(styles) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
-              getService(Ci.nsIStyleSheetService);
+      getService(Ci.nsIStyleSheetService);
     styles.forEach(function(fileName) {
       let fileURI = addon.getResourceURI("styles/" + fileName + ".css");
       sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
@@ -2467,8 +2467,24 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
 
-  if (pref("useStyleSheet"))
+  if (pref("useStyleSheet") && pref("userStylePath").length == 0)
     loadStyles(["enhanced-urlbar"]);
+  else if (pref("useStyleSheet")) {
+    let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
+      getService(Ci.nsIStyleSheetService);
+    let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
+      .replace(/[\\]/g, "/"), null, null);
+    if (!fileURI.spec.match(/(\.css)$/))
+      loadStyles(["enhanced-urlbar"]);
+    else {
+      sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
+      // Fallback to default stylesheet when the file is not present
+      if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
+        loadStyles(["enhanced-urlbar"]);
+      else
+        unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
+    }
+  }
 
   // Apply the changes in UI
   watchWindows(changeUI);
@@ -2476,8 +2492,24 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   reload = function() {
     unload();
     normalStartup = true;
-    if (pref("useStyleSheet"))
+    if (pref("useStyleSheet") && pref("userStylePath").length == 0)
       loadStyles(["enhanced-urlbar"]);
+    else if (pref("useStyleSheet")) {
+      let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
+        getService(Ci.nsIStyleSheetService);
+      let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
+        .replace(/[\\]/g, "/"), null, null);
+      if (!fileURI.spec.match(/(\.css)$/))
+        loadStyles(["enhanced-urlbar"]);
+      else {
+        sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
+        // Fallback to default stylesheet when the file is not present
+        if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
+          loadStyles(["enhanced-urlbar"]);
+        else
+          unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
+      }
+    }
     watchWindows(changeUI);
     pref.observe([
       "useStyleSheet",
@@ -2485,7 +2517,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "useSmallIcons",
       "animationSpeed",
       "removeGibberish",
-      "enhanceURLBar"
+      "enhanceURLBar",
+      "userStylePath"
     ], reload);
     pref.observe([
       "urlBarWidth",
@@ -2511,7 +2544,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     "useSmallIcons",
     "animationSpeed",
     "enhanceURLBar",
-    "removeGibberish"
+    "removeGibberish",
+    "userStylePath"
   ], reload);
   pref.observe([
     "urlBarWidth",

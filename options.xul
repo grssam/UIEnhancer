@@ -41,6 +41,18 @@
     If unchecked, the breadcrumb will revert back to normal plaintext and Windows Explorer Theme
   </setting>
 
+  <setting pref="extensions.UIEnhancer.userStylePath"
+    title="Use your own custom stylesheet to style the breadcrumb display"
+    type="file">
+    Leave empty to use default theme.
+    If file not present, default theme would be used.
+  </setting>
+
+  <setting title="Revert to Default Theme" type="control">  
+    <button id="myaddon-button" label="Reset User Stylesheet"
+    oncommand='Services.prefs.getBranch("extensions.UIEnhancer.").clearUserPref("userStylePath")'/>
+  </setting> 
+
   <setting pref="extensions.UIEnhancer.removeGibberish"
     title="Replace insignificant url parts with useful info."
     type="bool">
