@@ -176,6 +176,7 @@ function changeUI(window) {
   let relatedScrolledArray = [];
   let lastScrolledUrl = "";
   let restyleEnhancedURLBarOnTabChange = false;
+  let siblingsShown = false;
   unload(function() {
     let popupStack = mainPopupSelectedIndex = settingsStartIndex = redRemoved = null;
     let lastUpdatedTime = lastScrolledTime = lastUsefulPart = ctrlMouseHover = null;
@@ -409,7 +410,7 @@ function changeUI(window) {
   function replaceGibberishText(gibberVal, urlArray, index) {
     let isSetting = false;
     if (settingsStartIndex != null && index >= settingsStartIndex)
-      isSetting = true;
+      isSetting = (index == anchorTagIndex)? "anchor": true;
     if (index > 0) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
       let partsLength = gibberVal.split(/[ _]/g).length;
@@ -445,6 +446,7 @@ function changeUI(window) {
     return [gibberVal, isSetting];
   }
 
+  let forcedFlushing = false;
   function clearPopup() {
     if (arrowMouseDown) {
       try {
@@ -453,11 +455,15 @@ function changeUI(window) {
     }
     if (popupStack != null) {
       gBrowser.removeEventListener("click", hideMainPopup, false);
-      highlightPart(popupStack, false, false, true);
-      if (popupStack.lastChild.value == "«")
-        popupStack.lastChild.style.padding = "2px 2px 1px 1px";
-      else
-        popupStack.lastChild.value = ">";
+      forcedFlushing = true;
+      highlightPart(popupStack, false, false);
+      forcedFlushing = false;
+      if (!pref("useStyleSheet")) {
+        if (popupStack.getAttribute("isHiddenArrow") == "true")
+          popupStack.lastChild.style.padding = "2px 2px 1px 1px";
+        else
+          popupStack.lastChild.value = ">";
+      }
     }
     popupStack = null;
     mainPopupSelectedIndex = null;
@@ -470,17 +476,19 @@ function changeUI(window) {
       clearPopup();
       arrowMouseDown = false;
       highlightPart(hiddenStack, false, false);
-      hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
+      if (!pref("useStyleSheet"))
+        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
       return;
     }
     clearPopup();
     arrowMouseDown = true;
-    highlightPart(hiddenStack, true, true);
-    hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
+    highlightPart(hiddenStack, "partial", true);
+    if (!pref("useStyleSheet"))
+      hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
     // Show the different hidden parts as per their heirarchy
     for (let i = 0; i < hiddenParts.length; i++) {
       let part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-part-" + i);
+      part.setAttribute("id", "popup-part");
       part.setAttribute("class", "menuitem-iconic");
       part.setAttribute("label", hiddenParts[i]);
       if (mainPopup.firstChild)
@@ -495,7 +503,8 @@ function changeUI(window) {
         } catch(ex) {}
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
-        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
+        if (!pref("useStyleSheet"))
+          hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
         handleTextClick(urlPartArray[i], null, null, e.ctrlKey);
       }, false);
       part.addEventListener("click", function(e) {
@@ -506,7 +515,8 @@ function changeUI(window) {
         } catch(ex) {}
         arrowMouseDown = false;
         highlightPart(hiddenStack, false, false);
-        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
+        if (!pref("useStyleSheet"))
+          hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
         handleTextClick(urlPartArray[i], null, null, true);
       }, false);
     }
@@ -514,7 +524,7 @@ function changeUI(window) {
       mainPopup.lastChild);
 
     // Show the popup below the arrows
-    mainPopup.openPopup(enhancedURLBar.firstChild, "after_start");
+    mainPopup.openPopup(enhancedURLBar.firstChild, "before_start");
     popupStack = hiddenStack;
     gBrowser.addEventListener("mousedown", hideMainPopup = function() {
       gBrowser.removeEventListener("mousedown", hideMainPopup, false);
@@ -522,8 +532,10 @@ function changeUI(window) {
         mainPopup.hidePopup();
       } catch (ex) {}
       arrowMouseDown = false;
-      highlightPart(hiddenStack, false, false);
-      hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
+      siblingsShown = false;
+      highlightPart(popupStack, false, false);
+      if (!pref("useStyleSheet"))
+        hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
     });
   }
 
@@ -611,9 +623,13 @@ function changeUI(window) {
     updateLook();
   }
 
-  function highlightPart(highlightedObj, text, arrow, forced) {
+  function highlightPart(highlightedObj, text, arrow, arrowVal) {
     if (highlightedObj == null)
       return;
+    if (arrowVal == '>' && !arrowMouseDown)
+      highlightedObj.lastChild.value = arrowVal;
+    else if (arrowVal != null && arrowVal != '>')
+      highlightedObj.lastChild.value = arrowVal;
     let gradient = "";
     if (!mouseScrolled)
       gradient = "-moz-linear-gradient(top, rgba(228,245,252,0.15) " +
@@ -649,7 +665,7 @@ function changeUI(window) {
       highlightedObj.lastChild.style.boxShadow = "";
     }
     // Apply the mouseDown effect (shadow , padding etc)
-    if ((arrowMouseDown || textMouseDown) && forced != true) {
+    if ((arrowMouseDown || textMouseDown) && forcedFlushing != true) {
       highlightedObj.firstChild.style.backgroundImage = highlightedObj.lastChild.style.backgroundImage =
         "-moz-linear-gradient(top, rgba(228,245,252,0.35) " +
         "0%, rgba(191,232,249,0.5) 50%, rgba(159,216,239,0.5) 51%, rgba(42,176,237,0.75) 100%)";
@@ -658,7 +674,10 @@ function changeUI(window) {
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow =
         "inset 1px 2px 1px rgba(120,130,160,0.8)";
       highlightedObj.firstChild.style.padding = "3px 0px 0px 2px";
-      highlightedObj.lastChild.style.padding = "2px 3px 1px 2px";
+      if (siblingsShown)
+        highlightedObj.lastChild.style.padding = "2px 1px 1px 2px";
+      else
+        highlightedObj.lastChild.style.padding = "2px 3px 1px 2px";
     }
     else {
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow = "";
@@ -668,80 +687,186 @@ function changeUI(window) {
     gradient = null;
   }
 
+  if (pref("useStyleSheet")) {
+    highlightPart = function(highlightedObj, text, arrow, arrowVal) {
+      if (highlightedObj == null)
+        return;
+
+      function applyClass(c) {
+        let bC = "";
+        if (highlightedObj.getAttribute("isAnchorTag") == "true") {
+          c = "anchor-" + c;
+          bC += "-anchor";
+        }
+        else if (highlightedObj.getAttribute("isSetting") == "true") {
+          c = "queryString-" + c;
+          bC += "-queryString";
+        }
+        if (highlightedObj.getAttribute("isHiddenArrow") == "true") {
+          c = "backChevron-" + c;
+          bC = "-backChevron";
+        }
+        else if (highlightedObj.getAttribute("lastArrowHidden") == "true") {
+          c = "noArrow-" + c;
+          bC = "-noArrow" + bC;
+        }
+        highlightedObj.firstChild.setAttribute("class", "enhanced-text" + bC + " enhanced-text-" + c);
+        highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c);
+        if (highlightedObj.previousSibling && c.search("normal") < 0 &&
+          highlightedObj.previousSibling.getAttribute("isHiddenArrow") != "true") {
+            let (d = "-left") {
+              if (mouseScrolled && highlightedObj != scrolledStack)
+                d += "Scrolled";
+              highlightedObj.previousSibling.lastChild.setAttribute("class",
+                highlightedObj.previousSibling.lastChild.getAttribute("class")
+                .split(" ")[0] + " enhanced-arrow-" + c + d);
+            }
+        }
+        else if (highlightedObj.previousSibling && c.search("normal") >= 0 &&
+          highlightedObj.previousSibling.getAttribute("isHiddenArrow") != "true") {
+            c = "normal";
+            bC = "";
+            if (highlightedObj.previousSibling.getAttribute("isAnchorTag") == "true") {
+              c = "anchor-" + c;
+              bC += "-anchor";
+            }
+            else if (highlightedObj.previousSibling.getAttribute("isSetting") == "true") {
+              c = "queryString-" + c;
+              bC += "-queryString";
+            }
+            highlightedObj.previousSibling.lastChild.setAttribute("class",
+              "enhanced-arrow" + bC + " enhanced-arrow-" + c);
+        }
+        bC = null;
+      }
+
+      if (mouseScrolled) {
+        applyClass("mouseScroll");
+        return;
+      }
+
+      if ((arrowMouseDown || textMouseDown) && forcedFlushing != true) {
+        if (text == true)
+          applyClass("textMouseDown");
+        else if (text == "partial")
+          applyClass("arrowMouseDown");
+        else
+          applyClass("normal");
+      }
+      else {
+        if (text == true)
+          applyClass("textHovered");
+        else if (text == "partial")
+          applyClass("arrowHovered");
+        else
+          applyClass("normal");
+      }
+    };
+  }
+
   function createStack(createVal, partURL, partType, hiddenArrow) {
 
     let createdStack = document.createElementNS(XUL, "stack");
     createdStack.setAttribute("id", "enhanced-urlBar-stack");
-    createdStack.style.padding = "0px";
-    createdStack.style.margin = "0px";
-    createdStack.style.maxHeight = (gURLBar.boxObject.height - 2) + "px";
+    createdStack.style.maxHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 2)) + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
     createdStack.setAttribute("lastArrowHidden", false);
-    if (partType == "setting")
+    if (partType == "setting" || partType == "anchor")
       createdStack.setAttribute("isSetting", true);
-    else
+    else 
       createdStack.setAttribute("isSetting", false);
+    if (partType == "anchor")
+      createdStack.setAttribute("isAnchorTag", true);
+    else
+      createdStack.setAttribute("isAnchorTag", false);
     if (partType == "domain")
       createdStack.setAttribute("isDomain", true);
     else
       createdStack.setAttribute("isDomain", false);
+
     // Adding the Text Stack
     let tempS = document.createElementNS(XUL, "label");
     tempS.setAttribute("value", createVal);
     tempS.setAttribute("id", "enhanced-urlBar-stack-text");
-    tempS.style.padding = "2px 1px 1px 1px";
-    tempS.style.margin = "0px";
-    tempS.style.minHeight = (gURLBar.boxObject.height - 4) + "px";
-    tempS.style.backgroundImage = "rgba(255,255,255,0)";
-    tempS.style.display = "-moz-box";
-    tempS.style.color = "rgb(30,30,30)";
+    tempS.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
     if (partType == "domain" || hiddenArrow)
       tempS.style.display = "none";
-    else if (partType == "setting")
-      tempS.style.color = "rgb(100,100,100)";
-    tempS.style.border = "1px solid rgba(255,255,255,0)";
+    else
+      tempS.style.display = "-moz-box";
     tempS.setAttribute("flex", 0);
-    createdStack.appendChild(tempS);
-    tempS = null;
+
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
     tempArrow.setAttribute("id", "enhanced-urlBar-stack-arrow");
-    tempArrow.setAttribute("value", ">");
-    tempArrow.style.margin = "0px";
-    tempArrow.style.minHeight = (gURLBar.boxObject.height - 4) + "px";
-    if (partType != "domain" && !hiddenArrow)
-      tempArrow.style.padding = "2px 1px 1px 2px";
-    else
-      tempArrow.style.padding = "2px 2px 1px 2px";
-    tempArrow.style.color = "rgb(50,50,50)";
-    if (partType == "setting")
-      tempArrow.style.color = "rgb(125,125,125)";
+    tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
-    tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
-    tempArrow.style.border = "1px solid rgba(255,255,255,0)";
     tempArrow.setAttribute("flex", 0);
-    if (hiddenArrow) {
-      tempArrow.setAttribute("value", "«");
-      tempArrow.style.color = "rgb(50,50,50)";
+    if (hiddenArrow)
       createdStack.setAttribute("isHiddenArrow", true);
+    else 
+      createdStack.setAttribute("isHiddenArrow", false);
+
+    // Applying styles to various parts if pref is off
+    if (!pref("useStyleSheet")) {
+      // Aplpying style to parent stack
+      createdStack.style.padding = "0px";
+      createdStack.style.margin = "0px";
+      // Applying style to text part
+      tempS.style.padding = "2px 1px 1px 1px";
+      tempS.style.margin = "0px";
+      tempS.style.backgroundImage = "rgba(255,255,255,0)";
+      tempS.style.border = "1px solid rgba(255,255,255,0)";
+      if (partType == "setting" || partType == "anchor")
+        tempArrow.style.color = tempS.style.color = "rgb(100,100,100)";
+      else
+        tempArrow.style.color = tempS.style.color = "rgb(30,30,30)";
+      // Applying style to arrow part
+      tempArrow.style.margin = "0px";
+      if (partType != "domain" && !hiddenArrow)
+        tempArrow.style.padding = "2px 1px 1px 2px";
+      else
+        tempArrow.style.padding = "2px 2px 1px 2px";
+      tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
+      tempArrow.style.border = "1px solid rgba(255,255,255,0)";
+      if (hiddenArrow)
+        tempArrow.setAttribute("value", "«");
+      else
+        tempArrow.setAttribute("value", ">");
     }
     else
-      createdStack.setAttribute("isHiddenArrow", false);
+      createdStack.setAttribute("class", "enhanced-stack");
+
+    createdStack.appendChild(tempS);
     createdStack.appendChild(tempArrow);
-    tempArrow = null;
+    if (pref("useStyleSheet"))
+      highlightPart(createdStack, false, false);
+    tempS = tempArrow = null;
+
     // Handling the click on the parts
     listen(window, createdStack.firstChild, "click", function(e) {
+      if (e.button == 2) {
+        e.preventDefault();
+        return;
+      }
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true")
         return;
+      if (arrowMouseDown ) {
+          clearPopup();
+          siblingsShown = arrowMouseDown = false;
+          highlightPart(e.target.parentNode, false, false, '>');
+          return;
+      }
       if (e.button == 0 && !e.ctrlKey)
-        handleTextClick("", createdStack, false);
+        handleTextClick("", e.target.parentNode, false);
       else if (e.button == 1 || e.ctrlKey)
-        handleTextClick("", createdStack, false, true);
+        handleTextClick("", e.target.parentNode, false, true);
     });
     listen(window, createdStack, "DOMMouseScroll", function(event) {
       if (event.target.parentNode.getAttribute("isHiddenArrow") == "true")
+        return;
+      if (arrowMouseDown || siblingsShown)
         return;
       let tempHandledStack;
       let currentTime = new Date();
@@ -804,74 +929,103 @@ function changeUI(window) {
     listen(window, createdStack.firstChild, "mouseover", function(e) {
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true"
         || (e.target.parentNode.getAttribute("lastArrowHidden") == "true"
-        && arrowMouseDown))
+        && arrowMouseDown) || siblingsShown)
           return;
       if (e.ctrlKey) {
         hideEnhancedURLBar();
         return;
       }
       if (arrowMouseDown) {
-        createdStack.lastChild.value = "v";
-        getAsyncRelatedArray(createdStack, handleArrowClick, [createdStack, false]);
+        if (!pref("useStyleSheet"))
+          e.target.parentNode.lastChild.value = "v";
+        getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
+          [e.target.parentNode, false]);
       }
-      highlightPart(createdStack, true, true);
+      else
+        highlightPart(e.target.parentNode, true, true);
     });
     listen(window, createdStack.lastChild, "mouseover", function(e) {
       if (e.ctrlKey) {
         hideEnhancedURLBar();
         return;
       }
-      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true")
+      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true" || siblingsShown)
         return;
       if (arrowMouseDown && e.target.parentNode.getAttribute("isHiddenArrow") == "false") {
-        createdStack.lastChild.value = "v";
-        getAsyncRelatedArray(createdStack, handleArrowClick, [createdStack, false]);
+        if (!pref("useStyleSheet"))
+          e.target.parentNode.lastChild.value = "v";
+        getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
+          [e.target.parentNode, false]);
       }
       else if (arrowMouseDown)
-        showHidden(createdStack, false);
-      if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
-        highlightPart(createdStack, "partial", true);
-      else {
-        highlightPart(createdStack, true, true);
-        createdStack.lastChild.style.padding = "2px 2px 1px 2px";
-      }
+        showHidden(e.target.parentNode, false);
+      else
+        highlightPart(e.target.parentNode, "partial", true);
+      if (e.target.parentNode.getAttribute("isHiddenArrow") == "true" && !pref("useStyleSheet"))
+        e.target.parentNode.lastChild.style.padding = "2px 2px 1px 2px";
     });
     // Mousedown Handling Function
     listen(window, createdStack.firstChild, "mousedown", function(e) {
+      if (e.button == 2)
+        e.preventDefault();
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true")
         return;
+      if (arrowMouseDown || siblingsShown)
+        return;
+
       if (e.button == 0 && !e.ctrlKey)
-        handleTextClick("", createdStack, true);
+        handleTextClick("", e.target.parentNode, true);
+      else if (e.button == 2 && e.target.parentNode.previousSibling != null && !arrowMouseDown) {
+        siblingsShown = true;
+        getAsyncRelatedArray(e.target.parentNode.previousSibling, handleArrowClick,
+          [e.target.parentNode, true]);
+      }
       else if (e.button == 1 || e.ctrlKey)
-        handleTextClick("", createdStack, true, true);
+        handleTextClick("", e.target.parentNode, true, true);
     });
     listen(window, createdStack.lastChild, "mousedown", function(e) {
+      if (e.button == 2)
+        e.preventDefault();
       if (e.target.parentNode.getAttribute("lastArrowHidden") == "true")
         return;
+      if (arrowMouseDown || siblingsShown) {
+        clearPopup();
+        siblingsShown = arrowMouseDown = false;
+        return;
+      }
       if (e.button == 0) {
         if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
-          getAsyncRelatedArray(createdStack, handleArrowClick, [createdStack, true]);
+          getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
+            [e.target.parentNode, true]);
         else
-          showHidden(createdStack, true);
+          showHidden(e.target.parentNode, true);
       }
     });
 
     // Mouseup Handling Function
     listen(window, createdStack.firstChild, "mouseup", function(e) {
+      if (e.button == 2)
+        e.preventDefault();
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true")
         return;
       textMouseDown = false;
-      createdStack.lastChild.value = ">";
-      highlightPart(createdStack, true, true);
+      if (!arrowMouseDown)
+        highlightPart(e.target.parentNode, false, false, '>');
     });
     // Mouseout Handling Function
     listen(window, createdStack, "mouseout", function(e) {
-      if (e.target.parentNode.getAttribute("isHiddenArrow") == "true") {
-        highlightPart(createdStack, false, false);
-        createdStack.lastChild.style.padding = "2px 2px 1px 2px";
+      let target = e.target;
+      if (target.parentNode != enhancedURLBar)
+        target = target.parentNode;
+      if (target.getAttribute("isHiddenArrow") == "true" && !arrowMouseDown) {
+        highlightPart(target, false, false);
+        if (!pref("useStyleSheet"))
+          target.lastChild.style.padding = "2px 2px 1px 2px";
         return;
       }
-      if (arrowMouseDown && e.target.parentNode.getAttribute("lastArrowHidden") == "true")
+      else if (arrowMouseDown)
+        return;
+      if ((arrowMouseDown && target.getAttribute("lastArrowHidden") == "true") || siblingsShown)
         return;
       textMouseDown = false;
       if (mouseScrolled) {
@@ -880,7 +1034,7 @@ function changeUI(window) {
           mouseScrolled = false;
           currentScrolledIndex = indexB4Scrolling;
           while (partPointer) {
-            highlightPart(partPointer, false, false)
+            highlightPart(partPointer, false, false);
             partPointer = partPointer.nextSibling;
           }
           partPointer = enhancedURLBar.firstChild;
@@ -888,9 +1042,7 @@ function changeUI(window) {
         },250);
         return;
       }
-      if (!arrowMouseDown)
-        createdStack.lastChild.value = ">";
-      highlightPart(createdStack, false, false);
+      highlightPart(target, false, false, '>');
     });
 
     unload(function() {
@@ -910,11 +1062,13 @@ function changeUI(window) {
     let partType;
     if (domain)
       partType = "domain";
-    else if (isSetting)
+    else if (isSetting == true)
       partType = "setting";
+    else if (isSetting == "anchor")
+      partType = "anchor";
     else
       partType = "null";
-    if (partType != "domain" && partType != "setting")
+    if (partType != "domain" && partType != "setting" && partType != "anchor")
       lastUsefulPart = partVal;
 
     if (partPointer != null) {
@@ -927,25 +1081,37 @@ function changeUI(window) {
         partPointer.setAttribute("isDomain", true);
       }
       if (isSetting == false) {
-        partPointer.firstChild.style.color = "rgb(30,30,30)";
-        partPointer.lastChild.style.color = "rgb(50,50,50)";
+        if (!pref("useStyleSheet")) {
+          partPointer.firstChild.style.color = "rgb(30,30,30)";
+          partPointer.lastChild.style.color = "rgb(50,50,50)";
+        }
         partPointer.setAttribute("isSetting", false);
       }
-      else if (isSetting == true) {
-        partPointer.firstChild.style.color = "rgb(100,100,100)";
-        partPointer.lastChild.style.color = "rgb(125,125,125)";
+      else {
+        if (!pref("useStyleSheet")) {
+          partPointer.firstChild.style.color = "rgb(100,100,100)";
+          partPointer.lastChild.style.color = "rgb(125,125,125)";
+        }
         partPointer.setAttribute("isSetting", true);
       }
+      if (isSetting == "anchor")
+        partPointer.setAttribute("isAnchorTag", true);
+      else
+        partPointer.setAttribute("isAnchorTag", false);
       if (partPointer.firstChild.value != trimWord(partVal))
         partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
-      partPointer.lastChild.setAttribute("value",">");
       partPointer.setAttribute("isHiddenArrow", false);
-      partPointer.lastChild.style.padding = "2px 1px 1px 2px";
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
       }
+      if (!pref("useStyleSheet")) {
+        partPointer.lastChild.setAttribute("value",">");
+        partPointer.lastChild.style.padding = "2px 1px 1px 2px";
+      }
+      else
+        highlightPart(partPointer, false, false);
       partsWidth += partPointer.boxObject.width;
       partPointer = partPointer.nextSibling;
     }
@@ -968,7 +1134,7 @@ function changeUI(window) {
           if (enhancedURLBar.firstChild == null)
             break;
           tempPart = enhancedURLBar.firstChild;
-          if (tempPart.lastChild.value == "«")
+          if (tempPart.getAttribute("isHiddenArrow") == "true")
             tempPart = tempPart.nextSibling;
           partsWidth -= tempPart.boxObject.width;
           hiddenParts.push(tempPart.firstChild.value);
@@ -978,14 +1144,23 @@ function changeUI(window) {
       // If only one element in hiddenParts , bring it back if iLabel is same
       if (hiddenParts.length == 1 &&
         hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
-          if (enhancedURLBar.firstChild.lastChild.value == "«") {
+          if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
             enhancedURLBar.firstChild.setAttribute("isDomain", true);
-            enhancedURLBar.firstChild.firstChild.style.color = "rgb(30,30,30)";
-            enhancedURLBar.firstChild.lastChild.style.color = "rgb(50,50,50)";
             enhancedURLBar.firstChild.setAttribute("isSetting", false);
+            enhancedURLBar.firstChild.setAttribute("isAnchorTag", false);
             enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(hiddenParts[0]));
-            enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
+            if (!pref("useStyleSheet")) {
+              enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
+              enhancedURLBar.firstChild.firstChild.style.color = "rgb(30,30,30)";
+              enhancedURLBar.firstChild.lastChild.style.color = "rgb(50,50,50)";
+            }
+            else {
+              enhancedURLBar.firstChild.firstChild.setAttribute
+                ("class", "enhanced-text enhanced-text-normal");
+              enhancedURLBar.firstChild.lastChild.setAttribute
+                ("class", "enhanced-arrow enhanced-arrow-normal");
+            }
             enhancedURLBar.firstChild.setAttribute("isHiddenArrow", false);
             enhancedURLBar.firstChild.setAttribute("url", urlPartArray[0]);
           }
@@ -998,7 +1173,7 @@ function changeUI(window) {
       }
       else if (hiddenParts.length > 0 && enhancedURLBar.firstChild != null
         && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
-          let tStack = createStack(trimWord(partVal), partURL, partType, true);
+          let tStack = createStack(trimWord(partVal), partURL, "null", true);
           partsWidth += tStack.boxObject.width;
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
@@ -1096,13 +1271,11 @@ function changeUI(window) {
       if (arrowMouseDown && popupStack == clickedStack) {
         clearPopup();
         arrowMouseDown = false;
-        clickedStack.lastChild.value = ">";
-        highlightPart(clickedStack, false, false);
+        highlightPart(clickedStack, false, false, '>');
         return;
       }
       textMouseDown = true;
-      clickedStack.lastChild.value = "v";
-      highlightPart(clickedStack, true, true);
+      highlightPart(clickedStack, true, true, 'v');
       return;
     }
     // Open in new tab if center clicked
@@ -1338,16 +1511,17 @@ function changeUI(window) {
     if (arrowMouseDown && popupStack == arrowedStack && mouseDown) {
       clearPopup();
       arrowMouseDown = false;
-      arrowedStack.lastChild.value = ">";
-      highlightPart(arrowedStack, false, false);
+      highlightPart(arrowedStack, false, false, '>');
       return;
     }
     else if (arrowMouseDown && popupStack == arrowedStack)
       return;
     clearPopup();
     arrowMouseDown = true;
-    arrowedStack.lastChild.value = "v";
-    highlightPart(arrowedStack, "partial", true);
+    if (siblingsShown)
+      highlightPart(arrowedStack, true, true, '>');
+    else
+      highlightPart(arrowedStack, "partial", true, 'v');
     // Adding the base domain if domain in Identity Box
     if (arrowedStack.getAttribute("isDomain") == "true")
       resultArray.push([arrowedStack.firstChild.getAttribute("value"),
@@ -1381,8 +1555,7 @@ function changeUI(window) {
           mainPopup.hidePopup();
         } catch(ex) {}
         arrowMouseDown = false;
-        highlightPart(arrowedStack, false, false);
-        arrowedStack.lastChild.value = ">";
+        highlightPart(arrowedStack, false, false, '>');
         if (!isCurrent)
           handleTextClick(url, null, null, e.ctrlKey);
       }, false);
@@ -1390,11 +1563,10 @@ function changeUI(window) {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
+        arrowMouseDown = false;
+        highlightPart(arrowedStack, false, false, '>');
         if (e.button != 1)
           return;
-        arrowMouseDown = false;
-        highlightPart(arrowedStack, false, false);
-        arrowedStack.lastChild.value = ">";
         if (!isCurrent)
           handleTextClick(url, null, null, true);
       }, false);
@@ -1405,7 +1577,21 @@ function changeUI(window) {
         mainPopup.lastChild);
     }
 
-    if (mainPopup.firstChild == null) {
+    // Adding text when showing siblingsShown or children
+    if (mainPopup.firstChild != null) {
+      let part = document.createElementNS(XUL, "menuitem");
+      part.setAttribute("id", "popup-no-suggestion-text");
+      part.setAttribute("class", "menuitem-iconic");
+      if (siblingsShown)
+        part.setAttribute("label", "Siblings of highlighted Part");
+      else
+        part.setAttribute("label", "Children of highlighted Part");
+      part.setAttribute("disabled", true);
+      mainPopup.insertBefore(part, mainPopup.firstChild);
+      mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
+        mainPopup.firstChild.nextSibling);
+    }
+    else {
       let part = document.createElementNS(XUL, "menuitem");
       part.setAttribute("id", "popup-no-suggestion-text");
       part.setAttribute("class", "menuitem-iconic");
@@ -1415,14 +1601,17 @@ function changeUI(window) {
           mainPopup.hidePopup();
         } catch(ex) {}
         arrowMouseDown = false;
-        highlightPart(arrowedStack, false, false);
-        arrowedStack.lastChild.value = ">";
+        highlightPart(arrowedStack, false, false, '>');
       }, false);
       mainPopup.appendChild(part);
     }
 
     // Show the popup below the arrows
-    mainPopup.openPopup(arrowedStack.lastChild, "after_start");
+    if (siblingsShown)
+      mainPopup.openPopup(arrowedStack.previousSibling.lastChild, "after_start", 
+      -30 + arrowedStack.previousSibling.lastChild.boxObject.width, 0);
+    else
+      mainPopup.openPopup(arrowedStack.lastChild, "after_start");
     popupStack = arrowedStack;
     gBrowser.addEventListener("click", hideMainPopup = function() {
       gBrowser.removeEventListener("click", hideMainPopup, false);
@@ -1430,8 +1619,8 @@ function changeUI(window) {
         mainPopup.hidePopup();
       } catch(ex) {}
       arrowMouseDown = false;
-      highlightPart(arrowedStack, false, false);
-      arrowedStack.lastChild.value = ">";
+      siblingsShown = false;
+      highlightPart(arrowedStack, false, false, '>');
     });
   }
 
@@ -1513,9 +1702,10 @@ function changeUI(window) {
   let isSetting_updateURL = null;
   let iCountry, iLabel = "";
   let identityBlockVisible;
+  let anchorTagIndex= null;
   unload(function() {
-    initial = currentTime = urlValue = urlArray_updateURL = counter = null;
-    identityBlockVisible = isSetting_updateURL = iCountry = iLabel = null;
+    initial = currentTime = urlValue = urlArray_updateURL = counter = iLabel = null;
+    anchorTagIndex = identityBlockVisible = isSetting_updateURL = iCountry = null;
   }, window);
 
   // Function to change urlBar's UI
@@ -1529,7 +1719,7 @@ function changeUI(window) {
     if (gURLBar.focused || $("nav-bar").boxObject.height == 0)
       return;
 
-    // checking if the identity block is visible or not (prior firefox 12)
+    // checking if the identity block is visible or not (firefox 12+)
     try {
       identityBlockVisible = (window.getComputedStyle($("identity-box")).visibility == "visible");
     } catch(ex) {
@@ -1541,7 +1731,7 @@ function changeUI(window) {
     counter = 0;
     initial = 0;
     urlPartArray = [];
-    settingsStartIndex = null;
+    anchorTagIndex = settingsStartIndex = null;
     isSetting_updateURL = null;
     // Splitting the url/gURLBar urlValue by "/"
     if (urlValue.search("about") == 0) {
@@ -1569,6 +1759,9 @@ function changeUI(window) {
         if (settingsStartIndex == null
           && urlPartArray[length].split(/[&\?#]+/).length > 1)
             settingsStartIndex = length;
+        if (anchorTagIndex == null && settingsStartIndex != null
+          && urlPartArray[length].split(/[#]{1}/).length > 1)
+            anchorTagIndex = length;
         length = null;
         return true;
       });
@@ -1600,6 +1793,8 @@ function changeUI(window) {
         urlPartArray.splice(1,1);
         if (settingsStartIndex != null && settingsStartIndex >= 1)
           settingsStartIndex--;
+        if (anchorTagIndex != null && anchorTagIndex >= 1)
+          anchorTagIndex--;
     }
     // resetting the enhancedURLBar
     reset(0);
@@ -1624,12 +1819,18 @@ function changeUI(window) {
           .replace(/^(https?:\/\/)?(www\.)?/, ""))
             return;
         if (resultArray.length == 0) {
-          enhancedURLBar.lastChild.lastChild.style.display = "none";
           enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
+          if (!pref("useStyleSheet"))
+            enhancedURLBar.lastChild.lastChild.style.display = "none";
+          else
+            highlightPart(enhancedURLBar.lastChild, false, false);
         }
         else {
-          enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
           enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
+          if (!pref("useStyleSheet"))
+            enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
+          else
+            highlightPart(enhancedURLBar.lastChild, false, false)
         }
         // Updating look again
         updateLook();
@@ -1727,7 +1928,7 @@ function changeUI(window) {
   else if (!pref("removeGibberish")) {
     replaceGibberishText = function(gibberVal, urlArray, index) {
       if (settingsStartIndex != null && index >= settingsStartIndex)
-        return [gibberVal, true];
+        return [gibberVal, (index == anchorTagIndex)? "anchor": true];
       return [gibberVal, false];
     };
   }
@@ -2245,41 +2446,43 @@ function disable(id) {
 
 function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon) {
   gAddon = addon;
+  Cu.import("resource://services-sync/util.js");
   if (reason == 5 || reason == 7)
     firstRunAfterInstall = true;
   else
     normalStartup = true;
+
+  // Function to load stylesheets
+  function loadStyles(styles) {
+    let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
+              getService(Ci.nsIStyleSheetService);
+    styles.forEach(function(fileName) {
+      let fileURI = addon.getResourceURI("styles/" + fileName + ".css");
+      sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
+      unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
+    });
+  }
 
   // Load various javascript includes for helper functions
   ["helper", "pref"].forEach(function(fileName) {
     let fileURI = addon.getResourceURI("scripts/" + fileName + ".js");
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
+
+  if (pref("useStyleSheet"))
+    loadStyles(["enhanced-urlbar"]);
+
   // Apply the changes in UI
   watchWindows(changeUI);
 
-  Cu.import("resource://services-sync/util.js");
-  // Watch for preference changes to reprocess the keyword data
-  pref.observe([
-    "bringBookmarksUp",
-    "useSmallIcons",
-    "animationSpeed",
-    "enhanceURLBar",
-    "removeGibberish"
-  ], reload);
-  pref.observe([
-    "urlBarWidth",
-  ], reloadOnTabChange);
-  pref.observe([
-    "useSmallIcons"
-  ], specialReload);
-
   reload = function() {
     unload();
-    // Watch for preference changes to reprocess the keyword data
     normalStartup = true;
+    if (pref("useStyleSheet"))
+      loadStyles(["enhanced-urlbar"]);
     watchWindows(changeUI);
     pref.observe([
+      "useStyleSheet",
       "bringBookmarksUp",
       "useSmallIcons",
       "animationSpeed",
@@ -2292,7 +2495,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     pref.observe([
       "useSmallIcons"
     ], specialReload);
-  }
+  };
 
   function specialReload() {
     firstRunAfterInstall = true;
@@ -2302,6 +2505,22 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   function reloadOnTabChange() {
     recheckOnTabChange = true;
   }
+
+  // Watch for preference changes to reprocess the keyword data
+  pref.observe([
+    "useStyleSheet",
+    "bringBookmarksUp",
+    "useSmallIcons",
+    "animationSpeed",
+    "enhanceURLBar",
+    "removeGibberish"
+  ], reload);
+  pref.observe([
+    "urlBarWidth",
+  ], reloadOnTabChange);
+  pref.observe([
+    "useSmallIcons"
+  ], specialReload);
 });
 
 function shutdown(data, reason) {

@@ -1,0 +1,614 @@
+/* Class for each part of url-bar */
+.enhanced-stack {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for each arrow of a part [MAIN CLASS] */
+.enhanced-arrow {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-normal {
+  background-image: url('defaultTheme/text_normal.png');
+}
+
+/* Class for each arrow of a part [NORMAL STATE] */
+.enhanced-arrow-normal {
+  background-image: url('defaultTheme/arrow_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-textHovered {
+  background: rgba(100,100,100,0.5);
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-textHovered {
+  background: rgba(100,100,100,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-arrowHovered {
+  background: rgba(200,200,200,0.5);
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-arrowHovered {
+  background: rgba(100,100,100,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-arrowMouseDown {
+  background: rgba(250,0,0,0.5);
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-arrowMouseDown {
+  background: rgba(0,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-textMouseDown {
+  background: rgba(0,0,250,0.5);
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-textMouseDown {
+  background: rgba(0,0,250,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-textMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-mouseScroll-leftScrolled {
+}
+
+/* Following Classes are for anchor tags. */
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-anchor {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(75, 150, 200);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-anchor {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-anchor-normal {
+  background-image: url('defaultTheme/text_anchor_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-anchor-normal {
+  background-image: url('defaultTheme/arrow_anchor_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-anchor-textHovered {
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-anchor-textHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-anchor-arrowHovered {
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-anchor-arrowHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-anchor-arrowMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-anchor-arrowMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-anchor-textMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-anchor-textMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-textMouseDown-left {
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-anchor-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-anchor-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-mouseScroll-leftScrolled {
+}
+
+/* Following Classes are for queryString tags. */
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-queryString {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(50, 175, 75);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-queryString {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-queryString-normal {
+  background-image: url('defaultTheme/text_queryString_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-queryString-normal {
+  background-image: url('defaultTheme/arrow_queryString_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-queryString-textHovered {
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-queryString-textHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-queryString-arrowHovered {
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-queryString-arrowHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-queryString-arrowMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-queryString-arrowMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-queryString-textMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-queryString-textMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-textMouseDown-left {
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-queryString-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-queryString-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-mouseScroll-leftScrolled {
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow {
+  width: 10px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-normal {
+  background-image: url('defaultTheme/text_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-normal {
+  background-image: url('defaultTheme/arrow_noArrow_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-textHovered {
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-textHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-arrowHovered {
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-arrowHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-arrowMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-arrowMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-textMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-textMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-textMouseDown-left {
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-noArrow-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-noArrow-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-mouseScroll-leftScrolled {
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   Also, the part is an anchor tag
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow-anchor {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(75, 150, 200);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow-anchor {
+  width: 5px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-anchor-normal {
+  background-image: url('defaultTheme/text_anchor_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-anchor-normal {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-anchor-textHovered {
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-anchor-textHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-anchor-arrowHovered {
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-anchor-arrowHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-anchor-arrowMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-anchor-arrowMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-anchor-textMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-anchor-textMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-textMouseDown-left {
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-noArrow-anchor-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-noArrow-anchor-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-mouseScroll-leftScrolled {
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   Also, the aprt is queryString
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow-queryString {
+  padding: 4px 2px 3px 2px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(50, 175, 75);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow-queryString {
+  width: 5px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-queryString-normal {
+  background-image: url('defaultTheme/text_queryString_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-queryString-normal {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-queryString-textHovered {
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-queryString-textHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-textHovered-left {
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-queryString-arrowHovered {
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-queryString-arrowHovered {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-arrowHovered-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-queryString-arrowMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-queryString-arrowMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-arrowMouseDown-left {
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-queryString-textMouseDown {
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-queryString-textMouseDown {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-textMouseDown-left {
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-noArrow-queryString-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-noArrow-queryString-mouseScroll {
+  background: rgba(250,250,0,0.5);
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-mouseScroll-left {
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-mouseScroll-leftScrolled {
+}
+
+/* Class for arrow of a part [DOUBLE LESS THAN CEHVRON
+   to show the hidden parts] */
+/* MAIN CLASS */
+.enhanced-arrow-backChevron {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/* NORMAL STATE */
+.enhanced-arrow-backChevron-normal {
+  background-image: url('defaultTheme/backChevron_normal.png');
+}
+/* HOVERED STATE */
+.enhanced-arrow-backChevron-arrowHovered {
+  background: rgb(0,0,255);
+}
+/* MOUSEDOWN STATE */
+.enhanced-arrow-backChevron-arrowMouseDown {
+  background: rgb(255,0,0);
+}
+

@@ -35,6 +35,12 @@
     Implements an UI similar to Windows Address Bar UI.
   </setting>
 
+  <setting pref="extensions.UIEnhancer.useStyleSheet"
+    title="Use Style Sheet to style the Enhanced URLBar"
+    type="bool">
+    If unchecked, the breadcrumb will revert back to normal plaintext and Windows Explorer Theme
+  </setting>
+
   <setting pref="extensions.UIEnhancer.removeGibberish"
     title="Replace insignificant url parts with useful info."
     type="bool">
