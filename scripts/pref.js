@@ -43,7 +43,7 @@ function pref(key) {
 pref.root = "extensions.UIEnhancer.";
 pref.defaults = {
   bringBookmarksUp: true,
-  urlBarWidth: "700",
+  urlBarWidth: 700,
   animationSpeed: "normal",
   useSmallIcons: false,
   enhanceURLBar: true,
