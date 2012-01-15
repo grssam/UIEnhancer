@@ -60,7 +60,9 @@
 
   <setting pref="extensions.UIEnhancer.urlBarWidth"
     title="Width of UrlBar (if above setting enabled)"
-    type="integer"/>
+    type="string">
+    Only input the number without px or pixel.
+  </setting>
 
   <setting pref="extensions.UIEnhancer.animationSpeed"
     title="Animation Speed"

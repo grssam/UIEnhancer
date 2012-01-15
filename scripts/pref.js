@@ -43,13 +43,12 @@ function pref(key) {
 pref.root = "extensions.UIEnhancer.";
 pref.defaults = {
   bringBookmarksUp: true,
-  urlBarWidth: 700,
+  urlBarWidth: "700",
   animationSpeed: "normal",
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
-  removeGibberish: true,
-  installedVersion: "0.0"
+  removeGibberish: true
 };
 
 pref.observe = function(prefs, callback) {

@@ -267,8 +267,8 @@ function changeUI(window) {
     let (udb = $("urlbar-display-box")) {
       maxWidth = udb.nextSibling.boxObject.x - origIdentity.boxObject.x
         - origIdentity.boxObject.width - 60;
-      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth") - 100)
-        maxWidth = pref("urlBarWidth") - origIdentity.boxObject.width - 160
+      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
+        maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 160
           - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x
           - udb.parentNode.lastChild.boxObject.width;
     }
@@ -2062,7 +2062,7 @@ function changeUI(window) {
     }
 
     // Checking if we even have space to bring bookmarks toolbar up
-    if (window.innerWidth - urlBar.boxObject.x - 100*(isAfterUrl?1:0) < pref("urlBarWidth"))
+    if (window.innerWidth - urlBar.boxObject.x - 100*(isAfterUrl?1:0) < pref("urlBarWidth")*1)
       enoughSpace = false;
 
     if (enoughSpace) {
@@ -2127,7 +2127,7 @@ function changeUI(window) {
         bookmarksWidth += 200;
       if (firstRunAfterInstall) {
         firstRunAfterInstall = false;
-        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth"))
+        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
           Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
             10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
         else
@@ -2137,7 +2137,7 @@ function changeUI(window) {
       }
       else if (normalStartup) {
         normalStartup = false;
-        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth"))
+        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
           Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
             10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
       }
@@ -2148,7 +2148,7 @@ function changeUI(window) {
     newMargin = "" + (-nHeight) + "px " + (pref("useSmallIcons")?0:
       $("bookmarks-menu-button") != null? spaceAfterBookmarks -
       $("bookmarks-menu-button").boxObject.width: spaceAfterBookmarks)
-      + "px 0px " + (pref("urlBarWidth") + max(gURLBar.boxObject.x, 70) + 10) +
+      + "px 0px " + (pref("urlBarWidth")*1 + max(gURLBar.boxObject.x*1, 70) + 10) +
       "px; min-height: " + (nHeight - 2*paddingBottom) + "px; padding: " +
       paddingBottom + "px 0px; max-height: " + nHeight + "px;";
     if (enoughSpace)
@@ -2156,7 +2156,7 @@ function changeUI(window) {
         + " margin: " + newMargin + " border: none !important;"
         + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
     bookmarkStyle = bookmarksToolbar.style;
-    limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth"));
+    limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth")*1);
     // Setting the collapse state according to nav-bar's
     bookmarksToolbar.collapsed = $("nav-bar").collapsed;
     unload(function() {
@@ -2213,7 +2213,7 @@ function changeUI(window) {
   function animateHide() {
     async(function() {
       if (!hovered) {
-        urlBar.setAttribute("style","max-width: " + min(pref("urlBarWidth"),
+        urlBar.setAttribute("style","max-width: " + min(pref("urlBarWidth")*1,
           window.innerWidth - urlBar.boxObject.x)
           + "px !important; -moz-transition-property: max-width; "
           + "-moz-transition-duration: " + max(timeInterval - 50, 0)
@@ -2245,7 +2245,7 @@ function changeUI(window) {
       lastResizeTime = currentResizeTime;
     else
       return;
-    if (pref("urlBarWidth") + spaceAfterBookmarks > window.innerWidth -
+    if (pref("urlBarWidth")*1 + spaceAfterBookmarks > window.innerWidth -
       urlBar.boxObject.x - 100*(isAfterUrl?1:0) && enoughSpace) {
         enoughSpace = false;
         if (pref("useSmallIcons"))
@@ -2256,7 +2256,7 @@ function changeUI(window) {
           bookmarksToolbar.setAttribute("style", origBTStyle);
         } catch (ex) {}
     }
-    else if (pref("urlBarWidth") + spaceAfterBookmarks < window.innerWidth -
+    else if (pref("urlBarWidth")*1 + spaceAfterBookmarks < window.innerWidth -
       urlBar.boxObject.x - 100*(isAfterUrl?1:0) && !enoughSpace) {
         enoughSpace = true;
         if (!firstRun) {
