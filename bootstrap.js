@@ -1548,7 +1548,7 @@ function changeUI(window) {
     } catch (ex) {}
     editing = true;
     arrowMouseDown = siblingsShown = false;
-    highlightPart(editingPart, false, false);
+    highlightPart(editingPart, false, false, '>');
 
     let createdStack = document.createElementNS(XUL, "stack");
     createdStack.setAttribute("id", "enhanced-editing-stack");
