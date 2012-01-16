@@ -142,6 +142,7 @@ function changeUI(window) {
   let partPointer = null;
   let arrowMouseDown = false;
   let textMouseDown = false;
+  let editing = false;
   let hiddenParts = [];
   let partsWidth = 0;
   let newDocumentLoaded = false;
@@ -1505,6 +1506,247 @@ function changeUI(window) {
       args : [concernedStack, aCallback, aArgs]
     });
   }
+  /* Context Menu helper functions
+     Copy, Edit, Add */
+  function copyToClipboard(copyURL) {
+    // generate the Unicode and HTML versions of the Link
+    var textUnicode = copyURL;  
+    var textHtml = ("<a href=\"" + copyURL + "\">" + copyURL + "</a>");  
+
+    // make a copy of the Unicode
+    var str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+    if (!str)
+      return;
+    str.data = textUnicode;
+    // make a copy of the HTML
+    var htmlstring = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+    if (!htmlstring)
+      return false;
+    htmlstring.data = textHtml;
+    // add Unicode & HTML flavors to the transferable widget
+    var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
+    if (!trans)
+      return;
+
+    trans.addDataFlavor("text/unicode");
+    trans.setTransferData("text/unicode", str, textUnicode.length * 2);
+    trans.addDataFlavor("text/html");
+    trans.setTransferData("text/html", htmlstring, textHtml.length * 2);
+
+    // copy the transferable widget!
+    var clipboard = Components.classes["@mozilla.org/widget/clipboard;1"].
+      getService(Components.interfaces.nsIClipboard);
+    if (!clipboard)
+      return;
+    clipboard.setData(trans, null, Components.interfaces.nsIClipboard.kGlobalClipboard);  
+  }
+
+  function editPart(editingPart, nextPart) {
+    // Trying to close the popup
+    try {
+      gBrowser.removeEventListener("click", hideMainPopup, false);
+    } catch (ex) {}
+    editing = true;
+    arrowMouseDown = siblingsShown = false;
+    highlightPart(editingPart, false, false);
+
+    let createdStack = document.createElementNS(XUL, "stack");
+    createdStack.setAttribute("id", "enhanced-editing-stack");
+    createdStack.style.maxHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 2)) + "px";
+    createdStack.style.display = "-moz-box";
+    createdStack.setAttribute("flex", 0);
+    createdStack.setAttribute("url", editingPart.getAttribute("url"));
+
+    // Adding the Text Stack
+    let tempS = document.createElementNS(XUL, "textbox");
+    if (!nextPart)
+      tempS.setAttribute("value", editingPart.getAttribute("url")
+        .slice(((editingPart.previousSibling)?
+        editingPart.previousSibling.getAttribute("url"): "").length));
+    else {
+      editingPart.setAttribute("lastArrowHidden", "false");
+      highlightPart(editingPart, false, false);
+    }
+    tempS.setAttribute("id", "enhanced-editing-stack-text");
+    tempS.setAttribute("type", "autocomplete");
+    tempS.setAttribute("autocompletesearch", "search-autocomplete");
+    tempS.setAttribute("maxrows", 5);
+    tempS.style.maxHeight = tempS.style.minHeight = (gURLBar.boxObject.height
+      - (pref("useStyleSheet")? 0: 4)) + "px";
+    tempS.style.display = "-moz-box";
+    tempS.style.maxWidth = tempS.style.minWidth = (nextPart?
+      100: (editingPart.firstChild.boxObject.width + 25)) + "px";
+    tempS.setAttribute("flex", 0);
+
+    // Adding the Arrow Stack
+    let tempArrow = document.createElementNS(XUL, "label");
+    tempArrow.setAttribute("id", "enhanced-editing-stack-arrow");
+    tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
+    tempArrow.style.display = "-moz-box";
+    tempArrow.setAttribute("flex", 0);
+    createdStack.setAttribute("isHiddenArrow", false);
+
+    // Applying styles to various parts if pref is off
+    if (!pref("useStyleSheet")) {
+      // Aplpying style to parent stack
+      createdStack.style.padding = "0px";
+      createdStack.style.margin = "0px";
+      // Applying style to text part
+      tempS.style.padding = "2px 1px 1px 1px";
+      tempS.style.margin = "0px";
+      tempS.style.backgroundImage = "rgba(255,255,255,0)";
+      tempS.style.border = "1px solid rgba(255,255,255,0)";
+      tempArrow.style.color = tempS.style.color = "rgb(30,30,30)";
+      // Applying style to arrow part
+      tempArrow.style.margin = "0px";
+      tempArrow.style.padding = "2px 1px 1px 2px";
+      tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
+      tempArrow.style.border = "1px solid rgba(255,255,255,0)";
+      tempArrow.setAttribute("value", ">");
+    }
+    else {
+      createdStack.setAttribute("class", "enhanced-stack");
+      tempS.setAttribute("class", "enhanced-text enhanced-text-normal");
+      tempArrow.setAttribute("class", "enhanced-arrow enhanced-arrow-normal");
+    }
+
+    createdStack.appendChild(tempS);
+    createdStack.appendChild(tempArrow);
+    tempS = tempArrow = null;
+
+    // Stopping the focus event to propagate
+    listen(window, createdStack.firstChild, "focus", function(e) {
+      e.target.setSelectionRange(0, e.target.value.length);
+      e.preventDefault();
+    });
+    listen(window, createdStack.firstChild, "blur", function(e) {
+      editing = false;
+      if (e.target.parentNode == enhancedURLBar.firstChild)
+        partPointer = null;
+      enhancedURLBar.removeChild(e.target.parentNode);
+      updateURL();
+    });
+    listen(window, createdStack.firstChild, "keypress", function(e) {
+      switch (e.keyCode) {
+        case e.DOM_VK_CANCEL:
+        case e.DOM_VK_ESCAPE:
+        case e.DOM_VK_TAB:
+          e.target.blur();
+          break;
+        case e.DOM_VK_ENTER:
+        case e.DOM_VK_RETURN:
+          editing = false;
+          let prevURL;
+          if (e.target.parentNode.previousSibling)
+            prevURL = e.target.parentNode.previousSibling.getAttribute("url");
+          else
+            prevURL = "";
+          let curURLLen = e.target.parentNode.getAttribute("url").length;
+          let nextURL= enhancedURLBar.lastChild.getAttribute("url");
+          prevURL += e.target.value + nextURL.slice(curURLLen);
+          enhancedURLBar.removeChild(e.target.parentNode);
+          window.openUILinkIn(prevURL, "current");
+          updateURL();
+          break;
+      }
+    });
+    if (editingPart == enhancedURLBar.lastChild && nextPart)
+      enhancedURLBar.appendChild(createdStack);
+    else if (nextPart)
+      enhancedURLBar.insertBefore(createdStack, editingPart.nextSibling);
+    else
+      enhancedURLBar.replaceChild(createdStack, editingPart);
+    updateLook();
+    createdStack.firstChild.focus();
+    createdStack = null;
+  }
+
+  function getMenuItems(arrowedStack) {
+    function createToolbarButton(tooltip, image, label) {
+      let button = document.createElementNS(XUL, "menuitem");
+      button.setAttribute("id", "enhancedPartMenu-" + label + "-button");
+      button.setAttribute("flex", 0);
+      button.setAttribute("align", "center");
+      button.setAttribute("orient", "vertical");
+      button.setAttribute("closemenu", "auto");
+      button.setAttribute("tooltiptext", tooltip);
+      button.style.margin = "1px 4px";
+      button.style.padding = "1px";
+
+      if (label)
+        button.setAttribute("label", label);
+      if (image) {
+        button.setAttribute("class", "menuitem-iconic");
+        button.setAttribute("image", image);
+      }
+      return button;
+    }
+
+    let menuGroup = document.createElementNS(XUL, "hbox");
+    menuGroup.setAttribute("id", "enhancedPartMenu");
+    menuGroup.setAttribute("flex", 0);
+    menuGroup.style.margin = "1px 0px 1px 25px";
+    menuGroup.style.padding = "2px";
+    // Copy Part
+    if (enhancedURLBar.lastChild != arrowedStack) {
+      let copyPartButton = createToolbarButton("Copy Address till this Part", COPY_IMAGE, "Copy");
+      copyPartButton.onclick = function() {
+        try {
+          gBrowser.removeEventListener("click", hideMainPopup, false);
+        } catch (ex) {}
+        copyToClipboard(arrowedStack.getAttribute("url"));
+        arrowMouseDown = siblingsShown = false;
+        highlightPart(arrowedStack, false, false);
+      };
+      menuGroup.appendChild(copyPartButton);
+    }
+    // Copy All Part
+    let copyAllPartButton = createToolbarButton("Copy Full Address", COPY_ALL_IMAGE, "Copy All");
+    copyAllPartButton.onclick = function() {
+      try {
+        gBrowser.removeEventListener("click", hideMainPopup, false);
+      } catch (ex) {}
+      copyToClipboard(enhancedURLBar.lastChild.getAttribute("url"));
+      arrowMouseDown = siblingsShown = false;
+      highlightPart(arrowedStack, false, false);
+    };
+    menuGroup.appendChild(copyAllPartButton);
+    // Edit Part
+    let editPartButton = createToolbarButton("Edit This Part", EDIT_IMAGE, "Edit");
+    editPartButton.onclick = function() {
+      editPart(arrowedStack);
+    };
+    menuGroup.appendChild(editPartButton);
+    // Add Part
+    let addPartButton = createToolbarButton("Add a Part next to this part", ADD_IMAGE, "Add");
+    addPartButton.onclick = function() {
+      editPart(arrowedStack, true);
+    };
+    menuGroup.appendChild(addPartButton);
+    // Delete Part
+    if (arrowedStack != enhancedURLBar.firstChild) {
+      let deletePartButton = createToolbarButton("Delete this Part and load the resultant url", DELETE_IMAGE, "Delete");
+      deletePartButton.onclick = function() {
+        try {
+          gBrowser.removeEventListener("click", hideMainPopup, false);
+        } catch (ex) {}
+        let prevURL;
+        if (arrowedStack.previousSibling)
+          prevURL = arrowedStack.previousSibling.getAttribute("url");
+        else
+          prevURL = "";
+        let curURLLen = arrowedStack.getAttribute("url").length;
+        let nextURL = enhancedURLBar.lastChild.getAttribute("url");
+        prevURL += nextURL.slice(curURLLen);
+        window.openUILinkIn(prevURL, "current");
+        prevURL = curURLLen = nextURL = null;
+        arrowMouseDown = siblingsShown = false;
+        highlightPart(arrowedStack, false, false);
+      };
+      menuGroup.appendChild(deletePartButton);
+    }
+    return menuGroup;
+  }
 
   // All Async functions should have arguments in []
   function handleArrowClick([arrowedStack, mouseDown, resultArray]) {
@@ -1604,6 +1846,13 @@ function changeUI(window) {
         highlightPart(arrowedStack, false, false, '>');
       }, false);
       mainPopup.appendChild(part);
+    }
+
+    // Insert the popupMenu before the first child of the mainPopup
+    if (arrowMouseDown) {
+      mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
+        mainPopup.firstChild);
+      mainPopup.insertBefore(getMenuItems(arrowedStack), mainPopup.firstChild);
     }
 
     // Show the popup below the arrows
@@ -1879,6 +2128,8 @@ function changeUI(window) {
         async(updateURL);
       });
       listen(window, gURLBar, "focus", function() {
+        if (editing)
+          return;
         reset(1);
         gURLBar.selectTextRange(0, gURLBar.value.length);
       });
