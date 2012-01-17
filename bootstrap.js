@@ -1284,10 +1284,14 @@ function changeUI(window) {
     let tab = "current";
     if (centerClick == true)
       tab = "tab";
-    if (partText != "")
+    if (partText != "") {
+      mouseScrolled = false;
       window.openUILinkIn(partText, tab);
-    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled)
+    }
+    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled) {
+      mouseScrolled = false;
       window.openUILinkIn(clickedStack.getAttribute("url"), tab);
+    }
   }
 
   // Helper function used to fill missing entries in the relatedArray
