@@ -331,6 +331,9 @@ function changeUI(window) {
         return true;
     }
     else {
+      // Returning true if url type thing encountered, only possible in queryString
+      if (string.indexOf("/") >= 0)
+        return false;
       // Array containing WhiteList Words
       // Populate it regularily
       let whiteList = ["http","https","id","aurora", "xpcom"];
@@ -371,7 +374,6 @@ function changeUI(window) {
       base = base.toLowerCase().replace(/[\[\]+\-\\\/\(\)\%'\?]+/g, "");
       let ret = false;
       for (let i = 0; i < baseString.length; i++) {
-        baseString[i] = baseString[i].toLowerCase();
         try {
           if (base.search(baseString[i]) >= 0 || baseString[i].search(base) >=0)
             ret = true;
@@ -380,6 +382,9 @@ function changeUI(window) {
       return ret;
     }
 
+    for (i = 0; i < baseString.length; i++)
+      baseString[i] = baseString[i].toLowerCase().replace(/[\[\]+\-\\\/\(\)\%'\?]+/g, "");
+    i = 0;
     let {length} = redString;
     while (i < length) {
       if (checkBaseMatch(redString[i]) &&
@@ -433,16 +438,18 @@ function changeUI(window) {
           }
           redRemoved++;
       }
-      else if (gibberResult.toString() != "false" && gibberResult.toString() != "true") {
-        let valParts = gibberVal.split(/[ _]/g);
-        valParts = valParts.filter(function (part, i) {
-          if (gibberResult.indexOf(i) >= 0)
-            return false;
-          else
-            return true;
-        });
-        gibberVal = valParts.join(" ");
-        valParts = null;
+      else if (gibberResult.toString() != "false" && gibberResult.toString() != "true"
+        && ((gibberResult.length < 0.4*partsLength && partsLength < 5)
+        || (gibberResult.length < 0.25*partsLength && partsLength >= 5))) {
+          let valParts = gibberVal.split(/[ _]/g);
+          valParts = valParts.filter(function (part, i) {
+            if (gibberResult.indexOf(i) >= 0)
+              return false;
+            else
+              return true;
+          });
+          gibberVal = valParts.join(" ");
+          valParts = null;
       }
     }
     return [gibberVal, isSetting];
@@ -1729,11 +1736,10 @@ function changeUI(window) {
           prevURL = arrowedStack.previousSibling.getAttribute("url");
         else
           prevURL = "";
-        let curURLLen = arrowedStack.getAttribute("url").length;
-        let nextURL = enhancedURLBar.lastChild.getAttribute("url");
-        prevURL += nextURL.slice(curURLLen);
+        prevURL += enhancedURLBar.lastChild.getAttribute("url")
+          .slice(arrowedStack.getAttribute("url").length);
         window.openUILinkIn(prevURL, "current");
-        prevURL = curURLLen = nextURL = null;
+        prevURL = null;
         arrowMouseDown = siblingsShown = false;
         highlightPart(arrowedStack, false, false);
       };
@@ -2057,7 +2063,7 @@ function changeUI(window) {
 
     for (let i = 0; i < urlArray_updateURL.length; i++) {
       urlArray_updateURL[i] = unescape(urlArray_updateURL[i].replace(/[_+]/g, " "));
-      if (urlArray_updateURL[i].split("-").length > 2)
+      if (urlArray_updateURL[i].split("-").length > 2 && urlArray_updateURL[i].indexOf("/") < 0)
         urlArray_updateURL[i] = urlArray_updateURL[i].replace("-", " ");
       urlArray_updateURL[i] = urlArray_updateURL[i].replace("=", " = ");
     }
