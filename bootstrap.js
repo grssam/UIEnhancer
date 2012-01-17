@@ -107,7 +107,6 @@ function changeUI(window) {
   let {document, gBrowser, gURLBar} = window;
   function $(id) document.getElementById(id);
   let {async} = makeWindowHelpers(window);
-  let {oscpu} = window.navigator;
 
   // Disable the add-on when customizing
   window.addEventListener("beforecustomization", function() {
@@ -2734,8 +2733,10 @@ function changeUI(window) {
   * Bookmarks UI Enhancer Code Ends
   */
   // Function Callings
-  setupBookmarksUI();
-  addBookmarkListeners();
+  async(function() {
+    setupBookmarksUI();
+    addBookmarkListeners();
+  }, pref("useSmallIcons")? 0: 200);
   enhanceURLBar();
 }
 
