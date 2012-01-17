@@ -1430,15 +1430,15 @@ function changeUI(window) {
           let title = resultArray[i].title;
           relatedVal = "";
           url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
-          relatedVal = url.slice(partURL.length, url.length).replace(/[\-_=]/g," ");
+          relatedVal = url.slice(partURL.length, url.length).replace(/[\-_+]/g," ").replace("=", " =");
           if (relatedVal.match(/^[[\/?#&: ]{1}[[\/?#&: ]{0,1}$/) != null
             || !(relatedVal.length > 0 && relatedVal[0].match(/[\/?#&:]/))) {
               reduceIndex++;
               continue;
           }
           // Correcting the value to match the global styling
-          relatedVal = relatedVal.slice(1).replace(/[\-_=+]/g, " ").split(/[&\/?#]+/g)
-            .filter(function(v) { return v.length > 0;});
+          relatedVal = relatedVal.slice(1).replace(/[\-_+]/g, " ").replace("=", " = ")
+            .split(/[&\/?#]+/g).filter(function(v) { return v.length > 0;});
           Array.some(relatedVal, function(v, index) {
             if (gibberish(v) != false) {
               if (title != null && title.length > 0) {
@@ -1514,36 +1514,25 @@ function changeUI(window) {
   /* Context Menu helper functions
      Copy, Edit, Add */
   function copyToClipboard(copyURL) {
-    // generate the Unicode and HTML versions of the Link
-    var textUnicode = copyURL;  
-    var textHtml = ("<a href=\"" + copyURL + "\">" + copyURL + "</a>");  
-
     // make a copy of the Unicode
-    var str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-    if (!str)
-      return;
-    str.data = textUnicode;
+    let str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+    if (!str) return;
+    str.data = copyURL;
     // make a copy of the HTML
-    var htmlstring = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-    if (!htmlstring)
-      return false;
-    htmlstring.data = textHtml;
+    let htmlstring = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+    if (!htmlstring) return;
+    htmlstring.data = "<a href=\"" + copyURL + "\">" + copyURL + "</a>";
     // add Unicode & HTML flavors to the transferable widget
-    var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
-    if (!trans)
-      return;
-
+    let trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
+    if (!trans) return;
     trans.addDataFlavor("text/unicode");
-    trans.setTransferData("text/unicode", str, textUnicode.length * 2);
+    trans.setTransferData("text/unicode", str, copyURL.length * 2);
     trans.addDataFlavor("text/html");
-    trans.setTransferData("text/html", htmlstring, textHtml.length * 2);
-
+    trans.setTransferData("text/html", htmlstring, htmlstring.data.length * 2);
     // copy the transferable widget!
-    var clipboard = Components.classes["@mozilla.org/widget/clipboard;1"].
-      getService(Components.interfaces.nsIClipboard);
-    if (!clipboard)
-      return;
-    clipboard.setData(trans, null, Components.interfaces.nsIClipboard.kGlobalClipboard);  
+    let clipboard = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
+    if (!clipboard) return;
+    clipboard.setData(trans, null, Ci.nsIClipboard.kGlobalClipboard);
   }
 
   function editPart(editingPart, nextPart) {
@@ -1971,7 +1960,7 @@ function changeUI(window) {
       return;
     else
       lastUpdatedTime = currentTime.getTime();
-    if (gURLBar.focused || $("nav-bar").boxObject.height == 0)
+    if (gURLBar.focused || $("nav-bar").boxObject.height == 0 || editing)
       return;
 
     // checking if the identity block is visible or not (firefox 12+)
