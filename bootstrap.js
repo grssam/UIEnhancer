@@ -415,7 +415,7 @@ function changeUI(window) {
       isSetting = (index >= anchorTagIndex)? "anchor": true;
     if (index > 0) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
-      let partsLength = gibberVal.split(/[ _]/g).length;
+      let partsLength = gibberVal.split(/[ _=]+/g).length;
       if (gibberResult.toString() != "false" && redRemoved == 0
         && (gibberResult.toString() == "true"
         || (gibberResult.length >= 0.5*partsLength && partsLength < 5)
@@ -2062,8 +2062,12 @@ function changeUI(window) {
     }
     urlPostSetting = null;
 
-    for (let i = 0; i < urlArray_updateURL.length; i++)
-      urlArray_updateURL[i] = urlArray_updateURL[i].replace(/[_+]/g, " ");
+    for (let i = 0; i < urlArray_updateURL.length; i++) {
+      urlArray_updateURL[i] = unescape(urlArray_updateURL[i].replace(/[_+]/g, " "));
+      if (urlArray_updateURL[i].split("-").length > 2)
+        urlArray_updateURL[i] = urlArray_updateURL[i].replace("-", " ");
+      urlArray_updateURL[i] = urlArray_updateURL[i].replace("=", " = ");
+    }
 
     if (identityBlockVisible) {
       iLabel = "";
