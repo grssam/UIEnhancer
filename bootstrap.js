@@ -114,12 +114,14 @@ function changeUI(window) {
     // NB: Disabling will unload listeners, so manually add and remove below
     if (gAddon.userDisabled)
       return;
-    gAddon.userDisabled = true;
+    unload();
 
     // Listen for one customization finish to re-enable the addon
     window.addEventListener("aftercustomization", function reenable() {
       window.removeEventListener("aftercustomization", reenable, false);
-      gAddon.userDisabled = false;
+      firstRunAfterInstall = true;
+      normalStartup = false;
+      reload();
     }, false);
   });
 
@@ -332,7 +334,7 @@ function changeUI(window) {
     else {
       // Array containing WhiteList Words
       // Populate it regularily
-      let whiteList = ["http","https","id","aurora"];
+      let whiteList = ["http","https","id","aurora", "xpcom"];
       // code to determine if a single word is gibberish or not
       let numAlpha = 0; // Basically non numeric characters
       let numNum = 0;
@@ -351,7 +353,7 @@ function changeUI(window) {
         || (length >= 6 && numNum <= 2 && numVowel > 0
         && numAlpha/numVowel < 5 && numAlpha/numVowel > 1.5)))
           return false;
-      else if (whiteList.indexOf(string) >= 0)
+      else if (whiteList.indexOf(string.toLowerCase()) >= 0)
         return false;
       else
         return true;
@@ -411,7 +413,7 @@ function changeUI(window) {
   function replaceGibberishText(gibberVal, urlArray, index) {
     let isSetting = false;
     if (settingsStartIndex != null && index >= settingsStartIndex)
-      isSetting = (index == anchorTagIndex)? "anchor": true;
+      isSetting = (index >= anchorTagIndex)? "anchor": true;
     if (index > 0) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
       let partsLength = gibberVal.split(/[ _]/g).length;
@@ -1944,7 +1946,7 @@ function changeUI(window) {
 
   // Global functions used in updateURL 
   let currentTime;
-  let urlValue;
+  let urlValue, urlPostSetting;
   let urlArray_updateURL;
   let counter = 0;
   let initial = 0;
@@ -1953,8 +1955,9 @@ function changeUI(window) {
   let identityBlockVisible;
   let anchorTagIndex= null;
   unload(function() {
-    initial = currentTime = urlValue = urlArray_updateURL = counter = iLabel = null;
-    anchorTagIndex = identityBlockVisible = isSetting_updateURL = iCountry = null;
+    initial = currentTime = urlValue = urlArray_updateURL = counter = iLabel
+      = anchorTagIndex = identityBlockVisible = isSetting_updateURL = iCountry
+      = urlPostSetting = null;
   }, window);
 
   // Function to change urlBar's UI
@@ -1985,39 +1988,83 @@ function changeUI(window) {
     // Splitting the url/gURLBar urlValue by "/"
     if (urlValue.search("about") == 0) {
       urlArray_updateURL = urlValue.split(":");
-      urlPartArray[0] = urlValue.slice(0, urlValue.indexOf(":"));
-      urlPartArray[1] = urlValue;
+      urlPartArray[0] = urlValue.indexOf(":");
+      urlPartArray[1] = urlValue.length;
     }
     else {
+      urlPostSetting = "";
+      urlPostSetting = urlValue.indexOf("?");
+      if ((urlPostSetting < 0 || urlPostSetting > urlValue.indexOf("&"))
+        && urlValue.indexOf("&") > 0)
+          urlPostSetting = urlValue.indexOf("&");
+      if (urlPostSetting > 0) {
+        urlPostSetting = urlValue.slice(urlPostSetting + 1);
+        urlValue = urlValue.slice(0, urlValue.length - urlPostSetting.length - 1);
+      }
+      else
+        urlPostSetting = "";
       initial = urlValue.indexOf("://") > 0 ? urlValue.indexOf("://") + 3: 0;
-      urlArray_updateURL = urlValue.split(/[\/?#&]/).filter(function(valueVal) {
-        if(valueVal.match(/(https?:)/))
+      urlArray_updateURL = urlValue.split(/[\/#]/).filter(function(valueVal) {
+        if (valueVal.match(/(https?:)/))
           return false;
         else if (valueVal == "") {
           counter++;
           return false;
         }
         let {length} = urlPartArray;
-        if (length == 0) {
-          urlPartArray.push(urlValue.slice(0, initial + valueVal.length));
-          counter = 0;
-        }
+        if (length == 0)
+          urlPartArray.push(initial + valueVal.length);
         else
-          urlPartArray.push(urlValue.slice(0, counter + valueVal.length
-            + urlPartArray[length - 1].length + 1));
-        if (settingsStartIndex == null
-          && urlPartArray[length].split(/[&\?#]+/).length > 1)
+          urlPartArray.push(counter + valueVal.length + urlPartArray[length - 1] + 1);
+        counter = 0;
+        if (anchorTagIndex == null && urlValue.slice(0, urlPartArray[length]).split(/[#]{1}/).length > 1) {
+          anchorTagIndex = length;
+          if (!settingsStartIndex)
             settingsStartIndex = length;
-        if (anchorTagIndex == null && settingsStartIndex != null
-          && urlPartArray[length].split(/[#]{1}/).length > 1)
-            anchorTagIndex = length;
+        }
         length = null;
         return true;
       });
+      urlValue = getURI().spec;
+      if (settingsStartIndex == null)
+        settingsStartIndex = (urlPostSetting.length > 0? urlPartArray.length: null);
+      urlPostSetting.split(/[?&#]/).forEach(function(valueVal) {
+        if (valueVal == "") {
+          counter++;
+          return;
+        }
+        let {length} = urlPartArray;
+        if (urlValue.slice(0, counter + valueVal.length + urlPartArray[length - 1] + 1).match(/[#]{1}[^&?]+$/))
+          valueVal.split("/").forEach(function (valueValPart) {
+            if (valueValPart == "") {
+              counter++;
+              return;
+            }
+            let {length} = urlPartArray;
+            urlPartArray.push(counter + valueValPart.length + urlPartArray[length - 1] + 1);
+            urlArray_updateURL.push(valueValPart);
+            counter = 0;
+            if (settingsStartIndex == null && urlValue.slice(0, urlPartArray[length]).split(/[?#&]/).length > 1)
+              settingsStartIndex = length;
+            if (anchorTagIndex == null && urlValue.slice(0, urlPartArray[length]).split(/[#]{1}/).length > 1)
+              anchorTagIndex = length;
+          });
+        else {
+          urlPartArray.push(counter + valueVal.length + urlPartArray[length - 1] + 1);
+          urlArray_updateURL.push(valueVal);
+          counter = 0;
+          if (settingsStartIndex == null && urlValue.slice(0, urlPartArray[length]).split(/[?#&]/).length > 1)
+            settingsStartIndex = length;
+          if (anchorTagIndex == null && urlValue.slice(0, urlPartArray[length]).split(/[#]{1}/).length > 1)
+            anchorTagIndex = length;
+        }
+        length = null;
+      });
     }
+    urlPostSetting = null;
 
     for (let i = 0; i < urlArray_updateURL.length; i++)
-      urlArray_updateURL[i] = urlArray_updateURL[i].replace(/[\-_=+]/g, " ");
+      urlArray_updateURL[i] = urlArray_updateURL[i].replace(/[_+]/g, " ");
 
     if (identityBlockVisible) {
       iLabel = "";
@@ -2055,9 +2102,11 @@ function changeUI(window) {
       // Test Case to check gibberish function
       [urlVal, isSetting_updateURL] = replaceGibberishText(urlVal, urlArray_updateURL, index);
       if (index == 0 && iLabel == urlVal && urlArray_updateURL[1] != null && identityBlockVisible)
-        addPart(urlVal, urlPartArray[index], true, isSetting_updateURL, index == urlArray_updateURL.length - 1);
+        addPart(urlVal, urlValue.slice(0, urlPartArray[index]), true,
+          isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
-        addPart(urlVal, urlPartArray[index], false, isSetting_updateURL, index == urlArray_updateURL.length - 1);
+        addPart(urlVal, urlValue.slice(0, urlPartArray[index]), false,
+          isSetting_updateURL, index == urlArray_updateURL.length - 1);
     }
     updateLook();
     // Removing last arrow if no suggestion possible
@@ -2083,7 +2132,7 @@ function changeUI(window) {
         }
         // Updating look again
         updateLook();
-      }, [urlPartArray[urlPartArray.length - 1]]);
+      }, [urlValue.slice(0, urlPartArray[urlPartArray.length - 1])]);
   }
 
   function enhanceURLBar() {
@@ -2179,7 +2228,7 @@ function changeUI(window) {
   else if (!pref("removeGibberish")) {
     replaceGibberishText = function(gibberVal, urlArray, index) {
       if (settingsStartIndex != null && index >= settingsStartIndex)
-        return [gibberVal, (index == anchorTagIndex)? "anchor": true];
+        return [gibberVal, (index >= anchorTagIndex)? "anchor": true];
       return [gibberVal, false];
     };
   }
@@ -2225,9 +2274,11 @@ function changeUI(window) {
     let d = $("urlbar-container").nextSibling;
     let someThingB4 = false;
     while (d != null) {
-      if ((d.id == "reload-button" || d.id == "stop-button") && !someThingB4) {
-        d = d.nextSibling;
-        continue;
+      if (((d.id == "reload-button" && d.nextSibling.id == "stop-button")
+        || (d.id == "stop-button" && d.previousSibling.id == "reload-button"))
+        && !someThingB4) {
+          d = d.nextSibling;
+          continue;
       }
       if (d.id == "search-container")
         d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
@@ -2267,7 +2318,21 @@ function changeUI(window) {
     origURLStyle = urlBar.style;
     bookmarksToolbar = $("PersonalToolbar");
     origBTStyle = bookmarksToolbar.style;
-
+    // Setting paddings, widths and heights used for bookmarks toolbar
+    let paddingBottom = 0;
+    let pHeight = $("PersonalToolbar").boxObject.height;
+    let nHeight = $("nav-bar").boxObject.height;
+    if (pHeight == 0)
+      pHeight = 26;
+    if (nHeight == 0) {
+      // Most probably we are on a In-content UI Page
+      recheckOnTabChange = normalStartup = true;
+      return;
+    }
+    // Dont do anything until page changed
+    // if we are on about:addons page and changing values
+    if (recheckOnTabChange)
+      return;
     origCollapsedState = bookmarksToolbar.collapsed;
     enableBookmarksToolbar();
 
@@ -2325,21 +2390,6 @@ function changeUI(window) {
             = $("search-container").style.width = 250 + "px";
       } catch(ex) {}
     }
-    // Setting paddings, widths and heights used for bookmarks toolbar
-    let paddingBottom = 0;
-    let pHeight = $("PersonalToolbar").boxObject.height;
-    let nHeight = $("nav-bar").boxObject.height;
-    if (pHeight == 0)
-      pHeight = 26;
-    if (nHeight == 0) {
-      // Most probably we are on a In-content UI Page
-      recheckOnTabChange = normalStartup = true;
-      return;
-    }
-    // Dont do anything until page changed
-    // if we are on about:addons page and changing values
-    if (recheckOnTabChange)
-      return;
     // Calculating widths for various elements
     bookmarksWidth = 0;
     try {
@@ -2353,9 +2403,11 @@ function changeUI(window) {
         let d = $("urlbar-container").nextSibling;
         let someThingB4 = false;
         while (d != null) {
-          if ((d.id == "reload-button" || d.id == "stop-button") && !someThingB4) {
-            d = d.nextSibling;
-            continue;
+          if (((d.id == "reload-button" && d.nextSibling.id == "stop-button")
+            || (d.id == "stop-button" && d.previousSibling.id == "reload-button"))
+            && !someThingB4) {
+              d = d.nextSibling;
+              continue;
           }
           if (d.id == "search-container") {
             d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
