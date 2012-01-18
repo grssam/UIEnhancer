@@ -336,7 +336,7 @@ function changeUI(window) {
         return false;
       // Array containing WhiteList Words
       // Populate it regularily
-      let whiteList = ["http","https","id","aurora", "xpcom"];
+      let whiteList = ["http","https","id","aurora", "xpcom", "hawaii"];
       // code to determine if a single word is gibberish or not
       let numAlpha = 0; // Basically non numeric characters
       let numNum = 0;
@@ -443,8 +443,9 @@ function changeUI(window) {
           redRemoved++;
       }
       else if (gibberResult.toString() != "false" && gibberResult.toString() != "true"
-        && ((gibberResult.length < 0.3*partsLength && partsLength < 5)
-        || (gibberResult.length < 0.25*partsLength && partsLength >= 5))) {
+        && (((gibberResult.length < 0.3*partsLength 
+        || (gibberVal.indexOf("=") < 0 && gibberResult.length <= 0.5*partsLength))
+        && partsLength < 5) || (gibberResult.length < 0.25*partsLength && partsLength >= 5))) {
           let valParts = gibberVal.split(/[ _]/g);
           valParts = valParts.filter(function (part, i) {
             if (gibberResult.indexOf(i) >= 0)
