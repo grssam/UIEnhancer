@@ -33,16 +33,17 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-textHovered {
-  background: rgba(100,100,100,0.5);
+  background-image: url('defaultTheme/text_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-textHovered {
-  background: rgba(100,100,100,0.5);
+  background-image: url('defaultTheme/arrow_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-textHovered-left {
+  background-image: url('defaultTheme/arrow_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */

@@ -2744,10 +2744,15 @@ function changeUI(window) {
   * Bookmarks UI Enhancer Code Ends
   */
   // Function Callings
-  async(function() {
+  if (pref("useSmallIcons")) {
     setupBookmarksUI();
     addBookmarkListeners();
-  }, pref("useSmallIcons")? 0: 200);
+  }
+  else
+    async(function() {
+      setupBookmarksUI();
+      addBookmarkListeners();
+    }, 200);
   enhanceURLBar();
 }
 
