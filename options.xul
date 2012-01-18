@@ -67,7 +67,7 @@
   <setting pref="extensions.UIEnhancer.useSmallIcons"
     title="Use small icons to save space"
     type="bool">
-    Transfers icons from after the lovation bar to Bookmarks Toolbar.
+    Transfers icons from after the location bar to Bookmarks Toolbar.
   </setting>
 
   <setting pref="extensions.UIEnhancer.urlBarWidth"

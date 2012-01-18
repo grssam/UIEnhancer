@@ -605,10 +605,10 @@
 }
 /* HOVERED STATE */
 .enhanced-arrow-backChevron-arrowHovered {
-  background: rgb(0,0,255);
+  background-image: url('defaultTheme/backChevron_arrowHovered.png');
 }
 /* MOUSEDOWN STATE */
 .enhanced-arrow-backChevron-arrowMouseDown {
-  background: rgb(255,0,0);
+  background-image: url('defaultTheme/backChevron_mouseDown.png');
 }
 
