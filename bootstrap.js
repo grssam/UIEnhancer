@@ -341,6 +341,7 @@ function changeUI(window) {
       let numAlpha = 0; // Basically non numeric characters
       let numNum = 0;
       let numVowel = 0;
+      string = string.toLowerCase();
       let {length} = string;
       numAlpha = string.split(/[^0-9]/).length -1;
       numNum = length - numAlpha;
@@ -430,7 +431,10 @@ function changeUI(window) {
             if (i != index - 1)
               baseString.push(gibberVal);
           });
-          let tempVal = removeRedundantText(baseString, gBrowser.contentDocument.title);
+          let title = gBrowser.contentDocument.title;
+          if (title.split(/[\/]/g).length > 3)
+            return [gibberVal, isSetting];
+          let tempVal = removeRedundantText(baseString, title);
           if (tempVal != " " && tempVal != "" && tempVal.toLowerCase() != "problem loading page") {
             gibberVal = tempVal;
             isSetting = false;
@@ -439,7 +443,7 @@ function changeUI(window) {
           redRemoved++;
       }
       else if (gibberResult.toString() != "false" && gibberResult.toString() != "true"
-        && ((gibberResult.length < 0.4*partsLength && partsLength < 5)
+        && ((gibberResult.length < 0.3*partsLength && partsLength < 5)
         || (gibberResult.length < 0.25*partsLength && partsLength >= 5))) {
           let valParts = gibberVal.split(/[ _]/g);
           valParts = valParts.filter(function (part, i) {
@@ -1077,8 +1081,9 @@ function changeUI(window) {
       partType = "anchor";
     else
       partType = "null";
-    if (partType != "domain" && partType != "setting" && partType != "anchor")
-      lastUsefulPart = partVal;
+    if (partType != "domain" && partType != "setting"
+      && partType != "anchor" && partVal.length > 20)
+        lastUsefulPart = partVal;
 
     if (partPointer != null) {
       if (domain == false) {
@@ -1223,7 +1228,9 @@ function changeUI(window) {
       if (mouseScrolled)
         return;
       let tempP = enhancedURLBar.lastChild;
-      while (tempP != null && tempP.getAttribute("isSetting") == "true") {
+      while (tempP != null && (tempP.getAttribute("isSetting") == "true"
+        || (tempP.getAttribute("isSetting") == "false"
+        && tempP.firstChild.getAttribute("value").length <= 20))) {
         tempP = tempP.previousSibling;
       }
       if (tempP == null || tempP.getAttribute("isDomain") == "true")
@@ -2064,7 +2071,7 @@ function changeUI(window) {
     for (let i = 0; i < urlArray_updateURL.length; i++) {
       urlArray_updateURL[i] = unescape(urlArray_updateURL[i].replace(/[_+]/g, " "));
       if (urlArray_updateURL[i].split("-").length > 2 && urlArray_updateURL[i].indexOf("/") < 0)
-        urlArray_updateURL[i] = urlArray_updateURL[i].replace("-", " ");
+        urlArray_updateURL[i] = urlArray_updateURL[i].replace(/[\-]/g, " ");
       urlArray_updateURL[i] = urlArray_updateURL[i].replace("=", " = ");
     }
 
