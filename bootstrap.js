@@ -510,6 +510,7 @@ function changeUI(window) {
       else
         mainPopup.appendChild(part);
 
+      let url = urlValue.slice(0, urlPartArray[i]);
       // Jump to the url till that part if part is clicked
       part.addEventListener("command", function(e) {
         try {
@@ -519,7 +520,7 @@ function changeUI(window) {
         highlightPart(hiddenStack, false, false);
         if (!pref("useStyleSheet"))
           hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
-        handleTextClick(urlPartArray[i], null, null, e.ctrlKey);
+        handleTextClick(url, null, null, e.ctrlKey);
       }, false);
       part.addEventListener("click", function(e) {
         if (e.button != 1)
@@ -531,7 +532,7 @@ function changeUI(window) {
         highlightPart(hiddenStack, false, false);
         if (!pref("useStyleSheet"))
           hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
-        handleTextClick(urlPartArray[i], null, null, true);
+        handleTextClick(url, null, null, true);
       }, false);
     }
     mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
@@ -1177,10 +1178,10 @@ function changeUI(window) {
                 ("class", "enhanced-arrow enhanced-arrow-normal");
             }
             enhancedURLBar.firstChild.setAttribute("isHiddenArrow", false);
-            enhancedURLBar.firstChild.setAttribute("url", urlPartArray[0]);
+            enhancedURLBar.firstChild.setAttribute("url", urlValue.slice(0, urlPartArray[0]));
           }
           else {
-            let tStack = createStack(trimWord(hiddenParts[0]), urlPartArray[0], "domain", false);
+            let tStack = createStack(trimWord(hiddenParts[0]), urlValue.slice(0, urlPartArray[0]), "domain", false);
             partsWidth += tStack.boxObject.width;
             enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
             tStack = null;
@@ -1188,7 +1189,8 @@ function changeUI(window) {
       }
       else if (hiddenParts.length > 0 && enhancedURLBar.firstChild != null
         && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
-          let tStack = createStack(trimWord(partVal), partURL, "null", true);
+          let tStack = createStack(trimWord(partVal), urlValue.slice
+            (0, urlPartArray[hiddenParts.length - 1]), "null", true);
           partsWidth += tStack.boxObject.width;
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;

@@ -48,62 +48,67 @@
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-arrowHovered {
-  background: rgba(200,200,200,0.5);
+  background-image: url('defaultTheme/text_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-arrowHovered {
-  background: rgba(100,100,100,0.5);
+  background-image: url('defaultTheme/arrow_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-arrowMouseDown {
-  background: rgba(250,0,0,0.5);
+  background-image: url('defaultTheme/text_arrowMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-arrowMouseDown {
-  background: rgba(0,250,0,0.5);
+  background-image: url('defaultTheme/arrow_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-textMouseDown {
-  background: rgba(0,0,250,0.5);
+  background-image: url('defaultTheme/text_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-textMouseDown {
-  background: rgba(0,0,250,0.5);
+  background-image: url('defaultTheme/arrow_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_textMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_mouseScroll.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/arrow_mouseScroll.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-mouseScroll-left {
+  background-image: url('defaultTheme/arrow_mouseScroll_left.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/arrow_mouseScroll_leftScrolled.png');
 }
 
 /* Following Classes are for anchor tags. */
@@ -138,68 +143,82 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-anchor-textHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-anchor-textHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-textHovered-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-anchor-arrowHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-anchor-arrowHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-arrowHovered-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-arrowMouseDown-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-anchor-textMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-anchor-textMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-textMouseDown-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-anchor-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-anchor-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-mouseScroll-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Following Classes are for queryString tags. */
@@ -234,68 +253,82 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-queryString-textHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-queryString-textHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-textHovered-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-queryString-arrowHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-queryString-arrowHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-arrowHovered-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-arrowMouseDown-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-queryString-textMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-queryString-textMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-textMouseDown-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-queryString-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-queryString-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-mouseScroll-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Following Classes are for state when no suggestions are possible.
@@ -330,68 +363,82 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-textHovered {
+  background-image: url('defaultTheme/text_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-noArrow-textHovered {
+  background-image: url('defaultTheme/arrow_noArrow_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-textHovered-left {
+  background-image: url('defaultTheme/arrow_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-arrowHovered {
+  background-image: url('defaultTheme/text_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-noArrow-arrowHovered {
+  background-image: url('defaultTheme/arrow_noArrow_arrowHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-arrowMouseDown {
+  background-image: url('defaultTheme/text_arrowMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-noArrow-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-textMouseDown {
+  background-image: url('defaultTheme/text_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-noArrow-textMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_textMouseDown_left.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-noArrow-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/arrow_noArrow_mouseScroll.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-noArrow-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_mouseScroll.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-mouseScroll-left {
+  background-image: url('defaultTheme/arrow_mouseScroll_left.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/arrow_mouseScroll_leftScrolled.png');
 }
 
 /* Following Classes are for state when no suggestions are possible.
@@ -428,68 +475,82 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-anchor-textHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-noArrow-anchor-textHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-textHovered-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-anchor-arrowHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-noArrow-anchor-arrowHovered {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-arrowHovered-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-noArrow-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-arrowMouseDown-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-anchor-textMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-noArrow-anchor-textMouseDown {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-textMouseDown-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-noArrow-anchor-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-noArrow-anchor-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-mouseScroll-left {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
 /* Following Classes are for state when no suggestions are possible.
@@ -526,68 +587,82 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-queryString-textHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-noArrow-queryString-textHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-textHovered-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-queryString-arrowHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-noArrow-queryString-arrowHovered {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-arrowHovered-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-noArrow-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-arrowMouseDown-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-queryString-textMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-noArrow-queryString-textMouseDown {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-textMouseDown-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for each arrow of a part [MOUSE SCROLL STATE] */
 .enhanced-arrow-noArrow-queryString-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-noArrow-queryString-mouseScroll {
-  background: rgba(250,250,0,0.5);
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-mouseScroll-left {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
 /* Class for arrow of a part [DOUBLE LESS THAN CEHVRON
@@ -612,4 +687,3 @@
 .enhanced-arrow-backChevron-arrowMouseDown {
   background-image: url('defaultTheme/backChevron_mouseDown.png');
 }
-
