@@ -418,7 +418,7 @@ function changeUI(window) {
   function replaceGibberishText(gibberVal, urlArray, index) {
     let isSetting = false;
     if (settingsStartIndex != null && index >= settingsStartIndex)
-      isSetting = (index >= anchorTagIndex)? "anchor": true;
+      isSetting = (index >= anchorTagIndex && anchorTagIndex)? "anchor": true;
     if (index > 0) {
       let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
       let partsLength = gibberVal.split(/[ _=]+/g).length;
@@ -1559,6 +1559,13 @@ function changeUI(window) {
     } catch (ex) {}
     editing = true;
     arrowMouseDown = siblingsShown = false;
+    if (editingPart == enhancedURLBar.firstChild) {
+      try {
+        identityLabel.collapsed = true;
+      } catch (ex) {}
+      editingPart.setAttribute("isDomain", "false");
+      editingPart.firstChild.style.display = "-moz-box";
+    }
     highlightPart(editingPart, false, false, '>');
 
     let createdStack = document.createElementNS(XUL, "stack");
@@ -1576,6 +1583,8 @@ function changeUI(window) {
         editingPart.previousSibling.getAttribute("url"): "").length));
     else {
       editingPart.setAttribute("lastArrowHidden", "false");
+      if (!pref("useStyleSheet"))
+        editingPart.lastChild.style.display = "-moz-box";
       highlightPart(editingPart, false, false);
     }
     tempS.setAttribute("id", "enhanced-editing-stack-text");
@@ -1586,7 +1595,8 @@ function changeUI(window) {
       - (pref("useStyleSheet")? 0: 4)) + "px";
     tempS.style.display = "-moz-box";
     tempS.style.maxWidth = tempS.style.minWidth = (nextPart?
-      100: (editingPart.firstChild.boxObject.width + 25)) + "px";
+      100: (editingPart.firstChild.boxObject.width +
+      (editingPart == enhancedURLBar.firstChild? 75: 25))) + "px";
     tempS.setAttribute("flex", 0);
 
     // Adding the Arrow Stack
@@ -1632,8 +1642,12 @@ function changeUI(window) {
     });
     listen(window, createdStack.firstChild, "blur", function(e) {
       editing = false;
-      if (e.target.parentNode == enhancedURLBar.firstChild)
-        partPointer = null;
+      if (e.target.parentNode == enhancedURLBar.firstChild) {
+        try {
+          identityLabel.collapsed = false;
+        } catch (ex) {}
+        partPointer = enhancedURLBar.firstChild.nextSibling;
+      }
       enhancedURLBar.removeChild(e.target.parentNode);
       updateURL();
     });
@@ -2240,7 +2254,7 @@ function changeUI(window) {
   else if (!pref("removeGibberish")) {
     replaceGibberishText = function(gibberVal, urlArray, index) {
       if (settingsStartIndex != null && index >= settingsStartIndex)
-        return [gibberVal, (index >= anchorTagIndex)? "anchor": true];
+        return [gibberVal, (index >= anchorTagIndex && anchorTagIndex)? "anchor": true];
       return [gibberVal, false];
     };
   }
