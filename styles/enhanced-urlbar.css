@@ -196,7 +196,7 @@
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-anchor-textMouseDown {
-  padding: 4px 2px 3px 2px !important;
+  padding: 5px 1px 2px 3px !important;
   background-image: url('defaultTheme/text_anchor_textMouseDown.png');
 }
 
@@ -214,7 +214,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text-queryString {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -232,6 +231,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-queryString-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
@@ -242,82 +242,66 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-queryString-textHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-queryString-textHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-textHovered-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-queryString-arrowHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-queryString-arrowHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-arrowHovered-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-queryString-arrowMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_arrowMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-queryString-arrowMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-arrowMouseDown-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-queryString-textMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-queryString-textMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-queryString-textMouseDown-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for each arrow of a part [MOUSE SCROLL STATE] */
-.enhanced-arrow-queryString-mouseScroll {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for text inside each part [MOUSE SCROLL STATE] */
-.enhanced-text-queryString-mouseScroll {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-queryString-mouseScroll-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-queryString-mouseScroll-leftScrolled {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown_left.png');
 }
 
 /* Following Classes are for state when no suggestions are possible.
@@ -537,7 +521,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text-noArrow-queryString {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -555,6 +538,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-noArrow-queryString-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_queryString_normal.png');
 }
 
@@ -565,82 +549,66 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-queryString-textHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-noArrow-queryString-textHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-textHovered-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-queryString-arrowHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-noArrow-queryString-arrowHovered {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-arrowHovered-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_queryString_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-queryString-arrowMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_arrowMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-noArrow-queryString-arrowMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-arrowMouseDown-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-queryString-textMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-noArrow-queryString-textMouseDown {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-queryString-textMouseDown-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for each arrow of a part [MOUSE SCROLL STATE] */
-.enhanced-arrow-noArrow-queryString-mouseScroll {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for text inside each part [MOUSE SCROLL STATE] */
-.enhanced-text-noArrow-queryString-mouseScroll {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-noArrow-queryString-mouseScroll-left {
-  background-image: url('defaultTheme/text_queryString_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-noArrow-queryString-mouseScroll-leftScrolled {
-  background-image: url('defaultTheme/text_queryString_normal.png');
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown_left.png');
 }
 
 /* Class for arrow of a part [DOUBLE LESS THAN CEHVRON
