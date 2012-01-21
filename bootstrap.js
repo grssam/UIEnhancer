@@ -1779,6 +1779,18 @@ function changeUI(window) {
     menuGroup.setAttribute("flex", 0);
     menuGroup.style.margin = "1px 0px 1px 25px";
     menuGroup.style.padding = "2px";
+    // Edit Part
+    let editPartButton = createToolbarButton("Edit the Highlighted Part", EDIT_IMAGE, "Edit");
+    editPartButton.onclick = function() {
+      editPart(arrowedStack);
+    };
+    menuGroup.appendChild(editPartButton);
+    // Add Part
+    let addPartButton = createToolbarButton("Add a Part next to the Highlighted part", ADD_IMAGE, "Add");
+    addPartButton.onclick = function() {
+      editPart(arrowedStack, true);
+    };
+    menuGroup.appendChild(addPartButton);
     // Copy Part
     if (enhancedURLBar.lastChild != arrowedStack) {
       let copyPartButton = createToolbarButton("Copy Address till the Highlighted Part", COPY_IMAGE, "Copy");
@@ -1803,18 +1815,6 @@ function changeUI(window) {
       highlightPart(arrowedStack, false, false);
     };
     menuGroup.appendChild(copyAllPartButton);
-    // Edit Part
-    let editPartButton = createToolbarButton("Edit the Highlighted Part", EDIT_IMAGE, "Edit");
-    editPartButton.onclick = function() {
-      editPart(arrowedStack);
-    };
-    menuGroup.appendChild(editPartButton);
-    // Add Part
-    let addPartButton = createToolbarButton("Add a Part next to the Highlighted part", ADD_IMAGE, "Add");
-    addPartButton.onclick = function() {
-      editPart(arrowedStack, true);
-    };
-    menuGroup.appendChild(addPartButton);
     // Delete Part
     if (arrowedStack != enhancedURLBar.firstChild) {
       let deletePartButton = createToolbarButton("Delete the Highlighted Part and load the resultant url", DELETE_IMAGE, "Delete");
