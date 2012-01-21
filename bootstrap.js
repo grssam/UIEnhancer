@@ -1603,6 +1603,10 @@ function changeUI(window) {
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", editingPart.getAttribute("url"));
+    if (!nextPart) {
+      createdStack.setAttribute("isSetting", editingPart.getAttribute("isSetting"));
+      createdStack.setAttribute("isAnchorTag", editingPart.getAttribute("isAnchorTag"));
+    }
 
     // Adding the Text Stack
     let tempS = document.createElementNS(XUL, "textbox");
@@ -1690,34 +1694,38 @@ function changeUI(window) {
         case e.DOM_VK_ENTER:
         case e.DOM_VK_RETURN:
           editing = false;
-          let prevURL;
+          let prevURL, curURLLen = 0;
           if (e.target.parentNode.previousSibling)
             prevURL = e.target.parentNode.previousSibling.getAttribute("url");
           else
             prevURL = "";
-          let curURLLen = e.target.parentNode.getAttribute("url").length;
+          if (!nextPart)
+            curURLLen = e.target.parentNode.getAttribute("url").length;
+          else
+            curURLLen = prevURL.length;
           let nextURL= enhancedURLBar.lastChild.getAttribute("url");
           if (!e.target.value.match(/^[\/?#&]{1,2}/)
             && e.target.parentNode != enhancedURLBar.firstChild) {
               // If the user did not enter a value starting with /, ?/& or #
               let (curNode = e.target.parentNode) {
-                if (curNode.getAttribute("isSetting") == "false")
-                  prevURL += "/";
-                else if (curNode.getAttribute("isAnchorTag") != "true") {
-                  if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "true"
-                    && curNode.previousSibling.getAttribute("isAnchorTag") == "false")
-                      prevURL += "&";
-                  else if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "false")
-                    prevURL += "?";
-                  else if (nextPart)
-                    prevURL += "&";
-                }
-                else {
-                  if ((!nextPart && curNode.previousSibling.getAttribute("isAnchorTag") == "true") || nextPart)
+                if ((curNode.hasAttribute("isSetting") && curNode.getAttribute("isSetting") == "false")
+                  || (!curNode.hasAttribute("isSetting") && curNode.previousSibling.getAttribute("isSetting") == "false"))
                     prevURL += "/";
+                else if (curNode.hasAttribute("isAnchorTag") && curNode.getAttribute("isAnchorTag") != "true") {
+                  if (curNode.previousSibling.getAttribute("isSetting") == "true"
+                    && curNode.previousSibling.getAttribute("isAnchorTag") != "true")
+                      prevURL += "&";
                   else
-                    prevURL += "#";
+                    prevURL += "?";
                 }
+                else if (!curNode.hasAttribute("isAnchorTag")) {
+                  if (curNode.previousSibling.getAttribute("isAnchorTag") != "true")
+                    prevURL += "&";
+                  else
+                    prevURL += "/";
+                }
+                else
+                  prevURL += "#";
               }
           }
           prevURL += e.target.value + nextURL.slice(curURLLen);
@@ -2852,19 +2860,19 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   });
 
   if (pref("useStyleSheet") && pref("userStylePath").length == 0)
-    loadStyles(["enhanced-urlbar"]);
+    loadStyles(["defaultThemeLight"]);
   else if (pref("useStyleSheet")) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
       getService(Ci.nsIStyleSheetService);
     let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
       .replace(/[\\]/g, "/"), null, null);
     if (!fileURI.spec.match(/(\.css)$/))
-      loadStyles(["enhanced-urlbar"]);
+      loadStyles(["defaultThemeLight"]);
     else {
       sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
       // Fallback to default stylesheet when the file is not present
       if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
-        loadStyles(["enhanced-urlbar"]);
+        loadStyles(["defaultThemeLight"]);
       else
         unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
     }
@@ -2877,19 +2885,19 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     unload();
     normalStartup = true;
     if (pref("useStyleSheet") && pref("userStylePath").length == 0)
-      loadStyles(["enhanced-urlbar"]);
+      loadStyles(["defaultThemeLight"]);
     else if (pref("useStyleSheet")) {
       let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
         getService(Ci.nsIStyleSheetService);
       let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
         .replace(/[\\]/g, "/"), null, null);
       if (!fileURI.spec.match(/(\.css)$/))
-        loadStyles(["enhanced-urlbar"]);
+        loadStyles(["defaultThemeLight"]);
       else {
         sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
         // Fallback to default stylesheet when the file is not present
         if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
-          loadStyles(["enhanced-urlbar"]);
+          loadStyles(["defaultThemeLight"]);
         else
           unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
       }
