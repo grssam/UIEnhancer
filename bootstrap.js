@@ -949,7 +949,7 @@ function changeUI(window) {
     listen(window, createdStack.firstChild, "mouseover", function(e) {
       if (e.target.parentNode.getAttribute("isHiddenArrow") == "true"
         || (e.target.parentNode.getAttribute("lastArrowHidden") == "true"
-        && arrowMouseDown) || siblingsShown)
+        && arrowMouseDown) || siblingsShown || mouseScrolled)
           return;
       if (e.ctrlKey) {
         hideEnhancedURLBar();
@@ -969,6 +969,8 @@ function changeUI(window) {
         hideEnhancedURLBar();
         return;
       }
+      if (mouseScrolled)
+        return;
       if (e.target.parentNode.getAttribute("lastArrowHidden") == "true" || siblingsShown)
         return;
       if (arrowMouseDown && e.target.parentNode.getAttribute("isHiddenArrow") == "false") {
@@ -1079,7 +1081,7 @@ function changeUI(window) {
           }
           partPointer = enhancedURLBar.firstChild;
           updateURL();
-        },250);
+        }, 250);
         return;
       }
       highlightPart(target, false, false, '>');
@@ -1483,7 +1485,7 @@ function changeUI(window) {
               continue;
           }
           // Correcting the value to match the global styling
-          relatedVal = relatedVal.slice(1).replace(/[\-_+]/g, " ").replace("=", " = ")
+          relatedVal = relatedVal.slice(1).replace(/[\-_+]/g, " ").replace("=", "= ")
             .split(/[&\/?#]+/g).filter(function(v) { return v.length > 0;});
           Array.some(relatedVal, function(v, index) {
             if (gibberish(v) != false) {
