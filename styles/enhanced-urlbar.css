@@ -6,7 +6,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -23,6 +22,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_normal.png');
 }
 
@@ -33,6 +33,7 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-textHovered {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_textHovered.png');
 }
 
@@ -48,6 +49,7 @@
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_arrowHovered.png');
 }
 
@@ -63,6 +65,7 @@
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
   background-image: url('defaultTheme/text_arrowMouseDown.png');
 }
 
@@ -78,6 +81,7 @@
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
   background-image: url('defaultTheme/text_textMouseDown.png');
 }
 
@@ -93,6 +97,7 @@
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-mouseScroll {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_mouseScroll.png');
 }
 
@@ -115,7 +120,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text-anchor {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -133,6 +137,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-anchor-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
@@ -143,82 +148,66 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-anchor-textHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-anchor-textHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-textHovered-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-anchor-arrowHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-anchor-arrowHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-arrowHovered-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-anchor-arrowMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_arrowMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-anchor-arrowMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-arrowMouseDown-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-anchor-textMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-anchor-textMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-anchor-textMouseDown-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for each arrow of a part [MOUSE SCROLL STATE] */
-.enhanced-arrow-anchor-mouseScroll {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for text inside each part [MOUSE SCROLL STATE] */
-.enhanced-text-anchor-mouseScroll {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-anchor-mouseScroll-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-anchor-mouseScroll-leftScrolled {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown_left.png');
 }
 
 /* Following Classes are for queryString tags. */
@@ -336,7 +325,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text-noArrow {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -353,6 +341,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-noArrow-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_normal.png');
 }
 
@@ -363,6 +352,7 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-textHovered {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_textHovered.png');
 }
 
@@ -378,6 +368,7 @@
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_arrowHovered.png');
 }
 
@@ -393,6 +384,7 @@
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
   background-image: url('defaultTheme/text_arrowMouseDown.png');
 }
 
@@ -408,6 +400,7 @@
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
   background-image: url('defaultTheme/text_textMouseDown.png');
 }
 
@@ -428,6 +421,7 @@
 
 /* Class for text inside each part [MOUSE SCROLL STATE] */
 .enhanced-text-noArrow-mouseScroll {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_mouseScroll.png');
 }
 
@@ -447,7 +441,6 @@
 
 /* Class for text inside each part [MAIN CLASS] */
 .enhanced-text-noArrow-anchor {
-  padding: 4px 2px 3px 2px !important;
   margin: 0px !important;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -465,6 +458,7 @@
 
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-noArrow-anchor-normal {
+  padding: 4px 2px 3px 2px !important;
   background-image: url('defaultTheme/text_anchor_normal.png');
 }
 
@@ -475,82 +469,66 @@
 
 /* Class for text inside each part [TEXT HOVERED STATE] */
 .enhanced-text-noArrow-anchor-textHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_textHovered.png');
 }
 
 /* Class for each arrow of a part [TEXT HOVERED STATE] */
 .enhanced-arrow-noArrow-anchor-textHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-textHovered-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textHovered_left.png');
 }
 
 /* Class for text inside each part [ARROW HOVERED STATE] */
 .enhanced-text-noArrow-anchor-arrowHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_arrowHovered.png');
 }
 
 /* Class for each arrow of a part [ARROW HOVERED STATE] */
 .enhanced-arrow-noArrow-anchor-arrowHovered {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textHovered.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-arrowHovered-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_arrowHovered_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-text-noArrow-anchor-arrowMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_arrow_mouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
 .enhanced-arrow-noArrow-anchor-arrowMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-arrowMouseDown-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_arrowMouseDown_left.png');
 }
 
 /* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-text-noArrow-anchor-textMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_textMouseDown.png');
 }
 
 /* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
 .enhanced-arrow-noArrow-anchor-textMouseDown {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textMouseDown.png');
 }
 
 /* Class for the arrow left to concerned part */
 .enhanced-arrow-noArrow-anchor-textMouseDown-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for each arrow of a part [MOUSE SCROLL STATE] */
-.enhanced-arrow-noArrow-anchor-mouseScroll {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for text inside each part [MOUSE SCROLL STATE] */
-.enhanced-text-noArrow-anchor-mouseScroll {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-noArrow-anchor-mouseScroll-left {
-  background-image: url('defaultTheme/text_anchor_normal.png');
-}
-
-/* Class for the arrow left to concerned part */
-.enhanced-arrow-noArrow-anchor-mouseScroll-leftScrolled {
-  background-image: url('defaultTheme/text_anchor_normal.png');
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown_left.png');
 }
 
 /* Following Classes are for state when no suggestions are possible.
