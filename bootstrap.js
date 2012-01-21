@@ -167,7 +167,6 @@ function changeUI(window) {
   let mainPopupSelectedIndex = null;
   let settingsStartIndex = null;
   let redRemoved = 0;
-  let lastUpdatedTime = 0;
   let lastScrolledTime = 0;
   let lastUsefulPart = null;
   let ctrlMouseHover = false;
@@ -180,10 +179,9 @@ function changeUI(window) {
   let restyleEnhancedURLBarOnTabChange = false;
   let siblingsShown = false;
   unload(function() {
-    let popupStack = mainPopupSelectedIndex = settingsStartIndex = redRemoved = null;
-    let lastUpdatedTime = lastScrolledTime = lastUsefulPart = ctrlMouseHover = null;
-    let mouseScrolled = scrolledStack = indexB4Scrolling = currentScrolledIndex = null;
-    let relatedScrolledArray = null;
+    let popupStack = mainPopupSelectedIndex = settingsStartIndex = relatedScrolledArray
+      = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
+      = scrolledStack = indexB4Scrolling = currentScrolledIndex = redRemoved = null;
   }, window);
 
   let {DBConnection} = PlacesUtils.history.QueryInterface(Ci.nsPIPlacesDatabase);
@@ -2023,7 +2021,6 @@ function changeUI(window) {
   }
 
   // Global functions used in updateURL 
-  let currentTime;
   let urlValue, urlPostSetting;
   let urlArray_updateURL;
   let counter = 0;
@@ -2040,12 +2037,6 @@ function changeUI(window) {
 
   // Function to change urlBar's UI
   function updateURL() {
-    // Ignoring function call if under 50ms
-    currentTime = new Date();
-    if (currentTime.getTime() - lastUpdatedTime < 50 && !newDocumentLoaded)
-      return;
-    else
-      lastUpdatedTime = currentTime.getTime();
     if (gURLBar.focused || $("nav-bar").boxObject.height == 0 || editing)
       return;
 
