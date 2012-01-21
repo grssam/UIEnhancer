@@ -786,7 +786,7 @@ function changeUI(window) {
 
     let createdStack = document.createElementNS(XUL, "stack");
     createdStack.setAttribute("id", "enhanced-urlBar-stack");
-    createdStack.style.maxHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 2)) + "px";
+    createdStack.style.maxHeight = urlBarHeight + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
