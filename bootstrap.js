@@ -178,6 +178,7 @@ function changeUI(window) {
   let lastScrolledUrl = "";
   let restyleEnhancedURLBarOnTabChange = false;
   let siblingsShown = false;
+  let urlBarHeight = null;
   unload(function() {
     let popupStack = mainPopupSelectedIndex = settingsStartIndex = relatedScrolledArray
       = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
@@ -248,8 +249,10 @@ function changeUI(window) {
     enhancedURLBar.style.overflow = "hidden";
     enhancedURLBar.style.display = "-moz-box";
     enhancedURLBar.style.padding = "0px";
-    enhancedURLBar.style.margin = "-1px 0px -1px -3px";
-    enhancedURLBar.style.maxHeight = (gURLBar.boxObject.height) + "px";
+    enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
+      + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -3px";
+    urlBarHeight = gURLBar.boxObject.height - 2;
+    enhancedURLBar.style.maxHeight = urlBarHeight + "px";
   }
 
   if (gURLBar.boxObject.height > 0)
@@ -259,7 +262,7 @@ function changeUI(window) {
 
   unload(function() {
     enhancedURLBar.parentNode.removeChild(enhancedURLBar);
-    enhanceURLBar = null;
+    urlBarHeight = enhanceURLBar = null;
   }, window);
   setOpacity(0);
 
@@ -334,7 +337,7 @@ function changeUI(window) {
         return false;
       // Array containing WhiteList Words
       // Populate it regularily
-      let whiteList = ["http","https","id","aurora", "xpcom", "hawaii"];
+      let whiteList = ["http","https","id","aurora", "xpcom", "hawaii", "src"];
       // code to determine if a single word is gibberish or not
       let numAlpha = 0; // Basically non numeric characters
       let numNum = 0;
@@ -778,10 +781,12 @@ function changeUI(window) {
   }
 
   function createStack(createVal, partURL, partType, hiddenArrow) {
+    if (urlBarHeight == null || urlBarHeight <= 0)
+      urlBarHeight = gURLBar.boxObject.height - 2;
 
     let createdStack = document.createElementNS(XUL, "stack");
     createdStack.setAttribute("id", "enhanced-urlBar-stack");
-    createdStack.style.maxHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 2)) + "px";
+    createdStack.style.maxHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 2)) + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
@@ -803,7 +808,7 @@ function changeUI(window) {
     let tempS = document.createElementNS(XUL, "label");
     tempS.setAttribute("value", createVal);
     tempS.setAttribute("id", "enhanced-urlBar-stack-text");
-    tempS.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
+    tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
     tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
       + (!enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
@@ -817,7 +822,7 @@ function changeUI(window) {
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
     tempArrow.setAttribute("id", "enhanced-urlBar-stack-arrow");
-    tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
+    tempArrow.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
     tempArrow.setAttribute("tooltiptext", "Click to access Sub Menu");
