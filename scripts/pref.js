@@ -42,7 +42,7 @@ function pref(key) {
 // Set custom values for this add-on
 pref.root = "extensions.UIEnhancer.";
 pref.defaults = {
-  bringBookmarksUp: true,
+  bringBookmarksUp: false,
   urlBarWidth: "700",
   animationSpeed: "normal",
   useSmallIcons: false,
