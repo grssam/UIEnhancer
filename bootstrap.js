@@ -1668,8 +1668,32 @@ function changeUI(window) {
             prevURL = "";
           let curURLLen = e.target.parentNode.getAttribute("url").length;
           let nextURL= enhancedURLBar.lastChild.getAttribute("url");
+          if (!e.target.value.match(/^[\/?#&]{1,2}/)) {
+            // If the user did not enter a value starting with /, ?/& or #
+            let (curNode = e.target.parentNode) {
+              if (curNode.getAttribute("isSetting") == "false")
+                prevURL += "/";
+              else if (curNode.getAttribute("isAnchorTag") != "true") {
+                if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "true"
+                  && curNode.previousSibling.getAttribute("isAnchorTag") == "false")
+                    prevURL += "&";
+                else if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "false")
+                  prevURL += "?";
+                else if (nextPart)
+                  prevURL += "&";
+              }
+              else {
+                if ((!nextPart && curNode.previousSibling.getAttribute("isAnchorTag") == "true") || nextPart)
+                  prevURL += "/";
+                else
+                  prevURL += "#";
+              }
+            }
+          }
           prevURL += e.target.value + nextURL.slice(curURLLen);
-          enhancedURLBar.removeChild(e.target.parentNode);
+          try {
+            enhancedURLBar.removeChild(e.target.parentNode);
+          } catch (ex) {}
           window.openUILinkIn(prevURL, "current");
           updateURL();
           break;
