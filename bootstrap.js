@@ -995,6 +995,25 @@ function changeUI(window) {
         getAsyncRelatedArray(e.target.parentNode.previousSibling, handleArrowClick,
           [e.target.parentNode, true]);
       }
+      else if (e.button ==2) {
+        clearPopup();
+        siblingsShown = true;
+        arrowMouseDown = true;
+        popupStack = e.target.parentNode;
+        mainPopup.appendChild(getMenuItems(popupStack));
+
+        // Show the popup below the arrows
+        mainPopup.openPopup(popupStack, "before_start", -30, 0);
+        gBrowser.addEventListener("click", hideMainPopup = function() {
+          gBrowser.removeEventListener("click", hideMainPopup, false);
+          try {
+            mainPopup.hidePopup();
+          } catch(ex) {}
+          arrowMouseDown = false;
+          siblingsShown = false;
+          highlightPart(popupStack, false, false, '>');
+        });
+      }
       else if (e.button == 1 || e.ctrlKey)
         handleTextClick("", e.target.parentNode, true, true);
     });
