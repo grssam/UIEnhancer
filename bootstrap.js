@@ -1687,27 +1687,28 @@ function changeUI(window) {
             prevURL = "";
           let curURLLen = e.target.parentNode.getAttribute("url").length;
           let nextURL= enhancedURLBar.lastChild.getAttribute("url");
-          if (!e.target.value.match(/^[\/?#&]{1,2}/)) {
-            // If the user did not enter a value starting with /, ?/& or #
-            let (curNode = e.target.parentNode) {
-              if (curNode.getAttribute("isSetting") == "false")
-                prevURL += "/";
-              else if (curNode.getAttribute("isAnchorTag") != "true") {
-                if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "true"
-                  && curNode.previousSibling.getAttribute("isAnchorTag") == "false")
-                    prevURL += "&";
-                else if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "false")
-                  prevURL += "?";
-                else if (nextPart)
-                  prevURL += "&";
-              }
-              else {
-                if ((!nextPart && curNode.previousSibling.getAttribute("isAnchorTag") == "true") || nextPart)
+          if (!e.target.value.match(/^[\/?#&]{1,2}/)
+            && e.target.parentNode != enhancedURLBar.firstChild) {
+              // If the user did not enter a value starting with /, ?/& or #
+              let (curNode = e.target.parentNode) {
+                if (curNode.getAttribute("isSetting") == "false")
                   prevURL += "/";
-                else
-                  prevURL += "#";
+                else if (curNode.getAttribute("isAnchorTag") != "true") {
+                  if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "true"
+                    && curNode.previousSibling.getAttribute("isAnchorTag") == "false")
+                      prevURL += "&";
+                  else if (!nextPart && curNode.previousSibling.getAttribute("isSetting") == "false")
+                    prevURL += "?";
+                  else if (nextPart)
+                    prevURL += "&";
+                }
+                else {
+                  if ((!nextPart && curNode.previousSibling.getAttribute("isAnchorTag") == "true") || nextPart)
+                    prevURL += "/";
+                  else
+                    prevURL += "#";
+                }
               }
-            }
           }
           prevURL += e.target.value + nextURL.slice(curURLLen);
           try {
