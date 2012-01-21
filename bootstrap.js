@@ -806,6 +806,10 @@ function changeUI(window) {
     tempS.setAttribute("value", createVal);
     tempS.setAttribute("id", "enhanced-urlBar-stack-text");
     tempS.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
+    // Adding tooltip texts
+    tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
+      + (!enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
+      + "\nScroll to instantly preview the sibling address"));
     if (partType == "domain" || hiddenArrow)
       tempS.style.display = "none";
     else
@@ -818,6 +822,7 @@ function changeUI(window) {
     tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
+    tempArrow.setAttribute("tooltiptext", "Click to access Sub Menu");
     if (hiddenArrow)
       createdStack.setAttribute("isHiddenArrow", true);
     else 
@@ -995,11 +1000,12 @@ function changeUI(window) {
         getAsyncRelatedArray(e.target.parentNode.previousSibling, handleArrowClick,
           [e.target.parentNode, true]);
       }
-      else if (e.button ==2) {
+      else if (e.button == 2) {
         clearPopup();
         siblingsShown = true;
         arrowMouseDown = true;
         popupStack = e.target.parentNode;
+        highlightPart(popupStack, true, true);
         mainPopup.appendChild(getMenuItems(popupStack));
 
         // Show the popup below the arrows
@@ -1137,6 +1143,9 @@ function changeUI(window) {
         partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
       partPointer.setAttribute("isHiddenArrow", false);
+      partPointer.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu"
+        + (partPointer == enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
+        + "\nScroll to instantly preview the sibling address"));
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
@@ -1185,6 +1194,7 @@ function changeUI(window) {
             enhancedURLBar.firstChild.setAttribute("isSetting", false);
             enhancedURLBar.firstChild.setAttribute("isAnchorTag", false);
             enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(hiddenParts[0]));
+            enhancedURLBar.firstChild.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu");
             if (!pref("useStyleSheet")) {
               enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
               enhancedURLBar.firstChild.firstChild.style.color = "rgb(30,30,30)";
@@ -1758,7 +1768,7 @@ function changeUI(window) {
     menuGroup.style.padding = "2px";
     // Copy Part
     if (enhancedURLBar.lastChild != arrowedStack) {
-      let copyPartButton = createToolbarButton("Copy Address till this Part", COPY_IMAGE, "Copy");
+      let copyPartButton = createToolbarButton("Copy Address till the Highlighted Part", COPY_IMAGE, "Copy");
       copyPartButton.onclick = function() {
         try {
           gBrowser.removeEventListener("click", hideMainPopup, false);
@@ -1781,20 +1791,20 @@ function changeUI(window) {
     };
     menuGroup.appendChild(copyAllPartButton);
     // Edit Part
-    let editPartButton = createToolbarButton("Edit This Part", EDIT_IMAGE, "Edit");
+    let editPartButton = createToolbarButton("Edit the Highlighted Part", EDIT_IMAGE, "Edit");
     editPartButton.onclick = function() {
       editPart(arrowedStack);
     };
     menuGroup.appendChild(editPartButton);
     // Add Part
-    let addPartButton = createToolbarButton("Add a Part next to this part", ADD_IMAGE, "Add");
+    let addPartButton = createToolbarButton("Add a Part next to the Highlighted part", ADD_IMAGE, "Add");
     addPartButton.onclick = function() {
       editPart(arrowedStack, true);
     };
     menuGroup.appendChild(addPartButton);
     // Delete Part
     if (arrowedStack != enhancedURLBar.firstChild) {
-      let deletePartButton = createToolbarButton("Delete this Part and load the resultant url", DELETE_IMAGE, "Delete");
+      let deletePartButton = createToolbarButton("Delete the Highlighted Part and load the resultant url", DELETE_IMAGE, "Delete");
       deletePartButton.onclick = function() {
         try {
           gBrowser.removeEventListener("click", hideMainPopup, false);
@@ -1928,7 +1938,7 @@ function changeUI(window) {
       mainPopup.openPopup(arrowedStack.previousSibling.lastChild, "after_start", 
       -30 + arrowedStack.previousSibling.lastChild.boxObject.width, 0);
     else
-      mainPopup.openPopup(arrowedStack.lastChild, "after_start");
+      mainPopup.openPopup(arrowedStack.lastChild, "after_start", -15, 0);
     popupStack = arrowedStack;
     gBrowser.addEventListener("click", hideMainPopup = function() {
       gBrowser.removeEventListener("click", hideMainPopup, false);
@@ -2188,6 +2198,7 @@ function changeUI(window) {
             return;
         if (resultArray.length == 0) {
           enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
+          enhancedURLBar.lastChild.lastChild.removeAttribute("tooltiptext");
           if (!pref("useStyleSheet"))
             enhancedURLBar.lastChild.lastChild.style.display = "none";
           else
