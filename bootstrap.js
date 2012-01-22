@@ -2196,7 +2196,7 @@ function changeUI(window) {
     }
     // Checking now the first element of the Array
     // for its similarity with the iLabel
-    if (urlArray_updateURL[1] != null && 
+    /*if (urlArray_updateURL[1] != null && 
       iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
         urlArray_updateURL.splice(1,1);
         urlPartArray.splice(1,1);
@@ -2204,7 +2204,7 @@ function changeUI(window) {
           settingsStartIndex--;
         if (anchorTagIndex != null && anchorTagIndex >= 1)
           anchorTagIndex--;
-    }
+    }*/
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
