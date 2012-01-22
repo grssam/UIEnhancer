@@ -5,11 +5,11 @@
     <creator>Girish Sharma</creator>
     <id>UIEnhancer@girishsharma</id>
     <name>UI Enhancer</name>
-    <version>3.0beta1</version>
+    <version>3.0</version>
     <bootstrap>true</bootstrap>
     <type>2</type>
     <homepageURL>https://addons.mozilla.org/en-US/firefox/addon/ui-enhancer/</homepageURL>
-    <description>Enhances the User Interface of URLBar and Bookmarks Toolbar</description>
+    <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
     <optionsType>2</optionsType>
 
     <targetApplication>
