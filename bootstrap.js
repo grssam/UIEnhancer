@@ -1176,8 +1176,6 @@ function changeUI(window) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
       }
-      else
-        partPointer.setAttribute("lastArrowHidden", true);
       if (!pref("useStyleSheet")) {
         partPointer.lastChild.setAttribute("value",">");
         partPointer.lastChild.style.padding = "2px 1px 1px 2px";
@@ -1189,11 +1187,7 @@ function changeUI(window) {
     }
     else {
       let addedStack = createStack(trimWord(partVal), partURL, partType, false);
-      if (lastPart)
-        addedStack.setAttribute("lastArrowHidden", true);
       enhancedURLBar.appendChild(addedStack);
-      if (lastPart)
-        highlightPart(addedStack, false, false);
       partsWidth += addedStack.boxObject.width;
       addedStack = null;
     }
@@ -2231,14 +2225,21 @@ function changeUI(window) {
                "WHERE url LIKE '%" + enhancedURLBar.lastChild.getAttribute("url")
                .replace(/^(https?:\/\/)?(www\.)?/,"") + "%' " +
                "ORDER BY frecency DESC " +
-               "LIMIT 15",
+               "LIMIT 3",
       }, {
         callback: function([urlPart, resultArray]) {
           if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
             .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
             .replace(/^(https?:\/\/)?(www\.)?/, ""))
               return;
-          if (resultArray.length == 1) {
+          resultArray = resultArray.filter(function({url, title}) {
+            if (url.replace(/^(https?:\/\/)?(www\.)?/, "")
+              .slice(urlPart.replace(/^(https?:\/\/)?(www\.)?/, "").length).length <= 1)
+                return false;
+            else
+              return true;
+          });
+          if (resultArray.length == 0) {
             enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
             enhancedURLBar.lastChild.lastChild.removeAttribute("tooltiptext");
             if (!pref("useStyleSheet"))
