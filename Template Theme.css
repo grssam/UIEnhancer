@@ -1,0 +1,635 @@
+/* Class for each part of url-bar */
+.enhanced-stack {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for each arrow of a part [MAIN CLASS] */
+.enhanced-arrow {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_normal.png');
+}
+
+/* Class for each arrow of a part [NORMAL STATE] */
+.enhanced-arrow-normal {
+  background-image: url('defaultTheme/arrow_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-textHovered {
+  background-image: url('defaultTheme/arrow_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-textHovered-left {
+  background-image: url('defaultTheme/arrow_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-arrowHovered {
+  background-image: url('defaultTheme/arrow_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_arrowMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-textMouseDown {
+  background-image: url('defaultTheme/arrow_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_textMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-mouseScroll {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_mouseScroll.png');
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-mouseScroll {
+  background-image: url('defaultTheme/arrow_mouseScroll.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-mouseScroll-left {
+  background-image: url('defaultTheme/arrow_mouseScroll_left.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/arrow_mouseScroll_leftScrolled.png');
+}
+
+/* Following Classes are for anchor tags. */
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-anchor {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(75, 150, 200);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-anchor {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-anchor-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-anchor-normal {
+  background-image: url('defaultTheme/arrow_anchor_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-anchor-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-anchor-textHovered {
+  background-image: url('defaultTheme/arrow_anchor_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-textHovered-left {
+  background-image: url('defaultTheme/arrow_anchor_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-anchor-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-anchor-arrowHovered {
+  background-image: url('defaultTheme/arrow_anchor_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_anchor_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-anchor-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_arrowMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_anchor_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-anchor-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-anchor-textMouseDown {
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-anchor-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown_left.png');
+}
+
+/* Following Classes are for queryString tags. */
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-queryString {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(50, 175, 75);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-queryString {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-queryString-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-queryString-normal {
+  background-image: url('defaultTheme/arrow_queryString_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-queryString-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-queryString-textHovered {
+  background-image: url('defaultTheme/arrow_queryString_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-textHovered-left {
+  background-image: url('defaultTheme/arrow_queryString_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-queryString-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-queryString-arrowHovered {
+  background-image: url('defaultTheme/arrow_queryString_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_queryString_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-queryString-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_arrowMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_queryString_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-queryString-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-queryString-textMouseDown {
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-queryString-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown_left.png');
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow {
+  width: 10px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-normal {
+  background-image: url('defaultTheme/arrow_noArrow_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-textHovered {
+  background-image: url('defaultTheme/arrow_noArrow_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-textHovered-left {
+  background-image: url('defaultTheme/arrow_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-arrowHovered {
+  background-image: url('defaultTheme/arrow_noArrow_arrowHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_arrowMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-textMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_textMouseDown_left.png');
+}
+
+/* Class for each arrow of a part [MOUSE SCROLL STATE] */
+.enhanced-arrow-noArrow-mouseScroll {
+  background-image: url('defaultTheme/arrow_noArrow_mouseScroll.png');
+}
+
+/* Class for text inside each part [MOUSE SCROLL STATE] */
+.enhanced-text-noArrow-mouseScroll {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_mouseScroll.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-mouseScroll-left {
+  background-image: url('defaultTheme/arrow_mouseScroll_left.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-mouseScroll-leftScrolled {
+  background-image: url('defaultTheme/arrow_mouseScroll_leftScrolled.png');
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   Also, the part is an anchor tag
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow-anchor {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(75, 150, 200);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow-anchor {
+  width: 10px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-anchor-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-anchor-normal {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-anchor-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-anchor-textHovered {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-textHovered-left {
+  background-image: url('defaultTheme/arrow_anchor_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-anchor-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_anchor_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-anchor-arrowHovered {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_anchor_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-anchor-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_arrow_mouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-anchor-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_anchor_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-anchor-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_anchor_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-anchor-textMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_anchor_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-anchor-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_anchor_textMouseDown_left.png');
+}
+
+/* Following Classes are for state when no suggestions are possible.
+   Also, the aprt is queryString
+   That means that last part should not show trailing arrow]*/
+
+/* Class for text inside each part [MAIN CLASS] */
+.enhanced-text-noArrow-queryString {
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgb(50, 175, 75);
+}
+
+/* Class for arrow of a part [MAIN CLASS]*/
+.enhanced-arrow-noArrow-queryString {
+  width: 10px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Class for text inside each part [NORMAL STATE] */
+.enhanced-text-noArrow-queryString-normal {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_normal.png');
+}
+
+/* Class for arrow of a part [NORMAL STATE]*/
+.enhanced-arrow-noArrow-queryString-normal {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_normal.png');
+}
+
+/* Class for text inside each part [TEXT HOVERED STATE] */
+.enhanced-text-noArrow-queryString-textHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_textHovered.png');
+}
+
+/* Class for each arrow of a part [TEXT HOVERED STATE] */
+.enhanced-arrow-noArrow-queryString-textHovered {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-textHovered-left {
+  background-image: url('defaultTheme/arrow_queryString_textHovered_left.png');
+}
+
+/* Class for text inside each part [ARROW HOVERED STATE] */
+.enhanced-text-noArrow-queryString-arrowHovered {
+  padding: 4px 2px 3px 2px !important;
+  background-image: url('defaultTheme/text_queryString_arrowHovered.png');
+}
+
+/* Class for each arrow of a part [ARROW HOVERED STATE] */
+.enhanced-arrow-noArrow-queryString-arrowHovered {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textHovered.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-arrowHovered-left {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_arrowHovered_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-text-noArrow-queryString-arrowMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_arrowMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON ARROW STATE] */
+.enhanced-arrow-noArrow-queryString-arrowMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-arrowMouseDown-left {
+  background-image: url('defaultTheme/arrow_queryString_arrowMouseDown_left.png');
+}
+
+/* Class for text inside each part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-text-noArrow-queryString-textMouseDown {
+  padding: 5px 1px 2px 3px !important;
+  background-image: url('defaultTheme/text_queryString_textMouseDown.png');
+}
+
+/* Class for each arrow of a part [MOUSE DOWN ON TEXT STATE] */
+.enhanced-arrow-noArrow-queryString-textMouseDown {
+  background-image: url('defaultTheme/arrow_noArrow_queryString_textMouseDown.png');
+}
+
+/* Class for the arrow left to concerned part */
+.enhanced-arrow-noArrow-queryString-textMouseDown-left {
+  background-image: url('defaultTheme/arrow_queryString_textMouseDown_left.png');
+}
+
+/* Class for arrow of a part [DOUBLE LESS THAN CEHVRON
+   to show the hidden parts] */
+/* MAIN CLASS */
+.enhanced-arrow-backChevron {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/* NORMAL STATE */
+.enhanced-arrow-backChevron-normal {
+  background-image: url('defaultTheme/backChevron_normal.png');
+}
+/* HOVERED STATE */
+.enhanced-arrow-backChevron-arrowHovered {
+  background-image: url('defaultTheme/backChevron_arrowHovered.png');
+}
+/* MOUSEDOWN STATE */
+.enhanced-arrow-backChevron-arrowMouseDown {
+  background-image: url('defaultTheme/backChevron_mouseDown.png');
+}
