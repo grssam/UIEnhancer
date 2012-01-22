@@ -179,6 +179,16 @@ function changeUI(window) {
   let restyleEnhancedURLBarOnTabChange = false;
   let siblingsShown = false;
   let urlBarHeight = null;
+  let origIdentity;
+  let origILabel;
+  let origICountryLabel;
+  let origInput;
+  let identityLabel;
+  let identityCountryLabel;
+  let maxWidth = 0;
+  let enhancedURLBar;
+  let setupEnhancedURLBarUI = function() {};
+  let setOpacity = function() {};
   unload(function() {
     let popupStack = mainPopupSelectedIndex = settingsStartIndex = relatedScrolledArray
       = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
@@ -187,84 +197,85 @@ function changeUI(window) {
 
   let {DBConnection} = PlacesUtils.history.QueryInterface(Ci.nsPIPlacesDatabase);
 
-  // Get references to existing UI elements
-  let origIdentity = $("identity-icon-labels");
-  let origILabel = $("identity-icon-label");
-  let origICountryLabel = $("identity-icon-country-label");
-  origIdentity.collapsed = false;
-  let origInput = gURLBar.mInputField;
+  if (pref("enhanceURLBar")) {
+    // Get references to existing UI elements
+    origIdentity = $("identity-icon-labels");
+    origILabel = $("identity-icon-label");
+    origICountryLabel = $("identity-icon-country-label");
+    origIdentity.collapsed = false;
+    origInput = gURLBar.mInputField;
 
-  let identityLabel = document.createElementNS(XUL, "label");
-  identityLabel.setAttribute("id","enhanced-identity-icon-label");
-  identityLabel.setAttribute("collapsed",false);
-  identityLabel.setAttribute("flex", 1);
-  identityLabel.setAttribute("style",origILabel.style);
-  identityLabel.style.padding = "0px";
-  identityLabel.style.margin = "0px";
+    identityLabel = document.createElementNS(XUL, "label");
+    identityLabel.setAttribute("id","enhanced-identity-icon-label");
+    identityLabel.setAttribute("collapsed",false);
+    identityLabel.setAttribute("flex", 1);
+    identityLabel.setAttribute("style",origILabel.style);
+    identityLabel.style.padding = "0px";
+    identityLabel.style.margin = "0px";
 
-  let identityCountryLabel = document.createElementNS(XUL, "label");
-  identityCountryLabel.setAttribute("id", "enhanced-identity-icon-country-label");
-  identityCountryLabel.setAttribute("collapsed", false);
-  identityCountryLabel.setAttribute("flex", 1);
-  identityCountryLabel.setAttribute("style", origICountryLabel.style);
-  identityCountryLabel.style.padding = "0px";
-  identityCountryLabel.style.margin = "0px 0px 0px 4px";
+    identityCountryLabel = document.createElementNS(XUL, "label");
+    identityCountryLabel.setAttribute("id", "enhanced-identity-icon-country-label");
+    identityCountryLabel.setAttribute("collapsed", false);
+    identityCountryLabel.setAttribute("flex", 1);
+    identityCountryLabel.setAttribute("style", origICountryLabel.style);
+    identityCountryLabel.style.padding = "0px";
+    identityCountryLabel.style.margin = "0px 0px 0px 4px";
 
-  origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
-  origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
-  origILabel.collapsed = true;
-  origICountryLabel.collapsed = true;
+    origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
+    origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
+    origILabel.collapsed = true;
+    origICountryLabel.collapsed = true;
 
-  function setOpacity(opacity) {
-    origInput.style.opacity = opacity;
-    let d = origInput.firstChild;
-    while (d != null) {
-      d.style.opacity = opacity;
-      d = d.nextSibling;
+    setOpacity = function(opacity) {
+      origInput.style.opacity = opacity;
+      let d = origInput.firstChild;
+      while (d != null) {
+        d.style.opacity = opacity;
+        d = d.nextSibling;
+      }
+      let d = origInput.nextSibling;
+      while (d != null) {
+        d.style.opacity = opacity;
+        d = d.nextSibling;
+      }
     }
-    let d = origInput.nextSibling;
-    while (d != null) {
-      d.style.opacity = opacity;
-      d = d.nextSibling;
+
+    unload(function() {
+      setOpacity(1);
+      origILabel.collapsed = false;
+      origICountryLabel.collapsed = false;
+      origIdentity.removeChild($("enhanced-identity-icon-label"));
+      origIdentity.removeChild($("enhanced-identity-icon-country-label"));
+      identityLabel = identityCountryLabel = null;
+    }, window);
+
+    // Add stuff around the original urlbar input box
+    enhancedURLBar = document.createElementNS(XUL, "stack");
+    origInput.parentNode.insertBefore(enhancedURLBar, origInput);
+    setupEnhancedURLBarUI = function() {
+      enhancedURLBar.setAttribute("id", "enhanced-urlBar");
+      enhancedURLBar.setAttribute("flex", 0);
+      enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
+      enhancedURLBar.style.overflow = "hidden";
+      enhancedURLBar.style.display = "-moz-box";
+      enhancedURLBar.style.padding = "0px";
+      enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
+        + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -3px";
+      urlBarHeight = gURLBar.boxObject.height - 2;
+      enhancedURLBar.style.maxHeight = urlBarHeight + "px";
     }
+
+    if (gURLBar.boxObject.height > 0)
+      setupEnhancedURLBarUI();
+    else
+      restyleEnhancedURLBarOnTabChange = true;
+
+    unload(function() {
+      enhancedURLBar.parentNode.removeChild(enhancedURLBar);
+      urlBarHeight = enhanceURLBar = null;
+    }, window);
+    setOpacity(0);
   }
-
-  unload(function() {
-    setOpacity(1);
-    origILabel.collapsed = false;
-    origICountryLabel.collapsed = false;
-    origIdentity.removeChild($("enhanced-identity-icon-label"));
-    origIdentity.removeChild($("enhanced-identity-icon-country-label"));
-    identityLabel = identityCountryLabel = null;
-  }, window);
-
-  let maxWidth = 0;
-  // Add stuff around the original urlbar input box
-  let enhancedURLBar = document.createElementNS(XUL, "stack");
-  origInput.parentNode.insertBefore(enhancedURLBar, origInput);
-  function setupEnhancedURLBarUI() {
-    enhancedURLBar.setAttribute("id", "enhanced-urlBar");
-    enhancedURLBar.setAttribute("flex", 0);
-    enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
-    enhancedURLBar.style.overflow = "hidden";
-    enhancedURLBar.style.display = "-moz-box";
-    enhancedURLBar.style.padding = "0px";
-    enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
-      + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -3px";
-    urlBarHeight = gURLBar.boxObject.height - 2;
-    enhancedURLBar.style.maxHeight = urlBarHeight + "px";
-  }
-
-  if (gURLBar.boxObject.height > 0)
-    setupEnhancedURLBarUI();
-  else
-    restyleEnhancedURLBarOnTabChange = true;
-
-  unload(function() {
-    enhancedURLBar.parentNode.removeChild(enhancedURLBar);
-    urlBarHeight = enhanceURLBar = null;
-  }, window);
-  setOpacity(0);
 
   function getMaxWidth() {
     let (udb = $("urlbar-display-box")) {
@@ -503,8 +514,18 @@ function changeUI(window) {
     // Show the different hidden parts as per their heirarchy
     for (let i = 0; i < hiddenParts.length; i++) {
       let part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-part");
+      part.setAttribute("id", "hidden-url-part");
       part.setAttribute("class", "menuitem-iconic");
+      if (pref("useStyleSheet")) {
+        if (anchorTagIndex != null && i >= anchorTagIndex)
+          part.style.color = "rgb(75, 150, 200)";
+        else if (settingsStartIndex != null && i >= settingsStartIndex)
+          part.style.color = "rgb(50, 175, 75)";
+      }
+      else if ((anchorTagIndex != null && i >= anchorTagIndex)
+        || (settingsStartIndex != null && i >= settingsStartIndex))
+          part.style.color = "rgb(150, 150, 50)";
+
       part.setAttribute("label", hiddenParts[i]);
       if (mainPopup.firstChild)
         mainPopup.insertBefore(part, mainPopup.firstChild);
@@ -2830,7 +2851,8 @@ function changeUI(window) {
       setupBookmarksUI();
       addBookmarkListeners();
     }, 200);
-  enhanceURLBar();
+  if (pref("enhanceURLBar"))
+    enhanceURLBar();
 }
 
 function disable(id) {
@@ -2864,31 +2886,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
 
-  if (pref("useStyleSheet") && pref("userStylePath").length == 0)
-    loadStyles(["defaultThemeLight"]);
-  else if (pref("useStyleSheet")) {
-    let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
-      getService(Ci.nsIStyleSheetService);
-    let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
-      .replace(/[\\]/g, "/"), null, null);
-    if (!fileURI.spec.match(/(\.css)$/))
-      loadStyles(["defaultThemeLight"]);
-    else {
-      sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
-      // Fallback to default stylesheet when the file is not present
-      if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
-        loadStyles(["defaultThemeLight"]);
-      else
-        unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
-    }
-  }
-
-  // Apply the changes in UI
-  watchWindows(changeUI);
-
-  reload = function() {
-    unload();
-    normalStartup = true;
+  if (pref("enhanceURLBar")) {
     if (pref("useStyleSheet") && pref("userStylePath").length == 0)
       loadStyles(["defaultThemeLight"]);
     else if (pref("useStyleSheet")) {
@@ -2907,11 +2905,38 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
       }
     }
+  }
+
+  // Apply the changes in UI
+  watchWindows(changeUI);
+
+  reload = function() {
+    unload();
+    normalStartup = true;
+    if (pref("enhanceURLBar")) {
+      if (pref("useStyleSheet") && pref("userStylePath").length == 0)
+        loadStyles(["defaultThemeLight"]);
+      else if (pref("useStyleSheet")) {
+        let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
+          getService(Ci.nsIStyleSheetService);
+        let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
+          .replace(/[\\]/g, "/"), null, null);
+        if (!fileURI.spec.match(/(\.css)$/))
+          loadStyles(["defaultThemeLight"]);
+        else {
+          sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
+          // Fallback to default stylesheet when the file is not present
+          if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
+            loadStyles(["defaultThemeLight"]);
+          else
+            unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
+        }
+      }
+    }
     watchWindows(changeUI);
     pref.observe([
       "useStyleSheet",
       "bringBookmarksUp",
-      "useSmallIcons",
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar",
@@ -2928,6 +2953,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   function specialReload() {
     firstRunAfterInstall = true;
     normalStartup = false;
+    reload();
   }
 
   function reloadOnTabChange() {
@@ -2938,7 +2964,6 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   pref.observe([
     "useStyleSheet",
     "bringBookmarksUp",
-    "useSmallIcons",
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish",
