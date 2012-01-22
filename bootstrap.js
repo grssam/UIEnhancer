@@ -1176,6 +1176,8 @@ function changeUI(window) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
       }
+      else
+        partPointer.setAttribute("lastArrowHidden", true);
       if (!pref("useStyleSheet")) {
         partPointer.lastChild.setAttribute("value",">");
         partPointer.lastChild.style.padding = "2px 1px 1px 2px";
@@ -1187,7 +1189,11 @@ function changeUI(window) {
     }
     else {
       let addedStack = createStack(trimWord(partVal), partURL, partType, false);
+      if (lastPart)
+        addedStack.setAttribute("lastArrowHidden", true);
       enhancedURLBar.appendChild(addedStack);
+      if (lastPart)
+        highlightPart(addedStack, false, false);
       partsWidth += addedStack.boxObject.width;
       addedStack = null;
     }
@@ -2218,29 +2224,40 @@ function changeUI(window) {
     updateLook();
     // Removing last arrow if no suggestion possible
     if (enhancedURLBar.lastChild && enhancedURLBar.firstChild)
-      getAsyncRelatedArray(enhancedURLBar.lastChild,function([urlPart, resultArray]) {
-        if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
-          .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
-          .replace(/^(https?:\/\/)?(www\.)?/, ""))
-            return;
-        if (resultArray.length == 0) {
-          enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
-          enhancedURLBar.lastChild.lastChild.removeAttribute("tooltiptext");
-          if (!pref("useStyleSheet"))
-            enhancedURLBar.lastChild.lastChild.style.display = "none";
-          else
-            highlightPart(enhancedURLBar.lastChild, false, false);
-        }
-        else {
-          enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
-          if (!pref("useStyleSheet"))
-            enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
-          else
-            highlightPart(enhancedURLBar.lastChild, false, false)
-        }
-        // Updating look again
-        updateLook();
-      }, [urlValue.slice(0, urlPartArray[urlPartArray.length - 1])]);
+      spinQueryAsync(DBConnection, {
+        names: ["url","title"],
+        query: "SELECT * " +
+               "FROM moz_places " +
+               "WHERE url LIKE '%" + enhancedURLBar.lastChild.getAttribute("url")
+               .replace(/^(https?:\/\/)?(www\.)?/,"") + "%' " +
+               "ORDER BY frecency DESC " +
+               "LIMIT 15",
+      }, {
+        callback: function([urlPart, resultArray]) {
+          if (enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
+            .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
+            .replace(/^(https?:\/\/)?(www\.)?/, ""))
+              return;
+          if (resultArray.length == 1) {
+            enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
+            enhancedURLBar.lastChild.lastChild.removeAttribute("tooltiptext");
+            if (!pref("useStyleSheet"))
+              enhancedURLBar.lastChild.lastChild.style.display = "none";
+            else
+              highlightPart(enhancedURLBar.lastChild, false, false);
+          }
+          else {
+            enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
+            if (!pref("useStyleSheet"))
+              enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
+            else
+              highlightPart(enhancedURLBar.lastChild, false, false)
+          }
+          // Updating look again
+          updateLook();
+        },
+        args : [urlValue.slice(0, urlPartArray[urlPartArray.length - 1])]
+      });
   }
 
   function enhanceURLBar() {
