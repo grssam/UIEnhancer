@@ -30,19 +30,19 @@
 <box xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <setting pref="extensions.UIEnhancer.enhanceURLBar"
-    title="Enhance the URLBar User Interface"
+    title="Enhance the Location Bar User Interface"
     type="bool">
-    Implements an UI similar to Windows Address Bar UI.
+    Implements a Breadcrumb display User Interface with interactive parts and easy to access features.
   </setting>
 
   <setting pref="extensions.UIEnhancer.useStyleSheet"
-    title="Use Style Sheet to style the Enhanced URLBar"
+    title="Use Style Sheet to style the Enhanced Location Bar"
     type="bool">
-    If unchecked, the breadcrumb will revert back to normal plaintext and Windows Explorer Theme
+    If unchecked, the breadcrumb will revert back to normal plaintext and Windows Explorer Theme.
   </setting>
 
   <setting pref="extensions.UIEnhancer.userStylePath"
-    title="Use your own custom stylesheet to style the breadcrumb display"
+    title="Use your own custom stylesheet to style the Breadcrumb display"
     type="file">
     Leave empty to use default theme.
     If file not present, default theme would be used.
@@ -56,7 +56,7 @@
   <setting pref="extensions.UIEnhancer.removeGibberish"
     title="Replace insignificant url parts with useful info."
     type="bool">
-    Provides Rich information about the page in place of random token values in a url.
+    Provides Rich information about the page in place of random values in a url.
     Helpful specially for pinned tabs.
   </setting>
 
@@ -64,16 +64,16 @@
     title="Bring Bookmarks Toolbar up and combine with UrlBar"
     type="bool"/>
 
-  <setting pref="extensions.UIEnhancer.useSmallIcons"
-    title="Use small icons to save space"
-    type="bool">
-    Transfers icons from after the location bar to Bookmarks Toolbar.
-  </setting>
-
   <setting pref="extensions.UIEnhancer.urlBarWidth"
     title="Width of UrlBar (if above setting enabled)"
     type="string">
     Only input the number without px or pixel.
+  </setting>
+
+  <setting pref="extensions.UIEnhancer.useSmallIcons"
+    title="Use small icons to save space"
+    type="bool">
+    Transfers icons from after the location bar to Bookmarks Toolbar.
   </setting>
 
   <setting pref="extensions.UIEnhancer.animationSpeed"
