@@ -651,12 +651,12 @@ function changeUI(window) {
     else if (currentScrolledIndex == indexB4Scrolling){
       mouseScrolled = false;
       updateURL();
-      highlightPart(scrolledStack, true, true);
       partPointer = scrolledStack.nextSibling;
       while (partPointer != null) {
         highlightPart(partPointer, false, false);
         partPointer = partPointer.nextSibling;
       }
+      highlightPart(scrolledStack, true, true);
       partPointer = enhancedURLBar.firstChild;
     }
     delta = null;
@@ -1022,8 +1022,20 @@ function changeUI(window) {
       if (arrowMouseDown || siblingsShown)
         return;
 
-      if (e.button == 0 && !e.ctrlKey)
+      if (e.button == 0 && !e.ctrlKey) {
+        if (mouseScrolled) {
+          partPointer = enhancedURLBar.lastChild;
+          mouseScrolled = false;
+          currentScrolledIndex = indexB4Scrolling;
+          while (partPointer) {
+            highlightPart(partPointer, false, false);
+            partPointer = partPointer.previousSibling;
+          }
+          partPointer = enhancedURLBar.firstChild;
+          return;
+        }
         handleTextClick("", e.target.parentNode, true);
+      }
       else if (e.button == 2 && e.target.parentNode.previousSibling != null && !arrowMouseDown) {
         siblingsShown = true;
         getAsyncRelatedArray(e.target.parentNode.previousSibling, handleArrowClick,
@@ -1099,7 +1111,7 @@ function changeUI(window) {
       textMouseDown = false;
       if (mouseScrolled) {
         async(function() {
-          partPointer = enhancedURLBar.firstChild;
+          partPointer = scrolledStack;
           mouseScrolled = false;
           currentScrolledIndex = indexB4Scrolling;
           while (partPointer) {
@@ -1363,10 +1375,8 @@ function changeUI(window) {
       mouseScrolled = false;
       window.openUILinkIn(partText, tab);
     }
-    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled) {
-      mouseScrolled = false;
+    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled)
       window.openUILinkIn(clickedStack.getAttribute("url"), tab);
-    }
   }
 
   // Helper function used to fill missing entries in the relatedArray
@@ -2303,6 +2313,16 @@ function changeUI(window) {
           setupEnhancedURLBarUI();
         }
         async(updateURL);
+      });
+      listen(window, gBrowser, "load", function(e) {
+        if (!e.originalTarget.hasFocus())
+          return;
+        async(function() {
+          if (!tabChanged)
+            updateURL();
+          else
+            tabChanged = false;
+        }, 50);
       });
       listen(window, gURLBar, "focus", function() {
         if (editing)
