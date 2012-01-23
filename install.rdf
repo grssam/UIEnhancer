@@ -12,6 +12,8 @@
     <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
     <optionsType>2</optionsType>
 
+    <contributor>Girish Sharma</contributor>
+    <contributor>Axel Grude</contributor>
     <targetApplication>
       <r:Description>
         <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
