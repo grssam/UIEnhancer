@@ -150,8 +150,9 @@ function changeUI(window) {
   let refreshRelatedArray = false;
   let tabChanged = false;
   unload(function() {
-    let url = urlPartArray = partPointer = arrowMouseDown = tabChanged = null;
-    let textMouseDown = hiddenParts = partsWidth = newDocumentLoaded = null;
+    url = urlPartArray = partPointer = arrowMouseDown = tabChanged
+      = textMouseDown = hiddenParts = partsWidth = newDocumentLoaded
+      = refreshRelatedArray = editing = null;
   }, window);
 
   let mainPopup = document.createElementNS(XUL, "menupopup");
@@ -160,11 +161,11 @@ function changeUI(window) {
   unload(function() {
     mainPopup.parentNode.removeChild(mainPopup);
     mainPopup = null;
+    hideMainPopup = null;
   }, window);
   let hideMainPopup = function() {};
 
   let popupStack = null;
-  let mainPopupSelectedIndex = null;
   let settingsStartIndex = null;
   let redRemoved = 0;
   let lastScrolledTime = 0;
@@ -189,13 +190,16 @@ function changeUI(window) {
   let enhancedURLBar;
   let setupEnhancedURLBarUI = function() {};
   let setOpacity = function() {};
-  unload(function() {
-    let popupStack = mainPopupSelectedIndex = settingsStartIndex = relatedScrolledArray
-      = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
-      = scrolledStack = indexB4Scrolling = currentScrolledIndex = redRemoved = null;
-  }, window);
 
   let {DBConnection} = PlacesUtils.history.QueryInterface(Ci.nsPIPlacesDatabase);
+
+  unload(function() {
+    popupStack = settingsStartIndex = relatedScrolledArray
+      = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
+      = scrolledStack = indexB4Scrolling = currentScrolledIndex = redRemoved
+      = lastScrolledUrl = restyleEnhancedURLBarOnTabChange = siblingsShown
+      = urlBarHeight = maxWidth = DBConnection = null;
+  }, window);
 
   if (pref("enhanceURLBar")) {
     // Get references to existing UI elements
@@ -246,7 +250,7 @@ function changeUI(window) {
       origICountryLabel.collapsed = false;
       origIdentity.removeChild($("enhanced-identity-icon-label"));
       origIdentity.removeChild($("enhanced-identity-icon-country-label"));
-      identityLabel = identityCountryLabel = null;
+      identityLabel = identityCountryLabel = origICountryLabel = origILabel = origIdentity = null;
     }, window);
 
     // Add stuff around the original urlbar input box
@@ -272,7 +276,7 @@ function changeUI(window) {
 
     unload(function() {
       enhancedURLBar.parentNode.removeChild(enhancedURLBar);
-      urlBarHeight = enhanceURLBar = null;
+      urlBarHeight = enhancedURLBar = origInput = null;
     }, window);
     setOpacity(0);
   }
@@ -492,7 +496,6 @@ function changeUI(window) {
       }
     }
     popupStack = null;
-    mainPopupSelectedIndex = null;
     while (mainPopup.firstChild)
       mainPopup.removeChild(mainPopup.firstChild);
   }
@@ -561,7 +564,7 @@ function changeUI(window) {
       mainPopup.lastChild);
 
     // Show the popup below the arrows
-    mainPopup.openPopup(enhancedURLBar.firstChild, "before_start");
+    mainPopup.openPopup(enhancedURLBar.firstChild, "after_start");
     popupStack = hiddenStack;
     gBrowser.addEventListener("mousedown", hideMainPopup = function() {
       gBrowser.removeEventListener("mousedown", hideMainPopup, false);
@@ -1035,7 +1038,7 @@ function changeUI(window) {
         mainPopup.appendChild(getMenuItems(popupStack));
 
         // Show the popup below the arrows
-        mainPopup.openPopup(popupStack, "before_start", -30, 0);
+        mainPopup.openPopup(popupStack, "after_start", -30, 0);
         gBrowser.addEventListener("click", hideMainPopup = function() {
           gBrowser.removeEventListener("click", hideMainPopup, false);
           try {
@@ -1899,7 +1902,6 @@ function changeUI(window) {
         if (tempS.getAttribute("url").replace(/^(https?:\/\/)/,"")
           .replace(/[\/]$/, "") == url.replace(/[\/]$/, "")) {
             part.style.fontWeight = "bold";
-            mainPopupSelectedIndex = mainPopup.childNodes.length || 0;
             isCurrent = true;
         }
       }
@@ -2377,8 +2379,6 @@ function changeUI(window) {
   let limitX;
   let limitXBig;
   let temp;
-  let tempMouseOver;
-  let tempBookmarksOver;
   let afterURLBar = [];
   let origCollapsedState;
   let timeInterval = 0;
@@ -2391,9 +2391,9 @@ function changeUI(window) {
   function max(n1, n2) n1>n2?n1:n2;
   function min(n1, n2) n1<n2?n1:n2;
   unload(function() {
-    hovered = onBookmarks = newMargin = limitX = limitXBig = temp = null;
-    tempMouseOver = tempBookmarksOver = null;
-    timeInterval = enoughSpace = firstRun = recheckOnTabChange = null;
+    hovered = onBookmarks = newMargin = limitX = limitXBig = temp = bookmarksWidth
+      = origURLStyle = origBTStyle = afterURLBar = isAfterUrl = currentTabsOnTop
+      = timeInterval = enoughSpace = firstRun = recheckOnTabChange = spaceAfterBookmarks = null;
   }, window);
   // Handle the rest of the user customized icons on the nav-bar
   function handleRest() {
