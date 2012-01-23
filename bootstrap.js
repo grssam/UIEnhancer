@@ -384,7 +384,7 @@ function changeUI(window) {
     let i = 0;
     let len;
     function checkBaseMatch(base) {
-      base = base.toLowerCase().replace(/[\[\]+\-\\\/\(\)\%'\?]+/g, "");
+      base = base.toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
       let ret = false;
       for (let i = 0; i < baseString.length; i++) {
         try {
@@ -396,7 +396,7 @@ function changeUI(window) {
     }
 
     for (i = 0; i < baseString.length; i++)
-      baseString[i] = baseString[i].toLowerCase().replace(/[\[\]+\-\\\/\(\)\%'\?]+/g, "");
+      baseString[i] = baseString[i].toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
     i = 0;
     let {length} = redString;
     while (i < length) {
