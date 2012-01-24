@@ -352,7 +352,7 @@ function changeUI(window) {
         return false;
       // Array containing WhiteList Words
       // Populate it regularily
-      let whiteList = ["http","https","id","aurora", "xpcom", "hawaii", "src"];
+      let whiteList = ["http","https","id","aurora", "xpcom", "hawaii", "src", "sdk"];
       // code to determine if a single word is gibberish or not
       let numAlpha = 0; // Basically non numeric characters
       let numNum = 0;
@@ -1032,7 +1032,7 @@ function changeUI(window) {
             partPointer = partPointer.previousSibling;
           }
           partPointer = enhancedURLBar.firstChild;
-          return;
+          mouseScrolled = true;
         }
         handleTextClick("", e.target.parentNode, true);
       }
@@ -1375,8 +1375,10 @@ function changeUI(window) {
       mouseScrolled = false;
       window.openUILinkIn(partText, tab);
     }
-    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled)
+    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled) {
+      mouseScrolled = false;
       window.openUILinkIn(clickedStack.getAttribute("url"), tab);
+    }
   }
 
   // Helper function used to fill missing entries in the relatedArray
