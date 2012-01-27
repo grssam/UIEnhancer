@@ -1848,7 +1848,7 @@ function changeUI(window) {
       try {
         gBrowser.removeEventListener("click", hideMainPopup, false);
       } catch (ex) {}
-      copyToClipboard(getURI().spec);
+      copyToClipboard(decodeURI(getURI().spec));
       arrowMouseDown = siblingsShown = false;
       highlightPart(arrowedStack, false, false);
     };
@@ -2098,7 +2098,7 @@ function changeUI(window) {
     }
 
     origIdentity.collapsed = false;
-    urlValue = getURI().spec;
+    urlValue = decodeURI(getURI().spec);
     counter = 0;
     initial = 0;
     urlPartArray = [];
@@ -2144,7 +2144,7 @@ function changeUI(window) {
         length = null;
         return true;
       });
-      urlValue = getURI().spec;
+      urlValue = decodeURI(getURI().spec);
       if (settingsStartIndex == null)
         settingsStartIndex = (urlPostSetting.length > 0? urlPartArray.length: null);
       urlPostSetting.split(/[?&#]/).forEach(function(valueVal) {
