@@ -1416,7 +1416,7 @@ function changeUI(window) {
         if (urlmatch.length != 4)
           break;
         url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
-        resultArray.splice(i,0,[part2,url2,""]);
+        resultArray.splice(i,0,[part2,url2,true]);
         currentI++;
       }
       else if (i > 0) i--;
@@ -1446,7 +1446,7 @@ function changeUI(window) {
         if (urlmatch.length != 4)
           continue;
         url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
-        resultArray.splice(i,0,[part2,url2,""]);
+        resultArray.splice(i,0,[part2,url2,true]);
         length++;
       }
       i++;
@@ -1605,6 +1605,7 @@ function changeUI(window) {
       args : [concernedStack, aCallback, aArgs]
     });
   }
+
   /* Context Menu helper functions
      Copy, Edit, Add */
   function copyToClipboard(copyURL) {
@@ -1912,6 +1913,12 @@ function changeUI(window) {
       // Applying Bold style to current url
       // Thus traversing to the last sibling of arrowedStack
       part.style.fontWeight = "normal";
+      // If this part is auto generate, deemphasize it
+      // to indicate that is has not been visited yet
+      if (resultArray[i][2] && resultArray[i][2] == true) {
+        part.style.color = "rgb(75,75,75)";
+        part.setAttribute("tooltiptext", "Auto generated parts.\nClick to visit them");
+      }
       let isCurrent = false;
       let tempS = arrowedStack;
       if (tempS.nextSibling != null) {
