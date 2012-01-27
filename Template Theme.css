@@ -20,6 +20,12 @@
   background-repeat: no-repeat;
 }
 
+/* Class for non Settings non Domain Parts of url [don't change background image here]*/
+.enhanced-nonDomainPart {
+color: rgb(100,100,100) !important;
+opacity: 0.8 !important;
+}
+
 /* Class for text inside each part [NORMAL STATE] */
 .enhanced-text-normal {
   padding: 4px 2px 3px 2px !important;
