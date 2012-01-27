@@ -271,7 +271,7 @@ function changeUI(window) {
       enhancedURLBar.style.maxHeight = urlBarHeight + "px";
     }
 
-    if (gURLBar.boxObject.height > 0)
+    if (window.getComputedStyle(gURLBar).visibility != "collapse")
       setupEnhancedURLBarUI();
     else
       restyleEnhancedURLBarOnTabChange = true;
@@ -1159,7 +1159,6 @@ function changeUI(window) {
     if (partType != "domain" && partType != "setting"
       && partType != "anchor" && partVal.length > 20)
         lastUsefulPart = partVal;
-
     if (partPointer != null) {
       if (domain == false) {
         partPointer.firstChild.style.display = "-moz-box";
@@ -1234,8 +1233,8 @@ function changeUI(window) {
       }
       tempPart = null;
       // If only one element in hiddenParts , bring it back if iLabel is same
-      if (hiddenParts.length == 1 &&
-        hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
+      if (lastPart && hiddenParts.length == 1 && enhancedURLBar.firstChild
+        && hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
             enhancedURLBar.firstChild.setAttribute("isDomain", true);
@@ -1264,13 +1263,27 @@ function changeUI(window) {
             tStack = null;
           }
       }
-      else if (hiddenParts.length > 0 && enhancedURLBar.firstChild != null
-        && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false") {
+      else if (lastPart && hiddenParts.length == 1 && !enhancedURLBar.firstChild
+        && hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
+          let tStack = createStack(trimWord(hiddenParts[0]), urlValue.slice(0, urlPartArray[0]), "domain", false);
+          partsWidth += tStack.boxObject.width;
+          enhancedURLBar.appendChild(tStack);
+          tStack = null;
+      }
+      else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild
+        && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") != "true") {
           let tStack = createStack(trimWord(partVal), urlValue.slice
             (0, urlPartArray[hiddenParts.length - 1]), "null", true);
           partsWidth += tStack.boxObject.width;
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
+      }
+      else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild == null) {
+        let tStack = createStack(trimWord(partVal), urlValue.slice
+          (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+        partsWidth += tStack.boxObject.width;
+        enhancedURLBar.appendChild(tStack);
+        tStack = null;
       }
     }
     // else if statement to handle the condition when we scroll on a part
@@ -1302,6 +1315,20 @@ function changeUI(window) {
         tempPart = null;
       }
       pixelPerWord = null;
+    }
+    else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild) {
+      let tStack = createStack(trimWord(partVal), urlValue.slice
+        (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+      partsWidth += tStack.boxObject.width;
+      enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
+      tStack = null;
+    }
+    else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild == null) {
+      let tStack = createStack(trimWord(partVal), urlValue.slice
+        (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+      partsWidth += tStack.boxObject.width;
+      enhancedURLBar.appendChild(tStack);
+      tStack = null;
     }
     // If space is available, utilize it by completely showing the last useful part
     if (lastPart && lastUsefulPart != null) {
@@ -2099,17 +2126,17 @@ function changeUI(window) {
 
   // Function to change urlBar's UI
   function updateURL() {
-    if (gURLBar.focused || $("nav-bar").boxObject.height == 0 || editing)
+    if (gURLBar.focused || editing || window.getComputedStyle(gURLBar).visibility == "collapse")
       return;
-
     // checking if the identity block is visible or not (firefox 12+)
     try {
       identityBlockVisible = (window.getComputedStyle($("identity-box")).visibility == "visible");
     } catch(ex) {
       identityBlockVisible = false;
     }
-
-    origIdentity.collapsed = false;
+    try {
+      origIdentity.collapsed = false;
+    } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
     counter = 0;
     initial = 0;
@@ -2648,6 +2675,8 @@ function changeUI(window) {
 
   function animateShow() {
     async(function() {
+      if (recheckOnTabChange)
+        return;
       if ((gURLBar.focused && !onBookmarks) || (hovered && !gURLBar.focused)) {
         urlBar.setAttribute("style","-moz-transition-property: max-width, -moz-box-shadow; "
           + "-moz-transition-duration: " + timeInterval + "ms;-moz-transition-delay: "
@@ -2677,7 +2706,7 @@ function changeUI(window) {
 
   function animateHide() {
     async(function() {
-      if (!hovered) {
+      if (!hovered && !recheckOnTabChange) {
         urlBar.setAttribute("style","max-width: " + min(pref("urlBarWidth")*1,
           window.innerWidth - urlBar.boxObject.x)
           + "px !important; -moz-transition-property: max-width; "
@@ -2749,7 +2778,7 @@ function changeUI(window) {
 
   function onBookmarksMouseOver(e) {
     onBookmarks = true;
-    if (!gURLBar.focused)
+    if (!gURLBar.focused || recheckOnTabChange)
       return;
     if (e.pageX >= limitXBig) {
       bookmarksToolbar.collapsed = true;
@@ -2772,7 +2801,7 @@ function changeUI(window) {
 
   function onBookmarksMouseOut() {
     onBookmarks = false;
-    if (!gURLBar.focused)
+    if (!gURLBar.focused || recheckOnTabChange)
       return;
     animateShow();
   }
@@ -2785,6 +2814,8 @@ function changeUI(window) {
   }, window);
 
   function onFocus() {
+    if (recheckOnTabChange)
+      return;
     animateShow();
     gURLBar.removeEventListener("focus", onFocus, false);
     gURLBar.addEventListener("blur", onBlur);
@@ -2795,6 +2826,8 @@ function changeUI(window) {
   }
 
   function onBlur() {
+    if (recheckOnTabChange)
+      return;
     animateHide();
     gURLBar.removeEventListener("blur", onBlur, false);
     gURLBar.addEventListener("focus", onFocus);
@@ -2803,6 +2836,8 @@ function changeUI(window) {
   }
 
   function onMouseMove(event) {
+    if (recheckOnTabChange)
+      return;
     if (event.pageX < limitX && hovered) {
       gURLBar.removeEventListener("mousemove", temp, false);
       animateShow();
@@ -2812,6 +2847,8 @@ function changeUI(window) {
   }
 
   function onMouseOver(e) {
+    if (recheckOnTabChange)
+      return;
     hovered = true;
     if (e.pageX >= limitX) {
       gURLBar.addEventListener("mousemove", temp = function(event) {onMouseMove(event)});
@@ -2826,7 +2863,7 @@ function changeUI(window) {
 
   function onMouseOut() {
     hovered = false;
-    if (!gURLBar.focused)
+    if (!gURLBar.focused || recheckOnTabChange)
       animateHide();
     try {
       gURLBar.removeEventListener("mousemove", temp, false);
