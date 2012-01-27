@@ -735,7 +735,7 @@ function changeUI(window) {
         return;
 
       function applyClass(c) {
-        let bC = "";
+        let bC = "", nD = "";
         if (highlightedObj.getAttribute("isAnchorTag") == "true") {
           c = "anchor-" + c;
           bC += "-anchor";
@@ -752,8 +752,11 @@ function changeUI(window) {
           c = "noArrow-" + c;
           bC = "-noArrow" + bC;
         }
-        highlightedObj.firstChild.setAttribute("class", "enhanced-text" + bC + " enhanced-text-" + c);
-        highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c);
+        if (highlightedObj != enhancedURLBar.firstChild && c.search("normal") >= 0
+          && highlightedObj.getAttribute("isSetting") == "false")
+            nD += " enhanced-nonDomainPart";
+        highlightedObj.firstChild.setAttribute("class", "enhanced-text" + bC + " enhanced-text-" + c + nD);
+        highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
         if (highlightedObj.previousSibling && c.search("normal") < 0 &&
           highlightedObj.previousSibling.getAttribute("isHiddenArrow") != "true") {
             let (d = "-left") {
@@ -766,6 +769,8 @@ function changeUI(window) {
         }
         else if (highlightedObj.previousSibling && c.search("normal") >= 0 &&
           highlightedObj.previousSibling.getAttribute("isHiddenArrow") != "true") {
+            if (highlightedObj.previousSibling == enhancedURLBar.firstChild)
+              nD = "";
             c = "normal";
             bC = "";
             if (highlightedObj.previousSibling.getAttribute("isAnchorTag") == "true") {
@@ -777,7 +782,7 @@ function changeUI(window) {
               bC += "-queryString";
             }
             highlightedObj.previousSibling.lastChild.setAttribute("class",
-              "enhanced-arrow" + bC + " enhanced-arrow-" + c);
+              "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
         }
         bC = null;
       }

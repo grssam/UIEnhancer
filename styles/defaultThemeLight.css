@@ -181,6 +181,7 @@
 .enhanced-arrow-noArrow-queryString-arrowMouseDown, .enhanced-arrow-noArrow-queryString-textMouseDown {
   background-image: url('defaultThemeLight/arrow_noArrow_queryString_textMouseDown.png');
 }
+.enhanced-nonDomainPart { color: rgb(100,100,100) !important; opacity: 0.8 !important;}
 .enhanced-arrow-backChevron-normal { background-image: url('defaultThemeLight/backChevron_normal.png');}
 .enhanced-arrow-backChevron-arrowHovered { background-image: url('defaultThemeLight/backChevron_arrowHovered.png');}
 .enhanced-arrow-backChevron-arrowMouseDown { background-image: url('defaultThemeLight/backChevron_mouseDown.png');}
