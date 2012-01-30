@@ -246,8 +246,10 @@ function changeUI(window) {
 
     unload(function() {
       setOpacity(1);
-      origILabel.collapsed = false;
-      origICountryLabel.collapsed = false;
+      try {
+        origILabel.collapsed = false;
+        origICountryLabel.collapsed = false;
+      } catch (ex) {}
       origIdentity.removeChild($("enhanced-identity-icon-label"));
       origIdentity.removeChild($("enhanced-identity-icon-country-label"));
       identityLabel = identityCountryLabel = origICountryLabel = origILabel = origIdentity = null;
@@ -290,8 +292,8 @@ function changeUI(window) {
         udb = udb.nextSibling;
       if (udb == null)
         return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250;
-      maxWidth = udb.nextSibling.boxObject.x - origIdentity.boxObject.x
-        - origIdentity.boxObject.width - 60;
+      maxWidth = Math.max(udb.nextSibling.boxObject.x, gURLBar.boxObject.width)
+        - origIdentity.boxObject.x - origIdentity.boxObject.width - 60;
       if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
         maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 160
           - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x
@@ -2235,11 +2237,11 @@ function changeUI(window) {
 
     if (identityBlockVisible) {
       iLabel = "";
-      if (origILabel.value.search(" ") < 0)
+      if (!origILabel || origILabel.value.search(" ") < 0)
         iLabel = urlArray_updateURL[0];
       else
-        iLabel = origILabel.value || "";
-      iCountry = origICountryLabel.value || "";
+        iLabel = origILabel? origILabel.value: "";
+      iCountry = origICountryLabel? origICountryLabel.value: "";
 
       //trimming the iLabel to 50 characters
       iLabel = trimWord(iLabel, 54);
@@ -2964,7 +2966,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     firstRunAfterInstall = true;
   else
     normalStartup = true;
-
+  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner"];
   // Function to load stylesheets
   function loadStyles(styles) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -3044,6 +3046,19 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     pref.observe([
       "useSmallIcons"
     ], specialReload);
+
+    let conflictListener = {
+      onPropertyChanged : checkConflict,
+      onUninstalled : checkConflict,
+      onInstalled : checkConflict,
+      onDisabled : checkConflict,
+      onEnabled : checkConflict
+    };
+    AddonManager.addAddonListener(conflictListener);
+
+    unload(function() {
+      AddonManager.removeAddonListener(conflictListener);
+    });
   };
 
   function specialReload() {
@@ -3071,6 +3086,24 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   pref.observe([
     "useSmallIcons"
   ], specialReload);
+
+  // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled
+  function checkConflict(addon) {
+    if (conflictingAddons.indexOf(addon.name) >= 0)
+      reload();
+  }
+  let conflictListener = {
+    onPropertyChanged : checkConflict,
+    onUninstalled : checkConflict,
+    onInstalled : checkConflict,
+    onDisabled : checkConflict,
+    onEnabled : checkConflict
+  };
+  AddonManager.addAddonListener(conflictListener);
+
+  unload(function() {
+    AddonManager.removeAddonListener(conflictListener);
+  });
 });
 
 function shutdown(data, reason) {
