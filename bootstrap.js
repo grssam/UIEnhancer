@@ -284,7 +284,12 @@ function changeUI(window) {
   }
 
   function getMaxWidth() {
+    let whiteListAddons = ["mafArchiveInfoUrlbarBox"];
     let (udb = $("urlbar-display-box")) {
+      while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
+        udb = udb.nextSibling;
+      if (udb == null)
+        return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250;
       maxWidth = udb.nextSibling.boxObject.x - origIdentity.boxObject.x
         - origIdentity.boxObject.width - 60;
       if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
