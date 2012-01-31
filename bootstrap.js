@@ -267,8 +267,7 @@ function changeUI(window) {
       enhancedURLBar.style.padding = "0px";
       enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
         + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -"
-        + window.getComputedStyle(gURLBar).paddingLeft.replace("px", "")*1
-        + window.getComputedStyle(origIdentity).marginRight.replace("px", "")*1 + "px";
+        + window.getComputedStyle(origIdentity).marginRight;
       urlBarHeight = gURLBar.boxObject.height - 2;
       enhancedURLBar.style.maxHeight = urlBarHeight + "px";
     }
