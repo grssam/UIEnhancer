@@ -617,7 +617,7 @@ opacity: 0.8 !important;
   background-image: url('defaultTheme/arrow_queryString_textMouseDown_left.png');
 }
 
-/* Class for arrow of a part [DOUBLE LESS THAN CEHVRON
+/* Class for arrow of a part [DOUBLE LESS THAN CHEVRON
    to show the hidden parts] */
 /* MAIN CLASS */
 .enhanced-arrow-backChevron {
@@ -638,4 +638,33 @@ opacity: 0.8 !important;
 /* MOUSEDOWN STATE */
 .enhanced-arrow-backChevron-arrowMouseDown {
   background-image: url('defaultTheme/backChevron_mouseDown.png');
+}
+
+/* Class for arrow of a part [DOUBLE LESS THAN CHEVRON
+   to show the hidden parts on the extreme right] */
+/* MAIN CLASS */
+.enhanced-arrow-frontChevron {
+  width: 15px;
+  padding: 0px !important;
+  margin: 0px !important;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/* NORMAL STATE */
+.enhanced-arrow-frontChevron-normal {
+  background-image: url('defaultTheme/frontChevron_normal.png');
+}
+/* HOVERED STATE */
+.enhanced-arrow-frontChevron-arrowHovered {
+  background-image: url('defaultTheme/frontChevron_arrowHovered.png');
+}
+/* MOUSEDOWN STATE */
+.enhanced-arrow-frontChevron-arrowMouseDown {
+  background-image: url('defaultTheme/frontChevron_mouseDown.png');
+}
+
+/* Class for non Domain Parts */
+.enhanced-nonDomainPart {
+  color: rgb(100,100,100) !important;
+  opacity: 0.8 !important;
 }
