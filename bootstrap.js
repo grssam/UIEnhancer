@@ -138,13 +138,11 @@ function changeUI(window) {
   * URLBar Look Enhancer Code Begins
   */
   // Global Variables to this part of addon
-  let url = [];
   let urlPartArray = [];
   let partPointer = null;
   let arrowMouseDown = false;
   let textMouseDown = false;
   let editing = false;
-  let hiddenParts = [];
   let partsWidth = 0;
   let newDocumentLoaded = false;
   let refreshRelatedArray = false;
@@ -152,9 +150,9 @@ function changeUI(window) {
   let showingHidden = false;
   let hiddenStartingIndex = 0;
   unload(function() {
-    url = urlPartArray = partPointer = arrowMouseDown = tabChanged
-      = textMouseDown = hiddenParts = partsWidth = newDocumentLoaded
-      = refreshRelatedArray = editing = showingHidden = hiddenStartingIndex = null;
+    urlPartArray = partPointer = arrowMouseDown = tabChanged
+      = textMouseDown = partsWidth = newDocumentLoaded = hiddenStartingIndex
+      = refreshRelatedArray = editing = showingHidden = null;
   }, window);
 
   let mainPopup = document.createElementNS(XUL, "menupopup");
@@ -520,14 +518,9 @@ function changeUI(window) {
     arrowMouseDown = true;
     highlightPart(hiddenStack, "partial", true);
     startingIndex = startingIndex*1;
-    hiddenStartingIndex = hiddenParts.length + startingIndex;
+    hiddenStartingIndex += startingIndex;
     if (hiddenStartingIndex < 0)
       hiddenStartingIndex = 0;
-    if (startingIndex < 0)
-      hiddenParts.splice(hiddenParts.length + startingIndex, -1*startingIndex);
-    else
-      for (let i = hiddenStartingIndex - startingIndex; i < hiddenStartingIndex; i++)
-        hiddenParts.push(urlArray_updateURL[i]);
 
     showingHidden = true;
     redRemoved = 0;
@@ -1212,26 +1205,26 @@ function changeUI(window) {
       let tempPart = null;
       let isDomainHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true";
       while (partsWidth > getMaxWidth() -
-        (isDomainHidden || (hiddenParts.length > 0)? 15: 0)) {
+        (isDomainHidden || (hiddenStartingIndex > 0)? 15: 0)) {
           if (enhancedURLBar.firstChild == null)
             break;
           tempPart = enhancedURLBar.firstChild;
           if (tempPart.getAttribute("isHiddenArrow") == "true")
             tempPart = tempPart.nextSibling;
           partsWidth -= tempPart.boxObject.width;
-          hiddenParts.push(tempPart.firstChild.value);
+          hiddenStartingIndex++;
           enhancedURLBar.removeChild(tempPart);
       }
       tempPart = null;
-      // If only one element in hiddenParts , bring it back if iLabel is same
-      if (lastPart && hiddenParts.length == 1 && enhancedURLBar.firstChild
-        && hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
+      // If hiddenStartingIndex is 1 , bring it back if iLabel is same
+      if (lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
+        && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
             enhancedURLBar.firstChild.setAttribute("isDomain", true);
             enhancedURLBar.firstChild.setAttribute("isSetting", false);
             enhancedURLBar.firstChild.setAttribute("isAnchorTag", false);
-            enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(hiddenParts[0]));
+            enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(urlArray_updateURL[0]));
             enhancedURLBar.firstChild.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu");
             if (!pref("useStyleSheet")) {
               enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
@@ -1248,32 +1241,34 @@ function changeUI(window) {
             enhancedURLBar.firstChild.setAttribute("url", urlValue.slice(0, urlPartArray[0]));
           }
           else {
-            let tStack = createStack(trimWord(hiddenParts[0]),
+            let tStack = createStack(trimWord(urlArray_updateURL[0]),
               urlValue.slice(0, urlPartArray[0]), "domain", false);
             partsWidth += tStack.boxObject.width;
             enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
             tStack = null;
           }
+          hiddenStartingIndex = 0;
       }
-      else if (lastPart && hiddenParts.length == 1 && !enhancedURLBar.firstChild
-        && hiddenParts[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
-          let tStack = createStack(trimWord(hiddenParts[0]), urlValue.slice(0,
+      else if (lastPart && hiddenStartingIndex == 1 && !enhancedURLBar.firstChild
+        && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
+          let tStack = createStack(trimWord(urlArray_updateURL[0]), urlValue.slice(0,
             urlPartArray[0]), "domain", false);
           partsWidth += tStack.boxObject.width;
+          hiddenStartingIndex = 0;
           enhancedURLBar.appendChild(tStack);
           tStack = null;
       }
-      else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild
+      else if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild
         && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") != "true") {
           let tStack = createStack(trimWord(partVal), urlValue.slice
-            (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+            (0, urlPartArray[hiddenStartingIndex - 1]), "null", true);
           partsWidth += tStack.boxObject.width;
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
       }
-      else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild == null) {
+      else if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild == null) {
         let tStack = createStack(trimWord(partVal), urlValue.slice
-          (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+          (0, urlPartArray[hiddenStartingIndex - 1]), "null", true);
         partsWidth += tStack.boxObject.width;
         enhancedURLBar.appendChild(tStack);
         tStack = null;
@@ -1309,17 +1304,17 @@ function changeUI(window) {
       }
       pixelPerWord = null;
     }
-    else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild
+    else if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild
       && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") != "true" && !showingHidden) {
         let tStack = createStack(trimWord(partVal), urlValue.slice
-          (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+          (0, urlPartArray[hiddenStartingIndex - 1]), "null", true);
         partsWidth += tStack.boxObject.width;
         enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
         tStack = null;
     }
-    else if (lastPart && hiddenParts.length > 0 && enhancedURLBar.firstChild == null && !showingHidden) {
+    else if (lastPart && hiddenStartingIndex > 0 && !enhancedURLBar.firstChild && !showingHidden) {
       let tStack = createStack(trimWord(partVal), urlValue.slice
-        (0, urlPartArray[hiddenParts.length - 1]), "null", true);
+        (0, urlPartArray[hiddenStartingIndex - 1]), "null", true);
       partsWidth += tStack.boxObject.width;
       enhancedURLBar.appendChild(tStack);
       tStack = null;
@@ -1359,7 +1354,7 @@ function changeUI(window) {
       partPointer = enhancedURLBar.firstChild;
     setOpacity(opacity);
     partsWidth = 0;
-    hiddenParts = [];
+    hiddenStartingIndex = 0;
     // opacity 1 means we are hiding the enhancedURLBar
     if (opacity == 1) {
       identityLabel.collapsed = identityCountryLabel.collapsed = true;
@@ -2134,6 +2129,7 @@ function changeUI(window) {
     urlValue = decodeURI(getURI().spec);
     counter = 0;
     initial = 0;
+    hiddenStartingIndex = 0;
     urlPartArray = [];
     anchorTagIndex = settingsStartIndex = null;
     isSetting_updateURL = null;
@@ -2242,17 +2238,6 @@ function changeUI(window) {
       identityLabel.collapsed = (iLabel.length == 0);
       identityCountryLabel.collapsed = (iCountry.length == 0);
     }
-    // Checking now the first element of the Array
-    // for its similarity with the iLabel
-    /*if (urlArray_updateURL[1] != null && 
-      iLabel.search(urlArray_updateURL[1]) >= 0 && iLabel == urlArray_updateURL[0]) {
-        urlArray_updateURL.splice(1,1);
-        urlPartArray.splice(1,1);
-        if (settingsStartIndex != null && settingsStartIndex >= 1)
-          settingsStartIndex--;
-        if (anchorTagIndex != null && anchorTagIndex >= 1)
-          anchorTagIndex--;
-    }*/
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
@@ -2651,6 +2636,7 @@ function changeUI(window) {
       bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
         + " margin: " + newMargin + " border: none !important;"
         + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
+
     bookmarkStyle = bookmarksToolbar.style;
     limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth")*1);
     // Setting the collapse state according to nav-bar's
@@ -2886,7 +2872,6 @@ function changeUI(window) {
   function addBookmarkListeners() {
     listen(window, gURLBar, "blur", onBlur);
     listen(window, gURLBar, "focus", onFocus);
-
     listen(window, gURLBar, "mouseover", function(event) {onMouseOver(event)});
     listen(window, gURLBar, "mouseout", onMouseOut);
     listen(window, bookmarksToolbar, "mouseout", onBookmarksMouseOut);
@@ -2937,10 +2922,11 @@ function changeUI(window) {
   * Bookmarks UI Enhancer Code Ends
   */
   // Function Callings
-  if (pref("useSmallIcons")) {
-    setupBookmarksUI();
-    addBookmarkListeners();
-  }
+  if (pref("useSmallIcons"))
+    async(function() {
+      setupBookmarksUI();
+      addBookmarkListeners();
+    }, 5);
   else
     async(function() {
       setupBookmarksUI();
