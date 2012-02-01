@@ -517,6 +517,8 @@ function changeUI(window) {
         hiddenStack.lastChild.style.padding = "2px 2px 1px 2px";
       return;
     }
+    arrowMouseDown = true;
+    highlightPart(hiddenStack, "partial", true);
     startingIndex = startingIndex*1;
     hiddenStartingIndex = hiddenParts.length + startingIndex;
     if (hiddenStartingIndex < 0)
@@ -546,6 +548,7 @@ function changeUI(window) {
     }
     else if (partsWidth < getMaxWidth() && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       partPointer = enhancedURLBar.firstChild;
+      arrowMouseDown = false;
       updateURL();
       return;
     }
@@ -728,8 +731,9 @@ function changeUI(window) {
           bC = "-noArrow" + bC;
         }
         if (((highlightedObj != enhancedURLBar.firstChild && !showingHidden)
-          || (showingHidden && highlightedObj != enhancedURLBar.firstChild.nextSibling))
-          && c.search("normal") >= 0 && highlightedObj.getAttribute("isSetting") == "false")
+          || (showingHidden && (highlightedObj != enhancedURLBar.firstChild.nextSibling
+          || hiddenStartingIndex != 0))) && c.search("normal") >= 0
+          && highlightedObj.getAttribute("isSetting") == "false")
             nD += " enhanced-nonDomainPart";
         highlightedObj.firstChild.setAttribute("class", "enhanced-text" + bC + " enhanced-text-" + c + nD);
         highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
@@ -832,7 +836,8 @@ function changeUI(window) {
     tempArrow.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
-    tempArrow.setAttribute("tooltiptext", "Click to access Sub Menu");
+    if (!hiddenArrow)
+      tempArrow.setAttribute("tooltiptext", "Click to access Sub Menu");
     if (hiddenArrow)
       createdStack.setAttribute("isHiddenArrow", hiddenArrow);
     else 
@@ -1076,6 +1081,14 @@ function changeUI(window) {
       textMouseDown = false;
       if (!arrowMouseDown)
         highlightPart(e.target.parentNode, false, false, '>');
+    });
+    listen(window, createdStack.lastChild, "mouseup", function(e) {
+      if (e.button == 2)
+        e.preventDefault();
+      if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
+        return;
+      arrowMouseDown = false;
+      highlightPart(e.target.parentNode, false, false);
     });
     // Mouseout Handling Function
     listen(window, createdStack, "mouseout", function(e) {
@@ -1405,7 +1418,7 @@ function changeUI(window) {
     }
     let url1,url2,part1,part2,urlmatch,p1,itemsB4 = min(currentI,3);
     let i = (currentI != null?currentI:0);
-    while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > 0) {
+    while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > delta) {
       url1 = resultArray[i][1].replace(preURL, "");
       part1 = resultArray[i][0];
       url2 = i != 0?resultArray[i - 1][1]:url1;
