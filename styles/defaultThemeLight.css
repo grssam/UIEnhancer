@@ -2,7 +2,7 @@
 .enhanced-text, .enhanced-text-anchor, .enhanced-text-queryString {
   margin: 0px !important; background-size: 100% 100%; background-repeat: no-repeat;
 }
-.enhanced-arrow-backChevron, .enhanced-arrow, .enhanced-arrow-anchor, .enhanced-arrow-queryString {
+.enhanced-arrow-frontChevron, .enhanced-arrow-backChevron, .enhanced-arrow, .enhanced-arrow-anchor, .enhanced-arrow-queryString {
   width: 15px; padding: 0px !important; margin: 0px !important;
   background-size: 100% 100%; background-repeat: no-repeat;
 }
@@ -184,4 +184,5 @@
 .enhanced-nonDomainPart { color: rgb(100,100,100) !important; opacity: 0.8 !important;}
 .enhanced-arrow-backChevron-normal { background-image: url('defaultThemeLight/backChevron_normal.png');}
 .enhanced-arrow-backChevron-arrowHovered { background-image: url('defaultThemeLight/backChevron_arrowHovered.png');}
-.enhanced-arrow-backChevron-arrowMouseDown { background-image: url('defaultThemeLight/backChevron_mouseDown.png');}
+.enhanced-arrow-frontChevron-normal { background-image: url('defaultThemeLight/frontChevron_normal.png');}
+.enhanced-arrow-frontChevron-arrowHovered { background-image: url('defaultThemeLight/frontChevron_arrowHovered.png');}
