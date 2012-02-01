@@ -733,7 +733,8 @@ function changeUI(window) {
         if (((highlightedObj != enhancedURLBar.firstChild && !showingHidden)
           || (showingHidden && (highlightedObj != enhancedURLBar.firstChild.nextSibling
           || hiddenStartingIndex != 0))) && c.search("normal") >= 0
-          && highlightedObj.getAttribute("isSetting") == "false")
+          && highlightedObj.getAttribute("isSetting") == "false"
+          && highlightedObj.getAttribute("isHiddenArrow") == "false")
             nD += " enhanced-nonDomainPart";
         highlightedObj.firstChild.setAttribute("class", "enhanced-text" + bC + " enhanced-text-" + c + nD);
         highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
