@@ -291,7 +291,7 @@ function changeUI(window) {
         udb = udb.nextSibling;
       if (udb == null)
         return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250;
-      maxWidth = Math.max(udb.nextSibling.boxObject.x, gURLBar.boxObject.width)
+      maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.4*gURLBar.boxObject.width)
         - origIdentity.boxObject.x - origIdentity.boxObject.width - 60;
       if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
         maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 160
