@@ -301,7 +301,7 @@ function changeUI(window) {
     return maxWidth;
   }
 
-  // Function to combine above two functions and make use of them
+  // Function to use gibberish and remove redundant text
   function replaceGibberishText(gibberVal, urlArray, index) {
     let isSetting = false;
     if (settingsStartIndex != null && index >= settingsStartIndex)
