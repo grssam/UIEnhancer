@@ -228,3 +228,212 @@ function makeWindowHelpers(window) {
     change: change,
   };
 }
+
+function max(n1, n2) n1>n2?n1:n2;
+function min(n1, n2) n1<n2?n1:n2;
+
+// Helper function to convert url's names to proper words.
+function makeCapital(word, len) {
+  if (word != null) {
+    let parts = word.split(" ");
+    if (word.split(".").length > 2 && parts.length == 1)
+      return word;
+    if (parts.length == 1) {
+      len = len || 1;
+      if (parts[0].length > 2 && parts[0] != "and")
+        return parts[0].substr(0,1).toUpperCase()+parts[0].substr(1);
+      else if (len <= 2 || parts[0] == "i")
+        return parts[0].toUpperCase();
+      else
+        return parts[0];
+    }
+    else {
+      parts = parts.map(function(part) makeCapital(part, parts.length));
+      return parts.join(" ");
+    }
+  }
+  else
+    return "";
+}
+
+// Function to detect gibberish words or words containing gibberish part
+function gibberish(string) {
+  // Returns false for non gibberish, but for partial gibberish words
+  // the function returns the output as an array of each gibberish word's index
+  // Returns true/false for single words
+  let parts = string.split(/[ _]/g);
+  if (parts.length > 1) {
+    // code to deterimine if the word is gibberish on the whole
+    let result = 0;
+    let partResult = 0;
+    let gibberishIndexArray = [];
+    for (let i = 0; i < parts.length; i++) {
+      partResult = gibberish(parts[i]) == true? 1: 0;
+      result += partResult;
+      if (partResult == 1)
+        gibberishIndexArray.push(i);
+    }
+    if (result == 0)
+      return false;
+    else
+      return gibberishIndexArray;
+  }
+  else if (string.split(".").length > 1 && string.split(".").length < 4) {
+    let result = gibberish(string.replace(".", " "));
+    if (result == false)
+      return false;
+    else
+      return true;
+  }
+  else {
+    // Returning true if url type thing encountered, only possible in queryString
+    if (string.indexOf("/") >= 0)
+      return false;
+    // Array containing WhiteList Words
+    // Populate it regularily
+    let whiteList = ["http","https","id","aurora", "xpcom", "hawaii", "src", "sdk"];
+    // code to determine if a single word is gibberish or not
+    let numAlpha = 0; // Basically non numeric characters
+    let numNum = 0;
+    let numVowel = 0;
+    string = string.toLowerCase();
+    let {length} = string;
+    numAlpha = string.split(/[^0-9]/).length -1;
+    numNum = length - numAlpha;
+    if (length < 6 && numAlpha <= 2)
+      return false;
+    else if (length >= 6 && ((numAlpha > 2 && numNum > 0 && numAlpha < length - 1)
+      || (numAlpha == 0)))
+        return true;
+    numVowel = string.split(/[aeiouy]/).length - 1;
+    if (numNum <= 2 && string.split(/[0-9]/g).length <= 2
+      && ((length < 6 && numVowel > 0)
+      || (length >= 6 && numNum <= 2 && numVowel > 0
+      && numAlpha/numVowel < 5 && numAlpha/numVowel > 1.5)))
+        return false;
+    else if (whiteList.indexOf(string.toLowerCase()) >= 0)
+      return false;
+    else
+      return true;
+  }
+}
+
+// Function to remove redundant text from String as per Title
+function removeRedundantText(baseString, redString) {
+  redString = redString.split(/\s+/);
+  baseString = baseString.filter(function(redVal) {
+    return redVal.length > 3;
+  });
+  let i = 0;
+  let len;
+  function checkBaseMatch(base) {
+    base = base.toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
+    let ret = false;
+    for (let i = 0; i < baseString.length; i++) {
+      try {
+        if (base.search(baseString[i]) >= 0 || baseString[i].search(base) >=0)
+          ret = true;
+      } catch (ex) {}
+    }
+    return ret;
+  }
+
+  for (i = 0; i < baseString.length; i++)
+    baseString[i] = baseString[i].toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
+  i = 0;
+  let {length} = redString;
+  while (i < length) {
+    if (checkBaseMatch(redString[i]) &&
+      (i < 2 || i > max(length - 3, 0.75*length))) {
+        redString.splice(i, 1);
+        i = 0;
+        length = redString.length;
+    }
+    else
+      i++;
+  }
+
+  // Loop to reduce ending extra words like A , The , : , - etc
+  len = redString.length;
+  i = 0;
+  while (i < len) {
+    if (((i == 0 || i == len - 1) && redString[i].search(/^[^a-zA-Z0-9]+$/) >= 0)
+      || (i == len - 1 && redString[i].search(/^(the|a|an|for)$/i) >= 0)) {
+        redString.splice(i,1);
+        i = Math.max(i - 2, 0);
+        len = redString.length;
+    }
+    else
+      i++;
+  }
+  return redString.join(" ");
+}
+
+// function to trim the word and add ... in the middle
+function trimWord(trimVal, limit, start) {
+  if (trimVal == null)
+    return null;
+  function totalLength(parts) {
+    let result = 0;
+    for (let i = 0; i < parts.length; i++)
+      result += parts[i].length + 1;
+    return --result;
+  }
+  limit = limit || 40;
+  let remWords = limit;
+  if (start == null)
+    start = true;
+
+  if (trimVal.length > limit) {
+    let valPart = trimVal.split(" ");
+    let newVal = "";
+    if (valPart.length > 1) {
+      let index = -1;
+      Array.some(valPart, function(v) {
+        if (newVal.length > 2*limit/3)
+          return true;
+        else {
+          if (newVal.length + v.length < 2*limit/3) {
+            newVal += v + " ";
+            remWords -= (v.length + 1);
+            index++;
+          }
+          else return true;
+        }
+      });
+      if (index == -1) {
+        // Checking whether the rest of the words (except first) sum up big
+        let tempLim = valPart[0].length/totalLength(valPart);
+        newVal = trimWord(valPart[0], limit*tempLim, true) + " ";
+        remWords -= newVal.length;
+        index++;
+      }
+      if (valPart.length > 2) {
+        newVal += "... ";
+        remWords -= 4;
+      }
+      if (index < valPart.length - 1) {
+        // Now adding the remaining words till limit is completed
+        let lastIndex = valPart.length - 1;
+        let endPart = "";
+        while (remWords > valPart[lastIndex].length && lastIndex > index) {
+          endPart = " " + valPart[lastIndex] + endPart;
+          remWords -= (valPart[lastIndex--].length + 1);
+        }
+        if (lastIndex - index <= 1) {
+          newVal = newVal.replace(" ... ", " ");
+          remWords += 4;
+        }
+        if (lastIndex > index && remWords > 2)
+          endPart = trimWord(valPart[lastIndex], remWords, false) + endPart;
+        newVal += endPart;
+      }
+      return newVal;
+    }
+    else if (start == false)
+      return (".." + trimVal.slice(trimVal.length - limit + 2, trimVal.length));
+    else if (start == true)
+      return (trimVal.slice(0, limit-2) + "..");
+  }
+  else return trimVal;
+}
