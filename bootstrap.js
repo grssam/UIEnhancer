@@ -143,12 +143,13 @@ function changeUI(window) {
   let editing = false;
   let partsWidth = 0;
   let newDocumentLoaded = false;
+  let titleChanged = false;
   let refreshRelatedArray = false;
   let tabChanged = false;
   let showingHidden = false;
   let hiddenStartingIndex = 0;
   unload(function() {
-    urlPartArray = partPointer = arrowMouseDown = tabChanged
+    urlPartArray = partPointer = arrowMouseDown = tabChanged = titleChanged
       = textMouseDown = partsWidth = newDocumentLoaded = hiddenStartingIndex
       = refreshRelatedArray = editing = showingHidden = null;
   }, window);
@@ -1919,8 +1920,16 @@ function changeUI(window) {
       origIdentity.collapsed = false;
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
-    if (URLDisplayed == urlValue)
+    if (URLDisplayed == urlValue && !showingHidden && !titleChanged) {
+      try {
+        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+        identityCountryLabel.value = iCountry;
+        identityLabel.collapsed = false;
+        identityCountryLabel.collapsed = iCountry.length == 0;
+      } catch (ex) {}
+      updateLook();
       return;
+    }
     else
       URLDisplayed = urlValue;
     counter = 0;
@@ -1929,7 +1938,7 @@ function changeUI(window) {
     urlPartArray = [];
     anchorTagIndex = settingsStartIndex = null;
     isSetting_updateURL = null;
-    showingHidden = false;
+    titleChanged = showingHidden = false;
     try {
       if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow"))
         enhancedURLBar.parentNode.removeChild(enhancedURLBar.nextSibling);
@@ -2147,7 +2156,7 @@ function changeUI(window) {
       listen(window, gURLBar, "blur", function() {
         reset(0);
         if (!tabChanged)
-          async(updateURL, pref("animationSpeed") != "none"?210: 10);
+          async(updateURL, pref("animationSpeed") != "none"? 210: 10);
       });
       listen(window, gURLBar, "mouseout", function() {
         if (ctrlMouseHover && !gURLBar.focused) {
@@ -2158,16 +2167,16 @@ function changeUI(window) {
             setOpacity(0);
             enhancedURLBar.style.display = "-moz-box";
           }, 100);
-          return;
         }
       });
       listen(window, gBrowser, "DOMTitleChanged", function(e) {
+        if (e.target.title != gBrowser.contentDocument.title)
+          return;
         async(function() {
-          if (e.target.title != gBrowser.contentDocument.title)
-            return;
           if (!gURLBar.focused && newDocumentLoaded) {
             origIdentity.collapsed = false;
             identityLabel.collapsed = false;
+            titleChanged = true;
             updateURL();
             newDocumentLoaded = false;
           }
