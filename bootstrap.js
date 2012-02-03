@@ -587,8 +587,9 @@ function changeUI(window) {
           c = "noArrow-" + c;
           bC = "-noArrow" + bC;
         }
-        if (((highlightedObj != enhancedURLBar.firstChild && !showingHidden)
-          || (showingHidden && (highlightedObj != enhancedURLBar.firstChild.nextSibling
+        if (enhancedURLBar.firstChild && ((highlightedObj != enhancedURLBar.firstChild
+          && !showingHidden) || (showingHidden
+          && (highlightedObj != enhancedURLBar.firstChild.nextSibling
           || hiddenStartingIndex != 0))) && c.search("normal") >= 0
           && highlightedObj.getAttribute("isSetting") == "false"
           && highlightedObj.getAttribute("isHiddenArrow") == "false")
@@ -1041,6 +1042,7 @@ function changeUI(window) {
       partPointer.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu"
         + (partPointer == enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
         + "\nScroll to instantly preview the sibling address"));
+      partPointer.lastChild.setAttribute("tooltiptext", "Click to access Sub Menu");
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
@@ -1638,7 +1640,11 @@ function changeUI(window) {
             && e.target.parentNode != enhancedURLBar.firstChild) {
               // If the user did not enter a value starting with /, ?/& or #
               let (curNode = e.target.parentNode) {
-                if ((curNode.hasAttribute("isSetting") && curNode.getAttribute("isSetting") == "false")
+                if (curNode.previousSibling == enhancedURLBar.firstChild
+                  && enhancedURLBar.firstChild.firstChild.getAttribute("value")
+                  .toLowerCase() == "about")
+                    prevURL += ":";
+                else if ((curNode.hasAttribute("isSetting") && curNode.getAttribute("isSetting") == "false")
                   || (!curNode.hasAttribute("isSetting") && curNode.previousSibling.getAttribute("isSetting") == "false"))
                     prevURL += "/";
                 else if (curNode.hasAttribute("isAnchorTag") && curNode.getAttribute("isAnchorTag") != "true") {
@@ -1801,23 +1807,18 @@ function changeUI(window) {
         part.setAttribute("tooltiptext", "Auto generated parts.\nClick to visit them");
       }
       let isCurrent = false;
-      let tempS = arrowedStack;
-      if (tempS.nextSibling != null) {
-        while (tempS.nextSibling != null) {
-          tempS = tempS.nextSibling;
-        }
-        if (tempS.getAttribute("url").replace(/^(https?:\/\/)/,"")
-          .replace(/[\/]$/, "") == url.replace(/[\/]$/, "")) {
-            part.style.fontWeight = "bold";
-            isCurrent = true;
-        }
+      let tempS = enhancedURLBar.lastChild;
+      if (tempS && tempS.getAttribute("url").replace(/^(https?:\/\/)/,"")
+        .replace(/[\/]$/, "") == url.replace(/[\/]$/, "")) {
+          part.style.fontWeight = "bold";
+          isCurrent = true;
       }
       part.setAttribute("label", arrowVal);
       listen(window, part, "command", function(e) {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
-        arrowMouseDown = false;
+        siblingsShown = arrowMouseDown = false;
         highlightPart(arrowedStack, false, false, '>');
         if (!isCurrent)
           handleTextClick(url, null, null, e.ctrlKey);
@@ -1826,7 +1827,7 @@ function changeUI(window) {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
-        arrowMouseDown = false;
+        siblingsShown = arrowMouseDown = false;
         highlightPart(arrowedStack, false, false, '>');
         if (e.button != 1)
           return;
