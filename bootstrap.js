@@ -261,17 +261,32 @@ function changeUI(window) {
     enhancedURLBar = document.createElementNS(XUL, "stack");
     origInput.parentNode.insertBefore(enhancedURLBar, origInput);
     setupEnhancedURLBarUI = function() {
+      let origParentStyle = gURLBar.parentNode.style;
       enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
       enhancedURLBar.style.overflow = "hidden";
       enhancedURLBar.style.display = "-moz-box";
       enhancedURLBar.style.padding = "0px";
-      enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
-        + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -"
-        + window.getComputedStyle(origIdentity).marginRight;
-      urlBarHeight = gURLBar.boxObject.height - 2;
+      urlBarHeight = gURLBar.boxObject.height;
+      if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
+        urlBarHeight -= 2;
+      else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0)
+        urlBarHeight -= 4;
       enhancedURLBar.style.maxHeight = urlBarHeight + "px";
+      if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
+        enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
+          + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -"
+          + window.getComputedStyle(origIdentity).marginRight;
+      else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0) {
+        enhancedURLBar.style.margin = "-1px 0px";
+        gURLBar.parentNode.style.marginTop = "3px";
+        gURLBar.parentNode.style.marginBottom = "3px";
+        unload(function() {
+          gURLBar.parentNode.style.marginTop = origParentStyle.marginTop;
+          gURLBar.parentNode.style.marginBottom = origParentStyle.marginBottom;
+        }, window);
+      }
     }
 
     if (window.getComputedStyle(gURLBar).visibility != "collapse")
@@ -482,7 +497,6 @@ function changeUI(window) {
       }
     }
     else if (currentScrolledIndex == indexB4Scrolling){
-      mouseScrolled = false;
       updateURL();
       partPointer = scrolledStack.nextSibling;
       while (partPointer != null) {
@@ -975,6 +989,7 @@ function changeUI(window) {
             partPointer = partPointer.nextSibling;
           }
           partPointer = enhancedURLBar.firstChild;
+          mouseScrolled = true;
           updateURL();
         }, 250);
         return;
@@ -1921,7 +1936,7 @@ function changeUI(window) {
       origIdentity.collapsed = false;
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
-    if (URLDisplayed == urlValue && !showingHidden && !titleChanged) {
+    if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled) {
       try {
         identityLabel.value = makeCapital(iLabel.replace("www.", ""));
         identityCountryLabel.value = iCountry;
@@ -1939,7 +1954,7 @@ function changeUI(window) {
     urlPartArray = [];
     anchorTagIndex = settingsStartIndex = null;
     isSetting_updateURL = null;
-    titleChanged = showingHidden = false;
+    mouseScrolled = titleChanged = showingHidden = false;
     try {
       if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow"))
         enhancedURLBar.parentNode.removeChild(enhancedURLBar.nextSibling);
