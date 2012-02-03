@@ -104,20 +104,18 @@ function handleDOM(object, newParent, insertFirst) {
 
 function changeUI(window) {
 
-  let {document, gBrowser, gURLBar} = window;
+  let {gURLBar, gBrowser, document} = window;
   function $(id) document.getElementById(id);
-  let {async} = makeWindowHelpers(window);
+  let async = makeWindowHelpers(window).async;
 
   // Disable the add-on when customizing
-  window.addEventListener("beforecustomization", function() {
-    // NB: Disabling will unload listeners, so manually add and remove below
+  listen(window, window, "beforecustomization", function() {
     if (gAddon.userDisabled)
       return;
     unload();
 
     // Listen for one customization finish to re-enable the addon
-    window.addEventListener("aftercustomization", function reenable() {
-      window.removeEventListener("aftercustomization", reenable, false);
+    listen(window, window, "aftercustomization", function() {
       firstRunAfterInstall = true;
       normalStartup = false;
       reload();
@@ -161,6 +159,9 @@ function changeUI(window) {
   unload(function() {
     mainPopup.parentNode.removeChild(mainPopup);
     mainPopup = null;
+    try {
+      gBrowser.removeEventListener("click", hideMainPopup, false);
+    } catch (ex) {}
     hideMainPopup = null;
   }, window);
   let hideMainPopup = function() {};
@@ -1077,8 +1078,8 @@ function changeUI(window) {
           partsWidth -= tempPart.boxObject.width;
           hiddenStartingIndex++;
           enhancedURLBar.removeChild(tempPart);
+          tempPart = null;
       }
-      tempPart = null;
       // If hiddenStartingIndex is 1 , bring it back if iLabel is same
       if (lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
         && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
@@ -1811,7 +1812,7 @@ function changeUI(window) {
         }
       }
       part.setAttribute("label", arrowVal);
-      part.addEventListener("command", function(e) {
+      listen(window, part, "command", function(e) {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
@@ -1820,7 +1821,7 @@ function changeUI(window) {
         if (!isCurrent)
           handleTextClick(url, null, null, e.ctrlKey);
       }, false);
-      part.addEventListener("click", function(e) {
+      listen(window, part, "click", function(e) {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
@@ -1857,7 +1858,7 @@ function changeUI(window) {
       part.setAttribute("id", "popup-no-suggestion-text");
       part.setAttribute("class", "menuitem-iconic");
       part.setAttribute("label", "No Suggestions Available");
-      part.addEventListener("command", function() {
+      listen(window, part, "command", function() {
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
@@ -1881,7 +1882,7 @@ function changeUI(window) {
     else
       mainPopup.openPopup(arrowedStack.lastChild, "after_start", -15, 0);
     popupStack = arrowedStack;
-    gBrowser.addEventListener("click", hideMainPopup = function() {
+    listen(window, gBrowser, "click", hideMainPopup = function() {
       gBrowser.removeEventListener("click", hideMainPopup, false);
       try {
         mainPopup.hidePopup();
@@ -1899,14 +1900,14 @@ function changeUI(window) {
   let initial = 0;
   let isSetting_updateURL = null;
   let iCountry, iLabel = "";
-  let identityBlockVisible;
   let anchorTagIndex= null;
   let index = 0;
   let urlVal_updateURL;
+  let URLDisplayed = "";
   unload(function() {
     initial = currentTime = urlValue = urlArray_updateURL = counter = iLabel
-      = anchorTagIndex = identityBlockVisible = isSetting_updateURL = iCountry
-      = urlPostSetting = index = urlVal_updateURL = null;
+      = anchorTagIndex = isSetting_updateURL = iCountry
+      = urlPostSetting = index = urlVal_updateURL = URLDisplayed = null;
   }, window);
 
   // Function to change urlBar's UI
@@ -1915,14 +1916,13 @@ function changeUI(window) {
       return;
     // checking if the identity block is visible or not (firefox 12+)
     try {
-      identityBlockVisible = (window.getComputedStyle($("identity-box")).visibility == "visible");
-    } catch(ex) {
-      identityBlockVisible = false;
-    }
-    try {
       origIdentity.collapsed = false;
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
+    if (URLDisplayed == urlValue)
+      return;
+    else
+      URLDisplayed = urlValue;
     counter = 0;
     initial = 0;
     hiddenStartingIndex = 0;
@@ -2019,21 +2019,19 @@ function changeUI(window) {
       urlArray_updateURL[index] = urlArray_updateURL[index].replace("=", " = ");
     }
 
-    if (identityBlockVisible) {
-      iLabel = "";
-      if (!origILabel || origILabel.value.search(" ") < 0)
-        iLabel = urlArray_updateURL[0];
-      else
-        iLabel = origILabel? origILabel.value: "";
-      iCountry = origICountryLabel? origICountryLabel.value: "";
+    iLabel = "";
+    if (!origILabel || origILabel.value.search(" ") < 0)
+      iLabel = urlArray_updateURL[0];
+    else
+      iLabel = origILabel? origILabel.value: "";
+    iCountry = origICountryLabel? origICountryLabel.value: "";
 
-      //trimming the iLabel to 50 characters
-      iLabel = trimWord(iLabel, 54);
-      identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-      identityCountryLabel.value = iCountry;
-      identityLabel.collapsed = (iLabel.length == 0);
-      identityCountryLabel.collapsed = (iCountry.length == 0);
-    }
+    //trimming the iLabel to 50 characters
+    iLabel = trimWord(iLabel, 54);
+    identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+    identityCountryLabel.value = iCountry;
+    identityLabel.collapsed = (iLabel.length == 0);
+    identityCountryLabel.collapsed = (iCountry.length == 0);
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
@@ -2042,7 +2040,7 @@ function changeUI(window) {
       isSetting_updateURL = false;
       // Test Case to check gibberish function
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
-      if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null && identityBlockVisible)
+      if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null)
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), true,
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
@@ -2099,16 +2097,7 @@ function changeUI(window) {
     // Function to add listeners for urlbar enhancement
     function handleURLBarEvents() {
       // Watch for urlbar value change
-      var changeListener =
-      {
-        QueryInterface: function(aIID) {
-          if (aIID.equals(Ci.nsIWebProgressListener) ||
-            aIID.equals(Ci.nsISupportsWeakReference) ||
-            aIID.equals(Ci.nsISupports))
-            return this;
-          throw Components.results.NS_NOINTERFACE;
-        },
-
+      let changeListener = {
         onLocationChange: function(aProgress, aRequest, aURI) {
           newDocumentLoaded = true;
           refreshRelatedArray = true;
@@ -2123,7 +2112,7 @@ function changeUI(window) {
         }
       };
       gBrowser.addProgressListener(changeListener);
-      unload( function() {
+      unload(function() {
         gBrowser.removeProgressListener(changeListener);
       }, window);
       listen(window, gBrowser.tabContainer, "TabSelect", function() {
@@ -2141,9 +2130,7 @@ function changeUI(window) {
         }
         async(updateURL);
       });
-      listen(window, gBrowser, "load", function(e) {
-        if (!e.originalTarget.hasFocus())
-          return;
+      listen(window, gBrowser, "load", function() {
         async(function() {
           if (!tabChanged)
             updateURL();
@@ -2176,24 +2163,25 @@ function changeUI(window) {
       });
       listen(window, gBrowser, "DOMTitleChanged", function(e) {
         async(function() {
+          if (e.target.title != gBrowser.contentDocument.title)
+            return;
           if (!gURLBar.focused && newDocumentLoaded) {
-            if (e.target.title != gBrowser.contentDocument.title)
-              return;
             origIdentity.collapsed = false;
             identityLabel.collapsed = false;
             updateURL();
             newDocumentLoaded = false;
           }
-        });
+        }, 10);
       });
-      function $(id) document.getElementById(id);
     }
 
     handleURLBarEvents();
     updateURL();
-    let DOMLoaded = function () {};
-    window.addEventListener("DOMContentLoaded", DOMLoaded = function() {
-      window.removeEventListener("DOMContentLoaded", DOMLoaded, false);
+    let runOnce = false;
+    listen(window, window, "DOMContentLoaded", function() {
+      if (runOnce)
+        return;
+      runOnce = true;
       updateURL();
     });
   }
@@ -2680,10 +2668,7 @@ function changeUI(window) {
       });
     });
     // Event listener to detect window's dimension change
-    window.addEventListener("resize",windowResized);
-    unload(function() {
-      window.removeEventListener("resize", windowResized, false);
-    }, window);
+    listen(window, window, "resize", windowResized);
     unload(function() {
       addBookmarkListeners = function() {};
       try {
@@ -2707,25 +2692,22 @@ function changeUI(window) {
       }, 50);
     });
   }
-
-  if(!pref("bringBookmarksUp")) {
-    addBookmarkListeners = function() {};
-    setupBookmarksUI = function() {};
-  }
   /*
   * Bookmarks UI Enhancer Code Ends
   */
   // Function Callings
-  if (pref("useSmallIcons"))
-    async(function() {
-      setupBookmarksUI();
-      addBookmarkListeners();
-    }, 5);
-  else
-    async(function() {
-      setupBookmarksUI();
-      addBookmarkListeners();
-    }, 200);
+  if(pref("bringBookmarksUp")) {
+    if (pref("useSmallIcons"))
+      async(function() {
+        setupBookmarksUI();
+        addBookmarkListeners();
+      }, 5);
+    else
+      async(function() {
+        setupBookmarksUI();
+        addBookmarkListeners();
+      }, 200);
+  }
   if (pref("enhanceURLBar"))
     enhanceURLBar();
 }
