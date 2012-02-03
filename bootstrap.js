@@ -155,7 +155,7 @@ function changeUI(window) {
   }, window);
 
   let mainPopup = document.createElementNS(XUL, "menupopup");
-  mainPopup.setAttribute("id", "UIEMainPopup");
+  mainPopup.setAttribute("id", "UIEnhancer_Main_Popup");
   $("mainPopupSet").appendChild(mainPopup);
   unload(function() {
     mainPopup.parentNode.removeChild(mainPopup);
@@ -212,7 +212,7 @@ function changeUI(window) {
     origInput = gURLBar.mInputField;
 
     identityLabel = document.createElementNS(XUL, "label");
-    identityLabel.setAttribute("id","enhanced-identity-icon-label");
+    identityLabel.setAttribute("id","UIEnhancer_Identity_Label");
     identityLabel.setAttribute("collapsed",false);
     identityLabel.setAttribute("flex", 1);
     identityLabel.setAttribute("style",origILabel.style);
@@ -220,7 +220,7 @@ function changeUI(window) {
     identityLabel.style.margin = "0px";
 
     identityCountryLabel = document.createElementNS(XUL, "label");
-    identityCountryLabel.setAttribute("id", "enhanced-identity-icon-country-label");
+    identityCountryLabel.setAttribute("id", "UIEnhancer_Identity_Country_Label");
     identityCountryLabel.setAttribute("collapsed", false);
     identityCountryLabel.setAttribute("flex", 1);
     identityCountryLabel.setAttribute("style", origICountryLabel.style);
@@ -261,7 +261,7 @@ function changeUI(window) {
     enhancedURLBar = document.createElementNS(XUL, "stack");
     origInput.parentNode.insertBefore(enhancedURLBar, origInput);
     setupEnhancedURLBarUI = function() {
-      enhancedURLBar.setAttribute("id", "enhanced-urlBar");
+      enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
       enhancedURLBar.style.overflow = "hidden";
@@ -655,7 +655,7 @@ function changeUI(window) {
       urlBarHeight = gURLBar.boxObject.height - 2;
 
     let createdStack = document.createElementNS(XUL, "stack");
-    createdStack.setAttribute("id", "enhanced-urlBar-stack");
+    createdStack.setAttribute("id", "UIEnhancer_URLBar_Stack");
     createdStack.style.maxHeight = urlBarHeight + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
@@ -677,7 +677,7 @@ function changeUI(window) {
     // Adding the Text Stack
     let tempS = document.createElementNS(XUL, "label");
     tempS.setAttribute("value", trimWord(createVal));
-    tempS.setAttribute("id", "enhanced-urlBar-stack-text");
+    tempS.setAttribute("id", "UIEnhancer_URLBar_Stack_Text");
     tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
     tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
@@ -691,7 +691,7 @@ function changeUI(window) {
 
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
-    tempArrow.setAttribute("id", "enhanced-urlBar-stack-arrow");
+    tempArrow.setAttribute("id", "UIEnhancer_URLBar_Stack_Arrow");
     tempArrow.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
@@ -1530,7 +1530,7 @@ function changeUI(window) {
     highlightPart(editingPart, false, false, '>');
 
     let createdStack = document.createElementNS(XUL, "stack");
-    createdStack.setAttribute("id", "enhanced-editing-stack");
+    createdStack.setAttribute("id", "UIEnhancer_URLBar_Editing_Stack");
     createdStack.style.maxHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 2)) + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
@@ -1552,7 +1552,7 @@ function changeUI(window) {
         editingPart.lastChild.style.display = "-moz-box";
       highlightPart(editingPart, false, false);
     }
-    tempS.setAttribute("id", "enhanced-editing-stack-text");
+    tempS.setAttribute("id", "UIEnhancer_URLBar_Editing_Stack_Text");
     tempS.setAttribute("type", "autocomplete");
     tempS.setAttribute("autocompletesearch", "search-autocomplete");
     tempS.setAttribute("maxrows", 5);
@@ -1566,7 +1566,7 @@ function changeUI(window) {
 
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
-    tempArrow.setAttribute("id", "enhanced-editing-stack-arrow");
+    tempArrow.setAttribute("id", "UIEnhancer_URLBar_Editing_Stack_Arrow");
     tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
@@ -1687,7 +1687,7 @@ function changeUI(window) {
   function getMenuItems(arrowedStack) {
     function createToolbarButton(tooltip, image, label) {
       let button = document.createElementNS(XUL, "menuitem");
-      button.setAttribute("id", "enhancedPartMenu-" + label + "-button");
+      button.setAttribute("id", "UIEnhancer_" + label.replace(/[ ]/g, "_") + "_Button");
       button.setAttribute("flex", 0);
       button.setAttribute("align", "center");
       button.setAttribute("orient", "vertical");
@@ -1706,7 +1706,7 @@ function changeUI(window) {
     }
 
     let menuGroup = document.createElementNS(XUL, "hbox");
-    menuGroup.setAttribute("id", "enhancedPartMenu");
+    menuGroup.setAttribute("id", "UIEnhancer_Menu");
     menuGroup.setAttribute("flex", 0);
     menuGroup.style.margin = "1px 0px 1px 25px";
     menuGroup.style.padding = "2px";
@@ -1795,7 +1795,7 @@ function changeUI(window) {
       let arrowVal = resultArray[i][0];
       let url = resultArray[i][1];
       let part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-suggestion");
+      part.setAttribute("id", "UIEnhancer_Popup_Link_" + i);
       part.setAttribute("class", "menuitem-iconic");
       // Applying Bold style to current url
       // Thus traversing to the last sibling of arrowedStack
@@ -1844,7 +1844,7 @@ function changeUI(window) {
     // Adding text when showing siblingsShown or children
     if (mainPopup.firstChild != null) {
       let part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-no-suggestion-text");
+      part.setAttribute("id", "UIEnhancer_Popup_Info");
       part.setAttribute("class", "menuitem-iconic");
       if (siblingsShown)
         part.setAttribute("label", "Siblings of highlighted Part");
@@ -1857,7 +1857,7 @@ function changeUI(window) {
     }
     else {
       let part = document.createElementNS(XUL, "menuitem");
-      part.setAttribute("id", "popup-no-suggestion-text");
+      part.setAttribute("id", "UIEnhancer_No_Suggestion");
       part.setAttribute("class", "menuitem-iconic");
       part.setAttribute("label", "No Suggestions Available");
       listen(window, part, "command", function() {
