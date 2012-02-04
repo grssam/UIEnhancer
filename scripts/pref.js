@@ -49,6 +49,7 @@ pref.defaults = {
   enhanceURLBar: true,
   useStyleSheet: true,
   userStylePath: "",
+  makeCapital: true,
   removeGibberish: true
 };
 

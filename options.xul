@@ -76,6 +76,12 @@
     Transfers icons from after the location bar to Bookmarks Toolbar.
   </setting>
 
+  <setting pref="extensions.UIEnhancer.makeCapital"
+    title="Make proper words of the URL names"
+    type="bool">
+    All segments of the URL will be capitalized.
+  </setting>
+
   <setting pref="extensions.UIEnhancer.animationSpeed"
     title="Animation Speed"
     type="radio">

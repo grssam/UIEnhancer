@@ -1009,7 +1009,8 @@ function changeUI(window) {
 
   // Function to add parts to the enhancedURLBar
   function addPart(partVal, partURL, domain, isSetting, lastPart) {
-    partVal = makeCapital(partVal);
+    if (pref("makeCapital"))
+      partVal = makeCapital(partVal);
     // Deciding if the part is domain or setting
     let partType;
     if (domain)
@@ -1444,7 +1445,9 @@ function changeUI(window) {
               return true;
             }
           });
-          relatedVal = makeCapital(relatedVal.join(" > ").replace(/^(\s<\s)/,""));
+          relatedVal = relatedVal.join(" > ").replace(/^(\s<\s)/,"");
+          if (pref("makeCapital"))
+            relatedVal = makeCapital(relatedVal);
           matching = false;
           Array.some(returnArray, function(tempP, index) {
             if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
@@ -1938,7 +1941,9 @@ function changeUI(window) {
     urlValue = decodeURI(getURI().spec);
     if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled) {
       try {
-        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+        identityLabel.value = iLabel.replace("www.", "");
+        if (pref("makeCapital"))
+          identityLabel.value = makeCapital(identityLabel.value);
         identityCountryLabel.value = iCountry;
         identityLabel.collapsed = false;
         identityCountryLabel.collapsed = iCountry.length == 0;
@@ -2053,7 +2058,9 @@ function changeUI(window) {
 
     //trimming the iLabel to 50 characters
     iLabel = trimWord(iLabel, 54);
-    identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+    identityLabel.value = iLabel.replace("www.", "");
+    if (pref("makeCapital")) 
+      identityLabel.value = makeCapital(identityLabel.value);
     identityCountryLabel.value = iCountry;
     identityLabel.collapsed = (iLabel.length == 0);
     identityCountryLabel.collapsed = (iCountry.length == 0);
@@ -2822,6 +2829,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar",
+      "makeCapital",
       "userStylePath"
     ], reload);
     pref.observe([
@@ -2862,6 +2870,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish",
+    "makeCapital",
     "userStylePath"
   ], reload);
   pref.observe([
