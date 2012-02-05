@@ -1015,10 +1015,10 @@ function changeUI(window) {
     let partType;
     if (domain)
       partType = "domain";
-    else if (isSetting == true)
-      partType = "setting";
     else if (isSetting == "anchor")
       partType = "anchor";
+    else if (isSetting == true)
+      partType = "setting";
     else
       partType = "null";
     if (partType != "domain" && partType != "setting"
@@ -1577,9 +1577,9 @@ function changeUI(window) {
     tempS.style.maxHeight = tempS.style.minHeight = (gURLBar.boxObject.height
       - (pref("useStyleSheet")? 0: 4)) + "px";
     tempS.style.display = "-moz-box";
-    tempS.style.maxWidth = tempS.style.minWidth = (nextPart?
+    tempS.style.maxWidth = tempS.style.minWidth = Math.max((nextPart?
       100: (editingPart.firstChild.boxObject.width +
-      (editingPart == enhancedURLBar.firstChild? 75: 25))) + "px";
+      (editingPart == enhancedURLBar.firstChild? 75: 25))), 100) + "px";
     tempS.setAttribute("flex", 0);
 
     // Adding the Arrow Stack
