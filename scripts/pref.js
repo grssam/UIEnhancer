@@ -50,6 +50,7 @@ pref.defaults = {
   useStyleSheet: true,
   userStylePath: "",
   makeCapital: true,
+  domainIdentityLabel: false,
   removeGibberish: true
 };
 

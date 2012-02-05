@@ -82,6 +82,12 @@
     All segments of the URL will be capitalized.
   </setting>
 
+  <setting pref="extensions.UIEnhancer.domainIdentityLabel"
+    title="Use domain in the identity box"
+    type="bool">
+    If the identity box of a website is empty, use the site's domain as its label.
+  </setting>
+
   <setting pref="extensions.UIEnhancer.animationSpeed"
     title="Animation Speed"
     type="radio">
