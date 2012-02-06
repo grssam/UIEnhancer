@@ -46,6 +46,7 @@ pref.defaults = {
   urlBarWidth: "700",
   animationSpeed: "normal",
   makeCapital: true,
+  useIdentityBox: true,
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,

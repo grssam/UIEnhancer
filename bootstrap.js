@@ -225,7 +225,7 @@ function changeUI(window) {
     identityCountryLabel.setAttribute("flex", 1);
     identityCountryLabel.setAttribute("style", origICountryLabel.style);
     identityCountryLabel.style.padding = "0px";
-    identityCountryLabel.style.margin = "0px 0px 0px 4px";
+    identityCountryLabel.style.margin = "0px";
 
     origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
     origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
@@ -293,6 +293,32 @@ function changeUI(window) {
       setupEnhancedURLBarUI();
     else
       restyleEnhancedURLBarOnTabChange = true;
+
+    // Listening for right click on identity box
+    if (pref("useIdentityBox"))
+      listen(window, origIdentity, "click", function(e) {
+        if (e.button == 2 && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
+          e.preventDefault();
+          clearPopup();
+          siblingsShown = true;
+          arrowMouseDown = true;
+          popupStack = enhancedURLBar.firstChild;
+          highlightPart(popupStack, true, true);
+          mainPopup.appendChild(getMenuItems(popupStack));
+
+          // Show the popup below the arrows
+          mainPopup.openPopup(origIdentity, "after_start", -30, 0);
+          gBrowser.addEventListener("click", hideMainPopup = function() {
+            gBrowser.removeEventListener("click", hideMainPopup, false);
+            try {
+              mainPopup.hidePopup();
+            } catch(ex) {}
+            arrowMouseDown = false;
+            siblingsShown = false;
+            highlightPart(popupStack, false, false, '>');
+          });
+        }
+      });
 
     unload(function() {
       gURLBar.mInputField.parentNode.removeChild(gURLBar.mInputField.previousSibling);
@@ -1541,7 +1567,7 @@ function changeUI(window) {
     arrowMouseDown = siblingsShown = false;
     if (editingPart == enhancedURLBar.firstChild) {
       try {
-        identityLabel.collapsed = true;
+        identityCountryLabel.collapsed = identityLabel.collapsed = true;
       } catch (ex) {}
       editingPart.setAttribute("isDomain", "false");
       editingPart.firstChild.style.display = "-moz-box";
@@ -1628,7 +1654,7 @@ function changeUI(window) {
       editing = false;
       if (e.target.parentNode == enhancedURLBar.firstChild) {
         try {
-          identityLabel.collapsed = false;
+          identityCountryLabel.collapsed = identityLabel.collapsed = !pref("useIdentityBox");
         } catch (ex) {}
         partPointer = enhancedURLBar.firstChild.nextSibling;
       }
@@ -1949,7 +1975,7 @@ function changeUI(window) {
       try {
         identityLabel.value = makeCapital(iLabel.replace("www.", ""));
         identityCountryLabel.value = iCountry;
-        identityLabel.collapsed = false;
+        origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
         identityCountryLabel.collapsed = iCountry.length == 0;
       } catch (ex) {}
       updateLook();
@@ -2051,8 +2077,8 @@ function changeUI(window) {
       urlArray_updateURL[index] = urlArray_updateURL[index].replace("=", " = ");
     }
 
-    iLabel = "";
-    if (!origILabel || origILabel.value.search(" ") < 0)
+    iCountry = iLabel = "";
+    if ((!origILabel || origILabel.value.search(" ") < 0) && pref("useIdentityBox"))
       iLabel = urlArray_updateURL[0];
     else
       iLabel = origILabel? origILabel.value: "";
@@ -2062,7 +2088,7 @@ function changeUI(window) {
     iLabel = trimWord(iLabel, 54);
     identityLabel.value = makeCapital(iLabel.replace("www.", ""));
     identityCountryLabel.value = iCountry;
-    identityLabel.collapsed = (iLabel.length == 0);
+    origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
     identityCountryLabel.collapsed = (iCountry.length == 0);
     // resetting the enhancedURLBar
     reset(0);
@@ -2073,7 +2099,7 @@ function changeUI(window) {
       // Test Case to check gibberish function
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
       if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null)
-        addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), true,
+        addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), pref("useIdentityBox"),
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), false,
@@ -2134,7 +2160,8 @@ function changeUI(window) {
           newDocumentLoaded = true;
           refreshRelatedArray = true;
           if (!tabChanged)
-            origIdentity.collapsed = identityLabel.collapsed = false;
+            origIdentity.collapsed = identityLabel.collapsed
+              = identityCountryLabel.collapsed = !pref("useIdentityBox");
           async(function() {
             if (!tabChanged)
               updateURL();
@@ -2148,8 +2175,8 @@ function changeUI(window) {
         gBrowser.removeProgressListener(changeListener);
       }, window);
       listen(window, gBrowser.tabContainer, "TabSelect", function() {
-        origIdentity.collapsed = false;
-        identityLabel.collapsed = false;
+        origIdentity.collapsed = identityLabel.collapsed
+          = identityCountryLabel.collapsed = !pref("useIdentityBox");
         tabChanged = true;
         showingHidden = false;
         try {
@@ -2199,8 +2226,8 @@ function changeUI(window) {
           return;
         async(function() {
           if (!gURLBar.focused && newDocumentLoaded) {
-            origIdentity.collapsed = false;
-            identityLabel.collapsed = false;
+            origIdentity.collapsed = identityLabel.collapsed
+              = identityCountryLabel.collapsed = !pref("useIdentityBox");
             titleChanged = true;
             updateURL();
             newDocumentLoaded = false;
@@ -2831,6 +2858,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar",
+      "useIdentityBox",
       "userStylePath"
     ], reload);
     pref.observe([
@@ -2871,6 +2899,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish",
+    "useIdentityBox",
     "userStylePath"
   ], reload);
   pref.observe([

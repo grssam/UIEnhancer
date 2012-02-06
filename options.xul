@@ -64,6 +64,10 @@
     title="Capitalize words in the URL for better Visual appearance."
     type="bool"/>
 
+  <setting pref="extensions.UIEnhancer.useIdentityBox"
+    title="Display the Domain of the webpage in the Identity Box."
+    type="bool"/>
+
   <setting pref="extensions.UIEnhancer.bringBookmarksUp"
     title="Bring Bookmarks Toolbar up and combine with UrlBar"
     type="bool"/>
