@@ -328,7 +328,7 @@ function changeUI(window) {
   }
 
   function getMaxWidth() {
-    let whiteListAddons = ["mafArchiveInfoUrlbarBox"];
+    let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
     let (udb = $("urlbar-display-box")) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
