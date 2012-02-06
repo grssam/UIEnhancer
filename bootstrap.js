@@ -402,6 +402,10 @@ function changeUI(window) {
     if (hiddenStartingIndex < 0)
       hiddenStartingIndex = 0;
 
+    if (hiddenStartingIndex > 0 && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true")
+      enhancedURLBar.firstChild.setAttribute("url", urlValue.slice(0, urlPartArray[hiddenStartingIndex - 1]));
+    else if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true")
+      enhancedURLBar.firstChild.setAttribute("url", "");
     showingHidden = true;
     redRemoved = 0;
     partsWidth = 0;
@@ -1629,7 +1633,7 @@ function changeUI(window) {
         partPointer = enhancedURLBar.firstChild.nextSibling;
       }
       enhancedURLBar.removeChild(e.target.parentNode);
-      updateURL();
+      updateURL(true);
     });
     listen(window, createdStack.firstChild, "keypress", function(e) {
       switch (e.keyCode) {
@@ -1928,7 +1932,7 @@ function changeUI(window) {
   }, window);
 
   // Function to change urlBar's UI
-  function updateURL() {
+  function updateURL(forcedUpdate) {
     if (gURLBar.focused || editing || window.getComputedStyle(gURLBar).visibility == "collapse")
       return;
     // checking if the identity block is visible or not (firefox 12+)
@@ -1936,7 +1940,12 @@ function changeUI(window) {
       origIdentity.collapsed = false;
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
-    if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled) {
+    try {
+      URLDisplayed = enhancedURLBar.lastChild.getAttribute("url");
+    } catch (ex) {
+      URLDisplayed = "";
+    }
+    if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled && !forcedUpdate) {
       try {
         identityLabel.value = makeCapital(iLabel.replace("www.", ""));
         identityCountryLabel.value = iCountry;
@@ -1946,8 +1955,6 @@ function changeUI(window) {
       updateLook();
       return;
     }
-    else
-      URLDisplayed = urlValue;
     counter = 0;
     initial = 0;
     hiddenStartingIndex = 0;
@@ -2155,7 +2162,9 @@ function changeUI(window) {
         }
         async(updateURL);
       });
-      listen(window, gBrowser, "load", function() {
+      listen(window, gBrowser, "load", function(e) {
+        if (!e.originalTarget.hasFocus())
+          return;
         async(function() {
           if (!tabChanged)
             updateURL();
@@ -2750,7 +2759,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     firstRunAfterInstall = true;
   else
     normalStartup = true;
-  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner"];
+  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner", "Bookmarks Enhancer"];
   // Function to load stylesheets
   function loadStyles(styles) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -2873,6 +2882,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
 
   // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled
   function checkConflict(addon) {
+    if (addon.id == "BookmarksEnhancer@girishsharma.com")
+      setPref("bringBookmarksUp", false);
     if (conflictingAddons.indexOf(addon.name) >= 0)
       reload();
   }
