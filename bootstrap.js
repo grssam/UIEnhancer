@@ -161,7 +161,7 @@ function changeUI(window) {
     mainPopup.parentNode.removeChild(mainPopup);
     mainPopup = null;
     try {
-      gBrowser.removeEventListener("click", hideMainPopup, false);
+      mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
     } catch (ex) {}
     hideMainPopup = null;
   }, window);
@@ -308,8 +308,8 @@ function changeUI(window) {
 
           // Show the popup below the arrows
           mainPopup.openPopup(origIdentity, "after_start", -30, 0);
-          gBrowser.addEventListener("click", hideMainPopup = function() {
-            gBrowser.removeEventListener("click", hideMainPopup, false);
+          mainPopup.addEventListener("popuphidden", hideMainPopup = function() {
+            mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
             try {
               mainPopup.hidePopup();
             } catch(ex) {}
@@ -398,7 +398,7 @@ function changeUI(window) {
       } catch(ex) {}
     }
     if (popupStack != null) {
-      gBrowser.removeEventListener("click", hideMainPopup, false);
+      mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
       forcedFlushing = true;
       highlightPart(popupStack, false, false);
       forcedFlushing = false;
@@ -942,8 +942,8 @@ function changeUI(window) {
 
         // Show the popup below the arrows
         mainPopup.openPopup(popupStack, "after_start", -30, 0);
-        gBrowser.addEventListener("click", hideMainPopup = function() {
-          gBrowser.removeEventListener("click", hideMainPopup, false);
+        mainPopup.addEventListener("popuphidden", hideMainPopup = function() {
+          mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
           try {
             mainPopup.hidePopup();
           } catch(ex) {}
@@ -1561,7 +1561,7 @@ function changeUI(window) {
   function editPart(editingPart, nextPart) {
     // Trying to close the popup
     try {
-      gBrowser.removeEventListener("click", hideMainPopup, false);
+      mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
     } catch (ex) {}
     editing = true;
     arrowMouseDown = siblingsShown = false;
@@ -1772,7 +1772,7 @@ function changeUI(window) {
       let copyPartButton = createToolbarButton("Copy Address till the Highlighted Part", COPY_IMAGE, "Copy");
       copyPartButton.onclick = function() {
         try {
-          gBrowser.removeEventListener("click", hideMainPopup, false);
+          mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
         } catch (ex) {}
         copyToClipboard(arrowedStack.getAttribute("url"));
         arrowMouseDown = siblingsShown = false;
@@ -1784,7 +1784,7 @@ function changeUI(window) {
     let copyAllPartButton = createToolbarButton("Copy Full Address", COPY_ALL_IMAGE, "Copy All");
     copyAllPartButton.onclick = function() {
       try {
-        gBrowser.removeEventListener("click", hideMainPopup, false);
+        mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
       } catch (ex) {}
       copyToClipboard(decodeURI(getURI().spec));
       arrowMouseDown = siblingsShown = false;
@@ -1796,7 +1796,7 @@ function changeUI(window) {
       let deletePartButton = createToolbarButton("Delete the Highlighted Part and load the resultant url", DELETE_IMAGE, "Delete");
       deletePartButton.onclick = function() {
         try {
-          gBrowser.removeEventListener("click", hideMainPopup, false);
+          mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
         } catch (ex) {}
         let prevURL;
         if (arrowedStack.previousSibling)
@@ -1929,8 +1929,8 @@ function changeUI(window) {
     else
       mainPopup.openPopup(arrowedStack.lastChild, "after_start", -15, 0);
     popupStack = arrowedStack;
-    listen(window, gBrowser, "click", hideMainPopup = function() {
-      gBrowser.removeEventListener("click", hideMainPopup, false);
+    listen(window, mainPopup, "popuphidden", hideMainPopup = function() {
+      mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
       try {
         mainPopup.hidePopup();
       } catch(ex) {}
