@@ -77,7 +77,7 @@
   <setting pref="extensions.UIEnhancer.useSmallIcons"
     title="Make the icons after the Location Bar smaller"
     type="bool">
-    Transfers icons from after the location bar to Bookmarks Toolbar to make them occupy lesser space.
+    Transfers icons from after the location bar to Bookmarks Toolbar to make them occupy less space.
   </setting>
 
   <setting pref="extensions.UIEnhancer.animationSpeed"
