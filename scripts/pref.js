@@ -50,6 +50,8 @@ pref.defaults = {
   enhanceURLBar: true,
   useStyleSheet: true,
   userStylePath: "",
+  makeCapital: true,
+  domainIdentityLabel: false,
   removeGibberish: true
 };
 

@@ -1013,15 +1013,16 @@ function changeUI(window) {
 
   // Function to add parts to the enhancedURLBar
   function addPart(partVal, partURL, domain, isSetting, lastPart) {
-    partVal = makeCapital(partVal);
+    if (pref("makeCapital"))
+      partVal = makeCapital(partVal);
     // Deciding if the part is domain or setting
     let partType;
     if (domain)
       partType = "domain";
-    else if (isSetting == true)
-      partType = "setting";
     else if (isSetting == "anchor")
       partType = "anchor";
+    else if (isSetting == true)
+      partType = "setting";
     else
       partType = "null";
     if (partType != "domain" && partType != "setting"
@@ -1448,7 +1449,9 @@ function changeUI(window) {
               return true;
             }
           });
-          relatedVal = makeCapital(relatedVal.join(" > ").replace(/^(\s<\s)/,""));
+          relatedVal = relatedVal.join(" > ").replace(/^(\s<\s)/,"");
+          if (pref("makeCapital"))
+            relatedVal = makeCapital(relatedVal);
           matching = false;
           Array.some(returnArray, function(tempP, index) {
             if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
@@ -1947,10 +1950,14 @@ function changeUI(window) {
     }
     if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled && !forcedUpdate) {
       try {
-        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-        identityCountryLabel.value = iCountry;
-        identityLabel.collapsed = false;
-        identityCountryLabel.collapsed = iCountry.length == 0;
+        if (pref("domainIdentityLabel")) {
+          identityLabel.value = iLabel.replace("www.", "");
+          if (pref("makeCapital"))
+            identityLabel.value = makeCapital(identityLabel.value);
+          identityCountryLabel.value = iCountry;
+          identityLabel.collapsed = false;
+          identityCountryLabel.collapsed = iCountry.length == 0;
+        }
       } catch (ex) {}
       updateLook();
       return;
@@ -2052,18 +2059,22 @@ function changeUI(window) {
     }
 
     iLabel = "";
-    if (!origILabel || origILabel.value.search(" ") < 0)
-      iLabel = urlArray_updateURL[0];
-    else
-      iLabel = origILabel? origILabel.value: "";
-    iCountry = origICountryLabel? origICountryLabel.value: "";
+    if (pref("domainIdentityLabel")) {
+      if (!origILabel || origILabel.value.search(" ") < 0)
+        iLabel = urlArray_updateURL[0];
+      else
+        iLabel = origILabel? origILabel.value: "";
+      iCountry = origICountryLabel? origICountryLabel.value: "";
 
-    //trimming the iLabel to 50 characters
-    iLabel = trimWord(iLabel, 54);
-    identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-    identityCountryLabel.value = iCountry;
-    identityLabel.collapsed = (iLabel.length == 0);
-    identityCountryLabel.collapsed = (iCountry.length == 0);
+      //trimming the iLabel to 50 characters
+      iLabel = trimWord(iLabel, 54);
+      identityLabel.value = iLabel.replace("www.", "");
+      if (pref("makeCapital")) 
+        identityLabel.value = makeCapital(identityLabel.value);
+      identityCountryLabel.value = iCountry;
+      identityLabel.collapsed = (iLabel.length == 0);
+      identityCountryLabel.collapsed = (iCountry.length == 0);
+    }
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
@@ -2831,6 +2842,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "animationSpeed",
       "removeGibberish",
       "enhanceURLBar",
+      "makeCapital",
+      "domainIdentityLabel",
       "userStylePath"
     ], reload);
     pref.observe([
@@ -2871,6 +2884,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     "animationSpeed",
     "enhanceURLBar",
     "removeGibberish",
+    "makeCapital",
+    "domainIdentityLabel",
     "userStylePath"
   ], reload);
   pref.observe([
