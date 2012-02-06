@@ -2880,6 +2880,20 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     "useSmallIcons"
   ], specialReload);
 
+  // Making makeCapital optional behind a pref
+  let (orig = makeCapital) {
+    makeCapital = function(word, len) {
+      try {
+        if (pref("makeCapital"))
+          return orig(word, len);
+        else
+          return word;
+      } catch (ex) {
+        return word;
+      }
+    };
+  }
+
   // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled
   function checkConflict(addon) {
     if (addon.id == "BookmarksEnhancer@girishsharma.com")

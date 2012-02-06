@@ -60,6 +60,10 @@
     Helpful specially for pinned tabs.
   </setting>
 
+  <setting pref="extensions.UIEnhancer.makeCapital"
+    title="Capitalize words in the URL for better Visual appearance."
+    type="bool"/>
+
   <setting pref="extensions.UIEnhancer.bringBookmarksUp"
     title="Bring Bookmarks Toolbar up and combine with UrlBar"
     type="bool"/>

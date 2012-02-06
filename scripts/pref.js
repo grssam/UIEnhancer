@@ -45,6 +45,7 @@ pref.defaults = {
   bringBookmarksUp: false,
   urlBarWidth: "700",
   animationSpeed: "normal",
+  makeCapital: true,
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
