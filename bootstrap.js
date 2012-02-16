@@ -208,7 +208,7 @@ function changeUI(window) {
     origIdentity = $("identity-icon-labels");
     origILabel = $("identity-icon-label");
     origICountryLabel = $("identity-icon-country-label");
-    origIdentity.collapsed = false;
+    origIdentity.collapsed = !pref("useIdentityBox");
     origInput = gURLBar.mInputField;
 
     identityLabel = document.createElementNS(XUL, "label");
@@ -1961,9 +1961,8 @@ function changeUI(window) {
   function updateURL(forcedUpdate) {
     if (gURLBar.focused || editing || window.getComputedStyle(gURLBar).visibility == "collapse")
       return;
-    // checking if the identity block is visible or not (firefox 12+)
     try {
-      origIdentity.collapsed = false;
+      origIdentity.collapsed = !pref("useIdentityBox");
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
     try {
@@ -1975,7 +1974,10 @@ function changeUI(window) {
       try {
         identityLabel.value = makeCapital(iLabel.replace("www.", ""));
         identityCountryLabel.value = iCountry;
-        origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
+        if (!pref("useIdentityBox"))
+          origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
+        else
+          origIdentity.collapsed = identityLabel.collapsed = false;
         identityCountryLabel.collapsed = iCountry.length == 0;
       } catch (ex) {}
       updateLook();
@@ -2088,7 +2090,10 @@ function changeUI(window) {
     iLabel = trimWord(iLabel, 54);
     identityLabel.value = makeCapital(iLabel.replace("www.", ""));
     identityCountryLabel.value = iCountry;
-    origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
+    if (!pref("useIdentityBox"))
+      origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
+    else
+      origIdentity.collapsed = identityLabel.collapsed = false;
     identityCountryLabel.collapsed = (iCountry.length == 0);
     // resetting the enhancedURLBar
     reset(0);
@@ -2099,8 +2104,8 @@ function changeUI(window) {
       // Test Case to check gibberish function
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
       if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null)
-        addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), pref("useIdentityBox"),
-          isSetting_updateURL, index == urlArray_updateURL.length - 1);
+        addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), pref("useIdentityBox")
+          && ($("identity-box").boxObject.width > 0), isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), false,
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
@@ -2190,8 +2195,10 @@ function changeUI(window) {
         async(updateURL);
       });
       listen(window, gBrowser, "load", function(e) {
-        if (!e.originalTarget.hasFocus())
-          return;
+        try {
+          if (!e.originalTarget.hasFocus())
+            return;
+        } catch (ex) {}
         async(function() {
           if (!tabChanged)
             updateURL();
@@ -2233,6 +2240,46 @@ function changeUI(window) {
             newDocumentLoaded = false;
           }
         }, 10);
+      });
+      // Mouse dragging event listeners
+      let dragStarted = false;
+      let firstHidden = false;
+      listen(window, enhancedURLBar, "dragstart", function(event) {
+        if (!pref("useDragDrop"))
+          return;
+        dragStarted = true;
+        let url = enhancedURLBar.lastChild.getAttribute("url");
+        let (dt = event.dataTransfer) {
+          let title = enhancedURLBar.lastChild.firstChild.getAttribute("value");
+          if (event.originalTarget.parentNode.parentNode == enhancedURLBar)
+            title = event.originalTarget.getAttribute("value");
+          dt.setData("text/x-moz-url", url+"\n" + title);
+          dt.setData("text/uri-list", url);
+          dt.setData("text/html", "<a href='" + url + "'>" + url + "</a>");
+          dt.setData("text/plain", url);
+          firstHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true"
+            && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false";
+          if (firstHidden)
+            enhancedURLBar.firstChild.firstChild.style.display = "-moz-box";
+          updateLook();
+          dt.setDragImage(enhancedURLBar, event.screenX - enhancedURLBar.boxObject.x
+            + (firstHidden?enhancedURLBar.firstChild.firstChild.boxObject.width: 0), 10);
+        }
+      });
+      listen(window, enhancedURLBar, "dragenter", function(event) {
+        if (!pref("useDragDrop"))
+          return;
+        if (firstHidden)
+          enhancedURLBar.firstChild.firstChild.style.display = "none";
+        updateLook();
+      });
+      listen(window, enhancedURLBar, "dragend", function(event) {
+        if (!pref("useDragDrop"))
+          return;
+        dragStarted = false;
+        if (firstHidden)
+          enhancedURLBar.firstChild.firstChild.style.display = "none";
+        updateLook();
       });
     }
 

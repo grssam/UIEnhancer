@@ -65,8 +65,14 @@
     type="bool"/>
 
   <setting pref="extensions.UIEnhancer.useIdentityBox"
-    title="Display the Domain of the webpage in the Identity Box."
+    title="Use Identity Box to display the domain of the page when Identity box itself is empty."
     type="bool"/>
+
+  <setting pref="extensions.UIEnhancer.useDragDrop"
+    title="Allow Dragging and Dropping of Breadcrumb to places like Bookmarks Toolbar, Folder, Desktop, Tab strip etc."
+    type="bool">
+    Dropping on Desktop/Any folder will result to making a link file with the name as the value of the part from where dragging started.
+  </setting>
 
   <setting pref="extensions.UIEnhancer.bringBookmarksUp"
     title="Bring Bookmarks Toolbar up and combine with UrlBar"

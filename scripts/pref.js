@@ -47,6 +47,7 @@ pref.defaults = {
   animationSpeed: "normal",
   makeCapital: true,
   useIdentityBox: true,
+  useDragDrop: true,
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
