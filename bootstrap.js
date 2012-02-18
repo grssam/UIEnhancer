@@ -305,6 +305,23 @@ function changeUI(window) {
           popupStack = enhancedURLBar.firstChild;
           highlightPart(popupStack, true, true);
           mainPopup.appendChild(getMenuItems(popupStack));
+          // Displaying the domain along with these buttons
+          mainPopup.appendChild(window.document.createElementNS(XUL, "menuseparator"));
+          let (part = document.createElementNS(XUL, "menuitem")) {
+            part.setAttribute("id", "UIEnhancer_Popup_Link_0");
+            part.setAttribute("class", "menuitem-iconic");
+            let url = urlValue.slice(0, urlPartArray[0]);
+            part.setAttribute("label", url);
+            listen(window, part, "command", function(e) {
+              try {
+                mainPopup.hidePopup();
+              } catch(ex) {}
+              siblingsShown = arrowMouseDown = false;
+              highlightPart(popupStack, false, false, '>');
+              handleTextClick(url, null, null, e.ctrlKey);
+            }, false);
+            mainPopup.appendChild(part);
+          }
 
           // Show the popup below the arrows
           mainPopup.openPopup(origIdentity, "after_start", -30, 0);
@@ -726,7 +743,8 @@ function changeUI(window) {
     // Adding tooltip texts
     tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
       + (!enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
-      + "\nScroll to instantly preview the sibling address"));
+      + "\nScroll to instantly preview the sibling address")
+      + "\nOr drag n drop this part to anywhere you want");
     if (partType == "domain" || hiddenArrow)
       tempS.style.display = "none";
     else
@@ -1086,7 +1104,8 @@ function changeUI(window) {
       partPointer.setAttribute("isHiddenArrow", false);
       partPointer.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu"
         + (partPointer == enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
-        + "\nScroll to instantly preview the sibling address"));
+        + "\nScroll to instantly preview the sibling address")
+        + "\nOr drag n drop this part to anywhere you want");
       partPointer.lastChild.setAttribute("tooltiptext", "Click to access Sub Menu");
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
@@ -1137,7 +1156,9 @@ function changeUI(window) {
             enhancedURLBar.firstChild.setAttribute("isSetting", false);
             enhancedURLBar.firstChild.setAttribute("isAnchorTag", false);
             enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(urlArray_updateURL[0]));
-            enhancedURLBar.firstChild.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu");
+            enhancedURLBar.firstChild.firstChild.setAttribute("tooltiptext"
+              , "Right Click to access Sub Menu"
+              + "\nOr drag n drop this part to anywhere you want");
             if (!pref("useStyleSheet")) {
               enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
               enhancedURLBar.firstChild.firstChild.style.color = "rgb(30,30,30)";
@@ -1868,17 +1889,6 @@ function changeUI(window) {
         if (!isCurrent)
           handleTextClick(url, null, null, e.ctrlKey);
       }, false);
-      listen(window, part, "click", function(e) {
-        try {
-          mainPopup.hidePopup();
-        } catch(ex) {}
-        siblingsShown = arrowMouseDown = false;
-        highlightPart(arrowedStack, false, false, '>');
-        if (e.button != 1)
-          return;
-        if (!isCurrent)
-          handleTextClick(url, null, null, true);
-      }, false);
       mainPopup.appendChild(part);
     }
     if (arrowedStack.getAttribute("isDomain") == "true") {
@@ -2265,21 +2275,20 @@ function changeUI(window) {
           dt.setDragImage(enhancedURLBar, event.screenX - enhancedURLBar.boxObject.x
             + (firstHidden?enhancedURLBar.firstChild.firstChild.boxObject.width: 0), 10);
         }
+        async(dragUpdate, 50);
       });
-      listen(window, enhancedURLBar, "dragenter", function(event) {
+      function dragUpdate() {
         if (!pref("useDragDrop"))
           return;
         if (firstHidden)
           enhancedURLBar.firstChild.firstChild.style.display = "none";
         updateLook();
-      });
-      listen(window, enhancedURLBar, "dragend", function(event) {
-        if (!pref("useDragDrop"))
-          return;
+      }
+      listen(window, enhancedURLBar, "dragenter", dragUpdate);
+      listen(window, enhancedURLBar, "dragleave", dragUpdate);
+      listen(window, enhancedURLBar, "dragend", function() {
+        dragUpdate()
         dragStarted = false;
-        if (firstHidden)
-          enhancedURLBar.firstChild.firstChild.style.display = "none";
-        updateLook();
       });
     }
 
