@@ -41,6 +41,9 @@ let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
 let recheckOnTabChange = false;
+// global variable to store whether user has Status-4-Ever installed
+// and its setting is to show status or/and link in Location Bar
+let S4E_statusInURLBar = false;
 
 // Class for handling the changing and revertign of various DOM elements
 function handleDOM(object, newParent, insertFirst) {
@@ -188,7 +191,6 @@ function changeUI(window) {
   let origInput;
   let identityLabel;
   let identityCountryLabel;
-  let maxWidth = 0;
   let enhancedURLBar;
   let setupEnhancedURLBarUI = function() {};
   let setOpacity = function() {};
@@ -200,7 +202,7 @@ function changeUI(window) {
       = lastScrolledTime = lastUsefulPart = ctrlMouseHover = mouseScrolled
       = scrolledStack = indexB4Scrolling = currentScrolledIndex = redRemoved
       = lastScrolledUrl = restyleEnhancedURLBarOnTabChange = siblingsShown
-      = urlBarHeight = maxWidth = DBConnection = null;
+      = urlBarHeight = DBConnection = null;
   }, window);
 
   if (pref("enhanceURLBar")) {
@@ -350,15 +352,18 @@ function changeUI(window) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
       if (udb == null)
-        return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250;
-      maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.4*gURLBar.boxObject.width)
-        - origIdentity.boxObject.x - origIdentity.boxObject.width - 60;
+        return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+      let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
+        - origIdentity.boxObject.x - origIdentity.boxObject.width - (S4E_statusInURLBar?
+        Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)*0.33: 60);
       if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
-        maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width - 160
-          - udb.parentNode.lastChild.boxObject.x + udb.nextSibling.boxObject.x
-          - udb.parentNode.lastChild.boxObject.width;
+        maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
+          - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + udb.parentNode.lastChild.boxObject.x
+          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width)
+          : 160 + udb.parentNode.lastChild.boxObject.x
+          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width);
+      return maxWidth;
     }
-    return maxWidth;
   }
 
   // Function to use gibberish and remove redundant text
@@ -485,7 +490,7 @@ function changeUI(window) {
     Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
 
     if (partsWidth > getMaxWidth() || showingHidden)
-      enhancedURLBar.style.width = maxWidth + "px";
+      enhancedURLBar.style.width = getMaxWidth() + "px";
     else
       enhancedURLBar.style.width = partsWidth + "px";
   }
@@ -1708,7 +1713,7 @@ function changeUI(window) {
               let (curNode = e.target.parentNode) {
                 if (curNode.previousSibling == enhancedURLBar.firstChild
                   && enhancedURLBar.firstChild.firstChild.getAttribute("value")
-                  .toLowerCase() == "about")
+                  .toLowerCase() == "about" && e.target.value.indexOf(":") < 0)
                     prevURL += ":";
                 else if ((curNode.hasAttribute("isSetting") && curNode.getAttribute("isSetting") == "false")
                   || (!curNode.hasAttribute("isSetting") && curNode.previousSibling.getAttribute("isSetting") == "false"))
@@ -2272,22 +2277,22 @@ function changeUI(window) {
           if (firstHidden)
             enhancedURLBar.firstChild.firstChild.style.display = "-moz-box";
           updateLook();
-          dt.setDragImage(enhancedURLBar, event.screenX - enhancedURLBar.boxObject.x
+          dt.setDragImage(enhancedURLBar, event.clientX - enhancedURLBar.boxObject.x
             + (firstHidden?enhancedURLBar.firstChild.firstChild.boxObject.width: 0), 10);
         }
-        async(dragUpdate, 50);
+        async(dragUpdate, 25);
       });
       function dragUpdate() {
         if (!pref("useDragDrop"))
           return;
         if (firstHidden)
           enhancedURLBar.firstChild.firstChild.style.display = "none";
-        updateLook();
       }
       listen(window, enhancedURLBar, "dragenter", dragUpdate);
       listen(window, enhancedURLBar, "dragleave", dragUpdate);
       listen(window, enhancedURLBar, "dragend", function() {
         dragUpdate()
+        updateLook();
         dragStarted = false;
       });
     }
@@ -2842,7 +2847,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     firstRunAfterInstall = true;
   else
     normalStartup = true;
-  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner", "Bookmarks Enhancer"];
+  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner", "Bookmarks Enhancer", "Status-4-Evar"];
   // Function to load stylesheets
   function loadStyles(styles) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -2860,33 +2865,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
 
-  if (pref("enhanceURLBar")) {
-    if (pref("useStyleSheet") && pref("userStylePath").length == 0)
-      loadStyles(["defaultThemeLight"]);
-    else if (pref("useStyleSheet")) {
-      let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
-        getService(Ci.nsIStyleSheetService);
-      let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
-        .replace(/[\\]/g, "/"), null, null);
-      if (!fileURI.spec.match(/(\.css)$/))
-        loadStyles(["defaultThemeLight"]);
-      else {
-        sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
-        // Fallback to default stylesheet when the file is not present
-        if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
-          loadStyles(["defaultThemeLight"]);
-        else
-          unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
-      }
-    }
-  }
-
-  // Apply the changes in UI
-  watchWindows(changeUI);
-
-  reload = function() {
-    unload();
-    normalStartup = true;
+  function init() {
     if (pref("enhanceURLBar")) {
       if (pref("useStyleSheet") && pref("userStylePath").length == 0)
         loadStyles(["defaultThemeLight"]);
@@ -2907,13 +2886,21 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
         }
       }
     }
+
+    // check if S4E is there, if yes, update the variable
+    try {
+      AddonManager.getAddonByID("status4evar@caligonstudios.com",setupFixForS4E);
+    } catch (ex) {}
+    // Apply the changes in UI
     watchWindows(changeUI);
+
+    // Watch for preference changes to reprocess the keyword data
     pref.observe([
       "useStyleSheet",
       "bringBookmarksUp",
       "animationSpeed",
-      "removeGibberish",
       "enhanceURLBar",
+      "removeGibberish",
       "useIdentityBox",
       "userStylePath"
     ], reload);
@@ -2923,6 +2910,20 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     pref.observe([
       "useSmallIcons"
     ], specialReload);
+
+    // Making makeCapital optional behind a pref
+    let (orig = makeCapital) {
+      makeCapital = function(word, len) {
+        try {
+          if (pref("makeCapital"))
+            return orig(word, len);
+          else
+            return word;
+        } catch (ex) {
+          return word;
+        }
+      };
+    }
 
     let conflictListener = {
       onPropertyChanged : checkConflict,
@@ -2936,11 +2937,16 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     unload(function() {
       AddonManager.removeAddonListener(conflictListener);
     });
+  }
+
+  reload = function() {
+    unload();
+    normalStartup = true;
+    init();
   };
 
   function specialReload() {
     firstRunAfterInstall = true;
-    normalStartup = false;
     reload();
   }
 
@@ -2948,35 +2954,18 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     recheckOnTabChange = true;
   }
 
-  // Watch for preference changes to reprocess the keyword data
-  pref.observe([
-    "useStyleSheet",
-    "bringBookmarksUp",
-    "animationSpeed",
-    "enhanceURLBar",
-    "removeGibberish",
-    "useIdentityBox",
-    "userStylePath"
-  ], reload);
-  pref.observe([
-    "urlBarWidth",
-  ], reloadOnTabChange);
-  pref.observe([
-    "useSmallIcons"
-  ], specialReload);
+  // Conflicting addon fixes start hereby
+  function setupFixForS4E(addon) {
+    function intPref(branch, prefName) {
+      return Services.prefs.getBranch(branch + ".").getIntPref(prefName);
+    }
 
-  // Making makeCapital optional behind a pref
-  let (orig = makeCapital) {
-    makeCapital = function(word, len) {
-      try {
-        if (pref("makeCapital"))
-          return orig(word, len);
-        else
-          return word;
-      } catch (ex) {
-        return word;
-      }
-    };
+    if (addon.userDisabled == false &&
+      (intPref("status4evar.status", "linkOver") == 2) ||
+      (intPref("status4evar", "status") == 2))
+        S4E_statusInURLBar = true;
+    if (S4E_statusInURLBar && pref("enhanceURLBar"))
+      loadStyles(["fixForS4E"]);
   }
 
   // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled
@@ -2986,18 +2975,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     if (conflictingAddons.indexOf(addon.name) >= 0)
       reload();
   }
-  let conflictListener = {
-    onPropertyChanged : checkConflict,
-    onUninstalled : checkConflict,
-    onInstalled : checkConflict,
-    onDisabled : checkConflict,
-    onEnabled : checkConflict
-  };
-  AddonManager.addAddonListener(conflictListener);
-
-  unload(function() {
-    AddonManager.removeAddonListener(conflictListener);
-  });
+  // calling the function to setup everything
+  init();
 });
 
 function shutdown(data, reason) {

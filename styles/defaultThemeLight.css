@@ -8,6 +8,7 @@
 }
 .enhanced-text-normal, .enhanced-text-noArrow-normal {
   padding: 2px 2px 0px 2px !important;
+  color: #000 !important;
   background-image: url('defaultThemeLight/text_normal.png');
 }
 .enhanced-arrow-normal {
