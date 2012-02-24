@@ -260,25 +260,24 @@ function changeUI(window) {
     }, window);
 
     // Add stuff around the original urlbar input box
-    enhancedURLBar = document.createElementNS(XUL, "stack");
+    enhancedURLBar = document.createElementNS(XUL, "hbox");
     origInput.parentNode.insertBefore(enhancedURLBar, origInput);
     setupEnhancedURLBarUI = function() {
       let origParentStyle = gURLBar.parentNode.style;
+      let uiep = gURLBar;
+      //enhancedURLBar.parentNode.padding = "0px";
       enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
       enhancedURLBar.style.overflow = "hidden";
       enhancedURLBar.style.display = "-moz-box";
       enhancedURLBar.style.padding = "0px";
-      urlBarHeight = gURLBar.boxObject.height;
+      urlBarHeight = window.getComputedStyle(uiep).height.replace("px", '')*1
+        + window.getComputedStyle(uiep).paddingTop.replace("px", '')*1
+        + window.getComputedStyle(uiep).paddingBottom.replace("px", '')*1;
       if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
-        urlBarHeight -= 2;
-      else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0)
-        urlBarHeight -= 4;
-      enhancedURLBar.style.maxHeight = urlBarHeight + "px";
-      if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
-        enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop
-          + " 0px -" + window.getComputedStyle(gURLBar).paddingBottom + " -"
+        enhancedURLBar.style.margin = "-" + window.getComputedStyle(uiep).paddingTop + " 0px -"
+          + window.getComputedStyle(uiep).paddingBottom + " -"
           + window.getComputedStyle(origIdentity).marginRight;
       else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0) {
         enhancedURLBar.style.margin = "-1px 0px";
@@ -720,9 +719,9 @@ function changeUI(window) {
     if (urlBarHeight == null || urlBarHeight <= 0)
       urlBarHeight = gURLBar.boxObject.height - 2;
 
-    let createdStack = document.createElementNS(XUL, "stack");
+    let createdStack = document.createElementNS(XUL, "hbox");
     createdStack.setAttribute("id", "UIEnhancer_URLBar_Stack");
-    createdStack.style.maxHeight = urlBarHeight + "px";
+    createdStack.style.height = urlBarHeight + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", partURL);
@@ -744,7 +743,7 @@ function changeUI(window) {
     let tempS = document.createElementNS(XUL, "label");
     tempS.setAttribute("value", trimWord(createVal));
     tempS.setAttribute("id", "UIEnhancer_URLBar_Stack_Text");
-    tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
+    //tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
     tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
       + (!enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
@@ -759,7 +758,7 @@ function changeUI(window) {
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
     tempArrow.setAttribute("id", "UIEnhancer_URLBar_Stack_Arrow");
-    tempArrow.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
+    //tempArrow.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
     if (!hiddenArrow)
@@ -2960,9 +2959,9 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       return Services.prefs.getBranch(branch + ".").getIntPref(prefName);
     }
 
-    if (addon.userDisabled == false &&
-      (intPref("status4evar.status", "linkOver") == 2) ||
-      (intPref("status4evar", "status") == 2))
+    if (addon && addon.isActive &&
+      (intPref("status4evar.status", "linkOver") == 2
+      || intPref("status4evar", "status") == 2))
         S4E_statusInURLBar = true;
     if (S4E_statusInURLBar && pref("enhanceURLBar"))
       loadStyles(["fixForS4E"]);

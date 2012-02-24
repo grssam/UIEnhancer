@@ -1,5 +1,5 @@
 .enhanced-stack { padding: 0px !important; margin: 0px;}
-.enhanced-text, .enhanced-text-anchor, .enhanced-text-queryString {
+.enhanced-text, .enhanced-text-anchor, .enhanced-text-queryString , .enhanced-text-noArrow, .enhanced-text-noArrow-anchor, .enhanced-text-noArrow-queryString {
   margin: 0px !important; background-size: 100% 100%; background-repeat: no-repeat;
 }
 .enhanced-arrow-frontChevron, .enhanced-arrow-backChevron, .enhanced-arrow, .enhanced-arrow-anchor, .enhanced-arrow-queryString {
@@ -7,7 +7,7 @@
   background-size: 100% 100%; background-repeat: no-repeat;
 }
 .enhanced-text-normal, .enhanced-text-noArrow-normal {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   color: #000 !important;
   background-image: url('defaultThemeLight/text_normal.png');
 }
@@ -15,7 +15,7 @@
   background-image: url('defaultThemeLight/arrow_normal.png');
 }
 .enhanced-text-textHovered, .enhanced-text-noArrow-textHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_textHovered.png');
 }
 .enhanced-arrow-textHovered, .enhanced-arrow-arrowHovered {
@@ -25,14 +25,14 @@
   background-image: url('defaultThemeLight/arrow_textHovered_left.png');
 }
 .enhanced-text-arrowHovered, .enhanced-text-noArrow-arrowHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_arrowHovered.png');
 }
 .enhanced-arrow-arrowHovered-left, .enhanced-arrow-noArrow-arrowHovered-left {
   background-image: url('defaultThemeLight/arrow_arrowHovered_left.png');
 }
 .enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_arrowMouseDown.png');
 }
 .enhanced-arrow-arrowMouseDown, .enhanced-arrow-textMouseDown {
@@ -42,14 +42,14 @@
   background-image: url('defaultThemeLight/arrow_arrowMouseDown_left.png');
 }
 .enhanced-text-textMouseDown, .enhanced-text-noArrow-textMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_textMouseDown.png');
 }
 .enhanced-arrow-textMouseDown-left, .enhanced-arrow-noArrow-textMouseDown-left {
   background-image: url('defaultThemeLight/arrow_textMouseDown_left.png');
 }
 .enhanced-text-mouseScroll, .enhanced-text-noArrow-mouseScroll {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_mouseScroll.png');
 }
 .enhanced-arrow-mouseScroll {
@@ -63,14 +63,14 @@
 }
 .enhanced-text-anchor, .enhanced-text-noArrow-anchor { color: rgb(75, 150, 200);}
 .enhanced-text-anchor-normal, .enhanced-text-noArrow-anchor-normal {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_normal.png');
 }
 .enhanced-arrow-anchor-normal {
   background-image: url('defaultThemeLight/arrow_anchor_normal.png');
 }
 .enhanced-text-anchor-textHovered, .enhanced-text-noArrow-anchor-textHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_textHovered.png');
 }
 .enhanced-arrow-anchor-textHovered, .enhanced-arrow-anchor-arrowHovered {
@@ -80,14 +80,14 @@
   background-image: url('defaultThemeLight/arrow_anchor_textHovered_left.png');
 }
 .enhanced-text-anchor-arrowHovered, .enhanced-text-noArrow-anchor-arrowHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_arrowHovered.png');
 }
 .enhanced-arrow-anchor-arrowHovered-left, .enhanced-arrow-noArrow-anchor-arrowHovered-left {
   background-image: url('defaultThemeLight/arrow_anchor_arrowHovered_left.png');
 }
 .enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_anchor_arrowMouseDown.png');
 }
 .enhanced-arrow-anchor-arrowMouseDown, .enhanced-arrow-anchor-textMouseDown {
@@ -97,7 +97,7 @@
   background-image: url('defaultThemeLight/arrow_anchor_arrowMouseDown_left.png');
 }
 .enhanced-text-anchor-textMouseDown, .enhanced-text-noArrow-anchor-textMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_anchor_textMouseDown.png');
 }
 .enhanced-arrow-anchor-textMouseDown-left, .enhanced-arrow-noArrow-anchor-textMouseDown-left {
@@ -105,14 +105,14 @@
 }
 .enhanced-text-queryString, .enhanced-text-noArrow-queryString { color: rgb(50, 175, 75);}
 .enhanced-text-queryString-normal, .enhanced-text-noArrow-queryString-normal {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_queryString_normal.png');
 }
 .enhanced-arrow-queryString-normal {
   background-image: url('defaultThemeLight/arrow_queryString_normal.png');
 }
 .enhanced-text-queryString-textHovered, .enhanced-text-noArrow-queryString-textHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_queryString_textHovered.png');
 }
 .enhanced-arrow-queryString-textHovered, .enhanced-arrow-queryString-arrowHovered {
@@ -122,14 +122,14 @@
   background-image: url('defaultThemeLight/arrow_queryString_textHovered_left.png');
 }
 .enhanced-text-queryString-arrowHovered, .enhanced-text-noArrow-queryString-arrowHovered {
-  padding: 2px 2px 0px 2px !important;
+  padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_queryString_arrowHovered.png');
 }
 .enhanced-arrow-queryString-arrowHovered-left, .enhanced-arrow-noArrow-queryString-arrowHovered-left {
   background-image: url('defaultThemeLight/arrow_queryString_arrowHovered_left.png');
 }
 .enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_queryString_arrowMouseDown.png');
 }
 .enhanced-arrow-queryString-arrowMouseDown, .enhanced-arrow-queryString-textMouseDown {
@@ -139,14 +139,11 @@
   background-image: url('defaultThemeLight/arrow_queryString_arrowMouseDown_left.png');
 }
 .enhanced-text-queryString-textMouseDown, .enhanced-text-noArrow-queryString-textMouseDown {
-  padding: 3px 1px 0px 3px !important;
+  padding: 4px 1px 0px 3px !important;
   background-image: url('defaultThemeLight/text_queryString_textMouseDown.png');
 }
 .enhanced-arrow-queryString-textMouseDown-left, .enhanced-arrow-noArrow-queryString-textMouseDown-left {
   background-image: url('defaultThemeLight/arrow_queryString_textMouseDown_left.png');
-}
-.enhanced-text-noArrow, .enhanced-text-noArrow-anchor, .enhanced-text-noArrow-queryString{
-  margin: 0px !important; background-size: 100% 100%; background-repeat: no-repeat;
 }
 .enhanced-arrow-noArrow, .enhanced-arrow-noArrow-anchor, .enhanced-arrow-noArrow-queryString {
   width: 10px; padding: 0px !important; margin: 0px !important;
