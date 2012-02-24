@@ -264,20 +264,18 @@ function changeUI(window) {
     origInput.parentNode.insertBefore(enhancedURLBar, origInput);
     setupEnhancedURLBarUI = function() {
       let origParentStyle = gURLBar.parentNode.style;
-      let uiep = gURLBar;
-      //enhancedURLBar.parentNode.padding = "0px";
       enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
       enhancedURLBar.style.overflow = "hidden";
       enhancedURLBar.style.display = "-moz-box";
       enhancedURLBar.style.padding = "0px";
-      urlBarHeight = window.getComputedStyle(uiep).height.replace("px", '')*1
-        + window.getComputedStyle(uiep).paddingTop.replace("px", '')*1
-        + window.getComputedStyle(uiep).paddingBottom.replace("px", '')*1;
+      urlBarHeight = window.getComputedStyle(gURLBar).height.replace("px", '')*1
+        + window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1
+        + window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1;
       if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
-        enhancedURLBar.style.margin = "-" + window.getComputedStyle(uiep).paddingTop + " 0px -"
-          + window.getComputedStyle(uiep).paddingBottom + " -"
+        enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
+          + window.getComputedStyle(gURLBar).paddingBottom + " -"
           + window.getComputedStyle(origIdentity).marginRight;
       else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0) {
         enhancedURLBar.style.margin = "-1px 0px";
