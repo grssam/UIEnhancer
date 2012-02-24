@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+ - Version: MIT/X11 License
+ - 
+ - Copyright (c) 2011 Girish Sharma
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Creator:
+ -   Girish Sharma <scrapmachines@gmail.com>
+ -
+ - ***** END LICENSE BLOCK ***** -->
+<!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
+  width="400" maxheight="350" buttons="accept,cancel"
+  onload="optionsWindow.onLoad()"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="options.js"/>
+  <notificationbox id="changeNotificationBox" flex="1"/>
+  <prefpane id="UIEnhancerGeneralPrefPane" label="&generalPane.label;">
+    <preferences>
+      <preference id="enhanceURLBar" name="extensions.UIEnhancer.enhanceURLBar" type="bool"/>
+      <preference id="removeGibberish" name="extensions.UIEnhancer.removeGibberish" type="bool"/>
+      <preference id="makeCapital" name="extensions.UIEnhancer.makeCapital" type="bool"/>
+      <preference id="useIdentityBox" name="extensions.UIEnhancer.useIdentityBox" type="bool"/>
+      <preference id="useDragDrop" name="extensions.UIEnhancer.useDragDrop" type="bool"/>
+    </preferences>
+    <vbox>
+      <checkbox id="enhanceURLBarCheckBox" preference="enhanceURLBar" oncommand="optionsWindow.toggleURLBarSettings()"
+        tooltiptext="&enhanceURLBar.tooltip;" label="&enhanceURLBar.label;" accesskey="&enhanceURLBar.accesskey;" />
+      <groupbox orient="vertical">
+        <caption label="&generalCustomization.label;" />
+        <checkbox id="removeGibberishCheckBox" preference="removeGibberish" oncommand="optionsWindow.notifyChange()"
+          tooltiptext="&removeGibberish.tooltip;" label="&removeGibberish.label;" accesskey="&removeGibberish.accesskey;" />
+        <checkbox id="makeCapitalCheckBox" preference="makeCapital" oncommand="optionsWindow.notifyChange()"
+          tooltiptext="&makeCapital.tooltip;" label="&makeCapital.label;" accesskey="&makeCapital.accesskey;" />
+        <checkbox id="useIdentityBoxCheckBox" preference="useIdentityBox" oncommand="optionsWindow.notifyChange()"
+          tooltiptext="&useIdentityBox.tooltip;" label="&useIdentityBox.label;" accesskey="&useIdentityBox.accesskey;" />
+      </groupbox>
+      <checkbox id="useDragDropCheckBox" preference="useDragDrop" oncommand="optionsWindow.notifyChange()"
+        tooltiptext="&useDragDrop.tooltip;" label="&useDragDrop.label;" accesskey="&useDragDrop.accesskey;" />
+    </vbox>
+  </prefpane>
+  <prefpane id="UIEnhancerStylePrefPane" label="&stylePane.label;">
+    <preferences>
+      <preference id="useStyleSheet" name="extensions.UIEnhancer.useStyleSheet" type="bool"/>
+    </preferences>
+    <checkbox id="useStyleSheetCheckBox" preference="useStyleSheet" oncommand="optionsWindow.toggleStylesSettings();"
+      tooltiptext="&useStyleSheet.tooltip;" label="&useStyleSheet.label;" accesskey="&useStyleSheet.accesskey;" />
+    <groupbox id="customStyleSheet" orient="horizontal" align="center">
+      <caption label="&customStyleSheet.label;" tooltiptext="customStyleSheet.tooltip;" />
+      <button id="browseStyleSheetButton" label="&browse.label;" oncommand="optionsWindow.openFile();"
+        tooltiptext="&browse.tooltip;" accesskey="&browse.accesskey;" style="margin-right:5px;"/>
+      <label id="userStyleSheetPathLabel" value="" flex="1" crop="start" style="color:#444; max-width:200px;"/>
+      <button id="resetStyleSheetButton" label="&resetStyleSheet.label;" oncommand="optionsWindow.resetStyleSheet();"
+        tooltiptext="&resetStyleSheet.tooltip;" accesskey="&resetStyleSheet.accesskey;" style="margin-right:5px;"/>
+    </groupbox>
+  </prefpane>
+  <prefpane id="UIEnhancerBookmarksPrefPane" label="&bookmarksPane.label;">
+    <preferences>
+      <preference id="bringBookmarksUp" name="extensions.UIEnhancer.bringBookmarksUp" type="bool"/>
+      <preference id="urlBarWidth" name="extensions.UIEnhancer.urlBarWidth" type="string"/>
+      <preference id="useSmallIcons" name="extensions.UIEnhancer.useSmallIcons" type="bool"/>
+      <preference id="animationSpeed" name="extensions.UIEnhancer.animationSpeed" type="string"/>
+    </preferences>
+    <checkbox id="bringBookmarksUpCheckBox" preference="bringBookmarksUp" oncommand="optionsWindow.toggleBookmarksSettings();"
+      tooltiptext="&bringBookmarksUp.tooltip;" label="&bringBookmarksUp.label;" accesskey="&bringBookmarksUp.accesskey;" />
+    <hbox>
+      <label id="urlBarWidthLabel" value="&urlBarWidth.label;" tooltiptext="&urlBarWidth.tooltip;"
+         accesskey="&urlBarWidth.accesskey;" control="urlBarWidthTextBox" style="padding: 5px 0px;"/>
+      <textbox id="urlBarWidthTextBox" preference="urlBarWidth" oncommand="optionsWindow.notifyChange()" flex="1"/>
+    </hbox>
+    <checkbox id="useSmallIconsCheckBox" preference="useSmallIcons" oncommand="optionsWindow.notifyChange()"
+      tooltiptext="&useSmallIcons.tooltip;" label="&useSmallIcons.label;" accesskey="&useSmallIcons.accesskey;" />
+    <groupbox>
+      <caption tooltiptext="&animationSpeed.tooltip;" label="&animationSpeed.label;" accesskey="&animationSpeed.accesskey;"/>
+      <radiogroup id="animationSpeedRadioGroup" preference="animationSpeed"
+        oncommand="optionsWindow.notifyChange()" orient="horizontal">
+          <radio id="animationSpeedNormal" label="&animationSpeed.normal.label;"
+            accesskey="&animationSpeed.normal.accesskey;" value="normal"/>
+          <radio id="animationSpeedFast" label="&animationSpeed.fast.label;"
+            accesskey="&animationSpeed.fast.accesskey;" value="fast"/>
+          <radio id="animationSpeedNone" label="&animationSpeed.none.label;"
+            accesskey="&animationSpeed.none.accesskey;" value="none"/>
+      </radiogroup>
+    </groupbox>
+  </prefpane>
+</prefwindow>

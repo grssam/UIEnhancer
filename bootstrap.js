@@ -316,7 +316,7 @@ function changeUI(window) {
                 mainPopup.hidePopup();
               } catch(ex) {}
               siblingsShown = arrowMouseDown = false;
-              highlightPart(popupStack, false, false, '>');
+              highlightPart(enhancedURLBar.firstChild, false, false, '>');
               handleTextClick(url, null, null, e.ctrlKey);
             }, false);
             mainPopup.appendChild(part);
@@ -2861,6 +2861,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     let fileURI = addon.getResourceURI("scripts/" + fileName + ".js");
     Services.scriptloader.loadSubScript(fileURI.spec, global);
   });
+  if (Services.vc.compare(Services.appinfo.platformVersion, "10.0") < 0)
+    Components.manager.addBootstrappedManifestLocation(data.installPath);
 
   function init() {
     if (pref("enhanceURLBar")) {
@@ -2977,6 +2979,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
 });
 
 function shutdown(data, reason) {
+  if (Services.vc.compare(Services.appinfo.platformVersion, "10.0") < 0)
+    Components.manager.removeBootstrappedManifestLocation(data.installPath);
   if (reason != APP_SHUTDOWN)
     unload();
 }

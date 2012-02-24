@@ -21,21 +21,34 @@
 
 "use strict";
 
-function pref(key) {
+function pref(key, val) {
   // Cache the prefbranch after first use
   let {branch, defaults} = pref;
   if (branch == null)
     branch = Services.prefs.getBranch(pref.root);
 
-  // Figure out what type of pref to fetch
-  switch (typeof defaults[key]) {
-    case "boolean":
-      return branch.getBoolPref(key);
-    case "number":
-      return branch.getIntPref(key);
-    case "string":
-      return branch.getCharPref(key);
-  }
+  // Figure out what type of pref to fetch/feed
+  if (val == null)
+    switch (typeof defaults[key]) {
+      case "boolean":
+        return branch.getBoolPref(key);
+      case "number":
+        return branch.getIntPref(key);
+      case "string":
+        return branch.getCharPref(key);
+    }
+  else
+    switch (typeof defaults[key]) {
+      case "boolean":
+        branch.setBoolPref(key, val);
+        break;
+      case "number":
+        branch.setIntPref(key, val);
+        break;
+      case "string":
+        branch.setCharPref(key, val);
+        break;
+    }
   return null;
 }
 

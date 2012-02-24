@@ -10,7 +10,9 @@
     <type>2</type>
     <homepageURL>https://addons.mozilla.org/en-US/firefox/addon/ui-enhancer/</homepageURL>
     <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
-    <optionsType>2</optionsType>
+    <optionsURL>chrome://uienhancer/content/options.xul</optionsURL>
+    <optionsType>1</optionsType>
+    <unpack>true</unpack>
 
     <contributor>Girish Sharma</contributor>
     <contributor>Axel Grude</contributor>
