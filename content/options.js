@@ -68,6 +68,9 @@ let optionsWindow = {
   onLoad: function OW_onLoad() {
     document.getElementById("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
       pref("userStylePath"): optionsWindow.STR("nocustomstyle"));
+    this.toggleBookmarksSettings(true);
+    this.toggleStylesSettings(true);
+    this.toggleURLBarSettings(true);
   },
 
   resetStyleSheet: function OW_resetStyleSheet() {
@@ -75,15 +78,16 @@ let optionsWindow = {
     document.getElementById("userStyleSheetPathLabel").value = optionsWindow.STR("nocustomstyle");
   },
 
-  toggleStylesSettings: function OW_toggleStylesSettings() {
+  toggleStylesSettings: function OW_toggleStylesSettings(check) {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let styleSheetEnabled = document.getElementById("useStyleSheetCheckBox").checked;
     $$(["resetStyleSheetButton", "browseStyleSheetButton"], "disabled", !styleSheetEnabled);
-    this.notifyChange(); 
+    if (!check)
+      this.notifyChange();
   },
 
-  toggleURLBarSettings: function OW_toggleURLBarSettings() {
+  toggleURLBarSettings: function OW_toggleURLBarSettings(check) {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let urlBarEnabled = $("enhanceURLBarCheckBox").checked;
@@ -92,10 +96,11 @@ let optionsWindow = {
         "useIdentityBoxCheckBox",
         "useDragDropCheckBox"],
       "disabled", !urlBarEnabled);
-    this.notifyChange(); 
+    if (!check)
+      this.notifyChange();
   },
 
-  toggleBookmarksSettings: function OW_toggleBookmarksSettings() {
+  toggleBookmarksSettings: function OW_toggleBookmarksSettings(check) {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let bookmarksEnabled = $("bringBookmarksUpCheckBox").checked;
@@ -106,7 +111,8 @@ let optionsWindow = {
         "animationSpeedNone",
         "urlBarWidthLabel"],
       "disabled", !bookmarksEnabled);
-    this.notifyChange(); 
+    if (!check)
+      this.notifyChange();
   },
 
   notifyChange: function OW_notifyChange(val) {

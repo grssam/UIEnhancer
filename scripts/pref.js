@@ -65,7 +65,11 @@ pref.defaults = {
   enhanceURLBar: true,
   useStyleSheet: true,
   userStylePath: "",
-  removeGibberish: true
+  removeGibberish: true,
+  buttonParentID: "",
+  buttonNextSiblingID: "",
+  shortcutKey: "L",
+  shortcutModifiers: "accel, shift"
 };
 
 pref.observe = function(prefs, callback) {

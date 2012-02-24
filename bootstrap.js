@@ -41,10 +41,22 @@ let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
 let recheckOnTabChange = false;
+let toolbarButton = null;
+let unloadButton = function() {};
 // global variable to store whether user has Status-4-Ever installed
 // and its setting is to show status or/and link in Location Bar
 let S4E_statusInURLBar = false;
-
+const keysetID = "UIEnhancerKeyset";
+const keyID = "UIEnhancerKeyID";
+const toolbarButtonID = "UIEnhancerToolbarButton";
+// variable to store localized strings
+let strings = {str:null};
+XPCOMUtils.defineLazyGetter(strings, "str", function () {
+  return Services.strings.createBundle("chrome://uienhancer/locale/main.properties");
+});
+function l10n(aString) {
+  return strings.str.GetStringFromName(aString);
+}
 // Class for handling the changing and revertign of various DOM elements
 function handleDOM(object, newParent, insertFirst) {
   this.parent = object.parentNode;
@@ -2831,6 +2843,99 @@ function changeUI(window) {
     enhanceURLBar();
 }
 
+function addToolbarButton(window) {
+  function openOptions() {
+    window.open("chrome://uienhancer/content/options.xul",
+      "Location Bar Enhancer Options","chrome,centerscreen,toolbar");
+  }
+  function $(id) window.document.getElementById(id);
+  function removeButton() {
+    try {
+      toolbarButton.parentNode.removeChild(toolbarButton);
+    } catch (ex) {}
+  }
+
+  function saveToolbarButtonInfo(event) {
+    if ($(toolbarButtonID) && toolbarButton.parentNode) {
+      pref("buttonParentID", toolbarButton.parentNode.getAttribute("id") || "");
+      pref("buttonNextSiblingID", (toolbarButton.nextSibling || "")
+        && toolbarButton.nextSibling.getAttribute("id").replace(/^wrapper-/i, ""));
+    }
+    else
+      pref("buttonParentID", "");
+  }
+
+  // add toolbar button
+  toolbarButton = window.document.createElementNS(XUL, "toolbarbutton");
+  toolbarButton.setAttribute("id", toolbarButtonID);
+  toolbarButton.setAttribute("type", "button");
+  toolbarButton.setAttribute("image", LOGO);
+  toolbarButton.setAttribute("class", "toolbarbutton-1 chromeclass-toolbar-additional");
+  toolbarButton.setAttribute("label", l10n("UIE.label"));
+  toolbarButton.setAttribute("tooltiptext", l10n("UIE.tooltip"));
+  toolbarButton.addEventListener("command", openOptions, false);
+  $("navigator-toolbox").palette.appendChild(toolbarButton);
+  let buttonParentID = pref("buttonParentID");
+  if (buttonParentID.length > 0) {
+    let parent = $(buttonParentID);
+    if (parent) {
+      let nextSiblingID = pref("buttonNextSiblingID");
+      let nextSibling = $(nextSiblingID);
+      if (!nextSibling) {
+        let currentset = parent.getAttribute("currentset").split(",");
+        let i = currentset.indexOf(toolbarButtonID) + 1;
+        if (i > 0) {
+          let len = currentset.length;
+          for (; i < len; i++) {
+            nextSibling = $(currentset[i]);
+            if (nextSibling)
+              break;
+          }
+        }
+      }
+      parent.insertItem(toolbarButtonID, nextSibling, null, false);
+    }
+  }
+  unloadButton = function() {
+    window.removeEventListener("unload", unloadButton, false);
+    window.removeEventListener("aftercustomization", saveToolbarButtonInfo, false);
+    toolbarButton.removeEventListener("command", openOptions, false);
+    removeButton();
+  };
+  window.addEventListener("aftercustomization", saveToolbarButtonInfo, false);
+  window.addEventListener("unload", unloadButton, false);
+}
+
+function createHotKey(window) {
+  function openOptions() {
+    window.open("chrome://uienhancer/content/options.xul",
+      "Location Bar Enhancer Options","chrome,centerscreen,toolbar");
+  }
+  function $(id) window.document.getElementById(id);
+  function removeKey() {
+    let keyset = $(keysetID);
+    keyset && keyset.parentNode.removeChild(keyset);
+  }
+
+  removeKey();
+  let UIEnhancerKeyset = window.document.createElementNS(XUL, "keyset");
+  UIEnhancerKeyset.setAttribute("id", keysetID);
+  // add hotkey
+  let (optionsKey = window.document.createElementNS(XUL, "key")) {
+    optionsKey.setAttribute("id", keyID);
+    optionsKey.setAttribute("key", pref("shortcutKey"));
+    optionsKey.setAttribute("modifiers", pref("shortcutModifiers"));
+    optionsKey.setAttribute("oncommand", "void(0);");
+    listen(window, optionsKey, "command", function() openOptions(window));
+    $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(optionsKey);
+    if (pref("createAppMenuButton"))
+      $(appMenuitemID).setAttribute("key", keyID);
+    if (pref("createToolsMenuButton"))
+      $(toolsMenuitemID).setAttribute("key", keyID);
+    unload(removeKey, window);
+  }
+}
+
 function disable(id) {
   AddonManager.getAddonByID(id, function(addon) {
     addon.userDisabled = true;
@@ -2892,6 +2997,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     } catch (ex) {}
     // Apply the changes in UI
     watchWindows(changeUI);
+    // add a hotkey to open options
+    watchWindows(createHotKey);
 
     // Watch for preference changes to reprocess the keyword data
     pref.observe([
@@ -2976,13 +3083,17 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   }
   // calling the function to setup everything
   init();
+  // add a toolbar button to open options
+  watchWindows(addToolbarButton);
 });
 
 function shutdown(data, reason) {
   if (Services.vc.compare(Services.appinfo.platformVersion, "10.0") < 0)
     Components.manager.removeBootstrappedManifestLocation(data.installPath);
-  if (reason != APP_SHUTDOWN)
+  if (reason != APP_SHUTDOWN) {
     unload();
+    unloadButton();
+  }
 }
 
 function install(data, reason) AddonManager.getAddonByID(data.id, function(addon) {
