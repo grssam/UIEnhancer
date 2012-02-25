@@ -66,7 +66,7 @@ pref.defaults = {
   useStyleSheet: true,
   userStylePath: "",
   removeGibberish: true,
-  buttonParentID: "",
+  buttonParentID: "addon-bar",
   buttonNextSiblingID: "",
   shortcutKey: "L",
   shortcutModifiers: "accel, shift"

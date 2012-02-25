@@ -2846,7 +2846,7 @@ function changeUI(window) {
 function addToolbarButton(window) {
   function openOptions() {
     window.open("chrome://uienhancer/content/options.xul",
-      "Location Bar Enhancer Options","chrome,centerscreen,toolbar");
+      "Location Bar Enhancer Options","chrome,modal,dialog,resizable,centerscreen,toolbar");
   }
   function $(id) window.document.getElementById(id);
   function removeButton() {
@@ -2909,7 +2909,7 @@ function addToolbarButton(window) {
 function createHotKey(window) {
   function openOptions() {
     window.open("chrome://uienhancer/content/options.xul",
-      "Location Bar Enhancer Options","chrome,centerscreen,toolbar");
+      "Location Bar Enhancer Options","chrome,modal,dialog,resizable,centerscreen,toolbar");
   }
   function $(id) window.document.getElementById(id);
   function removeKey() {

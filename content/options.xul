@@ -34,7 +34,7 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
   <notificationbox id="changeNotificationBox" flex="1"/>
-  <prefpane id="UIEnhancerGeneralPrefPane" label="&generalPane.label;">
+  <prefpane id="UIEnhancerGeneralPrefPane" label="&generalPane.label;" image="logo.png">
     <preferences>
       <preference id="enhanceURLBar" name="extensions.UIEnhancer.enhanceURLBar" type="bool"/>
       <preference id="removeGibberish" name="extensions.UIEnhancer.removeGibberish" type="bool"/>
@@ -58,7 +58,7 @@
         tooltiptext="&useDragDrop.tooltip;" label="&useDragDrop.label;" accesskey="&useDragDrop.accesskey;" />
     </vbox>
   </prefpane>
-  <prefpane id="UIEnhancerStylePrefPane" label="&stylePane.label;">
+  <prefpane id="UIEnhancerStylePrefPane" label="&stylePane.label;" image="style.png">
     <preferences>
       <preference id="useStyleSheet" name="extensions.UIEnhancer.useStyleSheet" type="bool"/>
     </preferences>
@@ -73,7 +73,7 @@
         tooltiptext="&resetStyleSheet.tooltip;" accesskey="&resetStyleSheet.accesskey;" style="margin-right:5px;"/>
     </groupbox>
   </prefpane>
-  <prefpane id="UIEnhancerBookmarksPrefPane" label="&bookmarksPane.label;">
+  <prefpane id="UIEnhancerBookmarksPrefPane" label="&bookmarksPane.label;" image="star.png">
     <preferences>
       <preference id="bringBookmarksUp" name="extensions.UIEnhancer.bringBookmarksUp" type="bool"/>
       <preference id="urlBarWidth" name="extensions.UIEnhancer.urlBarWidth" type="string"/>
