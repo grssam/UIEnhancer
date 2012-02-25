@@ -276,6 +276,8 @@ function changeUI(window) {
     origInput.parentNode.insertBefore(enhancedURLBar, origInput);
     setupEnhancedURLBarUI = function() {
       let origParentStyle = gURLBar.parentNode.style;
+      let isWindows = window.navigator.oscpu.toLowerCase().indexOf("window") >= 0;
+      let isLinux = window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0;
       enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
@@ -285,19 +287,20 @@ function changeUI(window) {
       urlBarHeight = window.getComputedStyle(gURLBar).height.replace("px", '')*1
         + window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1
         + window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1;
-      if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
+      if (isLinux)
+        urlBarHeight += 2;
+      if (isWindows)
         enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
           + window.getComputedStyle(gURLBar).paddingBottom + " -"
           + window.getComputedStyle(origIdentity).marginRight;
-      else if (window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0) {
-        enhancedURLBar.style.margin = "-1px 0px";
-        gURLBar.parentNode.style.marginTop = "3px";
-        gURLBar.parentNode.style.marginBottom = "3px";
-        unload(function() {
-          gURLBar.parentNode.style.marginTop = origParentStyle.marginTop;
-          gURLBar.parentNode.style.marginBottom = origParentStyle.marginBottom;
-        }, window);
-      }
+      else if (isLinux)
+        enhancedURLBar.style.margin = "-"
+          + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
+          + "px 0px -"
+          + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 1)
+          + "px -"
+          + Math.max(window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1
+          + window.getComputedStyle(gURLBar).paddingLeft.replace("px", '')*1, 3) + "px";
     }
 
     if (window.getComputedStyle(gURLBar).visibility != "collapse")
@@ -727,7 +730,7 @@ function changeUI(window) {
 
   function createStack(createVal, partURL, partType, hiddenArrow) {
     if (urlBarHeight == null || urlBarHeight <= 0)
-      urlBarHeight = gURLBar.boxObject.height - 2;
+      urlBarHeight = gURLBar.boxObject.height;
 
     let createdStack = document.createElementNS(XUL, "hbox");
     createdStack.setAttribute("id", "UIEnhancer_URLBar_Stack");
