@@ -29,8 +29,8 @@
 <!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
-  width="400" maxheight="350" buttons="accept,cancel"
-  onload="optionsWindow.onLoad()"
+  width="400" height="400" buttons="accept,cancel"
+  persist="height width" onload="optionsWindow.onLoad()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
   <notificationbox id="changeNotificationBox" flex="1"/>
