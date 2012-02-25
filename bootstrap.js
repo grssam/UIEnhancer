@@ -255,6 +255,10 @@ function changeUI(window) {
       }
       let d = origInput.nextSibling;
       while (d != null) {
+        if (d.id == "UIEnhancer_StatusBar") {
+          d = d.nextSibling;
+          continue;
+        }
         d.style.opacity = opacity;
         d = d.nextSibling;
       }
@@ -360,20 +364,38 @@ function changeUI(window) {
 
   function getMaxWidth() {
     let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
+    let showStatusInURLBar = pref("showStatusInURLBar");
+    let useLeftoverSpace = pref("useLeftoverSpace");
+    let statusWidth = pref("statusWidth");
     let (udb = $("urlbar-display-box")) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
-      if (udb == null)
-        return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+      if (udb == null) {
+        // case when internal status pref'd on
+        if (showStatusInURLBar)
+          return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
+        // case otherwise
+        else
+          return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+      }
       let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
-        - origIdentity.boxObject.x - origIdentity.boxObject.width - (S4E_statusInURLBar?
-        Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)*0.33: 60);
-      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100)
-        maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
-          - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + udb.parentNode.lastChild.boxObject.x
-          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width)
-          : 160 + udb.parentNode.lastChild.boxObject.x
-          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width);
+        - origIdentity.boxObject.x - origIdentity.boxObject.width;
+      if (showStatusInURLBar)
+        maxWidth -= (useLeftoverSpace? 250: Math.max(statusWidth, 60));
+      else
+        maxWidth -= (S4E_statusInURLBar? Math.max(udb.nextSibling.boxObject.x,
+          0.3*gURLBar.boxObject.width)*0.33: 60);
+      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100) {
+        let someWidth = udb.parentNode.lastChild.boxObject.x
+          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width;
+        if (showStatusInURLBar)
+          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
+            - (useLeftoverSpace? 250: Math.max(statusWidth, 160));
+        else
+          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
+            - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + someWidth)
+            : 160 + someWidth);
+      }
       return maxWidth;
     }
   }
@@ -2829,6 +2851,66 @@ function changeUI(window) {
   /*
   * Bookmarks UI Enhancer Code Ends
   */
+  /*
+  * Code to put status bar in location bar starts here
+  */
+  function setupStatusBar() {
+    let statusBar = $("statusbar-display");
+    let (origSetter = statusBar.__lookupSetter__("label")) {
+      statusBar.__defineSetter__("label", function (x) {
+        origSetter.apply(this, [x]);
+        updateStatus(statusBar.getAttribute("label"), statusBar.getAttribute("inactive"));
+      });
+      unload(function() {
+        statusBar.__defineSetter__("label", origSetter);
+      }, window);
+    }
+    statusBar.collapsed = true;
+    let newStatus = window.document.createElementNS(XUL, "label");
+    newStatus.setAttribute("id", "UIEnhancer_StatusBar");
+    newStatus.setAttribute("flex", 1);
+    newStatus.setAttribute("crop", "center");
+    newStatus.setAttribute("style", "text-align:right; display:-moz-box; overflow:hidden; color: #555;");
+    newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth() + 235 - partsWidth: pref("statusWidth"))+ "px";
+    newStatus.setAttribute("value", "");
+    origInput.parentNode.insertBefore(newStatus, origInput.nextSibling);
+    function animateToggleEnhancedURLBar(hiding) {
+      if (!pref("enhanceURLBar"))
+        return;
+      if (hiding) {
+        enhancedURLBar.style.MozTransition = "opacity 200ms ease 0s";
+        enhancedURLBar.style.opacity = 0.6;
+      }
+      else {
+        enhancedURLBar.style.MozTransition = "";
+        enhancedURLBar.style.opacity = 1;
+      }
+    }
+    function updateStatus(value, inactive) {
+      if (inactive) {
+        animateToggleEnhancedURLBar();
+        newStatus.value == "";
+        newStatus.collapsed = true;
+        origInput.setAttribute("flex", 1);
+      }
+      else {
+        if (pref("useLeftoverSpace"))
+          newStatus.style.maxWidth = (getMaxWidth() + 235 - partsWidth) + "px";
+        animateToggleEnhancedURLBar(true);
+        newStatus.value = value;
+        origInput.setAttribute("flex", 0);
+        newStatus.collapsed = false;
+      }
+    }
+    unload(function() {
+      statusBar.collapsed = false;
+      newStatus.parentNode.removeChild(newStatus);
+      newStatus = null;
+    }, window);
+  }
+  /*
+  * Code to put status bar in location bar Ends
+  */
   // Function Callings
   if(pref("bringBookmarksUp")) {
     if (pref("useSmallIcons"))
@@ -2844,6 +2926,8 @@ function changeUI(window) {
   }
   if (pref("enhanceURLBar"))
     enhanceURLBar();
+  if (pref("showStatusInURLBar"))
+    setupStatusBar();
 }
 
 function addToolbarButton(window) {
@@ -3011,7 +3095,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "enhanceURLBar",
       "removeGibberish",
       "useIdentityBox",
-      "userStylePath"
+      "userStylePath",
+      "showStatusInURLBar"
     ], reload);
     pref.observe([
       "urlBarWidth",

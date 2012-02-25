@@ -3,6 +3,7 @@
 <!ENTITY generalCustomization.label  "Allgemeine Anpassungen">
 <!ENTITY stylePane.label  "Breadcrumb-Styles">
 <!ENTITY bookmarksPane.label  "Bookmarks Enhancer">
+<!ENTITY statusPane.label  "Status Bar">
 <!ENTITY enhanceURLBar.label  "Implementieren Sie Breadcrumbs User Interface in der Location Bar">
 <!ENTITY enhanceURLBar.accesskey  "B">
 <!ENTITY enhanceURLBar.tooltip  "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
@@ -41,6 +42,15 @@
 <!ENTITY resetStyleSheet.label  "Setzen Sie den Style Sheet">
 <!ENTITY resetStyleSheet.accesskey  "S">
 <!ENTITY resetStyleSheet.tooltip  "Wieder zurück auf die Standard-Stylesheet.">
+<!ENTITY showStatusInURLBar.label  "Zeigen den Status in der Location Bar.">
+<!ENTITY showStatusInURLBar.accesskey  "Z">
+<!ENTITY showStatusInURLBar.tooltip  "Hinweis: Damit wird visuell deaktivieren Sie die ähnliche Funktion von Status-4-Evar Add-on.">
+<!ENTITY useLeftoverSpace.label  "Verwenden Sie das übrig gebliebene Raum in der Adressleiste für den Status">
+<!ENTITY useLeftoverSpace.accesskey  "V">
+<!ENTITY useLeftoverSpace.tooltip  "Dies ermöglicht die Anzeige von langen URL-Links und-zustände">
+<!ENTITY statusWidth.label  "Maximale Breite der Statusleiste">
+<!ENTITY statusWidth.accesskey  "B">
+<!ENTITY statusWidth.tooltip  "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Der Wert ist in Pixel">
 <!ENTITY animationSpeed.normal.label  "Normale Geschwindigkeit">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "Schnelle Geschwindigkeit">

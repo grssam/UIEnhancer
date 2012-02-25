@@ -71,6 +71,7 @@ let optionsWindow = {
     this.toggleBookmarksSettings(true);
     this.toggleStylesSettings(true);
     this.toggleURLBarSettings(true);
+    this.toggleStatusSettings(true);
   },
 
   resetStyleSheet: function OW_resetStyleSheet() {
@@ -96,6 +97,23 @@ let optionsWindow = {
         "useIdentityBoxCheckBox",
         "useDragDropCheckBox"],
       "disabled", !urlBarEnabled);
+    if (!check)
+      this.notifyChange();
+  },
+
+  toggleStatusSettings: function OW_toggleStatusSettings(check, leftoverSpaceIndicator) {
+    function $(id) document.getElementById(id);
+    function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
+    let statusEnabled = $("showStatusInURLBarCheckBox").checked;
+    if (!leftoverSpaceIndicator)
+      $$(["useLeftoverSpaceCheckBox",
+          "statusWidthLabel",
+          "statusWidthTextBox"],
+        "disabled", !statusEnabled);
+    let leftoverEnabled = $("useLeftoverSpaceCheckBox").checked || !statusEnabled;
+    $$(["statusWidthLabel",
+        "statusWidthTextBox"],
+      "disabled", leftoverEnabled);
     if (!check)
       this.notifyChange();
   },

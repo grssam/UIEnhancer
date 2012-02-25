@@ -3,6 +3,7 @@
 <!ENTITY generalCustomization.label   "General Customizations">
 <!ENTITY stylePane.label              "Breadcrumb Styles">
 <!ENTITY bookmarksPane.label          "Bookmarks Enhancer">
+<!ENTITY statusPane.label             "Status Bar">
 
 <!ENTITY enhanceURLBar.label          "Implement Breadcrumbs User Interface in Location Bar">
 <!ENTITY enhanceURLBar.accesskey      "B">
@@ -54,6 +55,18 @@
 <!ENTITY resetStyleSheet.label        "Reset Style Sheet">
 <!ENTITY resetStyleSheet.accesskey    "R">
 <!ENTITY resetStyleSheet.tooltip      "Revert back to the default style sheet.">
+
+<!ENTITY showStatusInURLBar.label     "Show the Status in the Location Bar.">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip   "Note: This will visually disable the similar feature of Status-4-Evar Add-on.">
+
+<!ENTITY useLeftoverSpace.label       "Use the Leftover space in the Location Bar for the Status">
+<!ENTITY useLeftoverSpace.accesskey   "L">
+<!ENTITY useLeftoverSpace.tooltip     "This enables viewing of long url links and statuses">
+
+<!ENTITY statusWidth.label            "Maximum width of the Status Bar">
+<!ENTITY statusWidth.accesskey        "W">
+<!ENTITY statusWidth.tooltip          "This width will be used when the above setting is disabled. Value is in pixel">
 
 <!ENTITY animationSpeed.normal.label       "Normal Speed">
 <!ENTITY animationSpeed.normal.accesskey   "N">

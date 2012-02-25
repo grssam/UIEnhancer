@@ -29,7 +29,7 @@
 <!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
-  width="400" height="400" buttons="accept,cancel"
+  width="450" height="400" buttons="accept,cancel"
   persist="height width" onload="optionsWindow.onLoad()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
@@ -68,7 +68,8 @@
       <caption label="&customStyleSheet.label;" tooltiptext="customStyleSheet.tooltip;" />
       <button id="browseStyleSheetButton" label="&browse.label;" oncommand="optionsWindow.openFile();"
         tooltiptext="&browse.tooltip;" accesskey="&browse.accesskey;" style="margin-right:5px;"/>
-      <label id="userStyleSheetPathLabel" value="" flex="1" crop="start" style="color:#444; max-width:200px;"/>
+      <label id="userStyleSheetPathLabel" value="" crop="start" style="color:#444; max-width:200px;"/>
+      <spacer flex="1" />
       <button id="resetStyleSheetButton" label="&resetStyleSheet.label;" oncommand="optionsWindow.resetStyleSheet();"
         tooltiptext="&resetStyleSheet.tooltip;" accesskey="&resetStyleSheet.accesskey;" style="margin-right:5px;"/>
     </groupbox>
@@ -101,5 +102,21 @@
             accesskey="&animationSpeed.none.accesskey;" value="none"/>
       </radiogroup>
     </groupbox>
+  </prefpane>
+  <prefpane id="UIEnhancerStatusPrefPane" label="&statusPane.label;" image="status.png">
+    <preferences>
+      <preference id="showStatusInURLBar" name="extensions.UIEnhancer.showStatusInURLBar" type="bool"/>
+      <preference id="useLeftoverSpace" name="extensions.UIEnhancer.useLeftoverSpace" type="bool"/>
+      <preference id="statusWidth" name="extensions.UIEnhancer.statusWidth" type="int"/>
+    </preferences>
+    <checkbox id="showStatusInURLBarCheckBox" preference="showStatusInURLBar" oncommand="optionsWindow.toggleStatusSettings();"
+      tooltiptext="&showStatusInURLBar.tooltip;" label="&showStatusInURLBar.label;" accesskey="&showStatusInURLBar.accesskey;" />
+    <checkbox id="useLeftoverSpaceCheckBox" preference="useLeftoverSpace" oncommand="optionsWindow.toggleStatusSettings(false, true);"
+      tooltiptext="&useLeftoverSpace.tooltip;" label="&useLeftoverSpace.label;" accesskey="&useLeftoverSpace.accesskey;" />
+    <hbox>
+      <label id="statusWidthLabel" value="&statusWidth.label;" tooltiptext="&statusWidth.tooltip;"
+         accesskey="&statusWidth.accesskey;" control="statusWidthTextBox" style="padding: 5px 0px;"/>
+      <textbox id="statusWidthTextBox" preference="statusWidth" oncommand="optionsWindow.notifyChange()" flex="1"/>
+    </hbox>
   </prefpane>
 </prefwindow>

@@ -69,7 +69,10 @@ pref.defaults = {
   buttonParentID: "addon-bar",
   buttonNextSiblingID: "",
   shortcutKey: "L",
-  shortcutModifiers: "accel, shift"
+  shortcutModifiers: "accel, shift",
+  showStatusInURLBar: true,
+  useLeftoverSpace: false,
+  statusWidth: 250
 };
 
 pref.observe = function(prefs, callback) {

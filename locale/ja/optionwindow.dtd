@@ -3,6 +3,7 @@
 <!ENTITY generalCustomization.label  "般的なカスタマイズ">
 <!ENTITY stylePane.label  "ロケーションバーのスタイル">
 <!ENTITY bookmarksPane.label  "ブックマークエンハンサー">
+<!ENTITY statusPane.label  "ステータスバー">
 <!ENTITY enhanceURLBar.label  "ロケーションバーで実装するブレッドクラム·ユーザー·インタフェース">
 <!ENTITY enhanceURLBar.accesskey  "B">
 <!ENTITY enhanceURLBar.tooltip  "これは、このアドオンの主な機能です。任意のページのアドレスは、パンくずのスタイルのディスプレイに表示されます。">
@@ -41,6 +42,15 @@
 <!ENTITY resetStyleSheet.label  "スタイルシートをリセットする">
 <!ENTITY resetStyleSheet.accesskey  "R">
 <!ENTITY resetStyleSheet.tooltip  "デフォルトのスタイルシートに戻す.">
+<!ENTITY showStatusInURLBar.label  "ロケーションバーにステータスを表示する.">
+<!ENTITY showStatusInURLBar.accesskey  "S">
+<!ENTITY showStatusInURLBar.tooltip  "注：これはアドオンStatus-4-EVARで同じ機能を無効にします">
+<!ENTITY useLeftoverSpace.label  "ステータスのロケーションバー内の残りのスペースを使用します">
+<!ENTITY useLeftoverSpace.accesskey  "L">
+<!ENTITY useLeftoverSpace.tooltip  "これは、ロケーションバーの長いアドレスの表示を支援">
+<!ENTITY statusWidth.label  "ステータスバーの最大幅">
+<!ENTITY statusWidth.accesskey  "W">
+<!ENTITY statusWidth.tooltip  "上記の設定が無効になっている場合、この幅が使用されます。値はピクセルである">
 <!ENTITY animationSpeed.normal.label  "ノーマルスピード">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "速いスピード">
