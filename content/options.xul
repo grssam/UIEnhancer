@@ -29,7 +29,7 @@
 <!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
-  width="450" height="400" buttons="accept,cancel"
+  width="450" height="400" maxheight="500" buttons="accept,cancel"
   persist="height width" onload="optionsWindow.onLoad()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
@@ -85,7 +85,7 @@
       tooltiptext="&bringBookmarksUp.tooltip;" label="&bringBookmarksUp.label;" accesskey="&bringBookmarksUp.accesskey;" />
     <hbox>
       <label id="urlBarWidthLabel" value="&urlBarWidth.label;" tooltiptext="&urlBarWidth.tooltip;"
-         accesskey="&urlBarWidth.accesskey;" control="urlBarWidthTextBox" style="padding: 5px 0px;"/>
+        accesskey="&urlBarWidth.accesskey;" control="urlBarWidthTextBox" style="padding: 5px 0px;"/>
       <textbox id="urlBarWidthTextBox" preference="urlBarWidth" oncommand="optionsWindow.notifyChange()" flex="1"/>
     </hbox>
     <checkbox id="useSmallIconsCheckBox" preference="useSmallIcons" oncommand="optionsWindow.notifyChange()"
@@ -115,7 +115,7 @@
       tooltiptext="&useLeftoverSpace.tooltip;" label="&useLeftoverSpace.label;" accesskey="&useLeftoverSpace.accesskey;" />
     <hbox>
       <label id="statusWidthLabel" value="&statusWidth.label;" tooltiptext="&statusWidth.tooltip;"
-         accesskey="&statusWidth.accesskey;" control="statusWidthTextBox" style="padding: 5px 0px;"/>
+        accesskey="&statusWidth.accesskey;" control="statusWidthTextBox" style="padding: 5px 0px;"/>
       <textbox id="statusWidthTextBox" preference="statusWidth" oncommand="optionsWindow.notifyChange()" flex="1"/>
     </hbox>
   </prefpane>

@@ -66,7 +66,8 @@ let optionsWindow = {
   },
 
   onLoad: function OW_onLoad() {
-    document.getElementById("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
+    function $(id) document.getElementById(id);
+    $("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
       pref("userStylePath"): optionsWindow.STR("nocustomstyle"));
     this.toggleBookmarksSettings(true);
     this.toggleStylesSettings(true);
@@ -105,15 +106,13 @@ let optionsWindow = {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let statusEnabled = $("showStatusInURLBarCheckBox").checked;
-    if (!leftoverSpaceIndicator)
+    if (!leftoverSpaceIndicator) {
       $$(["useLeftoverSpaceCheckBox",
-          "statusWidthLabel",
-          "statusWidthTextBox"],
+          "statusWidthLabel"],
         "disabled", !statusEnabled);
+    }
     let leftoverEnabled = $("useLeftoverSpaceCheckBox").checked || !statusEnabled;
-    $$(["statusWidthLabel",
-        "statusWidthTextBox"],
-      "disabled", leftoverEnabled);
+    $$(["statusWidthLabel"], "disabled", leftoverEnabled);
     if (!check)
       this.notifyChange();
   },
@@ -122,8 +121,7 @@ let optionsWindow = {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let bookmarksEnabled = $("bringBookmarksUpCheckBox").checked;
-    $$(["urlBarWidthTextBox",
-        "useSmallIconsCheckBox",
+    $$(["useSmallIconsCheckBox",
         "animationSpeedNormal",
         "animationSpeedFast",
         "animationSpeedNone",

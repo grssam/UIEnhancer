@@ -1636,7 +1636,7 @@ function changeUI(window) {
 
     let createdStack = document.createElementNS(XUL, "stack");
     createdStack.setAttribute("id", "UIEnhancer_URLBar_Editing_Stack");
-    createdStack.style.maxHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 2)) + "px";
+    createdStack.style.height = urlBarHeight + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
     createdStack.setAttribute("url", editingPart.getAttribute("url"));
@@ -1661,8 +1661,6 @@ function changeUI(window) {
     tempS.setAttribute("type", "autocomplete");
     tempS.setAttribute("autocompletesearch", "search-autocomplete");
     tempS.setAttribute("maxrows", 5);
-    tempS.style.maxHeight = tempS.style.minHeight = (gURLBar.boxObject.height
-      - (pref("useStyleSheet")? 0: 4)) + "px";
     tempS.style.display = "-moz-box";
     tempS.style.maxWidth = tempS.style.minWidth = Math.max((nextPart?
       100: (editingPart.firstChild.boxObject.width +
@@ -1672,7 +1670,6 @@ function changeUI(window) {
     // Adding the Arrow Stack
     let tempArrow = document.createElementNS(XUL, "label");
     tempArrow.setAttribute("id", "UIEnhancer_URLBar_Editing_Stack_Arrow");
-    tempArrow.style.minHeight = (gURLBar.boxObject.height - (pref("useStyleSheet")? 0: 4)) + "px";
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
     createdStack.setAttribute("isHiddenArrow", false);
@@ -2894,8 +2891,7 @@ function changeUI(window) {
         origInput.setAttribute("flex", 1);
       }
       else {
-        if (pref("useLeftoverSpace"))
-          newStatus.style.maxWidth = (getMaxWidth() + 235 - partsWidth) + "px";
+        newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth() + 235 - partsWidth: pref("statusWidth"))+ "px";
         animateToggleEnhancedURLBar(true);
         newStatus.value = value;
         origInput.setAttribute("flex", 0);
