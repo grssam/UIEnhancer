@@ -1,0 +1,49 @@
+<!ENTITY window.title  "Location Bar Enhancer Optionen">
+<!ENTITY generalPane.label  "Allgemeine Einstellungen">
+<!ENTITY generalCustomization.label  "Allgemeine Anpassungen">
+<!ENTITY stylePane.label  "Breadcrumb-Styles">
+<!ENTITY bookmarksPane.label  "Bookmarks Enhancer">
+<!ENTITY enhanceURLBar.label  "Implementieren Sie Breadcrumbs User Interface in der Location Bar">
+<!ENTITY enhanceURLBar.accesskey  "B">
+<!ENTITY enhanceURLBar.tooltip  "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
+<!ENTITY removeGibberish.label  "Entfernen Sie Gibberish Text von den Teilen, und ersetzen Sie ist mit aussagekräftigen Daten">
+<!ENTITY removeGibberish.accesskey  "G">
+<!ENTITY removeGibberish.tooltip  "Texte wie lange Token (00fjhgu4uUA94R23) etc sind mit leicht wahrnehmbar und aussagekräftigen Text ersetzt.">
+<!ENTITY makeCapital.label  "Sprechen Sie die erste Alphabet jedes Wortes Kapital">
+<!ENTITY makeCapital.accesskey  "K">
+<!ENTITY makeCapital.tooltip  "Dies verbessert die Schnittstelle von Breadcrumbs.">
+<!ENTITY useIdentityBox.label  "Verwenden Sie den Identity-Box (wenn sie leer sind), um die Domain der Webseite angezeigt werden.">
+<!ENTITY useIdentityBox.accesskey  "I">
+<!ENTITY useIdentityBox.tooltip  "Die Domain der Webseite würde hervorgehoben und dargestellt werden in der Identity-Box (links neben der Adressleiste).">
+<!ENTITY useDragDrop.label  "Erlauben Sie Ziehen und Ablegen von Teilen Breadcrumb">
+<!ENTITY useDragDrop.accesskey  "Z">
+<!ENTITY useDragDrop.tooltip  "Jedes Teil kann per Drag & Drop um ein neues Lesezeichen im Lesezeichen-Symbolleiste zu machen oder einen Link-Verknüpfung auf Desktop-machen, oder sogar in einem neuen Tab">
+<!ENTITY bringBookmarksUp.label  "Bringen Bookmarks Toolbar sich neben den Location Bar">
+<!ENTITY bringBookmarksUp.accesskey  "T">
+<!ENTITY bringBookmarksUp.tooltip  "Kombiniert die Adressleiste und Lesezeichen-Symbolleiste neben zum Speichern Stehhöhe für den Inhalt der Webseite. Nützlich für Bildschirme mit einer Breite von 1440px und höher.">
+<!ENTITY urlBarWidth.label  "Breite der Location Bar">
+<!ENTITY urlBarWidth.accesskey  "B">
+<!ENTITY urlBarWidth.tooltip  "Die Breite wird automatisch entschieden, um alle Elemente der Lesezeichen-Symbolleiste zu begleiten sowie Urlaub viel Platz für die Adressleiste. Sie können einen benutzerdefinierten Wert hier eingestellt, um die automatische Einstellung overide">
+<!ENTITY useSmallIcons.label  "Machen Sie die Symbole nach der Location Bar kleineren.">
+<!ENTITY useSmallIcons.accesskey  "K">
+<!ENTITY useSmallIcons.tooltip  "Konvertiert die Icons nach der Location Bar zu einem Stil, der die Bookmarks Angebote im Lesezeichen-Symbolleiste entspricht.">
+<!ENTITY animationSpeed.label  "Animationsgeschwindigkeit der Location Bar während der Übergänge">
+<!ENTITY animationSpeed.accesskey  "A">
+<!ENTITY animationSpeed.tooltip  "Wählen Sie die Geschwindigkeit der Bewegung aus den drei Werten">
+<!ENTITY useStyleSheet.label  "Verwenden Sie die neue Schnittstelle für die Breadcrumbs">
+<!ENTITY useStyleSheet.accesskey  "V">
+<!ENTITY useStyleSheet.tooltip  "Aktiviert den neuen und eleganten Design für den Semmelbröseln wenden. Wenn diese Option deaktiviert, würde die Brotkrumen-Stil wieder zurück zu Windows Explorer Navigation Bar Stil.">
+<!ENTITY customStyleSheet.label  "Verwenden Sie Ihren eigenen Style Sheet zu Stil die Semmelbrösel">
+<!ENTITY customStyleSheet.tooltip  "Wählen Sie ein richtig vorbereitet Stylesheet von Ihrer Festplatte. Um mehr über, wie ein benutzerdefiniertes Stylesheet zu machen wissen, besuchen Sie die Homepage des Add-on">
+<!ENTITY browse.label  "Blättern…">
+<!ENTITY browse.accesskey  "B">
+<!ENTITY browse.tooltip  "Durchsuchen Sie die angepassten Stylesheets auf die Semmelbrösel Stil.">
+<!ENTITY resetStyleSheet.label  "Setzen Sie den Style Sheet">
+<!ENTITY resetStyleSheet.accesskey  "S">
+<!ENTITY resetStyleSheet.tooltip  "Wieder zurück auf die Standard-Stylesheet.">
+<!ENTITY animationSpeed.normal.label  "Normale Geschwindigkeit">
+<!ENTITY animationSpeed.normal.accesskey  "N">
+<!ENTITY animationSpeed.fast.label  "Schnelle Geschwindigkeit">
+<!ENTITY animationSpeed.fast.accesskey  "G">
+<!ENTITY animationSpeed.none.label  "Keine Animation">
+<!ENTITY animationSpeed.none.accesskey  "K">
