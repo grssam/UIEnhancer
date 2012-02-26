@@ -25,6 +25,10 @@
 <!ENTITY useDragDrop.accesskey        "D">
 <!ENTITY useDragDrop.tooltip          "Each part can be dragged and dropped to make a new bookmark in Bookmarks Toolbar or to make a link shortcut on Desktop, or even in a new Tab">
 
+<!ENTITY combination.label            "Shortcut Key Combination:">
+<!ENTITY combination.accesskey        "K">
+<!ENTITY combination.tooltip          "Click in the text box and press the desired combination">
+
 <!ENTITY bringBookmarksUp.label       "Bring Bookmarks Toolbar up alongside the Location Bar">
 <!ENTITY bringBookmarksUp.accesskey   "B">
 <!ENTITY bringBookmarksUp.tooltip     "Combines the Location Bar and Bookmarks Toolbar alongside for saving Vertical Space for the Web Page Content. Useful for screens with width of 1440px and above.">

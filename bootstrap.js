@@ -3132,7 +3132,12 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     pref.observe([
       "useSmallIcons"
     ], specialReload);
-
+    pref.observe([
+      "shortcutKey",
+      "shortcutModifiers"
+    ], function() {
+      watchWindows(createHotKey);
+    });
     // Making makeCapital optional behind a pref
     let (orig = makeCapital) {
       makeCapital = function(word, len) {

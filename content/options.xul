@@ -29,7 +29,8 @@
 <!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
-  width="450" height="400" maxheight="500" buttons="accept,cancel"
+  minwidth="450" minheight="400" buttons="accept,cancel"
+  ondialogaccept="optionsWindow.saveChanges();"
   persist="height width" onload="optionsWindow.onLoad()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
@@ -42,7 +43,7 @@
       <preference id="useIdentityBox" name="extensions.UIEnhancer.useIdentityBox" type="bool"/>
       <preference id="useDragDrop" name="extensions.UIEnhancer.useDragDrop" type="bool"/>
     </preferences>
-    <vbox>
+    <vbox flex="0">
       <checkbox id="enhanceURLBarCheckBox" preference="enhanceURLBar" oncommand="optionsWindow.toggleURLBarSettings()"
         tooltiptext="&enhanceURLBar.tooltip;" label="&enhanceURLBar.label;" accesskey="&enhanceURLBar.accesskey;" />
       <groupbox orient="vertical">
@@ -56,6 +57,12 @@
       </groupbox>
       <checkbox id="useDragDropCheckBox" preference="useDragDrop" oncommand="optionsWindow.notifyChange()"
         tooltiptext="&useDragDrop.tooltip;" label="&useDragDrop.label;" accesskey="&useDragDrop.accesskey;" />
+      <hbox id="shortcutContainer">
+        <label id="shortcutLabel" value="&combination.label;" accesskey="&combination.accesskey;"
+          control="shortcutTextBox" style="padding: 5px 0px;"/>
+        <textbox id="shortcutTextBox" value="" width="125px" style="margin-right:5px;"
+          onkeyup="optionsWindow.notifyChange(this.value);" tooltiptext="&combination.tooltip;"/>
+      </hbox>
     </vbox>
   </prefpane>
   <prefpane id="UIEnhancerStylePrefPane" label="&stylePane.label;" image="style.png">

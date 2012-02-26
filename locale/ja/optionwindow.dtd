@@ -19,6 +19,9 @@
 <!ENTITY useDragDrop.label  "ブレッドクラムの部分からドラッグアンドドロップを許可">
 <!ENTITY useDragDrop.accesskey  "D">
 <!ENTITY useDragDrop.tooltip  "をブックマークツールバーに新しいブックマークを作成したり、デスクトップ上のリンクのショートカットを作るためにドロップすることができ、あるいは、新しいタブで">
+<!ENTITY combination.label  "ショートカットキーの組み合わせ:">
+<!ENTITY combination.accesskey  "K">
+<!ENTITY combination.tooltip  "テキストボックス内をクリックし、目的の組み合わせを押します">
 <!ENTITY bringBookmarksUp.label  "ロケーションバーの横にブックマークツールバーを持ち出す">
 <!ENTITY bringBookmarksUp.accesskey  "B">
 <!ENTITY bringBookmarksUp.tooltip  "ページコンテンツの垂直方向のスペースを節約するために並んでロケーションバーとブックマークツールバーを兼ね備えています。 1440pxの幅と上記の画面のために有用な.">

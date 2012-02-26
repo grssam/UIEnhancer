@@ -19,6 +19,9 @@
 <!ENTITY useDragDrop.label  "Erlauben Sie Ziehen und Ablegen von Teilen Breadcrumb">
 <!ENTITY useDragDrop.accesskey  "Z">
 <!ENTITY useDragDrop.tooltip  "Jedes Teil kann per Drag & Drop um ein neues Lesezeichen im Lesezeichen-Symbolleiste zu machen oder einen Link-Verknüpfung auf Desktop-machen, oder sogar in einem neuen Tab">
+<!ENTITY combination.label  "Tastenkombination:">
+<!ENTITY combination.accesskey  "T">
+<!ENTITY combination.tooltip  "Klicken Sie in das Textfeld ein und drücken Sie die gewünschte Kombination">
 <!ENTITY bringBookmarksUp.label  "Bringen Bookmarks Toolbar sich neben den Location Bar">
 <!ENTITY bringBookmarksUp.accesskey  "T">
 <!ENTITY bringBookmarksUp.tooltip  "Kombiniert die Adressleiste und Lesezeichen-Symbolleiste neben zum Speichern Stehhöhe für den Inhalt der Webseite. Nützlich für Bildschirme mit einer Breite von 1440px und höher.">
