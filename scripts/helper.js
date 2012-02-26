@@ -359,6 +359,7 @@ function removeRedundantText(baseString, redString) {
   len = redString.length;
   i = 0;
   while (i < len) {
+    redString[i] = redString[i].replace(/[\)\}\]\(\{\[\\\/]+$/, '').replace(/^[\)\}\]\(\{\[\\\/]+/, '');
     if (((i == 0 || i == len - 1) && redString[i].search(/^[^a-zA-Z0-9]+$/) >= 0)
       || (i == len - 1 && redString[i].search(/^(the|a|an|for)$/i) >= 0)) {
         redString.splice(i,1);
