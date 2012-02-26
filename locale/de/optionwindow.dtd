@@ -44,7 +44,7 @@
 <!ENTITY resetStyleSheet.tooltip  "Wieder zurück auf die Standard-Stylesheet.">
 <!ENTITY showStatusInURLBar.label  "Zeigen den Status in der Location Bar.">
 <!ENTITY showStatusInURLBar.accesskey  "Z">
-<!ENTITY showStatusInURLBar.tooltip  "Hinweis: Damit wird visuell deaktivieren Sie die ähnliche Funktion von Status-4-Evar Add-on.">
+<!ENTITY showStatusInURLBar.tooltip  "Hinweis: Diese Funktion wird nicht funktionieren, wenn die eine ähnliche Funktion von Status-4-Evar Add-on aktiviert ist">
 <!ENTITY useLeftoverSpace.label  "Verwenden Sie das übrig gebliebene Raum in der Adressleiste für den Status">
 <!ENTITY useLeftoverSpace.accesskey  "V">
 <!ENTITY useLeftoverSpace.tooltip  "Dies ermöglicht die Anzeige von langen URL-Links und-zustände">

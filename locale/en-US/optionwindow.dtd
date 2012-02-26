@@ -58,7 +58,7 @@
 
 <!ENTITY showStatusInURLBar.label     "Show the Status in the Location Bar.">
 <!ENTITY showStatusInURLBar.accesskey "S">
-<!ENTITY showStatusInURLBar.tooltip   "Note: This will visually disable the similar feature of Status-4-Evar Add-on.">
+<!ENTITY showStatusInURLBar.tooltip   "Note: This feature will not work if the similar feature of Status-4-Evar Add-on is enabled.">
 
 <!ENTITY useLeftoverSpace.label       "Use the Leftover space in the Location Bar for the Status">
 <!ENTITY useLeftoverSpace.accesskey   "L">

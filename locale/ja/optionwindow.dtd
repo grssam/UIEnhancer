@@ -44,7 +44,7 @@
 <!ENTITY resetStyleSheet.tooltip  "デフォルトのスタイルシートに戻す.">
 <!ENTITY showStatusInURLBar.label  "ロケーションバーにステータスを表示する.">
 <!ENTITY showStatusInURLBar.accesskey  "S">
-<!ENTITY showStatusInURLBar.tooltip  "注：これはアドオンStatus-4-EVARで同じ機能を無効にします">
+<!ENTITY showStatusInURLBar.tooltip  "注：ステータス-4-EVARの同様の機能はアドオンは、次の場合にこの機能は動作しません有効になっています">
 <!ENTITY useLeftoverSpace.label  "ステータスのロケーションバー内の残りのスペースを使用します">
 <!ENTITY useLeftoverSpace.accesskey  "L">
 <!ENTITY useLeftoverSpace.tooltip  "これは、ロケーションバーの長いアドレスの表示を支援">

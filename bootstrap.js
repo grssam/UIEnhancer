@@ -216,14 +216,14 @@ function changeUI(window) {
       = lastScrolledUrl = restyleEnhancedURLBarOnTabChange = siblingsShown
       = urlBarHeight = DBConnection = null;
   }, window);
-
+  // Get references to existing UI elements
+  origInput = gURLBar.mInputField;
+  origIdentity = $("identity-icon-labels");
   if (pref("enhanceURLBar")) {
     // Get references to existing UI elements
-    origIdentity = $("identity-icon-labels");
     origILabel = $("identity-icon-label");
     origICountryLabel = $("identity-icon-country-label");
     origIdentity.collapsed = !pref("useIdentityBox");
-    origInput = gURLBar.mInputField;
 
     identityLabel = document.createElementNS(XUL, "label");
     identityLabel.setAttribute("id","UIEnhancer_Identity_Label");
@@ -372,7 +372,7 @@ function changeUI(window) {
         udb = udb.nextSibling;
       if (udb == null) {
         // case when internal status pref'd on
-        if (showStatusInURLBar)
+        if (showStatusInURLBar && !S4E_statusInURLBar)
           return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
         // case otherwise
         else
@@ -380,7 +380,7 @@ function changeUI(window) {
       }
       let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
         - origIdentity.boxObject.x - origIdentity.boxObject.width;
-      if (showStatusInURLBar)
+      if (showStatusInURLBar && !S4E_statusInURLBar)
         maxWidth -= (useLeftoverSpace? 250: Math.max(statusWidth, 60));
       else
         maxWidth -= (S4E_statusInURLBar? Math.max(udb.nextSibling.boxObject.x,
@@ -388,7 +388,7 @@ function changeUI(window) {
       if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100) {
         let someWidth = udb.parentNode.lastChild.boxObject.x
           - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width;
-        if (showStatusInURLBar)
+        if (showStatusInURLBar && !S4E_statusInURLBar)
           maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
             - (useLeftoverSpace? 250: Math.max(statusWidth, 160));
         else
@@ -2863,14 +2863,41 @@ function changeUI(window) {
       }, window);
     }
     statusBar.collapsed = true;
+    let isWindows = window.navigator.oscpu.toLowerCase().indexOf("window") >= 0;
+    let isLinux = window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0;
+    let height = window.getComputedStyle(gURLBar).height.replace("px", '')*1
+      + window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1
+      + window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1;
+    if (isLinux)
+      height += 2;
+    let newStatusCon = window.document.createElementNS(XUL, "hbox");
+    newStatusCon.setAttribute("id", "UIEnhancer_StatusBar");
+    newStatusCon.setAttribute("pack", "end");
+    newStatusCon.style.display = "-moz-box";
+    let newStatusIcon = window.document.createElementNS(XUL, "label");
+    newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
+      + "opacity: 0.5; display:-moz-box; background-image: url('"
+      + STATUS + "'); background-size: 100% 100%; padding: 0px; margin: 0px;");
+    newStatusIcon.setAttribute("flex", 0);
+    newStatusCon.appendChild(newStatusIcon);
     let newStatus = window.document.createElementNS(XUL, "label");
-    newStatus.setAttribute("id", "UIEnhancer_StatusBar");
-    newStatus.setAttribute("flex", 1);
+    newStatus.setAttribute("flex", 0);
     newStatus.setAttribute("crop", "center");
-    newStatus.setAttribute("style", "text-align:right; display:-moz-box; overflow:hidden; color: #555;");
-    newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth() + 235 - partsWidth: pref("statusWidth"))+ "px";
-    newStatus.setAttribute("value", "");
-    origInput.parentNode.insertBefore(newStatus, origInput.nextSibling);
+    newStatus.setAttribute("style", "min-width: 175px !important; background: -moz-linear-gradient"
+      + "(left, rgba(240,240,240,0.5) 0%, rgba(250,250,250,0.4) 65%, rgba(255,255,255,0) 100%);"
+      + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 0px;");
+    newStatusCon.appendChild(newStatus);
+    newStatusCon.collapsed = true;
+    if (isWindows)
+      newStatus.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
+        + window.getComputedStyle(gURLBar).paddingBottom + " 0px";
+    else if (isLinux)
+      newStatus.style.margin = "-"
+        + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
+        + "px 0px -"
+        + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 1)
+        + "px 0px";
+    origInput.parentNode.insertBefore(newStatusCon, origInput.nextSibling);
     function animateToggleEnhancedURLBar(hiding) {
       if (!pref("enhanceURLBar"))
         return;
@@ -2886,22 +2913,27 @@ function changeUI(window) {
     function updateStatus(value, inactive) {
       if (inactive) {
         animateToggleEnhancedURLBar();
-        newStatus.value == "";
-        newStatus.collapsed = true;
+        newStatusCon.collapsed = true;
         origInput.setAttribute("flex", 1);
       }
       else {
-        newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth() + 235 - partsWidth: pref("statusWidth"))+ "px";
         animateToggleEnhancedURLBar(true);
+        if ((pref("useLeftoverSpace")? getMaxWidth() + 225 - partsWidth:
+          pref("statusWidth"))/value.length < 8)
+            newStatus.setAttribute("flex", 1);
+        else
+          newStatus.setAttribute("flex", 0);
+        newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
+          + 225 - partsWidth: pref("statusWidth"))+ "px";
         newStatus.value = value;
         origInput.setAttribute("flex", 0);
-        newStatus.collapsed = false;
+        newStatusCon.collapsed = false;
       }
     }
     unload(function() {
       statusBar.collapsed = false;
-      newStatus.parentNode.removeChild(newStatus);
-      newStatus = null;
+      newStatusCon.parentNode.removeChild(newStatusCon);
+      newStatusIcon = newStatusCon = newStatus = null;
     }, window);
   }
   /*
@@ -2922,7 +2954,7 @@ function changeUI(window) {
   }
   if (pref("enhanceURLBar"))
     enhanceURLBar();
-  if (pref("showStatusInURLBar"))
+  if (pref("showStatusInURLBar") && !S4E_statusInURLBar)
     setupStatusBar();
 }
 
