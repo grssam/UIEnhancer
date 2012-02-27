@@ -41,8 +41,6 @@ let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
 let recheckOnTabChange = false;
-let toolbarButton = null;
-let unloadButton = function() {};
 // global variable to store whether user has Status-4-Ever installed
 // and its setting is to show status or/and link in Location Bar
 let S4E_statusInURLBar = false;
@@ -2964,11 +2962,6 @@ function addToolbarButton(window) {
       "Location Bar Enhancer Options","chrome,modal,dialog,resizable,centerscreen,toolbar");
   }
   function $(id) window.document.getElementById(id);
-  function removeButton() {
-    try {
-      toolbarButton.parentNode.removeChild(toolbarButton);
-    } catch (ex) {}
-  }
 
   function saveToolbarButtonInfo(event) {
     if ($(toolbarButtonID) && toolbarButton.parentNode) {
@@ -2981,14 +2974,14 @@ function addToolbarButton(window) {
   }
 
   // add toolbar button
-  toolbarButton = window.document.createElementNS(XUL, "toolbarbutton");
+  let toolbarButton = window.document.createElementNS(XUL, "toolbarbutton");
   toolbarButton.setAttribute("id", toolbarButtonID);
   toolbarButton.setAttribute("type", "button");
   toolbarButton.setAttribute("image", LOGO);
   toolbarButton.setAttribute("class", "toolbarbutton-1 chromeclass-toolbar-additional");
   toolbarButton.setAttribute("label", l10n("UIE.label"));
   toolbarButton.setAttribute("tooltiptext", l10n("UIE.tooltip"));
-  toolbarButton.addEventListener("command", openOptions, false);
+  toolbarButton.addEventListener("command", openOptions);
   $("navigator-toolbox").palette.appendChild(toolbarButton);
   let buttonParentID = pref("buttonParentID");
   if (buttonParentID.length > 0) {
@@ -3011,14 +3004,14 @@ function addToolbarButton(window) {
       parent.insertItem(toolbarButtonID, nextSibling, null, false);
     }
   }
-  unloadButton = function() {
-    window.removeEventListener("unload", unloadButton, false);
-    window.removeEventListener("aftercustomization", saveToolbarButtonInfo, false);
-    toolbarButton.removeEventListener("command", openOptions, false);
-    removeButton();
+
+  let unloadButton = function() {
+    window.removeEventListener("aftercustomization", saveToolbarButtonInfo);
+    toolbarButton.removeEventListener("command", openOptions);
+    toolbarButton.parentNode.removeChild(toolbarButton);
   };
   window.addEventListener("aftercustomization", saveToolbarButtonInfo, false);
-  window.addEventListener("unload", unloadButton, false);
+  unload2(unloadButton);
 }
 
 function createHotKey(window) {
@@ -3164,6 +3157,18 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     unload(function() {
       AddonManager.removeAddonListener(conflictListener);
     });
+    // Adding an unload funtion to close any opened options window
+    unload(function() {
+      let wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+      let enumerator = wm.getEnumerator(null);
+      while(enumerator.hasMoreElements()) {
+        let win = enumerator.getNext();
+        if (win.name == "Location Bar Enhancer Options") {
+          win.close()
+          break;
+        }
+      }
+    });
   }
 
   reload = function() {
@@ -3205,7 +3210,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // calling the function to setup everything
   init();
   // add a toolbar button to open options
-  watchWindows(addToolbarButton);
+  watchWindows2(addToolbarButton);
 });
 
 function shutdown(data, reason) {
@@ -3213,7 +3218,7 @@ function shutdown(data, reason) {
     Components.manager.removeBootstrappedManifestLocation(data.installPath);
   if (reason != APP_SHUTDOWN) {
     unload();
-    unloadButton();
+    unload2();
   }
 }
 
