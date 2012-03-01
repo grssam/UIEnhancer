@@ -404,7 +404,7 @@ function changeUI(window) {
     if (settingsStartIndex != null && index >= settingsStartIndex)
       isSetting = (index >= anchorTagIndex && anchorTagIndex)? "anchor": true;
     if (index > 0) {
-      let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z]{2,4}$/, ""));
+      let gibberResult = gibberish(gibberVal.replace("www.", "").replace(/\.[a-zA-Z\u0400-\u04FF\u0500-\u052F]{2,4}$/, ""));
       let partsLength = gibberVal.split(/[ _=]+/g).length;
       if (gibberResult.toString() != "false" && redRemoved == 0
         && (gibberResult.toString() == "true"
@@ -2145,7 +2145,6 @@ function changeUI(window) {
     for (index = 0; index < urlArray_updateURL.length; index++) {
       urlVal_updateURL = urlArray_updateURL[index];
       isSetting_updateURL = false;
-      // Test Case to check gibberish function
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
       if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null)
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), pref("useIdentityBox")
@@ -2874,16 +2873,16 @@ function changeUI(window) {
     newStatusCon.style.display = "-moz-box";
     let newStatusIcon = window.document.createElementNS(XUL, "label");
     newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
-      + "opacity: 0.5; display:-moz-box; background-image: url('"
-      + STATUS + "'); background-size: 100% 100%; padding: 0px; margin: 0px;");
+      + "opacity: 0.4; display:-moz-box; background-image: url('"
+      + STATUS + "'); background-size: 110% 100%; padding: 0px; margin: 0px;");
     newStatusIcon.setAttribute("flex", 0);
     newStatusCon.appendChild(newStatusIcon);
     let newStatus = window.document.createElementNS(XUL, "label");
     newStatus.setAttribute("flex", 0);
     newStatus.setAttribute("crop", "center");
-    newStatus.setAttribute("style", "min-width: 175px !important; background: -moz-linear-gradient"
-      + "(left, rgba(240,240,240,0.5) 0%, rgba(250,250,250,0.4) 65%, rgba(255,255,255,0) 100%);"
-      + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 0px;");
+    newStatus.setAttribute("style", "min-width: 50px !important; background: -moz-linear-gradient"
+      + "(left, rgba(240,240,240,0.4) 0%, rgba(250,250,250,0.25) 65%, rgba(255,255,255,0) 100%);"
+      + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 4px;");
     newStatusCon.appendChild(newStatus);
     newStatusCon.collapsed = true;
     if (isWindows)
@@ -2916,9 +2915,8 @@ function changeUI(window) {
       }
       else {
         animateToggleEnhancedURLBar(true);
-        if ((pref("useLeftoverSpace")? getMaxWidth() + 225 - partsWidth:
-          pref("statusWidth"))/value.length < 8)
-            newStatus.setAttribute("flex", 1);
+        if (pref("useLeftoverSpace") && (getMaxWidth() + 225 - partsWidth)/value.length < 8)
+          newStatus.setAttribute("flex", 1);
         else
           newStatus.setAttribute("flex", 0);
         newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()

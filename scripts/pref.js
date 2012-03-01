@@ -71,7 +71,7 @@ pref.defaults = {
   shortcutKey: "L",
   shortcutModifiers: "accel, shift",
   showStatusInURLBar: true,
-  useLeftoverSpace: false,
+  useLeftoverSpace: true,
   statusWidth: 250
 };
 

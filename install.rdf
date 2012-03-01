@@ -12,7 +12,6 @@
     <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
     <optionsURL>chrome://uienhancer/content/options.xul</optionsURL>
     <optionsType>1</optionsType>
-    <unpack>true</unpack>
 
     <contributor>Girish Sharma</contributor>
     <contributor>Axel Grude</contributor>

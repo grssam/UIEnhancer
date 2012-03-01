@@ -397,7 +397,7 @@ function gibberish(string) {
     else if (length >= 6 && ((numAlpha > 2 && numNum > 0 && numAlpha < length - 1)
       || (numAlpha == 0)))
         return true;
-    numVowel = string.split(/[aeiouy]/).length - 1;
+    numVowel = string.split(/[aeiouyаеёиоуыэюяAЕЁИОУЫЭЮЯ]/).length - 1;
     if (numNum <= 2 && string.split(/[0-9]/g).length <= 2
       && ((length < 6 && numVowel > 0)
       || (length >= 6 && numNum <= 2 && numVowel > 0
@@ -414,12 +414,12 @@ function gibberish(string) {
 function removeRedundantText(baseString, redString) {
   redString = redString.split(/\s+/);
   baseString = baseString.filter(function(redVal) {
-    return redVal.length > 3;
+    return redVal.length > 3 || redVal.match(/[0-9]+/);
   });
   let i = 0;
   let len;
   function checkBaseMatch(base) {
-    base = base.toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
+    base = base.toLowerCase().replace(/[^0-9a-zA-Z\u0400-\u04FF\u0500-\u052F]+/g, "");
     let ret = false;
     for (let i = 0; i < baseString.length; i++) {
       try {
@@ -431,12 +431,12 @@ function removeRedundantText(baseString, redString) {
   }
 
   for (i = 0; i < baseString.length; i++)
-    baseString[i] = baseString[i].toLowerCase().replace(/[^0-9a-zA-Z ]+/g, "");
+    baseString[i] = baseString[i].toLowerCase().replace(/[^0-9a-zA-Z\u0400-\u04FF\u0500-\u052F]+/g, "");
   i = 0;
   let {length} = redString;
   while (i < length) {
     if (checkBaseMatch(redString[i]) &&
-      (i < 2 || i > max(length - 3, 0.75*length))) {
+      (i < 2 || i > Math.max(length - 3, 0.75*length))) {
         redString.splice(i, 1);
         i = 0;
         length = redString.length;
@@ -449,8 +449,8 @@ function removeRedundantText(baseString, redString) {
   len = redString.length;
   i = 0;
   while (i < len) {
-    redString[i] = redString[i].replace(/[\)\}\]\(\{\[\\\/]+$/, '').replace(/^[\)\}\]\(\{\[\\\/]+/, '');
-    if (((i == 0 || i == len - 1) && redString[i].search(/^[^a-zA-Z0-9]+$/) >= 0)
+    redString[i] = redString[i].replace(/[^a-zA-Z0-9\u0400-\u04FF\u0500-\u052F]+$/, '').replace(/^[^a-zA-Z0-9\u0400-\u04FF\u0500-\u052F]+/, '');
+    if (((i == 0 || i == len - 1) && redString[i].search(/^[^a-zA-Z0-9\u0400-\u04FF\u0500-\u052F]+$/) >= 0)
       || (i == len - 1 && redString[i].search(/^(the|a|an|for)$/i) >= 0)) {
         redString.splice(i,1);
         i = Math.max(i - 2, 0);
@@ -459,8 +459,9 @@ function removeRedundantText(baseString, redString) {
     else
       i++;
   }
-  return redString.join(" ");
+  return redString.filter(function(v) v.length > 0).join(" ");
 }
+
 
 // function to trim the word and add ... in the middle
 function trimWord(trimVal, limit, start) {

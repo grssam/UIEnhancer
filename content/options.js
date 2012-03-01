@@ -37,8 +37,8 @@ Cu.import("resource://gre/modules/FileUtils.jsm");
 function getURIForFile2(filepath, rootDir) {
   let file = FileUtils.getFile("ProfD", rootDir?[rootDir]:["extensions"]);
   if (rootDir == null)
-    file.append("UIEnhancer@girishsharma");
-  return Services.io.newURI("file:///" + file.path.replace(/[\\]/g, "/") + "/" + filepath, null, null);
+    file.append("UIEnhancer@girishsharma.xpi");
+  return Services.io.newURI("jar:file:///" + file.path.replace(/[\\]/g, "/") + "!/" + filepath, null, null);
 }
 
 ["helper", "pref"].forEach(function(fileName) {
