@@ -597,10 +597,6 @@ function changeUI(window) {
   function highlightPart(highlightedObj, text, arrow, arrowVal) {
     if (highlightedObj == null)
       return;
-    if (arrowVal == '>' && !arrowMouseDown)
-      highlightedObj.lastChild.value = arrowVal;
-    else if (arrowVal != null && arrowVal != '>')
-      highlightedObj.lastChild.value = arrowVal;
     let gradient = "";
     if (!mouseScrolled)
       gradient = "-moz-linear-gradient(top, rgba(228,245,252,0.15) " +
@@ -636,6 +632,10 @@ function changeUI(window) {
       highlightedObj.lastChild.style.boxShadow = "";
     }
     // Apply the mouseDown effect (shadow , padding etc)
+    if (arrowVal == '>' && !arrowMouseDown)
+      highlightedObj.lastChild.value = arrowVal;
+    else if (arrowVal != null && arrowVal != '>')
+      highlightedObj.lastChild.value = arrowVal;
     if ((arrowMouseDown || textMouseDown) && forcedFlushing != true) {
       highlightedObj.firstChild.style.backgroundImage = highlightedObj.lastChild.style.backgroundImage =
         "-moz-linear-gradient(top, rgba(228,245,252,0.35) " +
@@ -644,7 +644,10 @@ function changeUI(window) {
         highlightedObj.lastChild.style.border = "1px solid rgba(100,110,150,0.75)";
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow =
         "inset 1px 2px 1px rgba(120,130,160,0.8)";
-      highlightedObj.firstChild.style.padding = "3px 0px 0px 2px";
+      if (highlightedObj == enhancedURLBar.firstChild)
+        highlightedObj.firstChild.style.padding = "3px 0px 0px 4px";
+      else
+        highlightedObj.firstChild.style.padding = "3px 0px 0px 3px";
       if (siblingsShown)
         highlightedObj.lastChild.style.padding = "2px 1px 1px 2px";
       else
@@ -652,7 +655,10 @@ function changeUI(window) {
     }
     else {
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow = "";
-      highlightedObj.firstChild.style.padding = "2px 1px 1px 1px";
+      if (highlightedObj == enhancedURLBar.firstChild)
+        highlightedObj.firstChild.style.padding = "2px 1px 1px 3px";
+      else
+        highlightedObj.firstChild.style.padding = "2px 1px 1px 2px";
       highlightedObj.lastChild.style.padding = "2px 1px 1px 2px";
     }
     gradient = null;
@@ -807,7 +813,10 @@ function changeUI(window) {
       createdStack.style.padding = "0px";
       createdStack.style.margin = "0px";
       // Applying style to text part
-      tempS.style.padding = "2px 1px 1px 1px";
+      if (!enhancedURLBar.firstChild)
+        tempS.style.padding = "2px 1px 1px 3px";
+      else
+        tempS.style.padding = "2px 1px 1px 2px";
       tempS.style.margin = "0px";
       tempS.style.backgroundImage = "rgba(255,255,255,0)";
       tempS.style.border = "1px solid rgba(255,255,255,0)";
@@ -997,7 +1006,7 @@ function changeUI(window) {
 
         // Show the popup below the arrows
         mainPopup.openPopup(popupStack, "after_start", -30, 0);
-        mainPopup.addEventListener("popuphidden", hideMainPopup = function() {
+        listen(window, mainPopup, "popuphidden", hideMainPopup = function() {
           mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
           try {
             mainPopup.hidePopup();
@@ -1150,7 +1159,7 @@ function changeUI(window) {
       }
       if (!pref("useStyleSheet")) {
         partPointer.lastChild.setAttribute("value",">");
-        partPointer.lastChild.style.padding = "2px 1px 1px 2px";
+        partPointer.lastChild.style.padding = "2px 2px 1px 2px";
       }
       else
         highlightPart(partPointer, false, false);
@@ -2915,8 +2924,9 @@ function changeUI(window) {
       }
       else {
         animateToggleEnhancedURLBar(true);
-        if (pref("useLeftoverSpace") && (getMaxWidth() + 225 - partsWidth)/value.length < 8)
-          newStatus.setAttribute("flex", 1);
+        if ((pref("useLeftoverSpace")? (getMaxWidth() + 225 - partsWidth):
+          pref("statusWidth"))/value.length < 8)
+            newStatus.setAttribute("flex", 1);
         else
           newStatus.setAttribute("flex", 0);
         newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
