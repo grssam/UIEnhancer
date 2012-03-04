@@ -36,7 +36,7 @@
 <!ENTITY animationSpeed.tooltip  "Выберите скорость анимации из трех значений">
 <!ENTITY useStyleSheet.label  "Использование нового интерфейса для Панировочные сухари">
 <!ENTITY useStyleSheet.accesskey  "П">
-<!ENTITY useStyleSheet.tooltip  "Включает новый и стильный дизайн в Панировочные сухари. Если выключено, стиль Панировочные сухари "вернется обратно в соответствии с Windows Explorer панель навигации стиль.">
+<!ENTITY useStyleSheet.tooltip  "Включает новый и стильный дизайн в Панировочные сухари. Если выключено, стиль Панировочные сухари вернется обратно в соответствии с Windows Explorer панель навигации стиль.">
 <!ENTITY customStyleSheet.label  "Используйте свои собственные таблицы стилей для оформления Панировочные сухари">
 <!ENTITY customStyleSheet.tooltip  "Choose a properly prepared stylesheet from your hard disk. To know more about how to make a custom stylesheet, visit the home page of the add-on">
 <!ENTITY browse.label  "просматривать…">
