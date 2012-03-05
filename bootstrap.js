@@ -486,6 +486,16 @@ function changeUI(window) {
       enhancedURLBar.firstChild.setAttribute("url", urlValue.slice(0, urlPartArray[hiddenStartingIndex - 1]));
     else if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true")
       enhancedURLBar.firstChild.setAttribute("url", "");
+    if (hiddenStartingIndex == 0) {
+      async(function() {
+        try {
+          highlightPart(enhancedURLBar.firstChild, false, false);
+          enhancedURLBar.firstChild.collapsed = true;
+        } catch (ex) {}
+      }, 1500);
+    }
+    else if (enhancedURLBar.firstChild)
+      enhancedURLBar.firstChild.collapsed = false;
     showingHidden = true;
     redRemoved = 0;
     partsWidth = 0;
@@ -2042,6 +2052,10 @@ function changeUI(window) {
     urlPartArray = [];
     anchorTagIndex = settingsStartIndex = null;
     isSetting_updateURL = null;
+    if (showingHidden)
+      try {
+        enhancedURLBar.firstChild.collapsed = false;
+      } catch(ex) {};
     mouseScrolled = titleChanged = showingHidden = false;
     try {
       if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow"))
@@ -2235,6 +2249,10 @@ function changeUI(window) {
         origIdentity.collapsed = identityLabel.collapsed
           = identityCountryLabel.collapsed = !pref("useIdentityBox");
         tabChanged = true;
+        try {
+          if (showingHidden && enhancedURLBar.firstChild)
+            enhancedURLBar.firstChild.collapsed = false;
+        } catch (ex) {}
         showingHidden = false;
         try {
           if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow"))
