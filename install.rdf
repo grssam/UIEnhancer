@@ -5,13 +5,23 @@
     <creator>Girish Sharma</creator>
     <id>UIEnhancer@girishsharma</id>
     <name>Location Bar Enhancer</name>
-    <version>4.2</version>
+    <version>4.3</version>
     <bootstrap>true</bootstrap>
     <type>2</type>
     <homepageURL>https://addons.mozilla.org/en-US/firefox/addon/ui-enhancer/</homepageURL>
     <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
     <optionsURL>chrome://uienhancer/content/options.xul</optionsURL>
     <optionsType>1</optionsType>
+
+    <localized>
+      <Description>
+        <locale>zh-CN</locale>
+        <homepageURL>https://addons.mozilla.org/zh-CN/firefox/addon/ui-enhancer/</homepageURL>
+        <description>功能多样的面包屑式地址栏</description>
+        <name>Location Bar Enhancer</name>
+        <translator>fang5566</translator>
+      </Description>
+    </localized>
 
     <contributor>Girish Sharma</contributor>
     <contributor>Axel Grude</contributor>
@@ -24,4 +34,3 @@
     </targetApplication>
   </r:Description>
 </r:RDF>
-

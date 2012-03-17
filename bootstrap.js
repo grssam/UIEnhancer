@@ -794,10 +794,9 @@ function changeUI(window) {
     tempS.setAttribute("id", "UIEnhancer_URLBar_Stack_Text");
     //tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
-    tempS.setAttribute("tooltiptext", "Right Click to access Sub Menu"
-      + (!enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
-      + "\nScroll to instantly preview the sibling address")
-      + "\nOr drag n drop this part to anywhere you want");
+    tempS.setAttribute("tooltiptext", l10n("rightClick.tooltip")
+      + (!enhancedURLBar.firstChild? ".": " " + l10n("sibling.tooltip"))
+      + l10n("dragDrop.tooltip"));
     if (partType == "domain" || hiddenArrow)
       tempS.style.display = "none";
     else
@@ -811,7 +810,7 @@ function changeUI(window) {
     tempArrow.style.display = "-moz-box";
     tempArrow.setAttribute("flex", 0);
     if (!hiddenArrow)
-      tempArrow.setAttribute("tooltiptext", "Click to access Sub Menu");
+      tempArrow.setAttribute("tooltiptext", l10n("click.tooltip"));
     if (hiddenArrow)
       createdStack.setAttribute("isHiddenArrow", hiddenArrow);
     else 
@@ -1158,11 +1157,10 @@ function changeUI(window) {
         partPointer.firstChild.setAttribute("value", trimWord(partVal));
       partPointer.setAttribute("url", partURL);
       partPointer.setAttribute("isHiddenArrow", false);
-      partPointer.firstChild.setAttribute("tooltiptext", "Right Click to access Sub Menu"
-        + (partPointer == enhancedURLBar.firstChild? ".": " or to see sibling Addresses."
-        + "\nScroll to instantly preview the sibling address")
-        + "\nOr drag n drop this part to anywhere you want");
-      partPointer.lastChild.setAttribute("tooltiptext", "Click to access Sub Menu");
+      partPointer.firstChild.setAttribute("tooltiptext", l10n("rightClick.tooltip")
+        + (partPointer == enhancedURLBar.firstChild? ".": " " +l10n("sibling.tooltip"))
+        + l10n("dragDrop.tooltip"));
+      partPointer.lastChild.setAttribute("tooltiptext", l10n("click.tooltip"));
       if (!lastPart) {
         partPointer.lastChild.style.display = "-moz-box";
         partPointer.setAttribute("lastArrowHidden", false);
@@ -1213,8 +1211,7 @@ function changeUI(window) {
             enhancedURLBar.firstChild.setAttribute("isAnchorTag", false);
             enhancedURLBar.firstChild.firstChild.setAttribute("value", trimWord(urlArray_updateURL[0]));
             enhancedURLBar.firstChild.firstChild.setAttribute("tooltiptext"
-              , "Right Click to access Sub Menu"
-              + "\nOr drag n drop this part to anywhere you want");
+              , l10n("rightClick.tooltip") + l10n("dragDrop.tooltip"));
             if (!pref("useStyleSheet")) {
               enhancedURLBar.firstChild.lastChild.setAttribute("value",">");
               enhancedURLBar.firstChild.firstChild.style.color = "rgb(30,30,30)";
@@ -1830,20 +1827,20 @@ function changeUI(window) {
     menuGroup.style.margin = "1px 0px 1px 25px";
     menuGroup.style.padding = "2px";
     // Edit Part
-    let editPartButton = createToolbarButton("Edit the Highlighted Part", EDIT_IMAGE, "Edit");
+    let editPartButton = createToolbarButton(l10n("edit.tooltip"), EDIT_IMAGE, l10n("edit.label"));
     editPartButton.onclick = function() {
       editPart(arrowedStack);
     };
     menuGroup.appendChild(editPartButton);
     // Add Part
-    let addPartButton = createToolbarButton("Add a Part next to the Highlighted part", ADD_IMAGE, "Add");
+    let addPartButton = createToolbarButton(l10n("add.tooltip"), ADD_IMAGE, l10n("add.label"));
     addPartButton.onclick = function() {
       editPart(arrowedStack, true);
     };
     menuGroup.appendChild(addPartButton);
     // Copy Part
     if (enhancedURLBar.lastChild != arrowedStack) {
-      let copyPartButton = createToolbarButton("Copy Address till the Highlighted Part", COPY_IMAGE, "Copy");
+      let copyPartButton = createToolbarButton(l10n("copy.tooltip"), COPY_IMAGE, l10n("copy.label"));
       copyPartButton.onclick = function() {
         try {
           mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
@@ -1855,7 +1852,7 @@ function changeUI(window) {
       menuGroup.appendChild(copyPartButton);
     }
     // Copy All Part
-    let copyAllPartButton = createToolbarButton("Copy Full Address", COPY_ALL_IMAGE, "Copy All");
+    let copyAllPartButton = createToolbarButton(l10n("copyAll.tooltip"), COPY_ALL_IMAGE, l10n("copyAll.label"));
     copyAllPartButton.onclick = function() {
       try {
         mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
@@ -1867,7 +1864,7 @@ function changeUI(window) {
     menuGroup.appendChild(copyAllPartButton);
     // Delete Part
     if (arrowedStack != enhancedURLBar.firstChild) {
-      let deletePartButton = createToolbarButton("Delete the Highlighted Part and load the resultant url", DELETE_IMAGE, "Delete");
+      let deletePartButton = createToolbarButton(l10n("delete.tooltip"), DELETE_IMAGE, l10n("delete.label"));
       deletePartButton.onclick = function() {
         try {
           mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
@@ -1923,7 +1920,7 @@ function changeUI(window) {
       // to indicate that is has not been visited yet
       if (resultArray[i][2] && resultArray[i][2] == true) {
         part.style.color = "rgb(75,75,75)";
-        part.setAttribute("tooltiptext", "Auto generated parts.\nClick to visit them");
+        part.setAttribute("tooltiptext", l10n("auto.tooltip"));
       }
       let isCurrent = false;
       let tempS = enhancedURLBar.lastChild;
@@ -1955,9 +1952,9 @@ function changeUI(window) {
       part.setAttribute("id", "UIEnhancer_Popup_Info");
       part.setAttribute("class", "menuitem-iconic");
       if (siblingsShown)
-        part.setAttribute("label", "Siblings of highlighted Part");
+        part.setAttribute("label", l10n("sibling.label"));
       else
-        part.setAttribute("label", "Children of highlighted Part");
+        part.setAttribute("label", l10n("children.label"));
       part.setAttribute("disabled", true);
       mainPopup.insertBefore(part, mainPopup.firstChild);
       mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
@@ -1967,7 +1964,7 @@ function changeUI(window) {
       let part = document.createElementNS(XUL, "menuitem");
       part.setAttribute("id", "UIEnhancer_No_Suggestion");
       part.setAttribute("class", "menuitem-iconic");
-      part.setAttribute("label", "No Suggestions Available");
+      part.setAttribute("label", l10n("noSuggestion.label"));
       listen(window, part, "command", function() {
         try {
           mainPopup.hidePopup();
