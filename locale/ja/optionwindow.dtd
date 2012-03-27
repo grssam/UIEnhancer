@@ -4,6 +4,7 @@
 <!ENTITY stylePane.label  "ロケーションバーのスタイル">
 <!ENTITY bookmarksPane.label  "ブックマークエンハンサー">
 <!ENTITY statusPane.label  "ステータスバー">
+<!ENTITY progressPane.label  "プログレスバー">
 <!ENTITY enhanceURLBar.label  "ロケーションバーで実装するブレッドクラム·ユーザー·インタフェース">
 <!ENTITY enhanceURLBar.accesskey  "B">
 <!ENTITY enhanceURLBar.tooltip  "これは、このアドオンの主な機能です。任意のページのアドレスは、パンくずのスタイルのディスプレイに表示されます。">
@@ -54,6 +55,12 @@
 <!ENTITY statusWidth.label  "ステータスバーの最大幅">
 <!ENTITY statusWidth.accesskey  "W">
 <!ENTITY statusWidth.tooltip  "上記の設定が無効になっている場合、この幅が使用されます。値はピクセルである">
+<!ENTITY showProgressInURLBar.label  "ロケーションバーにページの読み込みの進行状況を表示します。">
+<!ENTITY showProgressInURLBar.accesskey  "P">
+<!ENTITY showProgressInURLBar.tooltip   "ページのロードの進行状況を表示するロケーションバーにテキストの背後にあるプログレスバーを有効にします">
+<!ENTITY showProgressAsArrow.label  "代わりに、プログレスバーのブレッドクラムを使用して、">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip  "新しいスタイルとの整合性を維持するために、この機能を使用する.">
 <!ENTITY animationSpeed.normal.label  "ノーマルスピード">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "速いスピード">

@@ -77,6 +77,7 @@ let optionsWindow = {
     this.toggleStylesSettings(true);
     this.toggleURLBarSettings(true);
     this.toggleStatusSettings(true);
+    this.toggleProgressSettings(false);
     // Displaying the shortcut 
     this.shortcutTextBox = $("shortcutTextBox");
     if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
@@ -157,6 +158,15 @@ let optionsWindow = {
     let leftoverEnabled = $("useLeftoverSpaceCheckBox").checked || !statusEnabled;
     $$(["statusWidthLabel"], "disabled", leftoverEnabled);
     if (!check)
+      this.notifyChange();
+  },
+
+  toggleProgressSettings: function OW_toggleProgressSettings(arrowIndicator) {
+    function $(id) document.getElementById(id);
+    let progressEnabled = $("showProgressInURLBarCheckBox").checked;
+    if (!arrowIndicator)
+      $("showProgressAsArrowCheckBox").disabled = !progressEnabled;
+    if (arrowIndicator != false)
       this.notifyChange();
   },
 

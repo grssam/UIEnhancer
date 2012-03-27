@@ -2960,6 +2960,58 @@ function changeUI(window) {
   /*
   * Code to put status bar in location bar Ends
   */
+  /*
+  * Code to put progress meter in url bar starts here
+  */
+  function setupProgressMeter() {
+    function $(id) document.getElementById(id);
+
+    let progressListener = {
+      onChangeTab: function(e) {
+        $("urlbar").style.backgroundPosition = '0px 0px';
+        $("urlbar").style.backgroundSize = '0% 100%';
+      },
+      onProgressChange: function(aBrowser,webProgress,request,curSelfProgress,maxSelfProgress,curTotalProgress,maxTotalProgress) {
+        if (gBrowser.contentDocument === aBrowser.contentDocument) {
+          let val = (curTotalProgress-1)/(maxTotalProgress-1);
+          let width = $("urlbar").boxObject.width;
+          if (pref("showProgressAsArrow")) {
+            $("urlbar").style.backgroundSize = '40px 100%';
+            $("urlbar").style.backgroundPosition = (val==1? 0: width*val - 25) + 'px 0px';
+            $("urlbar").style.backgroundImage = "url(" + PROGRESS + ")";
+            $("urlbar").style.MozTransition = "background-position 250ms ease 0s";
+          }
+          else {
+            $("urlbar").style.backgroundSize = (val==1? 0: 100*val) + '% 100%';
+            $("urlbar").style.backgroundImage = (val==1? "":
+              "-moz-linear-gradient(left, rgba(255,255,255,0.1) 0%"
+              + ", rgba(15,215,245, 0.6) 100%)");
+            $("urlbar").style.MozTransition = "background-size 250ms ease 0s";
+          }
+          $("urlbar").style.backgroundRepeat = "no-repeat";
+        }
+      },
+      onStateChange: function() {
+        $("urlbar").style.backgroundPosition = '0px 0px';
+        $("urlbar").style.backgroundSize = '0% 100%';
+      }
+    };
+
+    listen(window, gBrowser.tabContainer, 'TabSelect', progressListener.onChangeTab, false);
+    gBrowser.addTabsProgressListener(progressListener);
+
+    unload(function() {
+      gBrowser.removeTabsProgressListener(progressListener);
+      $("urlbar").style.backgroundSize = '';
+      $("urlbar").style.backgroundPosition = '';
+      $("urlbar").style.backgroundImage = "";
+      $("urlbar").style.backgroundRepeat = "";
+      $("urlbar").style.MozTransition = "";
+    }, window);
+  }
+  /*
+  * Code to put progress meter in urll bar ends here
+  */
   // Function Callings
   if(pref("bringBookmarksUp")) {
     if (pref("useSmallIcons"))
@@ -2977,6 +3029,8 @@ function changeUI(window) {
     enhanceURLBar();
   if (pref("showStatusInURLBar") && !S4E_statusInURLBar)
     setupStatusBar();
+  if (pref("showProgressInURLBar"))
+    setupProgressMeter();
 }
 
 function addToolbarButton(window) {
@@ -3140,7 +3194,9 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "removeGibberish",
       "useIdentityBox",
       "userStylePath",
-      "showStatusInURLBar"
+      "showStatusInURLBar",
+      "showProgressAsArrow",
+      "showProgressInURLBar"
     ], reload);
     pref.observe([
       "urlBarWidth",

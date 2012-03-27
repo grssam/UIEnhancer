@@ -4,6 +4,7 @@
 <!ENTITY stylePane.label  "Breadcrumb-Styles">
 <!ENTITY bookmarksPane.label  "Bookmarks Enhancer">
 <!ENTITY statusPane.label  "Status Bar">
+<!ENTITY progressPane.label  "Progress Bar">
 <!ENTITY enhanceURLBar.label  "Implementieren Sie Breadcrumbs User Interface in der Location Bar">
 <!ENTITY enhanceURLBar.accesskey  "B">
 <!ENTITY enhanceURLBar.tooltip  "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
@@ -18,7 +19,7 @@
 <!ENTITY useIdentityBox.tooltip  "Die Domain der Webseite würde hervorgehoben und dargestellt werden in der Identity-Box (links neben der Adressleiste).">
 <!ENTITY useDragDrop.label  "Erlauben Sie Ziehen und Ablegen von Teilen Breadcrumb">
 <!ENTITY useDragDrop.accesskey  "Z">
-<!ENTITY useDragDrop.tooltip  "Jedes Teil kann per Drag & Drop um ein neues Lesezeichen im Lesezeichen-Symbolleiste zu machen oder einen Link-Verknüpfung auf Desktop-machen, oder sogar in einem neuen Tab">
+<!ENTITY useDragDrop.tooltip  "Jedes Teil kann per Drag und Drop um ein neues Lesezeichen im Lesezeichen-Symbolleiste zu machen oder einen Link-Verknüpfung auf Desktop-machen, oder sogar in einem neuen Tab">
 <!ENTITY combination.label  "Tastenkombination:">
 <!ENTITY combination.accesskey  "T">
 <!ENTITY combination.tooltip  "Klicken Sie in das Textfeld ein und drücken Sie die gewünschte Kombination">
@@ -54,6 +55,12 @@
 <!ENTITY statusWidth.label  "Maximale Breite der Statusleiste">
 <!ENTITY statusWidth.accesskey  "B">
 <!ENTITY statusWidth.tooltip  "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Der Wert ist in Pixel">
+<!ENTITY showProgressInURLBar.label  "Lassen Sie sich die Seite geladen Fortschritte in der Adressleiste.">
+<!ENTITY showProgressInURLBar.accesskey  "F">
+<!ENTITY showProgressInURLBar.tooltip  "Ermöglicht einen Fortschrittsbalken hinter dem Text in Adressleiste zu Seite Last Fortschritte zeigen">
+<!ENTITY showProgressAsArrow.label  "Verwenden Sie einen Brotkrümel statt Fortschrittsbalken">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip  "Um die Kohärenz mit dem neuen Stil zu halten, verwenden Sie diese Funktion.">
 <!ENTITY animationSpeed.normal.label  "Normale Geschwindigkeit">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "Schnelle Geschwindigkeit">

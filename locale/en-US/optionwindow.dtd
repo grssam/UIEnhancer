@@ -4,6 +4,7 @@
 <!ENTITY stylePane.label              "Breadcrumb Styles">
 <!ENTITY bookmarksPane.label          "Bookmarks Enhancer">
 <!ENTITY statusPane.label             "Status Bar">
+<!ENTITY progressPane.label           "Progress Bar">
 
 <!ENTITY enhanceURLBar.label          "Implement Breadcrumbs User Interface in Location Bar">
 <!ENTITY enhanceURLBar.accesskey      "B">
@@ -71,6 +72,14 @@
 <!ENTITY statusWidth.label            "Maximum width of the Status Bar">
 <!ENTITY statusWidth.accesskey        "W">
 <!ENTITY statusWidth.tooltip          "This width will be used when the above setting is disabled. Value is in pixel">
+
+<!ENTITY showProgressInURLBar.label     "Show the page loading progress in the Location Bar.">
+<!ENTITY showProgressInURLBar.accesskey "P">
+<!ENTITY showProgressInURLBar.tooltip   "Enables a progress bar behind the text in location bar to show page's load progress">
+
+<!ENTITY showProgressAsArrow.label      "Use a breadcrumb instead of progress bar">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip    "To maintain consistency with the new style, use this feature.">
 
 <!ENTITY animationSpeed.normal.label       "Normal Speed">
 <!ENTITY animationSpeed.normal.accesskey   "N">

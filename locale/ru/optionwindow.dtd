@@ -4,6 +4,7 @@
 <!ENTITY stylePane.label  "Панировочные сухари Стили">
 <!ENTITY bookmarksPane.label  "Повышение закладки">
 <!ENTITY statusPane.label  "Строка состояния">
+<!ENTITY progressPane.label  "Прогресс Бар">
 <!ENTITY enhanceURLBar.label  "Реализация Панировочные сухари пользовательского интерфейса в адресной строке">
 <!ENTITY enhanceURLBar.accesskey  "Р">
 <!ENTITY enhanceURLBar.tooltip  "Это главная особенность этого прибавить.Адрес любой страницы отображается в многофункциональный цепочку стиль отображения.">
@@ -54,6 +55,12 @@
 <!ENTITY statusWidth.label  "Максимальная ширина Строка состояния">
 <!ENTITY statusWidth.accesskey  "ш">
 <!ENTITY statusWidth.tooltip  "Эта ширина будет использоваться при выше параметр отключен. Значение в пикселях">
+<!ENTITY showProgressInURLBar.label  "Показать прогресса загрузки страницы в адресной строке.">
+<!ENTITY showProgressInURLBar.accesskey  "П">
+<!ENTITY showProgressInURLBar.tooltip  "Включение индикатора за текст в адресной строке, чтобы показать прогресс загрузки страницы">
+<!ENTITY showProgressAsArrow.label  "Используйте цепочку, а индикатор">
+<!ENTITY showProgressAsArrow.accesskey  "И">
+<!ENTITY showProgressAsArrow.tooltip  "Для поддержания совместимости с новым стилем, использовать эту функцию.">
 <!ENTITY animationSpeed.normal.label  "Нормальная скорость">
 <!ENTITY animationSpeed.normal.accesskey  "Н">
 <!ENTITY animationSpeed.fast.label  "Быстрая скорость">

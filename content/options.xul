@@ -110,6 +110,16 @@
       </radiogroup>
     </groupbox>
   </prefpane>
+  <prefpane id="UIEnhancerProgressPrefPane" label="&progressPane.label;" image="progress.gif">
+    <preferences>
+      <preference id="showProgressInURLBar" name="extensions.UIEnhancer.showProgressInURLBar" type="bool"/>
+      <preference id="showProgressAsArrow" name="extensions.UIEnhancer.showProgressAsArrow" type="bool"/>
+    </preferences>
+    <checkbox id="showProgressInURLBarCheckBox" preference="showProgressInURLBar" oncommand="optionsWindow.toggleProgressSettings();"
+      tooltiptext="&showProgressInURLBar.tooltip;" label="&showProgressInURLBar.label;" accesskey="&showProgressInURLBar.accesskey;" />
+    <checkbox id="showProgressAsArrowCheckBox" preference="showProgressAsArrow" oncommand="optionsWindow.toggleStatusSettings(true);"
+      tooltiptext="&showProgressAsArrow.tooltip;" label="&showProgressAsArrow.label;" accesskey="&showProgressAsArrow.accesskey;" />
+  </prefpane>
   <prefpane id="UIEnhancerStatusPrefPane" label="&statusPane.label;" image="status.png">
     <preferences>
       <preference id="showStatusInURLBar" name="extensions.UIEnhancer.showStatusInURLBar" type="bool"/>

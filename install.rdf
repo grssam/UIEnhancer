@@ -13,6 +13,7 @@
     <optionsURL>chrome://uienhancer/content/options.xul</optionsURL>
     <optionsType>1</optionsType>
     <translator>fang5566 (zh-CN)</translator>
+    <translator>velociraptor@BabelZilla (zh-TW)</translator>
 
     <localized>
       <Description>
@@ -21,6 +22,16 @@
         <description>功能多样的面包屑式地址栏</description>
         <name>Location Bar Enhancer</name>
         <translator>fang5566</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
+        <locale>zh-CN</locale>
+        <homepageURL>https://addons.mozilla.org/zh-TW/firefox/addon/ui-enhancer/</homepageURL>
+        <description>功能豐富的麵包屑地址欄</description>
+        <name>Location Bar Enhancer</name>
+        <translator>velociraptor@BabelZilla</translator>
       </Description>
     </localized>
 
