@@ -117,7 +117,7 @@
     </preferences>
     <checkbox id="showProgressInURLBarCheckBox" preference="showProgressInURLBar" oncommand="optionsWindow.toggleProgressSettings();"
       tooltiptext="&showProgressInURLBar.tooltip;" label="&showProgressInURLBar.label;" accesskey="&showProgressInURLBar.accesskey;" />
-    <checkbox id="showProgressAsArrowCheckBox" preference="showProgressAsArrow" oncommand="optionsWindow.toggleStatusSettings(true);"
+    <checkbox id="showProgressAsArrowCheckBox" preference="showProgressAsArrow" oncommand="optionsWindow.toggleProgressSettings(true);"
       tooltiptext="&showProgressAsArrow.tooltip;" label="&showProgressAsArrow.label;" accesskey="&showProgressAsArrow.accesskey;" />
   </prefpane>
   <prefpane id="UIEnhancerStatusPrefPane" label="&statusPane.label;" image="status.png">
