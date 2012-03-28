@@ -61,6 +61,9 @@
 <!ENTITY showProgressAsArrow.label  "Verwenden Sie einen Brotkrümel statt Fortschrittsbalken">
 <!ENTITY showProgressAsArrow.accesskey  "B">
 <!ENTITY showProgressAsArrow.tooltip  "Um die Kohärenz mit dem neuen Stil zu halten, verwenden Sie diese Funktion.">
+<!ENTITY chooseColor.label  "Das Wählen Sie die Farbe des Fortschrittsbalkens">
+<!ENTITY chooseColor.tooltip  "Das Wählen Sie die Farbe des Fortschrittsbalkens">
+<!ENTITY custom.label  "Brauch">
 <!ENTITY animationSpeed.normal.label  "Normale Geschwindigkeit">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "Schnelle Geschwindigkeit">

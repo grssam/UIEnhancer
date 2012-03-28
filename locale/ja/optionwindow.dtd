@@ -61,6 +61,9 @@
 <!ENTITY showProgressAsArrow.label  "代わりに、プログレスバーのブレッドクラムを使用して、">
 <!ENTITY showProgressAsArrow.accesskey  "B">
 <!ENTITY showProgressAsArrow.tooltip  "新しいスタイルとの整合性を維持するために、この機能を使用する.">
+<!ENTITY chooseColor.label  "プログレスバーの色を選択します">
+<!ENTITY chooseColor.tooltip  "プログレスバーの色を選択します">
+<!ENTITY custom.label  "カスタム">
 <!ENTITY animationSpeed.normal.label  "ノーマルスピード">
 <!ENTITY animationSpeed.normal.accesskey  "N">
 <!ENTITY animationSpeed.fast.label  "速いスピード">

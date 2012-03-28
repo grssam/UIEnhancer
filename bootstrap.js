@@ -2732,6 +2732,7 @@ function changeUI(window) {
             d.transferTo(bookmarksToolbar);
           });
     }
+    async(updateURL);
   }
 
   unload(function() {

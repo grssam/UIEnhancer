@@ -61,6 +61,9 @@
 <!ENTITY showProgressAsArrow.label  "Используйте цепочку, а индикатор">
 <!ENTITY showProgressAsArrow.accesskey  "И">
 <!ENTITY showProgressAsArrow.tooltip  "Для поддержания совместимости с новым стилем, использовать эту функцию.">
+<!ENTITY chooseColor.label  "Выберите цвет прогресс-бар">
+<!ENTITY chooseColor.tooltip  "Выберите цвет прогресс-бар">
+<!ENTITY custom.label  "обычай">
 <!ENTITY animationSpeed.normal.label  "Нормальная скорость">
 <!ENTITY animationSpeed.normal.accesskey  "Н">
 <!ENTITY animationSpeed.fast.label  "Быстрая скорость">

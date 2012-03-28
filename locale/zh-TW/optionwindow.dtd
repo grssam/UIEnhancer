@@ -1,0 +1,95 @@
+<!ENTITY window.title                 "Location Bar Enhancer 選項">
+<!ENTITY generalPane.label            "一般設定">
+<!ENTITY generalCustomization.label   "一般自訂選項">
+<!ENTITY stylePane.label              "麵包屑樣式">
+<!ENTITY bookmarksPane.label          "強化書籤功能">
+<!ENTITY statusPane.label             "狀態列">
+<!ENTITY progressPane.label           "進度條">
+
+<!ENTITY enhanceURLBar.label          "在網址列使用麵包屑（階層化的分段網址）界面">
+<!ENTITY enhanceURLBar.accesskey      "B">
+<!ENTITY enhanceURLBar.tooltip        "此為本套件的主打功能。任何頁面的網址址都會以分段樣式化的方式呈現。">
+
+<!ENTITY removeGibberish.label        "移除分段中的亂數字串，顯示有意義的資訊。">
+<!ENTITY removeGibberish.accesskey    "G">
+<!ENTITY removeGibberish.tooltip      "將冗長的代碼 (例如00fjhgu4uUA94R23) 之類字串替換成易懂的文字。">
+
+<!ENTITY makeCapital.label            "將所有單字的字首轉換成大寫">
+<!ENTITY makeCapital.accesskey        "C">
+<!ENTITY makeCapital.tooltip          "這個選項能改善麵包屑的外觀。">
+
+<!ENTITY useIdentityBox.label         "利用空置的身分識別區塊顯示網域。">
+<!ENTITY useIdentityBox.accesskey     "I">
+<!ENTITY useIdentityBox.tooltip       "網頁位址的網域部分會顯示在身分識別區塊（網址列左端），並以高亮度標示。">
+
+<!ENTITY useDragDrop.label            "允許拖放麵包屑">
+<!ENTITY useDragDrop.accesskey        "D">
+<!ENTITY useDragDrop.tooltip          "讓網址的各個分段都能夠拖放，可以用來新增書籤（拖到書籤工具列）、建立捷徑（拖到桌面）或者開啟到新分頁">
+
+<!ENTITY combination.label            "快速鍵組合：">
+<!ENTITY combination.accesskey        "K">
+<!ENTITY combination.tooltip          "在框內點一下之後按下要設定的組合">
+
+<!ENTITY bringBookmarksUp.label       "將書籤工具列移到位址列旁">
+<!ENTITY bringBookmarksUp.accesskey   "B">
+<!ENTITY bringBookmarksUp.tooltip     "將位址列和書籤工具列並排，增加瀏覽區的顯示空間。對寬1440px以上解析度的螢幕來說很好用。">
+
+<!ENTITY urlBarWidth.label            "位址列長度限制">
+<!ENTITY urlBarWidth.accesskey        "W">
+<!ENTITY urlBarWidth.tooltip          "位址列長度會自動變更以取得書籤及網址顯示空間的平衡。您可以在此指定優先於自動設定的長度值。">
+
+<!ENTITY useSmallIcons.label          "縮小位址列後方的圖示。">
+<!ENTITY useSmallIcons.accesskey      "I">
+<!ENTITY useSmallIcons.tooltip        "配合書籤工具列轉換排在網址列之後的圖示樣式。">
+
+<!ENTITY animationSpeed.label         "轉換時動畫顯示的速度">
+<!ENTITY animationSpeed.accesskey     "S">
+<!ENTITY animationSpeed.tooltip       "請選擇三種動畫速度的其中之一">
+
+<!ENTITY useStyleSheet.label          "使用新式的麵包屑界面">
+<!ENTITY useStyleSheet.accesskey      "U">
+<!ENTITY useStyleSheet.tooltip        "啟用新穎精緻的麵包屑設計。停用時，麵包屑樣式會恢復為配合新版 Windows 檔案總管的導航列樣式。">
+
+<!ENTITY customStyleSheet.label       "使用自訂的樣式表設計麵包屑樣式">
+<!ENTITY customStyleSheet.tooltip     "在本機挑選適合的樣式表。若想了解更多自訂樣式的說明，請至套件網頁查看。">
+
+<!ENTITY browse.label                 "瀏覽…">
+<!ENTITY browse.accesskey             "B">
+<!ENTITY browse.tooltip               "選擇要用於自訂麵包屑的樣式表">
+
+<!ENTITY resetStyleSheet.label        "重設樣式表">
+<!ENTITY resetStyleSheet.accesskey    "R">
+<!ENTITY resetStyleSheet.tooltip      "將樣式還原為預設值">
+
+<!ENTITY showStatusInURLBar.label     "在位址列顯示狀態文字。">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip   "注意：若 Status-4-Evar套件的同一功能已經啟用，這個選項將無法作用。">
+
+<!ENTITY useLeftoverSpace.label       "利用位址列剩餘的空間來顯示狀態文字">
+<!ENTITY useLeftoverSpace.accesskey   "L">
+<!ENTITY useLeftoverSpace.tooltip     "這個選項能啟用較長的網址與狀態檢視">
+
+<!ENTITY statusWidth.label            "狀態列長度限制">
+<!ENTITY statusWidth.accesskey        "W">
+<!ENTITY statusWidth.tooltip          "上方選項停用時，狀態顯示的空間會限制在這個長度。單位為像素。">
+
+<!ENTITY showProgressInURLBar.label     "在地址欄顯示頁面載入進度">
+<!ENTITY showProgressInURLBar.accesskey "P">
+<!ENTITY showProgressInURLBar.tooltip   "使在地址欄後面的文字的進度條顯示頁面加載進度">
+
+<!ENTITY showProgressAsArrow.label      "使用麵包屑，而不是進度條">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip    "為了保持與新風格的一致性，使用此功能.">
+
+<!ENTITY chooseColor.label              "選擇進度條的顏色">
+<!ENTITY chooseColor.tooltip            "選擇進度條的顏色">
+<!ENTITY custom.label                   "習俗">
+
+<!ENTITY animationSpeed.normal.label       "正常速度">
+<!ENTITY animationSpeed.normal.accesskey   "N">
+
+<!ENTITY animationSpeed.fast.label         "較快">
+<!ENTITY animationSpeed.fast.accesskey     "F">
+
+<!ENTITY animationSpeed.none.label         "無動畫">
+<!ENTITY animationSpeed.none.accesskey     "A">

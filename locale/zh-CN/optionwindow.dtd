@@ -1,0 +1,95 @@
+<!ENTITY window.title                 "Location Bar Enhancer 选项">
+<!ENTITY generalPane.label            "常规设置">
+<!ENTITY generalCustomization.label   "常规定制">
+<!ENTITY stylePane.label              "面包屑样式">
+<!ENTITY bookmarksPane.label          "书签增强">
+<!ENTITY statusPane.label             "状态栏">
+<!ENTITY progressPane.label           "进度条">
+
+<!ENTITY enhanceURLBar.label          "启用面包屑地址栏">
+<!ENTITY enhanceURLBar.accesskey      "B">
+<!ENTITY enhanceURLBar.tooltip        "作为扩展最主要特性，地址栏将以功能多样的面包屑外观显示网页地址。">
+
+<!ENTITY removeGibberish.label        "以形象直观的数据代替杂乱的地址路径文字">
+<!ENTITY removeGibberish.accesskey    "G">
+<!ENTITY removeGibberish.tooltip      "将类似于 (00fjhgu4uUA94R23) 这样的长文字替换为便于理解且形象直观的文字。">
+
+<!ENTITY makeCapital.label            "以大写形式显示每个单词的首字母">
+<!ENTITY makeCapital.accesskey        "C">
+<!ENTITY makeCapital.tooltip          "改善面包屑地址栏的显示方式。">
+
+<!ENTITY useIdentityBox.label         "在空白的站点标识信息框中显示域名">
+<!ENTITY useIdentityBox.accesskey     "I">
+<!ENTITY useIdentityBox.tooltip       "在地址栏左侧的站点标识信息框中高亮显示网页域名。">
+
+<!ENTITY useDragDrop.label            "允许拖放面包屑地址栏的各部分地址路径">
+<!ENTITY useDragDrop.accesskey        "D">
+<!ENTITY useDragDrop.tooltip          "地址的每个部分都可以拖放出来用于在书签工具栏添加新书签、生成桌面快捷方式或在新标签页打开">
+
+<!ENTITY combination.label            "快捷键组合">
+<!ENTITY combination.accesskey        "K">
+<!ENTITY combination.tooltip          "点击上面文本框并按下快捷键组合">
+
+<!ENTITY bringBookmarksUp.label       "在地址栏右侧显示书签工具栏">
+<!ENTITY bringBookmarksUp.accesskey   "B">
+<!ENTITY bringBookmarksUp.tooltip     "在同一行显示地址栏和书签工具栏以节省垂直空间，增大网页显示区域。适用于横向宽度不小于 1440 像素的屏幕。">
+
+<!ENTITY urlBarWidth.label            "地址栏宽度">
+<!ENTITY urlBarWidth.accesskey        "W">
+<!ENTITY urlBarWidth.tooltip          "在保证地址栏留有足够宽度的的同时，自动设置地址栏宽度以适应所有的书签工具栏项。您可以在这里设置一个宽度值来代替自适应值。">
+
+<!ENTITY useSmallIcons.label          "缩小显示地址栏后的图标">
+<!ENTITY useSmallIcons.accesskey      "I">
+<!ENTITY useSmallIcons.tooltip        "地址栏后面的图标显示为与书签工具栏项相一致的大小。">
+
+<!ENTITY animationSpeed.label         "地址栏动态变化的显示速度">
+<!ENTITY animationSpeed.accesskey     "S">
+<!ENTITY animationSpeed.tooltip       "从以下三个值中选择地址栏动态变化显示速度">
+
+<!ENTITY useStyleSheet.label          "显示面包屑地址栏的新外观">
+<!ENTITY useStyleSheet.accesskey      "U">
+<!ENTITY useStyleSheet.tooltip        "启用平滑雅致的面包屑地址栏新外观。如果禁用该选项，面包屑地址栏将显示为与 Windows 资源管理器导航栏相一致的外观。">
+
+<!ENTITY customStyleSheet.label       "使用自定义样式定制面包屑地址栏">
+<!ENTITY customStyleSheet.tooltip     "从您的硬盘选择事先准备好的样式表。关于更多编写自定义样式的信息，请访问扩展主页">
+
+<!ENTITY browse.label                 "浏览…">
+<!ENTITY browse.accesskey             "B">
+<!ENTITY browse.tooltip               "浏览并选择用于定制面包屑地址栏的自定义样式表。">
+
+<!ENTITY resetStyleSheet.label        "重置样式表">
+<!ENTITY resetStyleSheet.accesskey    "R">
+<!ENTITY resetStyleSheet.tooltip      "恢复为默认的样式表。">
+
+<!ENTITY showStatusInURLBar.label     "在地址栏显示链接状态">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip   "注意：当启用 Status-4-Evar 扩展类似功能时，该特性不可用。">
+
+<!ENTITY useLeftoverSpace.label       "使用地址栏左侧空白空间显示链接状态">
+<!ENTITY useLeftoverSpace.accesskey   "L">
+<!ENTITY useLeftoverSpace.tooltip     "允许在地址栏显示长的地址及链接状态">
+
+<!ENTITY statusWidth.label            "地址栏最大宽度">
+<!ENTITY statusWidth.accesskey        "W">
+<!ENTITY statusWidth.tooltip          "该宽度将在上述设置禁用时生效，值以像素单位">
+
+<!ENTITY showProgressInURLBar.label     "在地址栏显示页面载入进度.">
+<!ENTITY showProgressInURLBar.accesskey "P">
+<!ENTITY showProgressInURLBar.tooltip   "使在地址栏后面的文字的进度条显示页面加载进度">
+
+<!ENTITY showProgressAsArrow.label      "使用面包屑，而不是进度条">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip    "为了保持与新风格的一致性，使用此功能.">
+
+<!ENTITY chooseColor.label              "选择进度条的颜色">
+<!ENTITY chooseColor.tooltip            "选择进度条的颜色">
+<!ENTITY custom.label                   "习俗">
+
+<!ENTITY animationSpeed.normal.label       "正常">
+<!ENTITY animationSpeed.normal.accesskey   "N">
+
+<!ENTITY animationSpeed.fast.label         "快速">
+<!ENTITY animationSpeed.fast.accesskey     "F">
+
+<!ENTITY animationSpeed.none.label         "无动画特效">
+<!ENTITY animationSpeed.none.accesskey     "A">
