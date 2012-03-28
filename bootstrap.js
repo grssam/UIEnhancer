@@ -790,10 +790,16 @@ function changeUI(window) {
       createdStack.setAttribute("isAnchorTag", true);
     else
       createdStack.setAttribute("isAnchorTag", false);
-    if (partType == "domain")
+    if (partType == "domain") {
       createdStack.setAttribute("isDomain", true);
-    else
+      $("identity-box").setAttribute("isDomain", true);
+    }
+    else {
       createdStack.setAttribute("isDomain", false);
+      try {
+        $("identity-box").removeAttribute("isDomain");
+      } catch (ex) {}
+    }
 
     // Adding the Text Stack
     let tempS = document.createElementNS(XUL, "label");
@@ -1137,10 +1143,14 @@ function changeUI(window) {
       if (domain == false) {
         partPointer.firstChild.style.display = "-moz-box";
         partPointer.setAttribute("isDomain", false);
+        try {
+          $("identity-box").removeAttribute("isDomain");
+        } catch (ex) {}
       }
       else if (domain == true) {
         partPointer.firstChild.style.display = "none";
         partPointer.setAttribute("isDomain", true);
+        $("identity-box").setAttribute("isDomain", true);
       }
       if (isSetting == false) {
         if (!pref("useStyleSheet")) {
