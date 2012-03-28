@@ -78,6 +78,7 @@ let optionsWindow = {
     this.toggleURLBarSettings(true);
     this.toggleStatusSettings(true);
     this.toggleProgressSettings(false);
+    this.changeColor();
     // Displaying the shortcut 
     this.shortcutTextBox = $("shortcutTextBox");
     if (window.navigator.oscpu.toLowerCase().indexOf("window") >= 0)
@@ -163,11 +164,47 @@ let optionsWindow = {
 
   toggleProgressSettings: function OW_toggleProgressSettings(arrowIndicator) {
     function $(id) document.getElementById(id);
+    function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let progressEnabled = $("showProgressInURLBarCheckBox").checked;
     if (!arrowIndicator)
       $("showProgressAsArrowCheckBox").disabled = !progressEnabled;
+    $$(["progressColor0",
+        "progressColor1",
+        "progressColor2",
+        "progressColor3"],
+      "disabled", $("showProgressAsArrowCheckBox").checked
+      && !$("showProgressAsArrowCheckBox").disabled);
     if (arrowIndicator != false)
       this.notifyChange();
+  },
+
+  changeColor: function OW_changeColor(index) {
+    function $(id) document.getElementById(id);
+    if (index == null) {
+      $("progressColor" + pref("progressBarColorIndex")).checked = true;
+      $("progressBarColorPicker").collapsed = pref("progressBarColorIndex") != 3;
+      if (pref("progressBarColorIndex") == 3)
+        $("progressBarColorPicker").color = pref("progressBarCustomColor");
+      return;
+    }
+    for (let i = 0; i < 4; i++)
+      if (index != i)
+        $("progressColor" + i).checked = false;
+    if (index < 3 && index >= 0) {
+      pref("progressBarColorIndex", index)
+      $("progressBarColorPicker").collapsed = true;
+    }
+    else {
+      pref("progressBarColorIndex", 3)
+      $("progressBarColorPicker").collapsed = false;
+      pref("progressBarCustomColor", $("progressBarColorPicker").color);
+    }
+  },
+
+  onColorChange: function OW_onColorChange() {
+    function $(id) document.getElementById(id);
+    pref("progressBarColorIndex", 3)
+    pref("progressBarCustomColor", $("progressBarColorPicker").color);
   },
 
   toggleBookmarksSettings: function OW_toggleBookmarksSettings(check) {

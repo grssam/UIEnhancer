@@ -41,6 +41,13 @@ let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
 let recheckOnTabChange = false;
+// Array of progress colors
+let progressColorList = [
+  "rgba(15,215,245, 0.6)", // Azure Blue
+  "rgba(15, 250, 110, .6)", // Parrot Green
+  "rgba(150, 150, 150, .6)", // Grey
+  "" // Custom
+];
 // global variable to store whether user has Status-4-Ever installed
 // and its setting is to show status or/and link in Location Bar
 let S4E_statusInURLBar = false;
@@ -2963,6 +2970,7 @@ function changeUI(window) {
   /*
   * Code to put progress meter in url bar starts here
   */
+  let pageProgress = 0;
   function setupProgressMeter() {
     function $(id) document.getElementById(id);
 
@@ -2970,10 +2978,12 @@ function changeUI(window) {
       onChangeTab: function(e) {
         $("urlbar").style.backgroundPosition = '0px 0px';
         $("urlbar").style.backgroundSize = '0% 100%';
+        pageProgress = 0;
       },
       onProgressChange: function(aBrowser,webProgress,request,curSelfProgress,maxSelfProgress,curTotalProgress,maxTotalProgress) {
         if (gBrowser.contentDocument === aBrowser.contentDocument) {
           let val = (curTotalProgress-1)/(maxTotalProgress-1);
+          pageProgress = val;
           let width = $("urlbar").boxObject.width;
           if (pref("showProgressAsArrow")) {
             $("urlbar").style.backgroundSize = '40px 100%';
@@ -2982,18 +2992,30 @@ function changeUI(window) {
             $("urlbar").style.MozTransition = "background-position 250ms ease 0s";
           }
           else {
-            $("urlbar").style.backgroundSize = (val==1? 0: 100*val) + '% 100%';
-            $("urlbar").style.backgroundImage = (val==1? "":
-              "-moz-linear-gradient(left, rgba(255,255,255,0.1) 0%"
-              + ", rgba(15,215,245, 0.6) 100%)");
+            $("urlbar").style.backgroundSize = (100*val) + '% 100%';
+            if (val > .9)
+              async(function() {
+                if (pageProgress > 0.95)
+                  $("urlbar").style.backgroundSize = "100% 100%";
+              }, 500);
+            $("urlbar").style.backgroundImage = "-moz-linear-gradient(left, rgba(255,255,255,0.1) 0%"
+              + ", " + progressColorList[pref("progressBarColorIndex")] + " 100%)";
             $("urlbar").style.MozTransition = "background-size 250ms ease 0s";
           }
           $("urlbar").style.backgroundRepeat = "no-repeat";
         }
       },
       onStateChange: function() {
-        $("urlbar").style.backgroundPosition = '0px 0px';
-        $("urlbar").style.backgroundSize = '0% 100%';
+        if (pageProgress > 0.95)
+          async(function() {
+            $("urlbar").style.backgroundSize = "0% 100%";
+            $("urlbar").style.backgroundPosition = '0px 0px';
+            pageProgress = 0;
+          }, 500);
+        else {
+          $("urlbar").style.backgroundSize = "0% 100%";
+          $("urlbar").style.backgroundPosition = '0px 0px';
+        }
       }
     };
 
@@ -3176,6 +3198,9 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       }
     }
 
+    // adding the custom color to the progressColorList
+    progressColorList[3] = pref("progressBarCustomColor");
+
     // check if S4E is there, if yes, update the variable
     try {
       AddonManager.getAddonByID("status4evar@caligonstudios.com",setupFixForS4E);
@@ -3209,6 +3234,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "shortcutModifiers"
     ], function() {
       watchWindows(createHotKey);
+    });
+    pref.observe([
+      "progressBarCustomColor"
+    ], function() {
+      progressColorList[3] = pref("progressBarCustomColor");
     });
     // Making makeCapital optional behind a pref
     let (orig = makeCapital) {

@@ -119,6 +119,16 @@
       tooltiptext="&showProgressInURLBar.tooltip;" label="&showProgressInURLBar.label;" accesskey="&showProgressInURLBar.accesskey;" />
     <checkbox id="showProgressAsArrowCheckBox" preference="showProgressAsArrow" oncommand="optionsWindow.toggleProgressSettings(true);"
       tooltiptext="&showProgressAsArrow.tooltip;" label="&showProgressAsArrow.label;" accesskey="&showProgressAsArrow.accesskey;" />
+    <groupbox>
+      <caption label="&chooseColor.label;" tooltiptext="&chooseColor.tooltip;" />
+      <hbox>
+        <button id="progressColor0" type="checkbox" label="" image="blue.png" oncommand="optionsWindow.changeColor(0);"/>
+        <button id="progressColor1" type="checkbox" label="" image="green.png" oncommand="optionsWindow.changeColor(1);"/>
+        <button id="progressColor2" type="checkbox" label="" image="grey.png" oncommand="optionsWindow.changeColor(2);"/>
+        <button id="progressColor3" type="checkbox" label="&custom.label;" oncommand="optionsWindow.changeColor(3);"/>
+        <colorpicker id="progressBarColorPicker" collapsed="true" onchange="optionsWindow.onColorChange();" type="button"/>
+      </hbox>
+    </groupbox>
   </prefpane>
   <prefpane id="UIEnhancerStatusPrefPane" label="&statusPane.label;" image="status.png">
     <preferences>

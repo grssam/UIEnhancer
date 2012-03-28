@@ -81,6 +81,10 @@
 <!ENTITY showProgressAsArrow.accesskey  "B">
 <!ENTITY showProgressAsArrow.tooltip    "To maintain consistency with the new style, use this feature.">
 
+<!ENTITY chooseColor.label              "Choose Color of Progress Bar">
+<!ENTITY chooseColor.tooltip            "Choose Color of Progress Bar">
+<!ENTITY custom.label                   "Custom">
+
 <!ENTITY animationSpeed.normal.label       "Normal Speed">
 <!ENTITY animationSpeed.normal.accesskey   "N">
 

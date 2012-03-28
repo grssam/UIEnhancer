@@ -73,6 +73,8 @@ pref.defaults = {
   showStatusInURLBar: true,
   showProgressInURLBar: true,
   showProgressAsArrow: false,
+  progressBarColorIndex: 0,
+  progressBarCustomColor: "",
   useLeftoverSpace: true,
   statusWidth: 250
 };
