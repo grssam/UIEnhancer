@@ -129,7 +129,12 @@ let optionsWindow = {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
     let styleSheetEnabled = document.getElementById("useStyleSheetCheckBox").checked;
-    $$(["resetStyleSheetButton", "browseStyleSheetButton"], "disabled", !styleSheetEnabled);
+    $$(["resetStyleSheetButton",
+        "userStyleSheetPathLabel",
+        "browseStyleSheetButton",
+        "usedStyleIndexListBoxLabel",
+        "usedStyleIndexListBox"],
+      "disabled", !styleSheetEnabled);
     if (!check)
       this.notifyChange();
   },

@@ -61,6 +61,13 @@
 <!ENTITY resetStyleSheet.accesskey    "R">
 <!ENTITY resetStyleSheet.tooltip      "Revert back to the default style sheet.">
 
+<!ENTITY selectStyleSheet.label       "Or choose from the following styles:">
+<!ENTITY selectStyleSheet.tooltip     "Choose from the default styles packed with this add-on. Light styles are for light colored Firefox Themes and Dark Styles for Dark colored Firefox Themes.">
+
+<!ENTITY chooseStyle.label            "Please Select">
+<!ENTITY chooseStyle.accesskey        "S">
+<!ENTITY chooseStyle.tooltip          "Select from the list.">
+
 <!ENTITY showStatusInURLBar.label     "Show the Status in the Location Bar.">
 <!ENTITY showStatusInURLBar.accesskey "S">
 <!ENTITY showStatusInURLBar.tooltip   "Note: This feature will not work if the similar feature of Status-4-Evar Add-on is enabled.">

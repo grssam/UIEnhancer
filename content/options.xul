@@ -68,6 +68,7 @@
   <prefpane id="UIEnhancerStylePrefPane" label="&stylePane.label;" image="style.png">
     <preferences>
       <preference id="useStyleSheet" name="extensions.UIEnhancer.useStyleSheet" type="bool"/>
+      <preference id="usedStyleIndex" name="extensions.UIEnhancer.usedStyleIndex" type="int"/>
     </preferences>
     <checkbox id="useStyleSheetCheckBox" preference="useStyleSheet" oncommand="optionsWindow.toggleStylesSettings();"
       tooltiptext="&useStyleSheet.tooltip;" label="&useStyleSheet.label;" accesskey="&useStyleSheet.accesskey;" />
@@ -79,6 +80,22 @@
       <spacer flex="1" />
       <button id="resetStyleSheetButton" label="&resetStyleSheet.label;" oncommand="optionsWindow.resetStyleSheet();"
         tooltiptext="&resetStyleSheet.tooltip;" accesskey="&resetStyleSheet.accesskey;" style="margin-right:5px;"/>
+    </groupbox>
+    <groupbox>
+      <caption label="&selectStyleSheet.label;" tooltiptext="&selectStyleSheet.tooltip;" />
+      <hbox>
+        <label id="usedStyleIndexListBoxLabel" control="usedStyleIndexListBox" style="padding:5px 4px;"
+               tooltiptext="&chooseStyle.tooltip;" accesskey="&chooseStyle.accesskey;" >&chooseStyle.label; :
+        </label>
+        <menulist id="usedStyleIndexListBox" preference="usedStyleIndex"
+                  tooltiptext="&chooseStyle.tooltip;" oncommand="optionsWindow.notifyChange();">
+          <menupopup>
+            <menuitem label="Default Light" value="0" selected="true"/>
+            <menuitem label="Defualt Dark" value="1"/>
+            <menuitem label="Dannah's Light" value="2"/>
+          </menupopup>
+        </menulist>
+      </hbox>
     </groupbox>
   </prefpane>
   <prefpane id="UIEnhancerBookmarksPrefPane" label="&bookmarksPane.label;" image="star.png">

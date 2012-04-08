@@ -54,6 +54,12 @@ let S4E_statusInURLBar = false;
 const keysetID = "UIEnhancerKeyset";
 const keyID = "UIEnhancerKeyID";
 const toolbarButtonID = "UIEnhancerToolbarButton";
+const styleSheetList = [
+  "defaultThemeLight",
+  "defaultThemeDark",
+  "DannehsLight"
+];
+let usedStyleIndex = 0;
 // variable to store localized strings
 let strings = {str:null};
 XPCOMUtils.defineLazyGetter(strings, "str", function () {
@@ -3169,14 +3175,12 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     normalStartup = true;
   let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner", "Bookmarks Enhancer", "Status-4-Evar"];
   // Function to load stylesheets
-  function loadStyles(styles) {
+  function loadStyles(style) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
       getService(Ci.nsIStyleSheetService);
-    styles.forEach(function(fileName) {
-      let fileURI = addon.getResourceURI("styles/" + fileName + ".css");
-      sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
-      unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
-    });
+    let fileURI = addon.getResourceURI("styles/" + style + ".css");
+    sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
+    unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
   }
 
   // Load various javascript includes for helper functions
@@ -3189,20 +3193,27 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
 
   function init() {
     if (pref("enhanceURLBar")) {
-      if (pref("useStyleSheet") && pref("userStylePath").length == 0)
-        loadStyles(["defaultThemeLight"]);
+      if (pref("useStyleSheet") && pref("userStylePath").length == 0) {
+        usedStyleIndex = pref("usedStyleIndex");
+        loadStyles(styleSheetList[usedStyleIndex]);
+      }
       else if (pref("useStyleSheet")) {
         let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
           getService(Ci.nsIStyleSheetService);
         let fileURI = Services.io.newURI("file:///" + pref("userStylePath")
           .replace(/[\\]/g, "/"), null, null);
-        if (!fileURI.spec.match(/(\.css)$/))
-          loadStyles(["defaultThemeLight"]);
+        if (!fileURI.spec.match(/(\.css)$/)) {
+          usedStyleIndex = pref("usedStyleIndex");
+          loadStyles(styleSheetList[usedStyleIndex]);
+        }
         else {
+          usedStyleIndex = -1;
           sss.loadAndRegisterSheet(fileURI, sss.USER_SHEET);
           // Fallback to default stylesheet when the file is not present
-          if (!sss.sheetRegistered(fileURI, sss.USER_SHEET))
-            loadStyles(["defaultThemeLight"]);
+          if (!sss.sheetRegistered(fileURI, sss.USER_SHEET)) {
+            usedStyleIndex = pref("usedStyleIndex");
+            loadStyles(styleSheetList[usedStyleIndex]);
+          }
           else
             unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
         }
@@ -3232,7 +3243,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "userStylePath",
       "showStatusInURLBar",
       "showProgressAsArrow",
-      "showProgressInURLBar"
+      "showProgressInURLBar",
+      "usedStyleIndex"
     ], reload);
     pref.observe([
       "urlBarWidth",
@@ -3317,7 +3329,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       || intPref("status4evar", "status") == 2))
         S4E_statusInURLBar = true;
     if (S4E_statusInURLBar && pref("enhanceURLBar"))
-      loadStyles(["fixForS4E"]);
+      loadStyles("fixForS4E");
   }
 
   // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled

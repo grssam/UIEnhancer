@@ -64,6 +64,7 @@ pref.defaults = {
   useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
+  usedStyleIndex: 0,
   userStylePath: "",
   removeGibberish: true,
   buttonParentID: "addon-bar",
