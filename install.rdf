@@ -17,6 +17,26 @@
 
     <localized>
       <Description>
+        <locale>de</locale>
+        <homepageURL>https://addons.mozilla.org/de/firefox/addon/ui-enhancer/</homepageURL>
+        <description>Implements funktionsreichen Breadcrumb User Interface in der Location Bar</description>
+        <name>Location Bar Enhancer</name>
+        <translator>Axel Grude (RealRaven@BabelZilla)</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
+        <locale>ru</locale>
+        <homepageURL>https://addons.mozilla.org/ru/firefox/addon/ui-enhancer/</homepageURL>
+        <description>Орудия имеют богатый Breadcrumb пользовательского интерфейса в адресной строке</description>
+        <name>Location Bar Enhancer</name>
+        <translator>Nero Wolfe (@BabelZilla)</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
         <locale>zh-CN</locale>
         <homepageURL>https://addons.mozilla.org/zh-CN/firefox/addon/ui-enhancer/</homepageURL>
         <description>功能多样的面包屑式地址栏</description>
@@ -27,9 +47,9 @@
 
     <localized>
       <Description>
-        <locale>zh-CN</locale>
+        <locale>zh-TW</locale>
         <homepageURL>https://addons.mozilla.org/zh-TW/firefox/addon/ui-enhancer/</homepageURL>
-        <description>功能豐富的麵包屑地址欄</description>
+        <description>使網址列顯示為功能強大的麵包屑界面</description>
         <name>Location Bar Enhancer</name>
         <translator>velociraptor@BabelZilla</translator>
       </Description>
