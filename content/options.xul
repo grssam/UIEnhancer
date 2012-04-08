@@ -29,7 +29,7 @@
 <!DOCTYPE window SYSTEM "chrome://uienhancer/locale/optionwindow.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <prefwindow id="UIEnhancerOptionsWindow" title="&window.title;"
-  minwidth="450" minheight="400" buttons="accept,cancel"
+  minwidth="450" minheight="375" maxheight="500" buttons="accept,cancel"
   ondialogaccept="optionsWindow.saveChanges();"
   persist="height width" onload="optionsWindow.onLoad()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

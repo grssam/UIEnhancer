@@ -93,7 +93,7 @@ let optionsWindow = {
     let right = Math.max($("UIEnhancerStatusPrefPane").getBoundingClientRect().right,
       $("animationSpeedRadioGroup").getBoundingClientRect().right);
     win.setAttribute("width", Math.max(right, win.width));
-    win.setAttribute("height", Math.max(bottom + 150, win.height));
+    win.setAttribute("height", Math.min(Math.max(bottom + 150, win.height), 400));
   },
 
   saveChanges: function OW_saveChanges() {
