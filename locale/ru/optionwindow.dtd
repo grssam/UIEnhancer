@@ -4,6 +4,7 @@
 <!ENTITY stylePane.label "Стиль Навигационной цепочки">
 <!ENTITY bookmarksPane.label "Панель закладок">
 <!ENTITY statusPane.label "Строка статуса">
+<!ENTITY progressPane.label "Индикатор загрузки">
 <!ENTITY enhanceURLBar.label "Задействовать интерфейс Навигационной цепочки в строке адреса">
 <!ENTITY enhanceURLBar.accesskey "B">
 <!ENTITY enhanceURLBar.tooltip "Это основная функция этого расширения. Строка адреса будет показана с использованием элементов интерфейса Навигационной цепочки.">

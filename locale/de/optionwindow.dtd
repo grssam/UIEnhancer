@@ -1,72 +1,72 @@
-<!ENTITY window.title  "Location Bar Enhancer Optionen">
-<!ENTITY generalPane.label  "Allgemeine Einstellungen">
-<!ENTITY generalCustomization.label  "Allgemeine Anpassungen">
-<!ENTITY stylePane.label  "Breadcrumb-Styles">
-<!ENTITY bookmarksPane.label  "Bookmarks Enhancer">
-<!ENTITY statusPane.label  "Status Bar">
-<!ENTITY progressPane.label  "Progress Bar">
-<!ENTITY enhanceURLBar.label  "Implementieren Sie Breadcrumbs User Interface in der Location Bar">
-<!ENTITY enhanceURLBar.accesskey  "B">
-<!ENTITY enhanceURLBar.tooltip  "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
-<!ENTITY removeGibberish.label  "Entfernen Sie Gibberish Text von den Teilen, und ersetzen Sie ist mit aussagekräftigen Daten">
-<!ENTITY removeGibberish.accesskey  "G">
-<!ENTITY removeGibberish.tooltip  "Texte wie lange Token (00fjhgu4uUA94R23) etc sind mit leicht wahrnehmbar und aussagekräftigen Text ersetzt.">
-<!ENTITY makeCapital.label  "Sprechen Sie die erste Alphabet jedes Wortes Kapital">
-<!ENTITY makeCapital.accesskey  "K">
-<!ENTITY makeCapital.tooltip  "Dies verbessert die Schnittstelle von Breadcrumbs.">
-<!ENTITY useIdentityBox.label  "Verwenden Sie den Identity-Box (wenn sie leer sind), um die Domain der Webseite angezeigt werden.">
-<!ENTITY useIdentityBox.accesskey  "I">
-<!ENTITY useIdentityBox.tooltip  "Die Domain der Webseite würde hervorgehoben und dargestellt werden in der Identity-Box (links neben der Adressleiste).">
-<!ENTITY useDragDrop.label  "Erlauben Sie Ziehen und Ablegen von Teilen Breadcrumb">
-<!ENTITY useDragDrop.accesskey  "Z">
-<!ENTITY useDragDrop.tooltip  "Jedes Teil kann per Drag und Drop um ein neues Lesezeichen im Lesezeichen-Symbolleiste zu machen oder einen Link-Verknüpfung auf Desktop-machen, oder sogar in einem neuen Tab">
-<!ENTITY combination.label  "Tastenkombination:">
-<!ENTITY combination.accesskey  "T">
-<!ENTITY combination.tooltip  "Klicken Sie in das Textfeld ein und drücken Sie die gewünschte Kombination">
-<!ENTITY bringBookmarksUp.label  "Bringen Bookmarks Toolbar sich neben den Location Bar">
-<!ENTITY bringBookmarksUp.accesskey  "T">
-<!ENTITY bringBookmarksUp.tooltip  "Kombiniert die Adressleiste und Lesezeichen-Symbolleiste neben zum Speichern Stehhöhe für den Inhalt der Webseite. Nützlich für Bildschirme mit einer Breite von 1440px und höher.">
-<!ENTITY urlBarWidth.label  "Breite der Location Bar">
-<!ENTITY urlBarWidth.accesskey  "B">
-<!ENTITY urlBarWidth.tooltip  "Die Breite wird automatisch entschieden, um alle Elemente der Lesezeichen-Symbolleiste zu begleiten sowie Urlaub viel Platz für die Adressleiste. Sie können einen benutzerdefinierten Wert hier eingestellt, um die automatische Einstellung overide">
-<!ENTITY useSmallIcons.label  "Machen Sie die Symbole nach der Location Bar kleineren.">
-<!ENTITY useSmallIcons.accesskey  "K">
-<!ENTITY useSmallIcons.tooltip  "Konvertiert die Icons nach der Location Bar zu einem Stil, der die Bookmarks Angebote im Lesezeichen-Symbolleiste entspricht.">
-<!ENTITY animationSpeed.label  "Animationsgeschwindigkeit der Location Bar während der Übergänge">
-<!ENTITY animationSpeed.accesskey  "A">
-<!ENTITY animationSpeed.tooltip  "Wählen Sie die Geschwindigkeit der Bewegung aus den drei Werten">
-<!ENTITY useStyleSheet.label  "Verwenden Sie die neue Schnittstelle für die Breadcrumbs">
-<!ENTITY useStyleSheet.accesskey  "V">
-<!ENTITY useStyleSheet.tooltip  "Aktiviert den neuen und eleganten Design für den Semmelbröseln wenden. Wenn diese Option deaktiviert, würde die Brotkrumen-Stil wieder zurück zu Windows Explorer Navigation Bar Stil.">
-<!ENTITY customStyleSheet.label  "Verwenden Sie Ihren eigenen Style Sheet zu Stil die Semmelbrösel">
-<!ENTITY customStyleSheet.tooltip  "Wählen Sie ein richtig vorbereitet Stylesheet von Ihrer Festplatte. Um mehr über, wie ein benutzerdefiniertes Stylesheet zu machen wissen, besuchen Sie die Homepage des Add-on">
-<!ENTITY browse.label  "Blättern…">
-<!ENTITY browse.accesskey  "B">
-<!ENTITY browse.tooltip  "Durchsuchen Sie die angepassten Stylesheets auf die Semmelbrösel Stil.">
-<!ENTITY resetStyleSheet.label  "Setzen Sie den Style Sheet">
-<!ENTITY resetStyleSheet.accesskey  "S">
-<!ENTITY resetStyleSheet.tooltip  "Wieder zurück auf die Standard-Stylesheet.">
-<!ENTITY showStatusInURLBar.label  "Zeigen den Status in der Location Bar.">
-<!ENTITY showStatusInURLBar.accesskey  "Z">
-<!ENTITY showStatusInURLBar.tooltip  "Hinweis: Diese Funktion wird nicht funktionieren, wenn die eine ähnliche Funktion von Status-4-Evar Add-on aktiviert ist">
-<!ENTITY useLeftoverSpace.label  "Verwenden Sie das übrig gebliebene Raum in der Adressleiste für den Status">
-<!ENTITY useLeftoverSpace.accesskey  "V">
-<!ENTITY useLeftoverSpace.tooltip  "Dies ermöglicht die Anzeige von langen URL-Links und-zustände">
-<!ENTITY statusWidth.label  "Maximale Breite der Statusleiste">
-<!ENTITY statusWidth.accesskey  "B">
-<!ENTITY statusWidth.tooltip  "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Der Wert ist in Pixel">
-<!ENTITY showProgressInURLBar.label  "Lassen Sie sich die Seite geladen Fortschritte in der Adressleiste.">
-<!ENTITY showProgressInURLBar.accesskey  "F">
-<!ENTITY showProgressInURLBar.tooltip  "Ermöglicht einen Fortschrittsbalken hinter dem Text in Adressleiste zu Seite Last Fortschritte zeigen">
-<!ENTITY showProgressAsArrow.label  "Verwenden Sie einen Brotkrümel statt Fortschrittsbalken">
-<!ENTITY showProgressAsArrow.accesskey  "B">
-<!ENTITY showProgressAsArrow.tooltip  "Um die Kohärenz mit dem neuen Stil zu halten, verwenden Sie diese Funktion.">
-<!ENTITY chooseColor.label  "Das Wählen Sie die Farbe des Fortschrittsbalkens">
-<!ENTITY chooseColor.tooltip  "Das Wählen Sie die Farbe des Fortschrittsbalkens">
-<!ENTITY custom.label  "Brauch">
-<!ENTITY animationSpeed.normal.label  "Normale Geschwindigkeit">
-<!ENTITY animationSpeed.normal.accesskey  "N">
-<!ENTITY animationSpeed.fast.label  "Schnelle Geschwindigkeit">
-<!ENTITY animationSpeed.fast.accesskey  "G">
-<!ENTITY animationSpeed.none.label  "Keine Animation">
-<!ENTITY animationSpeed.none.accesskey  "K">
+<!ENTITY window.title "Location Bar Enhancer Optionen">
+<!ENTITY generalPane.label "Allgemeine Einstellungen">
+<!ENTITY generalCustomization.label "Anpassung (allgemein)">
+<!ENTITY stylePane.label "Breadcrumb-Styles">
+<!ENTITY bookmarksPane.label "Bookmarks Enhancer">
+<!ENTITY statusPane.label "Statuszeile">
+<!ENTITY progressPane.label "Fortschritts-Balken">
+<!ENTITY enhanceURLBar.label "Breadcrumbs Benutzeroberfläche in Navigationsleiste aktivieren">
+<!ENTITY enhanceURLBar.accesskey "B">
+<!ENTITY enhanceURLBar.tooltip "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
+<!ENTITY removeGibberish.label "Kauderwelsch aus den Elementen entfernen und mit aussagekräftigen Daten ersetzen">
+<!ENTITY removeGibberish.accesskey "K">
+<!ENTITY removeGibberish.tooltip "Texte wie lange Zeichenketten (00fjhgu4uUA94R23) usw. werden durch leicht lesbaren und aussagekräftigen Text ersetzt.">
+<!ENTITY makeCapital.label "Alle Anfangsbuchstaben groß schreiben">
+<!ENTITY makeCapital.accesskey "A">
+<!ENTITY makeCapital.tooltip "Dies macht Breadcrumbs leichter lesbar.">
+<!ENTITY useIdentityBox.label "Domäne in Identitäts-Box anzeigen (falls nicht schon Zertifikat oder Land angezeigt werden)">
+<!ENTITY useIdentityBox.accesskey "I">
+<!ENTITY useIdentityBox.tooltip "Die Domäne der Webseite würde in der Identitäts-Box (links neben der Adressleiste) hervorgehoben dargestellt werden.">
+<!ENTITY useDragDrop.label "Drag und Drop von Breadcrumb Elementen erlauben">
+<!ENTITY useDragDrop.accesskey "D">
+<!ENTITY useDragDrop.tooltip "Jedes Element kann per Drag und Drop benutzt werden um ein neues Lesezeichen im Lesezeichen-Symbolleiste oder eine Verknüpfung auf dem Desktop zu erstellen, oder um ein neues Tab zu öffnen">
+<!ENTITY combination.label "Tastenkombination:">
+<!ENTITY combination.accesskey "T">
+<!ENTITY combination.tooltip "Klicken Sie in das Textfeld an und drücken die gewünschte Tasten-Kombination">
+<!ENTITY bringBookmarksUp.label "Lesezeichen-Symbolleiste in die Navigationsleiste integrieren">
+<!ENTITY bringBookmarksUp.accesskey "I">
+<!ENTITY bringBookmarksUp.tooltip "Kombiniert die Adressleiste und Lesezeichen-Symbolleiste um Höhe für die Darstellung der Webseiten einzusparen. Nützlich für Bildschirme mit einer Breite von 1440px und höher.">
+<!ENTITY urlBarWidth.label "Breite der Adress-Zeile">
+<!ENTITY urlBarWidth.accesskey "B">
+<!ENTITY urlBarWidth.tooltip "Die Breite wird automatisch gesetzt, um alle Lesezeichen sowie die Adressleiste unterzubringen. Ein benutzerdefinierten Wert überschreibt die automatische Einstellung.">
+<!ENTITY useSmallIcons.label "Symbole nach der Adressleiste verkleinert darstellen.">
+<!ENTITY useSmallIcons.accesskey "k">
+<!ENTITY useSmallIcons.tooltip "Konvertiert die Symbole nach der Adressleiste zu einem Stil, der dem der Lesezeichen entspricht.">
+<!ENTITY animationSpeed.label "Animationsgeschwindigkeit der Adressleiste während der Übergänge">
+<!ENTITY animationSpeed.accesskey "A">
+<!ENTITY animationSpeed.tooltip "Wählen Sie die Geschwindigkeit der Bewegung aus den drei Werten">
+<!ENTITY useStyleSheet.label "Neue Schnittstelle für die Breadcrumbs verwenden">
+<!ENTITY useStyleSheet.accesskey "N">
+<!ENTITY useStyleSheet.tooltip "Aktiviert das neue und elegante Design für die Breadcrumbs. Wird diese Option deaktiviert, entspricht das Aussehen dem der neuen Windows Explorer Adressleiste.">
+<!ENTITY customStyleSheet.label "Benuterdefiniertes Layout für die Breadcrumbs (mittels Style Sheet)">
+<!ENTITY customStyleSheet.tooltip "Wählen Sie ein korrekt formatiertes Stylesheet von Ihrer Festplatte. Um mehr darüber zu erfahren, wie man ein benutzerdefiniertes Stylesheet erstellt, bitte die Homepage des Add-ons besuchen">
+<!ENTITY browse.label "Durchsuchen…">
+<!ENTITY browse.accesskey "B">
+<!ENTITY browse.tooltip "Festplatte nach benutzerdefinierten Stylesheets für Breadcrumbs durchsuchen.">
+<!ENTITY resetStyleSheet.label "Style Sheet zurücksetzen">
+<!ENTITY resetStyleSheet.accesskey "z">
+<!ENTITY resetStyleSheet.tooltip "Setzt das Layout auf das Standard-Stylesheet zurück.">
+<!ENTITY showStatusInURLBar.label "Status in der Adressleiste anzeigen.">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip "Hinweis: Diese Funktion funktioniert nicht, wenn eine ähnliche Funktion des Status-4-Evar Add-on aktiviert ist">
+<!ENTITY useLeftoverSpace.label "Übrig gebliebenen Platz in der Adressleiste für den Status verwenden">
+<!ENTITY useLeftoverSpace.accesskey "V">
+<!ENTITY useLeftoverSpace.tooltip "Dies ermöglicht die Anzeige von langen Adressen und Statusmeldungen">
+<!ENTITY statusWidth.label "Maximale Breite der Statusleiste">
+<!ENTITY statusWidth.accesskey "M">
+<!ENTITY statusWidth.tooltip "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Wert wird Pixeln angegeben">
+<!ENTITY showProgressInURLBar.label "Lade - Fortschritt in der Adressleiste anzeigen.">
+<!ENTITY showProgressInURLBar.accesskey "F">
+<!ENTITY showProgressInURLBar.tooltip "Zeigt einen Fortschrittsbalken im Hintergrund der Adressleiste während die Seite geladen wird.">
+<!ENTITY showProgressAsArrow.label "Brotkrümel statt Fortschrittsbalken verwenden">
+<!ENTITY showProgressAsArrow.accesskey "B">
+<!ENTITY showProgressAsArrow.tooltip "Verwenden Sie diese Option um die Kohärenz mit dem neuen Stil zu erhalten">
+<!ENTITY chooseColor.label "Farbe des Fortschrittsbalkens auswählen">
+<!ENTITY chooseColor.tooltip "Farbe des Fortschrittsbalkens auswählen">
+<!ENTITY custom.label "benutzerdefiniert">
+<!ENTITY animationSpeed.normal.label "Normale Geschwindigkeit">
+<!ENTITY animationSpeed.normal.accesskey "N">
+<!ENTITY animationSpeed.fast.label "Schnelle Geschwindigkeit">
+<!ENTITY animationSpeed.fast.accesskey "G">
+<!ENTITY animationSpeed.none.label "Keine Animation">
+<!ENTITY animationSpeed.none.accesskey "K">
