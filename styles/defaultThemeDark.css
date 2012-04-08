@@ -8,45 +8,45 @@
 }
 .enhanced-text-normal, .enhanced-text-noArrow-normal {
   padding: 3px 2px 0px 2px !important;
-  color: #000 !important;
-  background-image: url('defaultThemeLight/text_normal.png');
+  color: #fff !important;
+  background-image: url('defaultThemeDark/text_normal.png');
 }
 .enhanced-arrow-normal {
-  background-image: url('defaultThemeLight/arrow_normal.png');
+  background-image: url('defaultThemeDark/arrow_normal.png');
 }
 .enhanced-text-textHovered, .enhanced-text-noArrow-textHovered {
   padding: 3px 2px 0px 2px !important;
-  background-image: url('defaultThemeLight/text_textHovered.png');
+  background-image: url('defaultThemeDark/text_textHovered.png');
 }
 .enhanced-arrow-textHovered, .enhanced-arrow-arrowHovered {
-  background-image: url('defaultThemeLight/arrow_textHovered.png');
+  background-image: url('defaultThemeDark/arrow_textHovered.png');
 }
 .enhanced-arrow-textHovered-left, .enhanced-arrow-noArrow-textHovered-left {
-  background-image: url('defaultThemeLight/arrow_textHovered_left.png');
+  background-image: url('defaultThemeDark/arrow_textHovered_left.png');
 }
 .enhanced-text-arrowHovered, .enhanced-text-noArrow-arrowHovered {
   padding: 3px 2px 0px 2px !important;
-  background-image: url('defaultThemeLight/text_arrowHovered.png');
+  background-image: url('defaultThemeDark/text_arrowHovered.png');
 }
 .enhanced-arrow-arrowHovered-left, .enhanced-arrow-noArrow-arrowHovered-left {
-  background-image: url('defaultThemeLight/arrow_arrowHovered_left.png');
+  background-image: url('defaultThemeDark/arrow_arrowHovered_left.png');
 }
 .enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown {
   padding: 4px 1px 0px 3px !important;
-  background-image: url('defaultThemeLight/text_arrowMouseDown.png');
+  background-image: url('defaultThemeDark/text_arrowMouseDown.png');
 }
 .enhanced-arrow-arrowMouseDown, .enhanced-arrow-textMouseDown {
-  background-image: url('defaultThemeLight/arrow_textMouseDown.png');
+  background-image: url('defaultThemeDark/arrow_textMouseDown.png');
 }
 .enhanced-arrow-arrowMouseDown-left, .enhanced-arrow-noArrow-arrowMouseDown-left {
-  background-image: url('defaultThemeLight/arrow_arrowMouseDown_left.png');
+  background-image: url('defaultThemeDark/arrow_arrowMouseDown_left.png');
 }
 .enhanced-text-textMouseDown, .enhanced-text-noArrow-textMouseDown {
   padding: 4px 1px 0px 3px !important;
-  background-image: url('defaultThemeLight/text_textMouseDown.png');
+  background-image: url('defaultThemeDark/text_textMouseDown.png');
 }
 .enhanced-arrow-textMouseDown-left, .enhanced-arrow-noArrow-textMouseDown-left {
-  background-image: url('defaultThemeLight/arrow_textMouseDown_left.png');
+  background-image: url('defaultThemeDark/arrow_textMouseDown_left.png');
 }
 .enhanced-text-mouseScroll, .enhanced-text-noArrow-mouseScroll {
   padding: 3px 2px 0px 2px !important;
@@ -61,7 +61,7 @@
 .enhanced-arrow-mouseScroll-leftScrolled, .enhanced-arrow-noArrow-mouseScroll-leftScrolled {
   background-image: url('defaultThemeLight/arrow_mouseScroll_leftScrolled.png');
 }
-.enhanced-text-anchor, .enhanced-text-noArrow-anchor { color: rgb(75, 150, 200);}
+.enhanced-text-anchor, .enhanced-text-noArrow-anchor { color: rgb(100, 150, 255) !important;}
 .enhanced-text-anchor-normal, .enhanced-text-noArrow-anchor-normal {
   padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_normal.png');
@@ -70,6 +70,7 @@
   background-image: url('defaultThemeLight/arrow_anchor_normal.png');
 }
 .enhanced-text-anchor-textHovered, .enhanced-text-noArrow-anchor-textHovered {
+  color: rgb(175, 200, 255) !important;
   padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_textHovered.png');
 }
@@ -80,6 +81,7 @@
   background-image: url('defaultThemeLight/arrow_anchor_textHovered_left.png');
 }
 .enhanced-text-anchor-arrowHovered, .enhanced-text-noArrow-anchor-arrowHovered {
+  color: rgb(175, 200, 255) !important;
   padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_anchor_arrowHovered.png');
 }
@@ -103,7 +105,7 @@
 .enhanced-arrow-anchor-textMouseDown-left, .enhanced-arrow-noArrow-anchor-textMouseDown-left {
   background-image: url('defaultThemeLight/arrow_anchor_textMouseDown_left.png');
 }
-.enhanced-text-queryString, .enhanced-text-noArrow-queryString { color: rgb(50, 175, 75);}
+.enhanced-text-queryString, .enhanced-text-noArrow-queryString { color: rgb(100, 225, 125) !important;}
 .enhanced-text-queryString-normal, .enhanced-text-noArrow-queryString-normal {
   padding: 3px 2px 0px 2px !important;
   background-image: url('defaultThemeLight/text_queryString_normal.png');
@@ -150,13 +152,13 @@
   background-size: 100% 100%; background-repeat: no-repeat;
 }
 .enhanced-arrow-noArrow-normal {
-  background-image: url('defaultThemeLight/arrow_noArrow_normal.png');
+  background-image: url('defaultThemeDark/arrow_noArrow_normal.png');
 }
 .enhanced-arrow-noArrow-textHovered, .enhanced-arrow-noArrow-arrowHovered {
-  background-image: url('defaultThemeLight/arrow_noArrow_textHovered.png');
+  background-image: url('defaultThemeDark/arrow_noArrow_textHovered.png');
 }
 .enhanced-arrow-noArrow-arrowMouseDown, .enhanced-arrow-noArrow-textMouseDown {
-  background-image: url('defaultThemeLight/arrow_noArrow_textMouseDown.png');
+  background-image: url('defaultThemeDark/arrow_noArrow_textMouseDown.png');
 }
 .enhanced-arrow-noArrow-mouseScroll {
   background-image: url('defaultThemeLight/arrow_noArrow_mouseScroll.png');
@@ -179,10 +181,10 @@
 .enhanced-arrow-noArrow-queryString-arrowMouseDown, .enhanced-arrow-noArrow-queryString-textMouseDown {
   background-image: url('defaultThemeLight/arrow_noArrow_queryString_textMouseDown.png');
 }
-.enhanced-nonDomainPart { color: rgb(100,100,100) !important; opacity: 0.8 !important;}
-.enhanced-arrow-backChevron-normal { background-image: url('defaultThemeLight/backChevron_normal.png');}
-.enhanced-arrow-backChevron-arrowHovered { background-image: url('defaultThemeLight/backChevron_arrowHovered.png');}
-.enhanced-arrow-backChevron-arrowMouseDown { background-image: url('defaultThemeLight/backChevron_arrowMouseDown.png');}
-.enhanced-arrow-frontChevron-normal { background-image: url('defaultThemeLight/frontChevron_normal.png');}
-.enhanced-arrow-frontChevron-arrowHovered { background-image: url('defaultThemeLight/frontChevron_arrowHovered.png');}
-.enhanced-arrow-frontChevron-arrowMouseDown { background-image: url('defaultThemeLight/frontChevron_arrowMouseDown.png');}
+.enhanced-nonDomainPart { color: rgb(240,240,240) !important; opacity: 0.8 !important;}
+.enhanced-arrow-backChevron-normal { background-image: url('defaultThemeDark/backChevron_normal.png');}
+.enhanced-arrow-backChevron-arrowHovered { background-image: url('defaultThemeDark/backChevron_arrowHovered.png');}
+.enhanced-arrow-backChevron-arrowMouseDown { background-image: url('defaultThemeDark/backChevron_arrowMouseDown.png');}
+.enhanced-arrow-frontChevron-normal { background-image: url('defaultThemeDark/frontChevron_normal.png');}
+.enhanced-arrow-frontChevron-arrowHovered { background-image: url('defaultThemeDark/frontChevron_arrowHovered.png');}
+.enhanced-arrow-frontChevron-arrowMouseDown { background-image: url('defaultThemeDark/frontChevron_arrowMouseDown.png');}
