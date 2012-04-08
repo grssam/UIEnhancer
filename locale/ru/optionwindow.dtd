@@ -1,60 +1,59 @@
-<!ENTITY window.title  "адресной строке Enhancer параметры">
-<!ENTITY generalPane.label  "Общие параметры">
-<!ENTITY generalCustomization.label  "Генеральный Настройки">
-<!ENTITY stylePane.label  "Панировочные сухари Стили">
-<!ENTITY bookmarksPane.label  "Повышение закладки">
-<!ENTITY statusPane.label  "Строка состояния">
-<!ENTITY progressPane.label  "Прогресс Бар">
-<!ENTITY enhanceURLBar.label  "Реализация Панировочные сухари пользовательского интерфейса в адресной строке">
-<!ENTITY enhanceURLBar.accesskey  "Р">
-<!ENTITY enhanceURLBar.tooltip  "Это главная особенность этого прибавить.Адрес любой страницы отображается в многофункциональный цепочку стиль отображения.">
-<!ENTITY removeGibberish.label  "Удалить бессмысленный текст из части и заменить С значимых данных.">
-<!ENTITY removeGibberish.accesskey  "б">
-<!ENTITY removeGibberish.tooltip  "Длинные тексты (00fjhgu4uUA94R23) и т.д. заменяются легко воспринимается и осмысленный текст.">
-<!ENTITY makeCapital.label  "Сделайте первый алфавит каждое слово капитал">
-<!ENTITY makeCapital.accesskey  "С">
-<!ENTITY makeCapital.tooltip  "Это улучшает интерфейс Панировочные сухари.">
-<!ENTITY useIdentityBox.label  "Использование удостоверения Box (когда пустой), чтобы отобразить область веб-страницы.">
-<!ENTITY useIdentityBox.accesskey  "И">
-<!ENTITY useIdentityBox.tooltip  "Домен веб-страницы будет выделен и отображен в идентичности Box (слева от адресной строки).">
-<!ENTITY useDragDrop.label  "Разрешить потянуть и бросить Breadcrumb части">
-<!ENTITY useDragDrop.accesskey  "п">
-<!ENTITY useDragDrop.tooltip  "Каждая часть может быть перетаскивать, чтобы сделать новую закладку в панели закладок или сделать ссылку ярлыка на рабочем столе или даже в новой вкладке">
-<!ENTITY combination.label  "Сочетание клавиш:">
-<!ENTITY combination.accesskey  "к">
-<!ENTITY combination.tooltip  "Щелкните в текстовом поле и нажмите нужную комбинацию">
-<!ENTITY bringBookmarksUp.label  "Доведите до панель закладок рядом адресной строке">
-<!ENTITY bringBookmarksUp.accesskey  "п">
-<!ENTITY bringBookmarksUp.tooltip  "Сочетает в адресной строке и панель закладок вместе для сохранения вертикального пространства для содержимого веб-страниц. Полезное для экранов с шириной 1440px и выше.">
-<!ENTITY urlBarWidth.label  "Ширина адресной строке">
-<!ENTITY urlBarWidth.accesskey  "Ш">
-<!ENTITY urlBarWidth.tooltip  "Ширина устанавливается автоматически сопровождать все панель закладок товаров, а также оставить достаточно места для адресной строке. Вы можете задать пользовательские значения здесь, чтобы overide автоматической настройки.">
-<!ENTITY useSmallIcons.label  "Сделать иконки после адресной строке меньше.">
-<!ENTITY useSmallIcons.accesskey  "и">
-<!ENTITY useSmallIcons.tooltip  "Преобразует иконки после адресной строке в стиле, который соответствует закладки товаров в панель закладок.">
-<!ENTITY animationSpeed.label  "Скорость анимации в адресной строке при переходах">
-<!ENTITY animationSpeed.accesskey  "С">
-<!ENTITY animationSpeed.tooltip  "Выберите скорость анимации из трех значений">
-<!ENTITY useStyleSheet.label  "Использование нового интерфейса для Панировочные сухари">
-<!ENTITY useStyleSheet.accesskey  "П">
-<!ENTITY useStyleSheet.tooltip  "Включает новый и стильный дизайн в Панировочные сухари. Если выключено, стиль Панировочные сухари вернется обратно в соответствии с Windows Explorer панель навигации стиль.">
-<!ENTITY customStyleSheet.label  "Используйте свои собственные таблицы стилей для оформления Панировочные сухари">
-<!ENTITY customStyleSheet.tooltip  "Choose a properly prepared stylesheet from your hard disk. To know more about how to make a custom stylesheet, visit the home page of the add-on">
-<!ENTITY browse.label  "просматривать…">
-<!ENTITY browse.accesskey  "р">
-<!ENTITY browse.tooltip  "просматривать пользовательских стилей для оформления Панировочные сухари.">
-<!ENTITY resetStyleSheet.label  "Сброс стилей">
-<!ENTITY resetStyleSheet.accesskey  "С">
-<!ENTITY resetStyleSheet.tooltip  "Вернуться к таблице стилей по умолчанию.">
-<!ENTITY showStatusInURLBar.label  "Показать статус в адресной строке.">
-<!ENTITY showStatusInURLBar.accesskey  "П">
-<!ENTITY showStatusInURLBar.tooltip  "Примечание: Эта функция не будет работать, если аналогичные функции Статус-4-EVAR Дополнительный включен.">
-<!ENTITY useLeftoverSpace.label  "Используйте Оставшиеся места в адресной строке по положению">
-<!ENTITY useLeftoverSpace.accesskey  "О">
-<!ENTITY useLeftoverSpace.tooltip  "Это позволяет просматривать длинные ссылки URL и статусы">
-<!ENTITY statusWidth.label  "Максимальная ширина Строка состояния">
-<!ENTITY statusWidth.accesskey  "ш">
-<!ENTITY statusWidth.tooltip  "Эта ширина будет использоваться при выше параметр отключен. Значение в пикселях">
+<!ENTITY window.title "Настройки Location Bar Enhancer">
+<!ENTITY generalPane.label "Основные настройки">
+<!ENTITY generalCustomization.label "Основные настройки вида">
+<!ENTITY stylePane.label "Стиль Навигационной цепочки">
+<!ENTITY bookmarksPane.label "Панель закладок">
+<!ENTITY statusPane.label "Строка статуса">
+<!ENTITY enhanceURLBar.label "Задействовать интерфейс Навигационной цепочки в строке адреса">
+<!ENTITY enhanceURLBar.accesskey "B">
+<!ENTITY enhanceURLBar.tooltip "Это основная функция этого расширения. Строка адреса будет показана с использованием элементов интерфейса Навигационной цепочки.">
+<!ENTITY removeGibberish.label "Убрать нечитаемый текст в адресе и заменить его на более информативный.">
+<!ENTITY removeGibberish.accesskey "G">
+<!ENTITY removeGibberish.tooltip "Длинный текст (например, 00fjhgu4uUA94R23 и подобные) будет заменен на более информативный и читаемый.">
+<!ENTITY makeCapital.label "Сделать первые буквы частей адреса заглавными">
+<!ENTITY makeCapital.accesskey "C">
+<!ENTITY makeCapital.tooltip "Эта опция улучшает интерфейс Навигационной цепочки.">
+<!ENTITY useIdentityBox.label "Использовать Identity Box (когда пустой) для отображение домена вэбстраницы.">
+<!ENTITY useIdentityBox.accesskey "I">
+<!ENTITY useIdentityBox.tooltip "Домен вэбстраницы будет подсвечиваться и отображаться в Identity Box (в левой части строки адреса).">
+<!ENTITY useDragDrop.label "Разрешить перетаскивание частей адреса страницы">
+<!ENTITY useDragDrop.accesskey "D">
+<!ENTITY useDragDrop.tooltip "Каждую часть адреса можно перетаскивать, для того чтобы создать новую закладку или создать ярлык на Рабочем столе, или для открытия страницы в новой вкладке">
+<!ENTITY combination.label "Горячие клавиши:">
+<!ENTITY combination.accesskey "K">
+<!ENTITY combination.tooltip "Кликните в текстовом поле и нажмите желаемую комбинацию клавиш">
+<!ENTITY bringBookmarksUp.label "Вывести Панель закладок поверх строки адреса">
+<!ENTITY bringBookmarksUp.accesskey "B">
+<!ENTITY bringBookmarksUp.tooltip "Данная опция совмещает Панель закладок и строку адреса, для экономии места на экране по вертикали. Полезно для мониторов с шириной 1440 пикселей и более.">
+<!ENTITY urlBarWidth.label "Ширина строки адреса">
+<!ENTITY urlBarWidth.accesskey "W">
+<!ENTITY urlBarWidth.tooltip "Ширина строки адреса выбирается автоматически, но вы можете назначить свое значение ширины.">
+<!ENTITY useSmallIcons.label "Уменьшить значки после строки адреса.">
+<!ENTITY useSmallIcons.accesskey "I">
+<!ENTITY useSmallIcons.tooltip "Приводит значки, расположенные после строки адреса, к стилю значков в панели закладок.">
+<!ENTITY animationSpeed.label "Скорость анимации в строке адреса">
+<!ENTITY animationSpeed.accesskey "S">
+<!ENTITY animationSpeed.tooltip "Выберите скорость анимации их трех вариантов">
+<!ENTITY useStyleSheet.label "Использовать новый интерфейс для Навигационной цепочки">
+<!ENTITY useStyleSheet.accesskey "U">
+<!ENTITY useStyleSheet.tooltip "Включает новый сглаженный дизайн интерфейса Навигационной цепочки. Если отключено, то стиль Навигационной цепочки будет соответствовать стилю панели навигации Windows Explorer.">
+<!ENTITY customStyleSheet.label "Использовать пользовательскую таблицу стилей">
+<!ENTITY customStyleSheet.tooltip "Выберите правильно сформированный стиль с вашего локального диска. Подробности на домашней странице расширения">
+<!ENTITY browse.label "Выбрать...">
+<!ENTITY browse.accesskey "B">
+<!ENTITY browse.tooltip "Выбрать пользовательский стиль для Навигационной цепочки.">
+<!ENTITY resetStyleSheet.label "Сбросить таблицу стилей">
+<!ENTITY resetStyleSheet.accesskey "R">
+<!ENTITY resetStyleSheet.tooltip "Вернуться к стилю по умолчанию.">
+<!ENTITY showStatusInURLBar.label "Показывать статус в строке адреса.">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip "Важно: Эта опция не будет работать если включена аналогичная опция в Status-4-Evar.">
+<!ENTITY useLeftoverSpace.label "Использовать оставшееся места строки адреса для отображения статуса">
+<!ENTITY useLeftoverSpace.accesskey "L">
+<!ENTITY useLeftoverSpace.tooltip "Это позволит показывать длинные вэбадреса ссылок и статусы">
+<!ENTITY statusWidth.label "Максимальная шина строки статуса">
+<!ENTITY statusWidth.accesskey "W">
+<!ENTITY statusWidth.tooltip "Это значение будет использовано если настройка выше отключена. Значение в пикселях">
 <!ENTITY showProgressInURLBar.label  "Показать прогресса загрузки страницы в адресной строке.">
 <!ENTITY showProgressInURLBar.accesskey  "П">
 <!ENTITY showProgressInURLBar.tooltip  "Включение индикатора за текст в адресной строке, чтобы показать прогресс загрузки страницы">
@@ -64,9 +63,9 @@
 <!ENTITY chooseColor.label  "Выберите цвет прогресс-бар">
 <!ENTITY chooseColor.tooltip  "Выберите цвет прогресс-бар">
 <!ENTITY custom.label  "обычай">
-<!ENTITY animationSpeed.normal.label  "Нормальная скорость">
-<!ENTITY animationSpeed.normal.accesskey  "Н">
-<!ENTITY animationSpeed.fast.label  "Быстрая скорость">
-<!ENTITY animationSpeed.fast.accesskey  "Б">
-<!ENTITY animationSpeed.none.label  "Без анимации">
-<!ENTITY animationSpeed.none.accesskey  "а">
+<!ENTITY animationSpeed.normal.label "Нормальная">
+<!ENTITY animationSpeed.normal.accesskey "N">
+<!ENTITY animationSpeed.fast.label "Быстрая">
+<!ENTITY animationSpeed.fast.accesskey "F">
+<!ENTITY animationSpeed.none.label "Отключена">
+<!ENTITY animationSpeed.none.accesskey "A">

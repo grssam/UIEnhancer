@@ -2325,6 +2325,7 @@ function changeUI(window) {
           }
         }, 10);
       });
+      listen(window, window, "resize", function() {async(function() {updateURL(true);});});
       // Mouse dragging event listeners
       let dragStarted = false;
       let firstHidden = false;
@@ -2732,7 +2733,6 @@ function changeUI(window) {
             d.transferTo(bookmarksToolbar);
           });
     }
-    async(updateURL);
   }
 
   unload(function() {
