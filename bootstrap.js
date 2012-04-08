@@ -3195,7 +3195,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     if (pref("enhanceURLBar")) {
       if (pref("useStyleSheet") && pref("userStylePath").length == 0) {
         usedStyleIndex = pref("usedStyleIndex");
-        loadStyles(styleSheetList[usedStyleIndex]);
+        loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
       }
       else if (pref("useStyleSheet")) {
         let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -3204,7 +3204,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           .replace(/[\\]/g, "/"), null, null);
         if (!fileURI.spec.match(/(\.css)$/)) {
           usedStyleIndex = pref("usedStyleIndex");
-          loadStyles(styleSheetList[usedStyleIndex]);
+          loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
         }
         else {
           usedStyleIndex = -1;
@@ -3212,7 +3212,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           // Fallback to default stylesheet when the file is not present
           if (!sss.sheetRegistered(fileURI, sss.USER_SHEET)) {
             usedStyleIndex = pref("usedStyleIndex");
-            loadStyles(styleSheetList[usedStyleIndex]);
+            loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
           }
           else
             unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));
