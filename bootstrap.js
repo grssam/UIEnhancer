@@ -1,18 +1,18 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MIT/X11 License
- * 
+ *
  * Copyright (c) 2011 Girish Sharma
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,7 @@
  *   Girish Sharma <scrapmachines@gmail.com> (Creator)
  *
  * ***** END LICENSE BLOCK ***** */
- 
+
 "use strict";
 const global = this;
 const XUL = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -106,7 +106,7 @@ function handleDOM(object, newParent, insertFirst) {
   this.addClass = function(cls) {
     if (!this.hasClass(cls)) this.obj.className += " "+cls;
   };
- 
+
   this.removeClass = function(cls) {
     if (this.hasClass(cls))
       this.obj.className = this.obj.className.replace(new RegExp('(\\s|^)'+cls+'(\\s|$)'),' ');
@@ -293,6 +293,7 @@ function changeUI(window) {
       let origParentStyle = gURLBar.parentNode.style;
       let isWindows = window.navigator.oscpu.toLowerCase().indexOf("window") >= 0;
       let isLinux = window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0;
+      let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
       enhancedURLBar.setAttribute("id", "UIEnhancer_URLBar");
       enhancedURLBar.setAttribute("flex", 0);
       enhancedURLBar.setAttribute("style", "width:" + getMaxWidth() + "px;");
@@ -313,6 +314,14 @@ function changeUI(window) {
           + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
           + "px 0px -"
           + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 1)
+          + "px -"
+          + Math.max(window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1
+          + window.getComputedStyle(gURLBar).paddingLeft.replace("px", '')*1, 3) + "px";
+      else if (isMac)
+        enhancedURLBar.style.margin = "-"
+          + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 3)
+          + "px 0px -"
+          + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 2)
           + "px -"
           + Math.max(window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1
           + window.getComputedStyle(gURLBar).paddingLeft.replace("px", '')*1, 3) + "px";
@@ -440,7 +449,7 @@ function changeUI(window) {
           redRemoved++;
       }
       else if (gibberResult.toString() != "false" && gibberResult.toString() != "true"
-        && (((gibberResult.length < 0.3*partsLength 
+        && (((gibberResult.length < 0.3*partsLength
         || (gibberVal.indexOf("=") < 0 && gibberResult.length <= 0.5*partsLength))
         && partsLength < 5) || (gibberResult.length < 0.25*partsLength && partsLength >= 5))) {
           let valParts = gibberVal.split(/[ _]/g);
@@ -663,7 +672,7 @@ function changeUI(window) {
       highlightedObj.firstChild.style.backgroundImage = highlightedObj.lastChild.style.backgroundImage =
         "-moz-linear-gradient(top, rgba(228,245,252,0.35) " +
         "0%, rgba(191,232,249,0.5) 50%, rgba(159,216,239,0.5) 51%, rgba(42,176,237,0.75) 100%)";
-      highlightedObj.firstChild.style.border = 
+      highlightedObj.firstChild.style.border =
         highlightedObj.lastChild.style.border = "1px solid rgba(100,110,150,0.75)";
       highlightedObj.lastChild.style.boxShadow = highlightedObj.firstChild.style.boxShadow =
         "inset 1px 2px 1px rgba(120,130,160,0.8)";
@@ -790,7 +799,7 @@ function changeUI(window) {
     createdStack.setAttribute("lastArrowHidden", false);
     if (partType == "setting" || partType == "anchor")
       createdStack.setAttribute("isSetting", true);
-    else 
+    else
       createdStack.setAttribute("isSetting", false);
     if (partType == "anchor")
       createdStack.setAttribute("isAnchorTag", true);
@@ -832,7 +841,7 @@ function changeUI(window) {
       tempArrow.setAttribute("tooltiptext", l10n("click.tooltip"));
     if (hiddenArrow)
       createdStack.setAttribute("isHiddenArrow", hiddenArrow);
-    else 
+    else
       createdStack.setAttribute("isHiddenArrow", false);
 
     // Applying styles to various parts if pref is off
@@ -861,9 +870,9 @@ function changeUI(window) {
       tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
       tempArrow.style.border = "1px solid rgba(255,255,255,0)";
       if (hiddenArrow == true)
-        tempArrow.setAttribute("value", "«");
+        tempArrow.setAttribute("value", "Â«");
       else if (hiddenArrow)
-        tempArrow.setAttribute("value", "»");
+        tempArrow.setAttribute("value", "Â»");
       else
         tempArrow.setAttribute("value", ">");
     }
@@ -914,7 +923,7 @@ function changeUI(window) {
         }
         scrolledStack = tempHandledStack;
       }
-      if (scrolledStack.previousSibling != null && 
+      if (scrolledStack.previousSibling != null &&
         (scrolledStack.previousSibling.getAttribute("url") != lastScrolledUrl || refreshRelatedArray)) {
         refreshRelatedArray = false;
         lastScrolledUrl = scrolledStack.previousSibling.getAttribute("url");
@@ -1575,7 +1584,7 @@ function changeUI(window) {
           matching = false;
           Array.some(returnArray, function(tempP, index) {
             if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
-              && (tempP[1].toLowerCase() == url.toLowerCase() 
+              && (tempP[1].toLowerCase() == url.toLowerCase()
               || tempP[1].toLowerCase() == currentURL.toLowerCase())) {
                   matching = true;
                   return true;
@@ -2007,7 +2016,7 @@ function changeUI(window) {
 
     // Show the popup below the arrows
     if (siblingsShown)
-      mainPopup.openPopup(arrowedStack.previousSibling.lastChild, "after_start", 
+      mainPopup.openPopup(arrowedStack.previousSibling.lastChild, "after_start",
       -30 + arrowedStack.previousSibling.lastChild.boxObject.width, 0);
     else
       mainPopup.openPopup(arrowedStack.lastChild, "after_start", -15, 0);
@@ -2023,7 +2032,7 @@ function changeUI(window) {
     });
   }
 
-  // Global functions used in updateURL 
+  // Global functions used in updateURL
   let urlValue, urlPostSetting;
   let urlArray_updateURL;
   let counter = 0;
@@ -2397,7 +2406,7 @@ function changeUI(window) {
   * URLBar Look Enhancer Code Ends
   */
 
-  /* 
+  /*
   * Bookmarks UI Enhancer Code Begins
   */
   // Global Variables to this part of Addon
@@ -2683,7 +2692,7 @@ function changeUI(window) {
           + "-moz-transition-duration: " + max(timeInterval - 50, 0)
           + "ms;-moz-transition-delay: 0ms;");
         if (gURLBar.focused)
-          urlBar.setAttribute("style",urlBar.getAttribute("style") 
+          urlBar.setAttribute("style",urlBar.getAttribute("style")
             + "-moz-box-shadow: 0px 0px 2px 2px highlight !important;");
         if (enoughSpace) {
           bookmarksToolbar.setAttribute("style", "margin: " + newMargin
@@ -2885,7 +2894,7 @@ function changeUI(window) {
           else
             tabsOnTop = tabsOnTop.nextSibling;
         }
-        if (tabsOnTop && tabsOnTop.getAttribute("checked") != currentTabsOnTop) 
+        if (tabsOnTop && tabsOnTop.getAttribute("checked") != currentTabsOnTop)
           reload();
       }, 50);
     });
@@ -2910,6 +2919,7 @@ function changeUI(window) {
     statusBar.collapsed = true;
     let isWindows = window.navigator.oscpu.toLowerCase().indexOf("window") >= 0;
     let isLinux = window.navigator.oscpu.toLowerCase().indexOf("linux") >= 0;
+    let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
     let height = window.getComputedStyle(gURLBar).height.replace("px", '')*1
       + window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1
       + window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1;
@@ -2941,6 +2951,12 @@ function changeUI(window) {
         + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
         + "px 0px -"
         + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 1)
+        + "px 0px";
+    else if (isMac)
+      newStatus.style.margin = "-"
+        + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 2)
+        + "px 0px -"
+        + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 3)
         + "px 0px";
     origInput.parentNode.insertBefore(newStatusCon, origInput.nextSibling);
     function animateToggleEnhancedURLBar(hiding) {
