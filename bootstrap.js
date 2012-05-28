@@ -2954,9 +2954,9 @@ function changeUI(window) {
         + "px 0px";
     else if (isMac)
       newStatus.style.margin = "-"
-        + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 2)
+        + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 3)
         + "px 0px -"
-        + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 3)
+        + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 2)
         + "px 0px";
     origInput.parentNode.insertBefore(newStatusCon, origInput.nextSibling);
     function animateToggleEnhancedURLBar(hiding) {
