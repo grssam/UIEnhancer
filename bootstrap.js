@@ -2481,6 +2481,7 @@ function changeUI(window) {
   }
 
   function setupBookmarksUI() {
+    let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
     urlBar = $("urlbar");
     origURLStyle = urlBar.style;
     bookmarksToolbar = $("PersonalToolbar");
@@ -2614,7 +2615,7 @@ function changeUI(window) {
     } catch (ex) {}
     urlBar.removeAttribute("max-width");
     urlBar.style.maxWidth = pref("urlBarWidth") + "px";
-    paddingBottom = (nHeight - (pHeight>=26?24:pHeight))/2;
+    if (!isMac) paddingBottom = (nHeight - (pHeight>=26?24:pHeight))/2;
     newMargin = "" + (-nHeight) + "px " + (pref("useSmallIcons")?0:
       $("bookmarks-menu-button") != null? spaceAfterBookmarks -
       $("bookmarks-menu-button").boxObject.width: spaceAfterBookmarks)
