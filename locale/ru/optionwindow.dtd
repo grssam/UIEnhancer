@@ -46,6 +46,11 @@
 <!ENTITY resetStyleSheet.label "Сбросить таблицу стилей">
 <!ENTITY resetStyleSheet.accesskey "R">
 <!ENTITY resetStyleSheet.tooltip "Вернуться к стилю по умолчанию.">
+<!ENTITY selectStyleSheet.label  "Или выбрать из следующих стилей:">
+<!ENTITY selectStyleSheet.tooltip  "Выберите один из стилей по умолчанию упакованы с этим дополнением. Стилей Света для светлой темы Firefox и темные Стили для темного цвета темы Firefox.">
+<!ENTITY chooseStyle.label  "Выберите">
+<!ENTITY chooseStyle.accesskey  "В">
+<!ENTITY chooseStyle.tooltip  "выберите из списка.">
 <!ENTITY showStatusInURLBar.label "Показывать статус в строке адреса.">
 <!ENTITY showStatusInURLBar.accesskey "S">
 <!ENTITY showStatusInURLBar.tooltip "Важно: Эта опция не будет работать если включена аналогичная опция в Status-4-Evar.">

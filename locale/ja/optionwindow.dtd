@@ -46,6 +46,11 @@
 <!ENTITY resetStyleSheet.label  "スタイルシートをリセットする">
 <!ENTITY resetStyleSheet.accesskey  "R">
 <!ENTITY resetStyleSheet.tooltip  "デフォルトのスタイルシートに戻す.">
+<!ENTITY selectStyleSheet.label  "または次のスタイルから選択：">
+<!ENTITY selectStyleSheet.tooltip  "このアドオンのライトのスタイルを充填したデフォルトのスタイルからお選びくださいダーク色のFirefoxのテーマのために明るい色のFirefoxテーマとダークスタイルのためのものです">
+<!ENTITY chooseStyle.label  "選択してください">
+<!ENTITY chooseStyle.accesskey  "S">
+<!ENTITY chooseStyle.tooltip  "リストから選択します">
 <!ENTITY showStatusInURLBar.label  "ロケーションバーにステータスを表示する.">
 <!ENTITY showStatusInURLBar.accesskey  "S">
 <!ENTITY showStatusInURLBar.tooltip  "注：ステータス-4-EVARの同様の機能はアドオンは、次の場合にこの機能は動作しません有効になっています">

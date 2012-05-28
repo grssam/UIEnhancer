@@ -46,6 +46,11 @@
 <!ENTITY resetStyleSheet.label  "重置样式表">
 <!ENTITY resetStyleSheet.accesskey  "R">
 <!ENTITY resetStyleSheet.tooltip  "恢复为默认的样式表。">
+<!ENTITY selectStyleSheet.label  "或者选择以下方式:">
+<!ENTITY selectStyleSheet.tooltip  "挤满了这个附加元件。光样式的默认样式“选择浅色的Firefox主题和黑暗的风格，深色的Firefox主题">
+<!ENTITY chooseStyle.label  "请选择">
+<!ENTITY chooseStyle.accesskey  "S">
+<!ENTITY chooseStyle.tooltip  "从列表中选择.">
 <!ENTITY showStatusInURLBar.label  "在地址栏显示链接状态">
 <!ENTITY showStatusInURLBar.accesskey  "S">
 <!ENTITY showStatusInURLBar.tooltip  "注意：当启用 Status-4-Evar 扩展类似功能时，该特性不可用。">

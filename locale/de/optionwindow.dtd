@@ -46,6 +46,11 @@
 <!ENTITY resetStyleSheet.label "Style Sheet zurücksetzen">
 <!ENTITY resetStyleSheet.accesskey "z">
 <!ENTITY resetStyleSheet.tooltip "Setzt das Layout auf das Standard-Stylesheet zurück.">
+<!ENTITY selectStyleSheet.label  "Oder wählen Sie aus den folgenden Stile:">
+<!ENTITY selectStyleSheet.tooltip  "Wählen Sie aus den Standard-Stile mit diesem Add-on. Licht-Styles sind für helle und dunkle Firefox-Themes Styles für dunkle Firefox-Themes.">
+<!ENTITY chooseStyle.label  "Bitte wählen">
+<!ENTITY chooseStyle.accesskey  "B">
+<!ENTITY chooseStyle.tooltip  "aus der Liste auswählen.">
 <!ENTITY showStatusInURLBar.label "Status in der Adressleiste anzeigen.">
 <!ENTITY showStatusInURLBar.accesskey "S">
 <!ENTITY showStatusInURLBar.tooltip "Hinweis: Diese Funktion funktioniert nicht, wenn eine ähnliche Funktion des Status-4-Evar Add-on aktiviert ist">

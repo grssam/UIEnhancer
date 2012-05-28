@@ -46,6 +46,11 @@
 <!ENTITY resetStyleSheet.label "重設樣式表">
 <!ENTITY resetStyleSheet.accesskey "R">
 <!ENTITY resetStyleSheet.tooltip "將樣式還原為預設值">
+<!ENTITY selectStyleSheet.label  "或者選擇以下方式:">
+<!ENTITY selectStyleSheet.tooltip  "擠滿了這個附加元件。光樣式的默認樣式“選擇淺色的Firefox主題和黑暗的風格，深色的Firefox主題">
+<!ENTITY chooseStyle.label  "請選擇">
+<!ENTITY chooseStyle.accesskey  "S">
+<!ENTITY chooseStyle.tooltip  "從列表中選擇.">
 <!ENTITY showStatusInURLBar.label "在位址列顯示狀態文字。">
 <!ENTITY showStatusInURLBar.accesskey "S">
 <!ENTITY showStatusInURLBar.tooltip "注意：若 Status-4-Evar套件的同一功能已經啟用，這個選項將無法作用。">
