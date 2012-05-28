@@ -2943,21 +2943,26 @@ function changeUI(window) {
       + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 4px;");
     newStatusCon.appendChild(newStatus);
     newStatusCon.collapsed = true;
-    if (isWindows)
+    if (isWindows) {
       newStatus.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
         + window.getComputedStyle(gURLBar).paddingBottom + " 0px";
-    else if (isLinux)
+      newStatus.style.padding = (window.getComputedStyle(gURLBar).paddingTop.replace("px", "")*1 + 3)
+        + "px 0px 1px 0px";
+    }
+    else if (isLinux) {
       newStatus.style.margin = "-"
         + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
         + "px 0px -"
         + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 1)
         + "px 0px";
-    else if (isMac)
+    }
+    else if (isMac) {
       newStatus.style.margin = "-"
         + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 3)
         + "px 0px -"
         + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 2)
         + "px 0px";
+    }
     origInput.parentNode.insertBefore(newStatusCon, origInput.nextSibling);
     function animateToggleEnhancedURLBar(hiding) {
       if (!pref("enhanceURLBar"))
