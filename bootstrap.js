@@ -870,9 +870,9 @@ function changeUI(window) {
       tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
       tempArrow.style.border = "1px solid rgba(255,255,255,0)";
       if (hiddenArrow == true)
-        tempArrow.setAttribute("value", "Â«");
+        tempArrow.setAttribute("value", "«");
       else if (hiddenArrow)
-        tempArrow.setAttribute("value", "Â»");
+        tempArrow.setAttribute("value", "»");
       else
         tempArrow.setAttribute("value", ">");
     }
