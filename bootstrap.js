@@ -2932,26 +2932,26 @@ function changeUI(window) {
     newStatusCon.style.display = "-moz-box";
     let newStatusIcon = window.document.createElementNS(XUL, "label");
     if (isMac)
-  		newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
-  		  + "opacity: 0.4; display:-moz-box; background-image: url('"
-  		  + STATUS + "'); background-size: 110% 100%; padding: 0px; margin:-3px 0px -2px 4px;");
+      newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
+        + "opacity: 0.4; display:-moz-box; background-image: url('"
+        + STATUS + "'); background-size: 110% 100%; padding: 0px; margin:-3px 0px -2px 4px;");
     else
-  		newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
-  		  + "opacity: 0.4; display:-moz-box; background-image: url('"
-  		  + STATUS + "'); background-size: 110% 100%; padding: 0px; margin: 0px;");
+      newStatusIcon.setAttribute("style", "min-width:15px !important; max-width: 15px !important;"
+        + "opacity: 0.4; display:-moz-box; background-image: url('"
+        + STATUS + "'); background-size: 110% 100%; padding: 0px; margin: 0px;");
     newStatusIcon.setAttribute("flex", 0);
     newStatusCon.appendChild(newStatusIcon);
     let newStatus = window.document.createElementNS(XUL, "label");
     newStatus.setAttribute("flex", 0);
     newStatus.setAttribute("crop", "center");
     if (isMac)
-  		newStatus.setAttribute("style", "min-width: 50px !important; background: -moz-linear-gradient"
-  		  + "(left, rgba(240,240,240,0.4) 0%, rgba(250,250,250,0.25) 65%, rgba(255,255,255,0) 100%);"
-  		  + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:3px 0px 1px 4px;");
+      newStatus.setAttribute("style", "min-width: 50px !important; background: -moz-linear-gradient"
+        + "(left, rgba(240,240,240,0.4) 0%, rgba(250,250,250,0.25) 65%, rgba(255,255,255,0) 100%);"
+        + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:3px 0px 1px 4px;");
     else
-  		newStatus.setAttribute("style", "min-width: 50px !important; background: -moz-linear-gradient"
-  		  + "(left, rgba(240,240,240,0.4) 0%, rgba(250,250,250,0.25) 65%, rgba(255,255,255,0) 100%);"
-  		  + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 4px;");
+      newStatus.setAttribute("style", "min-width: 50px !important; background: -moz-linear-gradient"
+        + "(left, rgba(240,240,240,0.4) 0%, rgba(250,250,250,0.25) 65%, rgba(255,255,255,0) 100%);"
+        + "height: " + height + "px; text-align: right; display:-moz-box; color: #555; padding:2px 0px 2px 4px;");
     newStatusCon.appendChild(newStatus);
     newStatusCon.collapsed = true;
     if (isWindows)
