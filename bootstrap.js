@@ -1293,13 +1293,10 @@ function changeUI(window) {
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
       }
-      else if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild == null) {
-        tStack = createStack(partVal, urlValue.slice
-          (0, urlPartArray[hiddenStartingIndex - 1]), "null", true);
-        partsWidth += tStack.boxObject.width;
-        enhancedURLBar.appendChild(tStack);
-        tStack = null;
-      }
+      if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild == null)
+        setOpacity(1);
+      else
+        setOpacity(0);
     }
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
@@ -2227,6 +2224,8 @@ function changeUI(window) {
                "LIMIT 3",
       }, {
         callback: function([urlPart, resultArray]) {
+          if (!enhanceURLBar.lastChild)
+            return;
           if (!enhancedURLBar || enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
             .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
             .replace(/^(https?:\/\/)?(www\.)?/, ""))
