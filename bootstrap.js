@@ -23,6 +23,7 @@
  *
  * Contributor:
  *   Girish Sharma <scrapmachines@gmail.com> (Creator)
+ *   Fabrizio La Rosa (Mac fixes)
  *
  * ***** END LICENSE BLOCK ***** */
 
