@@ -545,7 +545,7 @@ function changeUI(window) {
       let tStack = createStack("", "", "null", "after");
       enhancedURLBar.parentNode.insertBefore(tStack, enhancedURLBar.nextSibling);
     }
-    else if (partsWidth < getMaxWidth() && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
+    else if (partsWidth < (getMaxWidth() - 10) && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       partPointer = enhancedURLBar.firstChild;
       arrowMouseDown = false;
       updateURL();
@@ -625,8 +625,8 @@ function changeUI(window) {
     }
     else if (currentScrolledIndex == indexB4Scrolling){
       mouseScrolled = false;
-      updateURL();
       partPointer = scrolledStack.nextSibling;
+      clearRest();
       while (partPointer != null) {
         highlightPart(partPointer, false, false);
         partPointer = partPointer.nextSibling;
@@ -2341,7 +2341,7 @@ function changeUI(window) {
         }
       });
       listen(window, gBrowser, "DOMTitleChanged", function(e) {
-        if (e.target.title != gBrowser.contentDocument.title)
+        if (e.originalTarget != gBrowser.contentWindow.document)
           return;
         async(function() {
           if (!gURLBar.focused && newDocumentLoaded) {
