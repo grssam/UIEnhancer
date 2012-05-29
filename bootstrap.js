@@ -337,12 +337,12 @@ function changeUI(window) {
     // Listening for right click on identity box
     if (pref("useIdentityBox"))
       listen(window, origIdentity, "click", function(e) {
-        if (pref("identityBoxLeftClickChanged") && e.button == 0
+        if (pref("identityBoxLeftClickChanged") && e.button <= 1
           && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
             e.preventDefault();
             e.stopPropagation();
             let url = urlValue.slice(0, urlPartArray[0]);
-            handleTextClick(url, null, null, e.ctrlKey);
+            handleTextClick(url, null, null, e.ctrlKey || (e.button == 1));
         }
         else if (e.button == 2 && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
           e.preventDefault();
@@ -359,13 +359,15 @@ function changeUI(window) {
             part.setAttribute("class", "menuitem-iconic");
             let url = urlValue.slice(0, urlPartArray[0]);
             part.setAttribute("label", url);
-            listen(window, part, "command", function(e) {
+            listen(window, part, "click", function(ee) {
+              if (ee.button == 2)
+                return;
               try {
                 mainPopup.hidePopup();
               } catch(ex) {}
               siblingsShown = arrowMouseDown = false;
               highlightPart(enhancedURLBar.firstChild, false, false, '>');
-              handleTextClick(url, null, null, e.ctrlKey || e.button == 1);
+              handleTextClick(url, null, null, ee.ctrlKey || (ee.button == 1));
             }, false);
             mainPopup.appendChild(part);
           }
@@ -1968,14 +1970,16 @@ function changeUI(window) {
           isCurrent = true;
       }
       part.setAttribute("label", arrowVal);
-      listen(window, part, "command", function(e) {
+      listen(window, part, "click", function(e) {
+        if (e.button == 2)
+          return;
         try {
           mainPopup.hidePopup();
         } catch(ex) {}
         siblingsShown = arrowMouseDown = false;
         highlightPart(arrowedStack, false, false, '>');
         if (!isCurrent)
-          handleTextClick(url, null, null, e.ctrlKey);
+          handleTextClick(url, null, null, e.ctrlKey || (e.button == 1));
       }, false);
       mainPopup.appendChild(part);
     }
