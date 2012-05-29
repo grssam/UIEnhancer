@@ -336,7 +336,14 @@ function changeUI(window) {
     // Listening for right click on identity box
     if (pref("useIdentityBox"))
       listen(window, origIdentity, "click", function(e) {
-        if (e.button == 2 && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
+        if (pref("identityBoxLeftClickChanged") && e.button == 0
+          && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
+            e.preventDefault();
+            e.stopPropagation();
+            let url = urlValue.slice(0, urlPartArray[0]);
+            handleTextClick(url, null, null, e.ctrlKey);
+        }
+        else if (e.button == 2 && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
           e.preventDefault();
           clearPopup();
           siblingsShown = true;
@@ -357,7 +364,7 @@ function changeUI(window) {
               } catch(ex) {}
               siblingsShown = arrowMouseDown = false;
               highlightPart(enhancedURLBar.firstChild, false, false, '>');
-              handleTextClick(url, null, null, e.ctrlKey);
+              handleTextClick(url, null, null, e.ctrlKey || e.button == 1);
             }, false);
             mainPopup.appendChild(part);
           }
@@ -895,10 +902,10 @@ function changeUI(window) {
       if (e.target.parentNode.getAttribute("isHiddenArrow") != "false")
         return;
       if (arrowMouseDown ) {
-          clearPopup();
-          siblingsShown = arrowMouseDown = false;
-          highlightPart(e.target.parentNode, false, false, '>');
-          return;
+        clearPopup();
+        siblingsShown = arrowMouseDown = false;
+        highlightPart(e.target.parentNode, false, false, '>');
+        return;
       }
       if (e.button == 0 && !e.ctrlKey)
         handleTextClick("", e.target.parentNode, false);
@@ -1417,7 +1424,7 @@ function changeUI(window) {
       mouseScrolled = false;
       window.openUILinkIn(partText, tab);
     }
-    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled) {
+    else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled || tab == "tab") {
       mouseScrolled = false;
       window.openUILinkIn(clickedStack.getAttribute("url"), tab);
     }

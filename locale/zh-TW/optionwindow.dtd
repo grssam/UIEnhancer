@@ -17,6 +17,9 @@
 <!ENTITY useIdentityBox.label "利用空置的身分識別區塊顯示網域。">
 <!ENTITY useIdentityBox.accesskey "I">
 <!ENTITY useIdentityBox.tooltip "網頁位址的網域部分會顯示在身分識別區塊（網址列左端），並強調標示。">
+<!ENTITY identityBoxLeftClickChanged.label "左擊身份盒去根域時域裡面。">
+<!ENTITY identityBoxLeftClickChanged.accesskey "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip "當上面的設置被啟用，此設置將取代原來的左鍵點擊顯示頁面信息的行為，去域的網絡地址的行為。">
 <!ENTITY useDragDrop.label "允許拖放麵包屑">
 <!ENTITY useDragDrop.accesskey "D">
 <!ENTITY useDragDrop.tooltip "讓網址的各個分段都能夠拖放，可以用來新增書籤（拖到書籤工具列）、建立捷徑（拖到桌面）或者開啟到新分頁">

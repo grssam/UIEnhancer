@@ -17,6 +17,9 @@
 <!ENTITY useIdentityBox.label  "ページのドメインを表示するには、アイデンティティ·ボックス（空）を使用します">
 <!ENTITY useIdentityBox.accesskey  "I">
 <!ENTITY useIdentityBox.tooltip  "（ロケーションバーの左側）のアイデンティティボックスに表示されているページのドメイが強調表示されます">
+<!ENTITY identityBoxLeftClickChanged.label "ルートドメインに移動するには、アイデンティティ·ボックス上で左クリックしたときに内部ドメイン.">
+<!ENTITY identityBoxLeftClickChanged.accesskey "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip "上記の設定が有効になっている場合、この設定は、Webアドレスの動作のドメインに移動するには、ページ情報の動作を表示するには、元の左クリックに置き換えられます。">
 <!ENTITY useDragDrop.label  "ブレッドクラムの部分からドラッグアンドドロップを許可">
 <!ENTITY useDragDrop.accesskey  "D">
 <!ENTITY useDragDrop.tooltip  "をブックマークツールバーに新しいブックマークを作成したり、デスクトップ上のリンクのショートカットを作るためにドロップすることができ、あるいは、新しいタブで">

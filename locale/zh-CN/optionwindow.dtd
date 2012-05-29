@@ -17,6 +17,9 @@
 <!ENTITY useIdentityBox.label  "在空白的站点标识信息框中显示域名">
 <!ENTITY useIdentityBox.accesskey  "I">
 <!ENTITY useIdentityBox.tooltip  "在地址栏左侧的站点标识信息框中高亮显示网页域名。">
+<!ENTITY identityBoxLeftClickChanged.label "左击身份盒去根域时域里面。">
+<!ENTITY identityBoxLeftClickChanged.accesskey "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip "当上面的设置被启用，此设置将取代原来的左键点击显示页面信息的行为，去域的网络地址的行为。">
 <!ENTITY useDragDrop.label  "允许拖放面包屑地址栏的各部分地址路径">
 <!ENTITY useDragDrop.accesskey  "D">
 <!ENTITY useDragDrop.tooltip  "地址的每个部分都可以拖放出来用于在书签工具栏添加新书签、生成桌面快捷方式或在新标签页打开">

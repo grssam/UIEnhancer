@@ -22,6 +22,10 @@
 <!ENTITY useIdentityBox.accesskey     "I">
 <!ENTITY useIdentityBox.tooltip       "The Domain of the webpage would be highlighted and displayed in the Identity Box (to the left of Location Bar).">
 
+<!ENTITY identityBoxLeftClickChanged.label         "Left click on Identity Box to go to root domain when domain inside it.">
+<!ENTITY identityBoxLeftClickChanged.accesskey     "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip       "When the above setting is enabled, this setting will replace the original left click to show page info behavior to go to the domain of web address behavior.">
+
 <!ENTITY useDragDrop.label            "Allow dragging and dropping of Breadcrumb parts">
 <!ENTITY useDragDrop.accesskey        "D">
 <!ENTITY useDragDrop.tooltip          "Each part can be dragged and dropped to make a new bookmark in Bookmarks Toolbar or to make a link shortcut on Desktop, or even in a new Tab">

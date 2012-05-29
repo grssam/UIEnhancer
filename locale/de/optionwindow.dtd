@@ -17,6 +17,9 @@
 <!ENTITY useIdentityBox.label "Domäne in Identitäts-Box anzeigen (falls nicht schon Zertifikat oder Land angezeigt werden)">
 <!ENTITY useIdentityBox.accesskey "I">
 <!ENTITY useIdentityBox.tooltip "Die Domäne der Webseite würde in der Identitäts-Box (links neben der Adressleiste) hervorgehoben dargestellt werden.">
+<!ENTITY identityBoxLeftClickChanged.label "Linker Klick auf Identity-Box, um Root-Domain gehen, wenn Domäne drin.">
+<!ENTITY identityBoxLeftClickChanged.accesskey "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip "Wenn die oben genannte Einstellung aktiviert ist, wird diese Einstellung ersetzen die ursprüngliche linken Seite klicken Sie auf das Info Verhalten zeigen, um in den Bereich der Web-Adresse Verhalten gehen.">
 <!ENTITY useDragDrop.label "Drag und Drop von Breadcrumb Elementen erlauben">
 <!ENTITY useDragDrop.accesskey "D">
 <!ENTITY useDragDrop.tooltip "Jedes Element kann per Drag und Drop benutzt werden um ein neues Lesezeichen im Lesezeichen-Symbolleiste oder eine Verknüpfung auf dem Desktop zu erstellen, oder um ein neues Tab zu öffnen">

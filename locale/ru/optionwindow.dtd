@@ -17,6 +17,9 @@
 <!ENTITY useIdentityBox.label "Использовать Identity Box (когда пустой) для отображение домена вэбстраницы.">
 <!ENTITY useIdentityBox.accesskey "I">
 <!ENTITY useIdentityBox.tooltip "Домен вэбстраницы будет подсвечиваться и отображаться в Identity Box (в левой части строки адреса).">
+<!ENTITY identityBoxLeftClickChanged.label "Щелкните левой кнопкой мыши на идентичность Box идти корневого домена, когда домен внутри него.">
+<!ENTITY identityBoxLeftClickChanged.accesskey "Щ">
+<!ENTITY identityBoxLeftClickChanged.tooltip "Когда выше параметр включен, этот параметр будет заменить оригинальный левой кнопкой мыши, чтобы показать поведение информационной странице, чтобы перейти на домен веб-поведение-адрес.">
 <!ENTITY useDragDrop.label "Разрешить перетаскивание частей адреса страницы">
 <!ENTITY useDragDrop.accesskey "D">
 <!ENTITY useDragDrop.tooltip "Каждую часть адреса можно перетаскивать, для того чтобы создать новую закладку или создать ярлык на Рабочем столе, или для открытия страницы в новой вкладке">
