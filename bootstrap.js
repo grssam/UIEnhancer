@@ -622,6 +622,7 @@ function changeUI(window) {
       }
     }
     else if (currentScrolledIndex == indexB4Scrolling){
+      mouseScrolled = false;
       updateURL();
       partPointer = scrolledStack.nextSibling;
       while (partPointer != null) {
@@ -1129,7 +1130,6 @@ function changeUI(window) {
             partPointer = partPointer.nextSibling;
           }
           partPointer = enhancedURLBar.firstChild;
-          mouseScrolled = true;
           updateURL();
         }, 250);
         return;
@@ -2057,8 +2057,9 @@ function changeUI(window) {
 
   // Function to change urlBar's UI
   function updateURL(forcedUpdate) {
-    if (gURLBar.focused || editing || window.getComputedStyle(gURLBar).visibility == "collapse")
-      return;
+    if (gURLBar.focused || editing || mouseScrolled
+      || window.getComputedStyle(gURLBar).visibility == "collapse")
+        return;
     try {
       origIdentity.collapsed = !pref("useIdentityBox");
     } catch (ex) {}
@@ -2091,7 +2092,7 @@ function changeUI(window) {
       try {
         enhancedURLBar.firstChild.collapsed = false;
       } catch(ex) {};
-    mouseScrolled = titleChanged = showingHidden = false;
+    titleChanged = showingHidden = false;
     try {
       if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow"))
         enhancedURLBar.parentNode.removeChild(enhancedURLBar.nextSibling);
