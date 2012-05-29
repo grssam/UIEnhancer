@@ -42,6 +42,7 @@ let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
 let recheckOnTabChange = false;
+let openSite = false;
 // Array of progress colors
 let progressColorList = [
   "rgba(15,215,245, 0.6)", // Azure Blue
@@ -3381,6 +3382,15 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   }
   // calling the function to setup everything
   init();
+
+  if ((reason == 7 || reason == 5) && data.version == "4.7")
+    openSite = true;
+  watchWindows(function(window) {
+    if (openSite) {
+      window.openUILinkIn("http://grssam.com/?p=213", "tab");
+      openSite = false;
+    }
+  });
   // add a toolbar button to open options
   watchWindows2(addToolbarButton);
 });
