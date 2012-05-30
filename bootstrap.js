@@ -583,12 +583,12 @@ function changeUI(window) {
 
   // Handles the scrolling event on a part
   // All functions to be called Async. have arguments in square brackets
-  function handleScroll([event]) {
+  function handleScroll([detail]) {
     // Basically, delta is now positive if wheel was scrolled up,
     // and negative, if wheel was scrolled down.
     let delta = 0;
-    if (event.detail)
-      delta = -event.detail;
+    if (detail)
+      delta = -detail;
     if (delta > 0 && currentScrolledIndex > 0)
       currentScrolledIndex--;
     else if (delta < 0 && currentScrolledIndex < relatedScrolledArray.length - 1)
@@ -626,7 +626,7 @@ function changeUI(window) {
     else if (currentScrolledIndex == indexB4Scrolling){
       mouseScrolled = false;
       partPointer = scrolledStack.nextSibling;
-      clearRest();
+      updateURL();
       while (partPointer != null) {
         highlightPart(partPointer, false, false);
         partPointer = partPointer.nextSibling;
@@ -636,6 +636,296 @@ function changeUI(window) {
     }
     delta = null;
     updateLook();
+  }
+
+  function globalEventHandler(type, node, e) {
+    switch(type) {
+      case "clickOnFirstChild":
+        // Handling the click on the first part of any breadcrumb
+        // node == breadcrumb
+        if (e.button == 2) {
+          e.preventDefault();
+          return;
+        }
+        if (node.getAttribute("isHiddenArrow") != "false")
+          return;
+        if (arrowMouseDown ) {
+          clearPopup();
+          siblingsShown = arrowMouseDown = false;
+          highlightPart(node, false, false, '>');
+          return;
+        }
+        if (e.button == 0 && !e.ctrlKey)
+          handleTextClick("", node, false);
+        else if (e.button == 1 || e.ctrlKey)
+          handleTextClick("", node, false, true);
+        break;
+
+      case "scroll":
+        // Handling scroll on the breadcrumb
+        // node == breadcrumb
+        if (node.getAttribute("isHiddenArrow") != "false")
+          return;
+        if (arrowMouseDown || siblingsShown)
+          return;
+        let currentTime = new Date();
+        if (currentTime.getTime() - lastScrolledTime < 75)
+          return;
+        else
+          lastScrolledTime = currentTime.getTime();
+        currentTime = null;
+        scrolledStack = node;
+        if (scrolledStack.previousSibling != null &&
+          (scrolledStack.previousSibling.getAttribute("url") != lastScrolledUrl || refreshRelatedArray)) {
+          refreshRelatedArray = false;
+          lastScrolledUrl = scrolledStack.previousSibling.getAttribute("url");
+          if (scrolledStack.previousSibling == null)
+            return;
+          // Making getAsyncRelatedArray to call a pseudo function first which sets
+          // currentScrolledIndex and indexB4Scrolling and then calls handleScroll
+          getAsyncRelatedArray(scrolledStack.previousSibling, function([e, returnedArray]) {
+            relatedScrolledArray = returnedArray;
+            currentScrolledIndex = null;
+            Array.some(relatedScrolledArray, function(relatedPart, index) {
+              if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+                .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
+                  currentScrolledIndex = index;
+                  return true;
+              }
+            });
+            if (currentScrolledIndex == null)
+              return;
+            if (!mouseScrolled)
+              indexB4Scrolling = currentScrolledIndex;
+            handleScroll([e.detail]);
+          }, [e.detail]);
+        }
+        else if (scrolledStack.previousSibling != null) {
+          currentScrolledIndex = null;
+          Array.some(relatedScrolledArray, function(relatedPart, index) {
+            if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+              .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
+                currentScrolledIndex = index;
+                return true;
+            }
+          });
+          if (currentScrolledIndex == null)
+            return;
+          if (!mouseScrolled)
+            indexB4Scrolling = currentScrolledIndex;
+          handleScroll([e.detail]);
+        }
+        break;
+
+      case "mouseoverOnFirstChild":
+        // Mouseover Handling Function for the first child of breadcrumb
+        // node == breadcrumb
+        if (node.getAttribute("isHiddenArrow") != "false"
+          || (node.getAttribute("lastArrowHidden") == "true"
+          && arrowMouseDown) || siblingsShown || mouseScrolled)
+            return;
+        if (e.ctrlKey) {
+          hideEnhancedURLBar();
+          return;
+        }
+        if (arrowMouseDown) {
+          if (!pref("useStyleSheet"))
+            node.lastChild.value = "v";
+          getAsyncRelatedArray(node, handleArrowClick,
+            [node, false]);
+        }
+        else
+          highlightPart(node, true, true);
+        break;
+
+      case "mouseoverOnLastChild":
+        // Mouseover Handling Function for the last child of breadcrumb
+        // node == breadcrumb
+        if (e.ctrlKey) {
+          hideEnhancedURLBar();
+          return;
+        }
+        if (mouseScrolled)
+          return;
+        if (node.getAttribute("lastArrowHidden") == "true" || siblingsShown)
+          return;
+        if (arrowMouseDown && node.getAttribute("isHiddenArrow") == "false") {
+          if (!pref("useStyleSheet"))
+            node.lastChild.value = "v";
+          getAsyncRelatedArray(node, handleArrowClick, [node, false]);
+        }
+        else if (!arrowMouseDown)
+          highlightPart(node, "partial", true);
+        if (node.getAttribute("isHiddenArrow") != "false" && !pref("useStyleSheet"))
+          node.lastChild.style.padding = "2px 2px 1px 2px";
+        break;
+
+      case "mousedownOnFirstChild":
+        // Mousedown Handling Function for the first child of breadcrumb
+        // node == breadcrumb
+        if (e.button == 2)
+          e.preventDefault();
+        if (node.getAttribute("isHiddenArrow") != "false")
+          return;
+        if (arrowMouseDown || siblingsShown)
+          return;
+
+        if (e.button == 0 && !e.ctrlKey) {
+          if (mouseScrolled) {
+            partPointer = enhancedURLBar.lastChild;
+            mouseScrolled = false;
+            currentScrolledIndex = indexB4Scrolling;
+            while (partPointer) {
+              highlightPart(partPointer, false, false);
+              partPointer = partPointer.previousSibling;
+            }
+            partPointer = enhancedURLBar.firstChild;
+            mouseScrolled = true;
+          }
+          handleTextClick("", node, true);
+        }
+        else if (e.button == 2 && node.previousSibling != null && !arrowMouseDown) {
+          siblingsShown = true;
+          getAsyncRelatedArray(node.previousSibling, handleArrowClick, [node, true]);
+        }
+        else if (e.button == 2) {
+          clearPopup();
+          siblingsShown = true;
+          arrowMouseDown = true;
+          popupStack = node;
+          highlightPart(popupStack, true, true);
+          mainPopup.appendChild(getMenuItems(popupStack));
+
+          // Show the popup below the arrows
+          mainPopup.openPopup(popupStack, "after_start", -30, 0);
+          listen(window, mainPopup, "popuphidden", hideMainPopup = function() {
+            mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
+            try {
+              mainPopup.hidePopup();
+            } catch(ex) {}
+            arrowMouseDown = false;
+            siblingsShown = false;
+            highlightPart(popupStack, false, false, '>');
+          });
+        }
+        else if (e.button == 1 || e.ctrlKey)
+          handleTextClick("", node, true, true);
+        break;
+
+      case "mousedownOnLastChild":
+        // Mousedown Handling Function for the last child of breadcrumb
+        // node == breadcrumb
+        if (e.button == 2)
+          e.preventDefault();
+        if (node.getAttribute("lastArrowHidden") == "true")
+          return;
+        if (arrowMouseDown || siblingsShown) {
+          clearPopup();
+          siblingsShown = arrowMouseDown = false;
+          return;
+        }
+        if (e.button == 0) {
+          if (node.getAttribute("isHiddenArrow") == "false")
+            getAsyncRelatedArray(node, handleArrowClick, [node, true]);
+          else
+            showHidden(node, true, node.getAttribute("isHiddenArrow") == "true"? -1:1);
+        }
+        break;
+
+      case "mouseupOnFirstChild":
+        // Mouseup Handling Function for the first child of breadcrumb
+        // node == breadcrumb
+        if (e.button == 2)
+          e.preventDefault();
+        if (node.getAttribute("isHiddenArrow") != "false")
+          return;
+        textMouseDown = false;
+        if (!arrowMouseDown)
+          highlightPart(node, false, false, '>');
+        break;
+
+      case "mouseupOnLastChild":
+        // Mouseup Handling Function for the last child of breadcrumb
+        // node == breadcrumb
+        if (e.button == 2)
+          e.preventDefault();
+        if (node.getAttribute("isHiddenArrow") == "false")
+          return;
+        arrowMouseDown = false;
+        highlightPart(node, false, false);
+        break;
+
+      case "mouseout":
+        // Mouseup Handling Function for the first child of breadcrumb
+        // node == breadcrumb
+        if (node.getAttribute("isHiddenArrow") != "false" && !arrowMouseDown) {
+          highlightPart(node, false, false);
+          if (!pref("useStyleSheet"))
+            node.lastChild.style.padding = "2px 2px 1px 2px";
+          return;
+        }
+        else if (arrowMouseDown)
+          return;
+        if ((arrowMouseDown && node.getAttribute("lastArrowHidden") == "true") || siblingsShown)
+          return;
+        textMouseDown = false;
+        if (mouseScrolled) {
+          async(function() {
+            partPointer = scrolledStack;
+            mouseScrolled = false;
+            currentScrolledIndex = indexB4Scrolling;
+            while (partPointer) {
+              highlightPart(partPointer, false, false);
+              partPointer = partPointer.nextSibling;
+            }
+            partPointer = enhancedURLBar.firstChild;
+            updateURL();
+          }, 250);
+          return;
+        }
+        highlightPart(node, false, false, '>');
+        break;
+    }
+  }
+
+  function addEventListenersOnEnhancedURLBar() {
+    listen(window, enhancedURLBar, "click", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar
+        && e.originalTarget.nextSibling)
+          globalEventHandler("clickOnFirstChild", e.originalTarget.parentNode, e);
+    });
+    listen(window, enhancedURLBar, "DOMMouseScroll", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar)
+        globalEventHandler("scroll", e.originalTarget.parentNode, e);
+    });
+    listen(window, enhancedURLBar, "mouseover", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar) {
+        if (e.originalTarget.nextSibling)
+          globalEventHandler("mouseoverOnFirstChild", e.originalTarget.parentNode, e);
+        else
+          globalEventHandler("mouseoverOnLastChild", e.originalTarget.parentNode, e);
+      }
+    });
+    listen(window, enhancedURLBar, "mousedown", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar) {
+        if (e.originalTarget.nextSibling)
+          globalEventHandler("mousedownOnFirstChild", e.originalTarget.parentNode, e);
+        else
+          globalEventHandler("mousedownOnLastChild", e.originalTarget.parentNode, e);
+      }
+    });
+    listen(window, enhancedURLBar, "mouseup", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar) {
+        if (e.originalTarget.nextSibling)
+          globalEventHandler("mouseupOnFirstChild", e.originalTarget.parentNode, e);
+        else
+          globalEventHandler("mouseupOnLastChild", e.originalTarget.parentNode, e);
+      }
+    });
+    listen(window, enhancedURLBar, "mouseout", function(e) {
+      if (e.originalTarget.parentNode.parentNode == enhancedURLBar)
+        globalEventHandler("mouseout", e.originalTarget.parentNode, e);
+    });
   }
 
   function highlightPart(highlightedObj, text, arrow, arrowVal) {
@@ -896,256 +1186,6 @@ function changeUI(window) {
     if (pref("useStyleSheet"))
       highlightPart(createdStack, false, false);
     tempS = tempArrow = null;
-
-    // Handling the click on the parts
-    listen(window, createdStack.firstChild, "click", function(e) {
-      if (e.button == 2) {
-        e.preventDefault();
-        return;
-      }
-      if (e.target.parentNode.getAttribute("isHiddenArrow") != "false")
-        return;
-      if (arrowMouseDown ) {
-        clearPopup();
-        siblingsShown = arrowMouseDown = false;
-        highlightPart(e.target.parentNode, false, false, '>');
-        return;
-      }
-      if (e.button == 0 && !e.ctrlKey)
-        handleTextClick("", e.target.parentNode, false);
-      else if (e.button == 1 || e.ctrlKey)
-        handleTextClick("", e.target.parentNode, false, true);
-    });
-    listen(window, createdStack, "DOMMouseScroll", function(event) {
-      if (event.target.parentNode.getAttribute("isHiddenArrow") != "false")
-        return;
-      if (arrowMouseDown || siblingsShown)
-        return;
-      let tempHandledStack;
-      let currentTime = new Date();
-      if (currentTime.getTime() - lastScrolledTime < 75)
-        return;
-      else
-        lastScrolledTime = currentTime.getTime();
-      currentTime = null;
-      tempHandledStack = event.originalTarget;
-      if (scrolledStack != tempHandledStack) {
-        while (tempHandledStack.parentNode != null && tempHandledStack.parentNode != enhancedURLBar) {
-          tempHandledStack = tempHandledStack.parentNode;
-        }
-        scrolledStack = tempHandledStack;
-      }
-      if (scrolledStack.previousSibling != null &&
-        (scrolledStack.previousSibling.getAttribute("url") != lastScrolledUrl || refreshRelatedArray)) {
-        refreshRelatedArray = false;
-        lastScrolledUrl = scrolledStack.previousSibling.getAttribute("url");
-        tempHandledStack = null;
-        if (scrolledStack.previousSibling == null)
-          return;
-        // Making getAsyncRelatedArray to call a pseudo function first which sets
-        // currentScrolledIndex and indexB4Scrolling and then calls handleScroll
-        getAsyncRelatedArray(scrolledStack.previousSibling, function([event, returnedArray]) {
-          relatedScrolledArray = returnedArray;
-          currentScrolledIndex = null;
-          Array.some(relatedScrolledArray, function(relatedPart, index) {
-            if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
-              .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
-                currentScrolledIndex = index;
-                return true;
-            }
-          });
-          if (currentScrolledIndex == null)
-            return;
-          if (!mouseScrolled)
-            indexB4Scrolling = currentScrolledIndex;
-          handleScroll([event]);
-        }, [event]);
-      }
-      else if (scrolledStack.previousSibling != null) {
-        currentScrolledIndex = null;
-        Array.some(relatedScrolledArray, function(relatedPart, index) {
-          if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
-            .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
-              currentScrolledIndex = index;
-              return true;
-          }
-        });
-        if (currentScrolledIndex == null)
-          return;
-        if (!mouseScrolled)
-          indexB4Scrolling = currentScrolledIndex;
-        handleScroll([event]);
-      }
-    });
-
-    // Mouseover Handling Function
-    listen(window, createdStack.firstChild, "mouseover", function(e) {
-      if (e.target.parentNode.getAttribute("isHiddenArrow") != "false"
-        || (e.target.parentNode.getAttribute("lastArrowHidden") == "true"
-        && arrowMouseDown) || siblingsShown || mouseScrolled)
-          return;
-      if (e.ctrlKey) {
-        hideEnhancedURLBar();
-        return;
-      }
-      if (arrowMouseDown) {
-        if (!pref("useStyleSheet"))
-          e.target.parentNode.lastChild.value = "v";
-        getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
-          [e.target.parentNode, false]);
-      }
-      else
-        highlightPart(e.target.parentNode, true, true);
-    });
-    listen(window, createdStack.lastChild, "mouseover", function(e) {
-      if (e.ctrlKey) {
-        hideEnhancedURLBar();
-        return;
-      }
-      if (mouseScrolled)
-        return;
-      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true" || siblingsShown)
-        return;
-      if (arrowMouseDown && e.target.parentNode.getAttribute("isHiddenArrow") == "false") {
-        if (!pref("useStyleSheet"))
-          e.target.parentNode.lastChild.value = "v";
-        getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
-          [e.target.parentNode, false]);
-      }
-      else if (!arrowMouseDown)
-        highlightPart(e.target.parentNode, "partial", true);
-      if (e.target.parentNode.getAttribute("isHiddenArrow") != "false" && !pref("useStyleSheet"))
-        e.target.parentNode.lastChild.style.padding = "2px 2px 1px 2px";
-    });
-    // Mousedown Handling Function
-    listen(window, createdStack.firstChild, "mousedown", function(e) {
-      if (e.button == 2)
-        e.preventDefault();
-      if (e.target.parentNode.getAttribute("isHiddenArrow") != "false")
-        return;
-      if (arrowMouseDown || siblingsShown)
-        return;
-
-      if (e.button == 0 && !e.ctrlKey) {
-        if (mouseScrolled) {
-          partPointer = enhancedURLBar.lastChild;
-          mouseScrolled = false;
-          currentScrolledIndex = indexB4Scrolling;
-          while (partPointer) {
-            highlightPart(partPointer, false, false);
-            partPointer = partPointer.previousSibling;
-          }
-          partPointer = enhancedURLBar.firstChild;
-          mouseScrolled = true;
-        }
-        handleTextClick("", e.target.parentNode, true);
-      }
-      else if (e.button == 2 && e.target.parentNode.previousSibling != null && !arrowMouseDown) {
-        siblingsShown = true;
-        getAsyncRelatedArray(e.target.parentNode.previousSibling, handleArrowClick,
-          [e.target.parentNode, true]);
-      }
-      else if (e.button == 2) {
-        clearPopup();
-        siblingsShown = true;
-        arrowMouseDown = true;
-        popupStack = e.target.parentNode;
-        highlightPart(popupStack, true, true);
-        mainPopup.appendChild(getMenuItems(popupStack));
-
-        // Show the popup below the arrows
-        mainPopup.openPopup(popupStack, "after_start", -30, 0);
-        listen(window, mainPopup, "popuphidden", hideMainPopup = function() {
-          mainPopup.removeEventListener("popuphidden", hideMainPopup, false);
-          try {
-            mainPopup.hidePopup();
-          } catch(ex) {}
-          arrowMouseDown = false;
-          siblingsShown = false;
-          highlightPart(popupStack, false, false, '>');
-        });
-      }
-      else if (e.button == 1 || e.ctrlKey)
-        handleTextClick("", e.target.parentNode, true, true);
-    });
-    listen(window, createdStack.lastChild, "mousedown", function(e) {
-      if (e.button == 2)
-        e.preventDefault();
-      if (e.target.parentNode.getAttribute("lastArrowHidden") == "true")
-        return;
-      if (arrowMouseDown || siblingsShown) {
-        clearPopup();
-        siblingsShown = arrowMouseDown = false;
-        return;
-      }
-      if (e.button == 0) {
-        if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
-          getAsyncRelatedArray(e.target.parentNode, handleArrowClick,
-            [e.target.parentNode, true]);
-        else
-          showHidden(e.target.parentNode, true,
-            e.target.parentNode.getAttribute("isHiddenArrow") == "true"? -1:1);
-      }
-    });
-
-    // Mouseup Handling Function
-    listen(window, createdStack.firstChild, "mouseup", function(e) {
-      if (e.button == 2)
-        e.preventDefault();
-      if (e.target.parentNode.getAttribute("isHiddenArrow") != "false")
-        return;
-      textMouseDown = false;
-      if (!arrowMouseDown)
-        highlightPart(e.target.parentNode, false, false, '>');
-    });
-    listen(window, createdStack.lastChild, "mouseup", function(e) {
-      if (e.button == 2)
-        e.preventDefault();
-      if (e.target.parentNode.getAttribute("isHiddenArrow") == "false")
-        return;
-      arrowMouseDown = false;
-      highlightPart(e.target.parentNode, false, false);
-    });
-    // Mouseout Handling Function
-    listen(window, createdStack, "mouseout", function(e) {
-      let target = e.target;
-      if (target.parentNode != enhancedURLBar)
-        target = target.parentNode;
-      if (target.getAttribute("isHiddenArrow") != "false" && !arrowMouseDown) {
-        highlightPart(target, false, false);
-        if (!pref("useStyleSheet"))
-          target.lastChild.style.padding = "2px 2px 1px 2px";
-        return;
-      }
-      else if (arrowMouseDown)
-        return;
-      if ((arrowMouseDown && target.getAttribute("lastArrowHidden") == "true") || siblingsShown)
-        return;
-      textMouseDown = false;
-      if (mouseScrolled) {
-        async(function() {
-          partPointer = scrolledStack;
-          mouseScrolled = false;
-          currentScrolledIndex = indexB4Scrolling;
-          while (partPointer) {
-            highlightPart(partPointer, false, false);
-            partPointer = partPointer.nextSibling;
-          }
-          partPointer = enhancedURLBar.firstChild;
-          updateURL();
-        }, 250);
-        return;
-      }
-      highlightPart(target, false, false, '>');
-    });
-
-    unload(function() {
-      if (createdStack) {
-        createdStack.removeChild(tempArrow);
-        createdStack.removeChild(tempS);
-        createdStack = temp = tempS = null;
-      }
-    }, window);
     return createdStack;
   }
 
@@ -2267,6 +2307,8 @@ function changeUI(window) {
   function enhanceURLBar() {
     // Function to add listeners for urlbar enhancement
     function handleURLBarEvents() {
+      // add the interaction events on the breadcrumbs
+      addEventListenersOnEnhancedURLBar();
       // Watch for urlbar value change
       let changeListener = {
         onLocationChange: function(aProgress, aRequest, aURI) {
