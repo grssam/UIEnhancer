@@ -32,6 +32,7 @@
   minwidth="450" minheight="375" maxheight="500" buttons="accept,cancel"
   ondialogaccept="optionsWindow.saveChanges();"
   persist="height width" onload="optionsWindow.onLoad()"
+  onunload="optionsWindow.onUnload()"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
   <notificationbox id="changeNotificationBox" flex="1"/>

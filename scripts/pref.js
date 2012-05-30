@@ -78,7 +78,8 @@ pref.defaults = {
   progressBarColorIndex: 0,
   progressBarCustomColor: "",
   useLeftoverSpace: true,
-  statusWidth: 250
+  statusWidth: 250,
+  toggleToReload: true,
 };
 
 pref.observe = function(prefs, callback) {

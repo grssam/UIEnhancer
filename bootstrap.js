@@ -3220,7 +3220,7 @@ function addToolbarButton(window) {
 function createHotKey(window) {
   function openOptions() {
     window.open("chrome://uienhancer/content/options.xul",
-      "Location Bar Enhancer Options","chrome,modal,dialog,resizable,centerscreen,toolbar");
+      "Location Bar Enhancer Options","chrome,resizable,centerscreen,toolbar").focus();
   }
   function $(id) window.document.getElementById(id);
   function removeKey() {
@@ -3307,6 +3307,17 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       }
     }
 
+    function isOptionsOpen() {
+      let wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+      let enumerator = wm.getEnumerator(null);
+      while(enumerator.hasMoreElements()) {
+        let win = enumerator.getNext();
+        if (win.name == "Location Bar Enhancer Options") {
+          return true;
+        }
+      }
+      return false;
+    }
     // adding the custom color to the progressColorList
     progressColorList[3] = pref("progressBarCustomColor");
 
@@ -3332,13 +3343,24 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "showProgressAsArrow",
       "showProgressInURLBar",
       "usedStyleIndex"
+    ], function() {
+      if (!Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply")
+        || !isOptionsOpen())
+          reload();
+    });
+    pref.observe([
+      "useSmallIcons"
+    ], function() {
+      if (!Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply")
+        || !isOptionsOpen())
+          specialReload();
+    });
+    pref.observe([
+      "toggleToReload"
     ], reload);
     pref.observe([
       "urlBarWidth",
     ], reloadOnTabChange);
-    pref.observe([
-      "useSmallIcons"
-    ], specialReload);
     pref.observe([
       "shortcutKey",
       "shortcutModifiers"

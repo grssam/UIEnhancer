@@ -52,6 +52,7 @@ let optionsWindow = {
   shortcutKey: pref("shortcutKey"),
   shortcutModifiers: pref("shortcutModifiers"),
   strings: null,
+  get instantApply() Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply"),
 
   STR: function OW_STR(aString) {
     return optionsWindow.strings.GetStringFromName(aString);
@@ -243,7 +244,13 @@ let optionsWindow = {
     let nb = document.getElementById("changeNotificationBox");
     nb.removeAllNotifications(true);
     nb.appendNotification(optionsWindow.STR("notif.text"), optionsWindow.STR("notif.title"), null, nb.PRIORITY_INFO_HIGH, "", null);
-  }
+  },
+
+  onUnload: function OW_onUnload() {
+    if (optionsWindow.instantApply) {
+      pref("toggleToReload", !pref("toggleToReload"));
+    }
+  },
 };
 
 XPCOMUtils.defineLazyGetter(optionsWindow, "strings", function () {
