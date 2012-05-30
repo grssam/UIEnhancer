@@ -41,7 +41,7 @@ function getURIForFile2(filepath, rootDir) {
   return Services.io.newURI("jar:file:///" + file.path.replace(/[\\]/g, "/") + "!/" + filepath, null, null);
 }
 
-["helper", "pref"].forEach(function(fileName) {
+["pref"].forEach(function(fileName) {
   let fileURI = getURIForFile2("scripts/" + fileName + ".js");
   Services.scriptloader.loadSubScript(fileURI.spec, global);
 });
@@ -71,7 +71,7 @@ let optionsWindow = {
   },
 
   onLoad: function OW_onLoad() {
-    function $(id) document.getElementById(id);
+     function $(id) document.getElementById(id);
     $("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
       pref("userStylePath"): optionsWindow.STR("nocustomstyle"));
     this.toggleBookmarksSettings(true);
@@ -88,7 +88,7 @@ let optionsWindow = {
     this.shortcutTextBox.onclick = function() {
       optionsWindow.shortcutTextBox.setSelectionRange(0, optionsWindow.shortcutTextBox.value.length);
     };
-    optionsWindow.shortcutTextBox.addEventListener("keydown", optionsWindow.handleShortcutChange);
+    optionsWindow.shortcutTextBox.addEventListener("keydown", optionsWindow.handleShortcutChange, false);
     let win = $("UIEnhancerOptionsWindow");
     let bottom = $("shortcutContainer").getBoundingClientRect().bottom;
     let right = Math.max($("UIEnhancerStatusPrefPane").getBoundingClientRect().right,
@@ -259,8 +259,7 @@ let optionsWindow = {
       = optionsWindow.toggleProgressSettings = optionsWindow.changeColor
       = optionsWindow.onColorChange = optionsWindow.toggleBookmarksSettings
       = optionsWindow.notifyChange = optionsWindow = null;
-    window.alert(["ASD", this.notifyChange]);
-    window = document = null;
+    global = null;
   },
 };
 
