@@ -130,6 +130,13 @@ function handleDOM(object, newParent, insertFirst) {
   }
 }
 
+function openOptions() {
+  Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher)
+    .openWindow(null, "chrome://uienhancer/content/options.xul",
+                "Location Bar Enhancer Options",
+                "chrome,resizable,centerscreen,toolbar", null);
+}
+
 function changeUI(window) {
 
   let {gURLBar, gBrowser, document} = window;
@@ -3160,10 +3167,6 @@ function changeUI(window) {
 }
 
 function addToolbarButton(window) {
-  function openOptions() {
-    window.open("chrome://uienhancer/content/options.xul",
-      "Location Bar Enhancer Options","chrome,modal,dialog,resizable,centerscreen,toolbar");
-  }
   function $(id) window.document.getElementById(id);
 
   function saveToolbarButtonInfo(event) {
@@ -3218,10 +3221,6 @@ function addToolbarButton(window) {
 }
 
 function createHotKey(window) {
-  function openOptions() {
-    window.open("chrome://uienhancer/content/options.xul",
-      "Location Bar Enhancer Options","chrome,resizable,centerscreen,toolbar").focus();
-  }
   function $(id) window.document.getElementById(id);
   function removeKey() {
     let keyset = $(keysetID);
@@ -3237,7 +3236,7 @@ function createHotKey(window) {
     optionsKey.setAttribute("key", pref("shortcutKey"));
     optionsKey.setAttribute("modifiers", pref("shortcutModifiers"));
     optionsKey.setAttribute("oncommand", "void(0);");
-    listen(window, optionsKey, "command", function() openOptions(window));
+    listen(window, optionsKey, "command", openOptions);
     $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(optionsKey);
     if (pref("createAppMenuButton"))
       $(appMenuitemID).setAttribute("key", keyID);

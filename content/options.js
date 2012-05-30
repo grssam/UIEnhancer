@@ -52,7 +52,6 @@ let optionsWindow = {
   shortcutKey: pref("shortcutKey"),
   shortcutModifiers: pref("shortcutModifiers"),
   strings: null,
-  get instantApply() Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply"),
 
   STR: function OW_STR(aString) {
     return optionsWindow.strings.GetStringFromName(aString);
@@ -68,6 +67,7 @@ let optionsWindow = {
       pref("userStylePath", fp.file.path);
       $("userStyleSheetPathLabel").value = fp.file.path;
     }
+    fp = null;
   },
 
   onLoad: function OW_onLoad() {
@@ -88,12 +88,12 @@ let optionsWindow = {
     this.shortcutTextBox.onclick = function() {
       optionsWindow.shortcutTextBox.setSelectionRange(0, optionsWindow.shortcutTextBox.value.length);
     };
-    listen(window, optionsWindow.shortcutTextBox, "keydown", optionsWindow.handleShortcutChange);
+    optionsWindow.shortcutTextBox.addEventListener("keydown", optionsWindow.handleShortcutChange);
     let win = $("UIEnhancerOptionsWindow");
     let bottom = $("shortcutContainer").getBoundingClientRect().bottom;
     let right = Math.max($("UIEnhancerStatusPrefPane").getBoundingClientRect().right,
       $("animationSpeedRadioGroup").getBoundingClientRect().right);
-    win.setAttribute("width", Math.max(right, win.width));
+    win.setAttribute("width", Math.min(Math.max(right, win.width), 600));
     win.setAttribute("height", Math.min(Math.max(bottom + 150, win.height), 400));
   },
 
@@ -129,7 +129,7 @@ let optionsWindow = {
   toggleStylesSettings: function OW_toggleStylesSettings(check) {
     function $(id) document.getElementById(id);
     function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
-    let styleSheetEnabled = document.getElementById("useStyleSheetCheckBox").checked;
+    let styleSheetEnabled = $("useStyleSheetCheckBox").checked;
     $$(["resetStyleSheetButton",
         "userStyleSheetPathLabel",
         "browseStyleSheetButton",
@@ -247,9 +247,20 @@ let optionsWindow = {
   },
 
   onUnload: function OW_onUnload() {
-    if (optionsWindow.instantApply) {
+    if (Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply"))
       pref("toggleToReload", !pref("toggleToReload"));
-    }
+    optionsWindow.shortcutTextBox.removeEventListener("keydown", optionsWindow.handleShortcutChange, false);
+    optionsWindow.shortcutTextBox = optionsWindow.shortcutChanged
+      = optionsWindow.shortcutKey = optionsWindow.shortcutModifiers
+      = optionsWindow.strings = optionsWindow.STR = optionsWindow.openFile
+      = optionsWindow.onLoad = optionsWindow.saveChanges = optionsWindow.handleShortcutChange
+      = optionsWindow.resetStyleSheet = optionsWindow.toggleStylesSettings
+      = optionsWindow.toggleURLBarSettings = optionsWindow.toggleStatusSettings
+      = optionsWindow.toggleProgressSettings = optionsWindow.changeColor
+      = optionsWindow.onColorChange = optionsWindow.toggleBookmarksSettings
+      = optionsWindow.notifyChange = optionsWindow = null;
+    window.alert(["ASD", this.notifyChange]);
+    window = document = null;
   },
 };
 
