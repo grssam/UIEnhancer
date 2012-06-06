@@ -59,7 +59,8 @@ const toolbarButtonID = "UIEnhancerToolbarButton";
 const styleSheetList = [
   "defaultThemeLight",
   "defaultThemeDark",
-  "DannehsLight"
+  "DannehsLight",
+  "DevtoolsLight",
 ];
 let usedStyleIndex = 0;
 // variable to store localized strings
@@ -142,6 +143,7 @@ function changeUI(window) {
   let {gURLBar, gBrowser, document} = window;
   function $(id) document.getElementById(id);
   let async = makeWindowHelpers(window).async;
+  let fx15Plus = Services.appinfo.platformVersion.split(".")[0]*1 > 14;
 
   // Disable the add-on when customizing
   listen(window, window, "beforecustomization", function() {
@@ -241,30 +243,32 @@ function changeUI(window) {
   origIdentity = $("identity-icon-labels");
   if (pref("enhanceURLBar")) {
     // Get references to existing UI elements
-    origILabel = $("identity-icon-label");
-    origICountryLabel = $("identity-icon-country-label");
-    origIdentity.collapsed = !pref("useIdentityBox");
+    if (!fx15Plus) {
+      origILabel = $("identity-icon-label");
+      origICountryLabel = $("identity-icon-country-label");
+      origIdentity.collapsed = !pref("useIdentityBox");
 
-    identityLabel = document.createElementNS(XUL, "label");
-    identityLabel.setAttribute("id","UIEnhancer_Identity_Label");
-    identityLabel.setAttribute("collapsed",false);
-    identityLabel.setAttribute("flex", 1);
-    identityLabel.setAttribute("style",origILabel.style);
-    identityLabel.style.padding = "0px";
-    identityLabel.style.margin = "0px";
+      identityLabel = document.createElementNS(XUL, "label");
+      identityLabel.setAttribute("id","UIEnhancer_Identity_Label");
+      identityLabel.setAttribute("collapsed",false);
+      identityLabel.setAttribute("flex", 1);
+      identityLabel.setAttribute("style",origILabel.style);
+      identityLabel.style.padding = "0px";
+      identityLabel.style.margin = "0px";
 
-    identityCountryLabel = document.createElementNS(XUL, "label");
-    identityCountryLabel.setAttribute("id", "UIEnhancer_Identity_Country_Label");
-    identityCountryLabel.setAttribute("collapsed", false);
-    identityCountryLabel.setAttribute("flex", 1);
-    identityCountryLabel.setAttribute("style", origICountryLabel.style);
-    identityCountryLabel.style.padding = "0px";
-    identityCountryLabel.style.margin = "0px";
+      identityCountryLabel = document.createElementNS(XUL, "label");
+      identityCountryLabel.setAttribute("id", "UIEnhancer_Identity_Country_Label");
+      identityCountryLabel.setAttribute("collapsed", false);
+      identityCountryLabel.setAttribute("flex", 1);
+      identityCountryLabel.setAttribute("style", origICountryLabel.style);
+      identityCountryLabel.style.padding = "0px";
+      identityCountryLabel.style.margin = "0px";
 
-    origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
-    origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
-    origILabel.collapsed = true;
-    origICountryLabel.collapsed = true;
+      origIdentity.insertBefore(identityCountryLabel, origICountryLabel.nextSibling);
+      origIdentity.insertBefore(identityLabel, origICountryLabel.nextSibling);
+      origILabel.collapsed = true;
+      origICountryLabel.collapsed = true;
+    }
 
     setOpacity = function(opacity) {
       origInput.style.opacity = opacity;
@@ -290,8 +294,10 @@ function changeUI(window) {
         origILabel.collapsed = false;
         origICountryLabel.collapsed = false;
       } catch (ex) {}
-      origIdentity.removeChild($("identity-icon-country-label").nextSibling);
-      origIdentity.removeChild($("identity-icon-country-label").nextSibling);
+      if (!fx15Plus) {
+        origIdentity.removeChild($("identity-icon-country-label").nextSibling);
+        origIdentity.removeChild($("identity-icon-country-label").nextSibling);
+      }
       identityLabel = identityCountryLabel = origICountryLabel = origILabel = origIdentity = null;
     }, window);
 
@@ -317,7 +323,7 @@ function changeUI(window) {
       if (isWindows)
         enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
           + window.getComputedStyle(gURLBar).paddingBottom + " -"
-          + window.getComputedStyle(origIdentity).marginRight;
+          + (window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1 + (fx15Plus?1:0)) + "px";
       else if (isLinux)
         enhancedURLBar.style.margin = "-"
           + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
@@ -341,8 +347,8 @@ function changeUI(window) {
     else
       restyleEnhancedURLBarOnTabChange = true;
 
-    // Listening for right click on identity box
-    if (pref("useIdentityBox"))
+    // Listening for right click on identity box if Firefox 14 and below
+    if (pref("useIdentityBox") && !fx15Plus)
       listen(window, origIdentity, "click", function(e) {
         if (pref("identityBoxLeftClickChanged") && e.button <= 1
           && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
@@ -529,13 +535,16 @@ function changeUI(window) {
     if (hiddenStartingIndex == 0) {
       async(function() {
         try {
-          highlightPart(enhancedURLBar.firstChild, false, false);
-          enhancedURLBar.firstChild.collapsed = true;
+          enhancedURLBar.removeChild(enhancedURLBar.firstChild);
+          enhancedURLBar.setAttribute("domainVisible", true);
+          enhancedURLBar.setAttribute("condition", "normal");
         } catch (ex) {}
       }, 1500);
     }
-    else if (enhancedURLBar.firstChild)
-      enhancedURLBar.firstChild.collapsed = false;
+    else if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") != "true") {
+      enhancedURLBar.insertBefore(createStack("", "", "null", true), enhancedURLBar.firstChild);
+      enhancedURLBar.removeAttribute("domainVisible");
+    }
     showingHidden = true;
     redRemoved = 0;
     partsWidth = 0;
@@ -550,7 +559,29 @@ function changeUI(window) {
     }
     if (partsWidth > getMaxWidth() && !enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       let tStack = createStack("", "", "null", "after");
+      tStack.addEventListener("mouseover", function(e) {
+        globalEventHandler("mouseoverOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mousedown", function(e) {
+        globalEventHandler("mousedownOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mouseup", function(e) {
+        globalEventHandler("mouseupOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mouseout", function(e) {
+        globalEventHandler("mouseout", e.originalTarget.parentNode, e);
+      });
+      let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
+      if (isMac)
+        tStack.style.margin = "-"
+          + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 3)
+          + "px 0px -"
+          + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 2)
+          + "px -"
+          + Math.max(window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1
+          + window.getComputedStyle(gURLBar).paddingLeft.replace("px", '')*1, 3) + "px";
       enhancedURLBar.parentNode.insertBefore(tStack, enhancedURLBar.nextSibling);
+      isMac = null;
     }
     else if (partsWidth < (getMaxWidth() - 10) && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       partPointer = enhancedURLBar.firstChild;
@@ -571,6 +602,8 @@ function changeUI(window) {
     partsWidth = 0;
     Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
 
+    if (fx15Plus && enhancedURLBar.hasAttribute("domainVisible"))
+      partsWidth += 5;
     if (partsWidth > getMaxWidth() || showingHidden)
       enhancedURLBar.style.width = getMaxWidth() + "px";
     else
@@ -690,7 +723,7 @@ function changeUI(window) {
             return;
           // Making getAsyncRelatedArray to call a pseudo function first which sets
           // currentScrolledIndex and indexB4Scrolling and then calls handleScroll
-          getAsyncRelatedArray(scrolledStack.previousSibling, function([e, returnedArray]) {
+          getAsyncRelatedArray(scrolledStack.previousSibling, function([detail, returnedArray]) {
             relatedScrolledArray = returnedArray;
             currentScrolledIndex = null;
             Array.some(relatedScrolledArray, function(relatedPart, index) {
@@ -704,7 +737,7 @@ function changeUI(window) {
               return;
             if (!mouseScrolled)
               indexB4Scrolling = currentScrolledIndex;
-            handleScroll([e.detail]);
+            handleScroll([detail]);
           }, [e.detail]);
         }
         else if (scrolledStack.previousSibling != null) {
@@ -863,7 +896,7 @@ function changeUI(window) {
         break;
 
       case "mouseout":
-        // Mouseup Handling Function for the first child of breadcrumb
+        // Mouseout Handling Function for the breadcrumb
         // node == breadcrumb
         if (node.getAttribute("isHiddenArrow") != "false" && !arrowMouseDown) {
           highlightPart(node, false, false);
@@ -1069,6 +1102,8 @@ function changeUI(window) {
               "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
         }
         bC = null;
+        if (enhancedURLBar.hasAttribute("domainVisible") && highlightedObj == enhancedURLBar.firstChild)
+          enhancedURLBar.setAttribute("condition", c);
       }
 
       if (mouseScrolled) {
@@ -1100,7 +1135,6 @@ function changeUI(window) {
       urlBarHeight = gURLBar.boxObject.height;
 
     let createdStack = document.createElementNS(XUL, "hbox");
-    createdStack.setAttribute("id", "UIEnhancer_URLBar_Stack");
     createdStack.style.height = urlBarHeight + "px";
     createdStack.style.display = "-moz-box";
     createdStack.setAttribute("flex", 0);
@@ -1116,7 +1150,8 @@ function changeUI(window) {
       createdStack.setAttribute("isAnchorTag", false);
     if (partType == "domain") {
       createdStack.setAttribute("isDomain", true);
-      $("identity-box").setAttribute("isDomain", true);
+      if (!fx15Plus)
+        $("identity-box").setAttribute("isDomain", true);
     }
     else {
       createdStack.setAttribute("isDomain", false);
@@ -1134,7 +1169,7 @@ function changeUI(window) {
     tempS.setAttribute("tooltiptext", l10n("rightClick.tooltip")
       + (!enhancedURLBar.firstChild? ".": " " + l10n("sibling.tooltip"))
       + l10n("dragDrop.tooltip"));
-    if (partType == "domain" || hiddenArrow)
+    if ((partType == "domain" && !fx15Plus) || hiddenArrow)
       tempS.style.display = "none";
     else
       tempS.style.display = "-moz-box";
@@ -1174,7 +1209,7 @@ function changeUI(window) {
       tempArrow.style.margin = "0px";
       if (partType != "domain" && !hiddenArrow)
         tempArrow.style.padding = "2px 1px 1px 2px";
-      else
+      else if (!fx15Plus)
         tempArrow.style.padding = "2px 2px 1px 2px";
       tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
       tempArrow.style.border = "1px solid rgba(255,255,255,0)";
@@ -1221,9 +1256,13 @@ function changeUI(window) {
         } catch (ex) {}
       }
       else if (domain == true) {
-        partPointer.firstChild.style.display = "none";
         partPointer.setAttribute("isDomain", true);
-        $("identity-box").setAttribute("isDomain", true);
+        if (!fx15Plus) {
+          $("identity-box").setAttribute("isDomain", true);
+          partPointer.firstChild.style.display = "none";
+        }
+        else
+          partPointer.firstChild.style.display = "-moz-box";
       }
       if (isSetting == false) {
         if (!pref("useStyleSheet")) {
@@ -1430,7 +1469,8 @@ function changeUI(window) {
     hiddenStartingIndex = 0;
     // opacity 1 means we are hiding the enhancedURLBar
     if (opacity == 1) {
-      identityLabel.collapsed = identityCountryLabel.collapsed = true;
+      if (!fx15Plus)
+        identityLabel.collapsed = identityCountryLabel.collapsed = true;
       enhancedURLBar.style.width = "0px";
       enhancedURLBar.style.display = "none";
     }
@@ -1727,9 +1767,10 @@ function changeUI(window) {
     editing = true;
     arrowMouseDown = siblingsShown = false;
     if (editingPart == enhancedURLBar.firstChild) {
-      try {
-        identityCountryLabel.collapsed = identityLabel.collapsed = true;
-      } catch (ex) {}
+      if (!fx15Plus)
+        try {
+          identityCountryLabel.collapsed = identityLabel.collapsed = true;
+        } catch (ex) {}
       editingPart.setAttribute("isDomain", "false");
       editingPart.firstChild.style.display = "-moz-box";
     }
@@ -1811,9 +1852,10 @@ function changeUI(window) {
     listen(window, createdStack.firstChild, "blur", function(e) {
       editing = false;
       if (e.target.parentNode == enhancedURLBar.firstChild) {
-        try {
-          identityCountryLabel.collapsed = identityLabel.collapsed = !pref("useIdentityBox");
-        } catch (ex) {}
+        if (!fx15Plus)
+          try {
+            identityCountryLabel.collapsed = identityLabel.collapsed = !pref("useIdentityBox");
+          } catch (ex) {}
         partPointer = enhancedURLBar.firstChild.nextSibling;
       }
       enhancedURLBar.removeChild(e.target.parentNode);
@@ -2101,7 +2143,7 @@ function changeUI(window) {
   let urlVal_updateURL;
   let URLDisplayed = "";
   unload(function() {
-    initial = currentTime = urlValue = urlArray_updateURL = counter = iLabel
+    initial = urlValue = urlArray_updateURL = counter = iLabel
       = anchorTagIndex = isSetting_updateURL = iCountry
       = urlPostSetting = index = urlVal_updateURL = URLDisplayed = null;
   }, window);
@@ -2112,7 +2154,8 @@ function changeUI(window) {
       || window.getComputedStyle(gURLBar).visibility == "collapse")
         return;
     try {
-      origIdentity.collapsed = !pref("useIdentityBox");
+      if (!fx15Plus)
+        origIdentity.collapsed = !pref("useIdentityBox");
     } catch (ex) {}
     urlValue = decodeURI(getURI().spec);
     try {
@@ -2122,13 +2165,15 @@ function changeUI(window) {
     }
     if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled && !forcedUpdate) {
       try {
-        identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-        identityCountryLabel.value = iCountry;
-        if (!pref("useIdentityBox"))
-          origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
-        else
-          origIdentity.collapsed = identityLabel.collapsed = false;
-        identityCountryLabel.collapsed = iCountry.length == 0;
+        if (!fx15Plus) {
+          identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+          identityCountryLabel.value = iCountry;
+          if (!pref("useIdentityBox"))
+            origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
+          else
+            origIdentity.collapsed = identityLabel.collapsed = false;
+          identityCountryLabel.collapsed = iCountry.length == 0;
+        }
       } catch (ex) {}
       updateLook();
       return;
@@ -2232,23 +2277,24 @@ function changeUI(window) {
         urlArray_updateURL[index] = urlArray_updateURL[index].replace(/[\-]/g, " ");
       urlArray_updateURL[index] = urlArray_updateURL[index].replace("=", " = ");
     }
+    if (!fx15Plus) {
+      iCountry = iLabel = "";
+      if ((!origILabel || origILabel.value.search(" ") < 0) && pref("useIdentityBox"))
+        iLabel = urlArray_updateURL[0];
+      else
+        iLabel = origILabel? origILabel.value: "";
+      iCountry = origICountryLabel? origICountryLabel.value: "";
 
-    iCountry = iLabel = "";
-    if ((!origILabel || origILabel.value.search(" ") < 0) && pref("useIdentityBox"))
-      iLabel = urlArray_updateURL[0];
-    else
-      iLabel = origILabel? origILabel.value: "";
-    iCountry = origICountryLabel? origICountryLabel.value: "";
-
-    //trimming the iLabel to 50 characters
-    iLabel = trimWord(iLabel, 54);
-    identityLabel.value = makeCapital(iLabel.replace("www.", ""));
-    identityCountryLabel.value = iCountry;
-    if (!pref("useIdentityBox"))
-      origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
-    else
-      origIdentity.collapsed = identityLabel.collapsed = false;
-    identityCountryLabel.collapsed = (iCountry.length == 0);
+      //trimming the iLabel to 50 characters
+      iLabel = trimWord(iLabel, 54);
+      identityLabel.value = makeCapital(iLabel.replace("www.", ""));
+      identityCountryLabel.value = iCountry;
+      if (!pref("useIdentityBox"))
+        origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
+      else
+        origIdentity.collapsed = identityLabel.collapsed = false;
+      identityCountryLabel.collapsed = (iCountry.length == 0);
+    }
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
@@ -2256,12 +2302,20 @@ function changeUI(window) {
       urlVal_updateURL = urlArray_updateURL[index];
       isSetting_updateURL = false;
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
-      if (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null)
+      if ((index == 0 && fx15Plus) || (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null))
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), pref("useIdentityBox")
           && ($("identity-box").boxObject.width > 0), isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), false,
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
+    }
+    if (fx15Plus) {
+      if (enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
+        enhancedURLBar.setAttribute("domainVisible", true);}
+      else
+        try {
+          enhancedURLBar.removeAttribute("domainVisible");
+        } catch (e) {}
     }
     updateLook();
     // Removing last arrow if no suggestion possible
@@ -2276,7 +2330,7 @@ function changeUI(window) {
                "LIMIT 3",
       }, {
         callback: function([urlPart, resultArray]) {
-          if (!enhanceURLBar.lastChild)
+          if (!enhancedURLBar.lastChild)
             return;
           if (!enhancedURLBar || enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
             .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
@@ -2284,7 +2338,7 @@ function changeUI(window) {
               return;
           resultArray = resultArray.filter(function({url, title}) {
             if (url.replace(/^(https?:\/\/)?(www\.)?/, "")
-              .slice(urlPart.replace(/^(https?:\/\/)?(www\.)?/, "").length).length <= 1)
+              .slice(urlPart.replace(/^(https?:\/\/)?(www\.)?/, "").length).search(/[\/?&#]/) != 0)
                 return false;
             else
               return true;
@@ -2321,7 +2375,7 @@ function changeUI(window) {
         onLocationChange: function(aProgress, aRequest, aURI) {
           newDocumentLoaded = true;
           refreshRelatedArray = true;
-          if (!tabChanged)
+          if (!tabChanged && !fx15Plus)
             origIdentity.collapsed = identityLabel.collapsed
               = identityCountryLabel.collapsed = !pref("useIdentityBox");
           async(function() {
@@ -2337,11 +2391,12 @@ function changeUI(window) {
         gBrowser.removeProgressListener(changeListener);
       }, window);
       listen(window, gBrowser.tabContainer, "TabSelect", function() {
-        origIdentity.collapsed = identityLabel.collapsed
-          = identityCountryLabel.collapsed = !pref("useIdentityBox");
+        if (!fx15Plus)
+          origIdentity.collapsed = identityLabel.collapsed
+            = identityCountryLabel.collapsed = !pref("useIdentityBox");
         tabChanged = true;
         try {
-          if (showingHidden && enhancedURLBar.firstChild)
+          if (showingHidden && enhancedURLBar.firstChild && !fx15Plus)
             enhancedURLBar.firstChild.collapsed = false;
         } catch (ex) {}
         showingHidden = false;
@@ -2393,7 +2448,7 @@ function changeUI(window) {
         if (e.originalTarget != gBrowser.contentWindow.document)
           return;
         async(function() {
-          if (!gURLBar.focused && newDocumentLoaded) {
+          if (!gURLBar.focused && newDocumentLoaded && !fx15Plus) {
             origIdentity.collapsed = identityLabel.collapsed
               = identityCountryLabel.collapsed = !pref("useIdentityBox");
             titleChanged = true;
@@ -2420,7 +2475,8 @@ function changeUI(window) {
           dt.setData("text/html", "<a href='" + url + "'>" + url + "</a>");
           dt.setData("text/plain", url);
           firstHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true"
-            && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false";
+            && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false"
+            && !fx15Plus;
           if (firstHidden)
             enhancedURLBar.firstChild.firstChild.style.display = "-moz-box";
           updateLook();
@@ -2851,8 +2907,6 @@ function changeUI(window) {
   unload(function() {
     onBookmarksMouseOver = function() {};
     onBookmarksMouseOut = function() {};
-    tempMove = function() {};
-    tempOut = function() {};
   }, window);
 
   function onFocus() {
@@ -3281,7 +3335,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     if (pref("enhanceURLBar")) {
       if (pref("useStyleSheet") && pref("userStylePath").length == 0) {
         usedStyleIndex = pref("usedStyleIndex");
-        loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
+        loadStyles(styleSheetList[Math.min(usedStyleIndex, styleSheetList.length - 1)]);
       }
       else if (pref("useStyleSheet")) {
         let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -3290,7 +3344,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           .replace(/[\\]/g, "/"), null, null);
         if (!fileURI.spec.match(/(\.css)$/)) {
           usedStyleIndex = pref("usedStyleIndex");
-          loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
+          loadStyles(styleSheetList[Math.min(usedStyleIndex, styleSheetList.length - 1)]);
         }
         else {
           usedStyleIndex = -1;
@@ -3298,7 +3352,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           // Fallback to default stylesheet when the file is not present
           if (!sss.sheetRegistered(fileURI, sss.USER_SHEET)) {
             usedStyleIndex = pref("usedStyleIndex");
-            loadStyles(styleSheetList[Math.min(usedStyleIndex, 2)]);
+            loadStyles(styleSheetList[Math.min(usedStyleIndex, styleSheetList.length - 1)]);
           }
           else
             unload(function() sss.unregisterSheet(fileURI, sss.USER_SHEET));

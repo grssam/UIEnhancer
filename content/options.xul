@@ -96,8 +96,9 @@
                   tooltiptext="&chooseStyle.tooltip;" oncommand="optionsWindow.notifyChange();">
           <menupopup>
             <menuitem label="Default Light" value="0" selected="true"/>
-            <menuitem label="Defualt Dark" value="1"/>
+            <menuitem label="Default Dark" value="1"/>
             <menuitem label="Dannah's Light" value="2"/>
+            <menuitem label="Devtools Light" value="3"/>
           </menupopup>
         </menulist>
       </hbox>

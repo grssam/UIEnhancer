@@ -101,13 +101,18 @@ function spinQueryAsync(connection, {names, params, query}, {callback, args}) {
 function unload(callback, container) {
   // Initialize the array of unloaders on the first usage
   let unloaders = unload.unloaders;
+  let unloading = unload.unloading;
+  let newUnloaders = unload.newUnloaders;
   if (unloaders == null)
     unloaders = unload.unloaders = [];
 
   // Calling with no arguments runs all the unloader callbacks
   if (callback == null) {
+    unloading = true;
     unloaders.slice().forEach(function(unloader) unloader());
+    unloading = false;
     unloaders.length = 0;
+    unloaders = newUnloaders;
     return;
   }
 
@@ -129,15 +134,27 @@ function unload(callback, container) {
     try {
       callback();
     }
-    catch(ex) {}
+    catch(ex) {
+      Cc["@mozilla.org/consoleservice;1"]
+       .getService(Ci.nsIConsoleService)
+       .logStringMessage("An unloader callback threw: " + ex);
+    }
   }
-  unloaders.push(unloader);
+  if (unloading)
+    newUnloaders.push(unloader);
+  else
+    unloaders.push(unloader);
 
   // Provide a way to remove the unloader
   function removeUnloader() {
     let index = unloaders.indexOf(unloader);
     if (index != -1)
       unloaders.splice(index, 1);
+    else {
+      index = newUnloaders.indexOf(unloader);
+      if (index != -1)
+        newUnloaders.splice(index, 1);
+    }
   }
   return removeUnloader;
 }
@@ -182,6 +199,67 @@ function unload2(callback, container) {
     let index = unloaders.indexOf(unloader);
     if (index != -1)
       unloaders.splice(index, 1);
+  }
+  return removeUnloader;
+}
+
+function unload3(callback, container) {
+  // Initialize the array of unloaders on the first usage
+  let unloaders = unload3.unloaders;
+  let unloading = unload3.unloading;
+  let newUnloaders = unload3.newUnloaders;
+  if (unloaders == null)
+    unloaders = unload3.unloaders = [];
+
+  // Calling with no arguments runs all the unloader callbacks
+  if (callback == null) {
+    unloading = true;
+    unloaders.slice().forEach(function(unloader) unloader());
+    unloading = false;
+    unloaders.length = 0;
+    unloaders = newUnloaders;
+    return;
+  }
+
+  // The callback is bound to the lifetime of the container if we have one
+  if (container != null) {
+    // Remove the unloader when the container unloads
+    container.addEventListener("unload", removeUnloader, false);
+
+    // Wrap the callback to additionally remove the unload listener
+    let origCallback = callback;
+    callback = function() {
+      container.removeEventListener("unload", removeUnloader, false);
+      origCallback();
+    }
+  }
+
+  // Wrap the callback in a function that ignores failures
+  function unloader() {
+    try {
+      callback();
+    }
+    catch(ex) {
+      Cc["@mozilla.org/consoleservice;1"]
+       .getService(Ci.nsIConsoleService)
+       .logStringMessage("An unloader callback threw: " + ex);
+    }
+  }
+  if (unloading)
+    newUnloaders.push(unloader);
+  else
+    unloaders.push(unloader);
+
+  // Provide a way to remove the unloader
+  function removeUnloader() {
+    let index = unloaders.indexOf(unloader);
+    if (index != -1)
+      unloaders.splice(index, 1);
+    else {
+      index = newUnloaders.indexOf(unloader);
+      if (index != -1)
+        newUnloaders.splice(index, 1);
+    }
   }
   return removeUnloader;
 }
@@ -233,6 +311,8 @@ function watchWindows(callback) {
   // Make sure to stop watching for windows if we're unloading
   unload(function() Services.ww.unregisterNotification(windowWatcher));
 }
+
+// This version of watchWindows is used by addToolbarButton
 function watchWindows2(callback) {
   var unloaded = false;
   unload2(function() unloaded = true);
@@ -282,9 +362,7 @@ function watchWindows2(callback) {
 }
 // Take a window and create various helper properties and functions
 function makeWindowHelpers(window) {
-  const XUL = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-
-  let {document, clearTimeout, gBrowser, setTimeout} = window;
+  let {clearTimeout, setTimeout} = window;
 
   // Call a function after waiting a little bit
   function async(callback, delay) {
@@ -300,25 +378,19 @@ function makeWindowHelpers(window) {
         return;
       clearTimeout(timer);
       timer = null;
+      unUnload();
+      unUnload = null;
     }
 
     // Make sure to stop the timer when unloading
-    unload(stopTimer, window);
+    let unUnload = unload3(stopTimer, window);
 
     // Give the caller a way to cancel the timer
-    return stopTimer;
-  }
-
-  // Replace a value with another value or a function of the original value
-  function change(obj, prop, val) {
-    let orig = obj[prop];
-    obj[prop] = typeof val == "function" ? val(orig) : val;
-    unload(function() obj[prop] = orig, window);
+    //return stopTimer;
   }
 
   return {
     async: async,
-    change: change,
   };
 }
 
