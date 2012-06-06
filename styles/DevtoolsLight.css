@@ -1,0 +1,154 @@
+#UIEnhancer_URLBar[domainVisible]{
+  background-repeat: no-repeat;
+  background-position: -8px 0px;
+}
+#UIEnhancer_URLBar[domainVisible][condition='textHovered']{
+  background-image: url('DevtoolsLight/before_first_textHovered.png');
+}
+#UIEnhancer_URLBar[domainVisible][condition='textMouseDown'],
+#UIEnhancer_URLBar[domainVisible][condition='arrowMouseDown']{
+  background-image: url('DevtoolsLight/before_first_textMouseDown.png');
+}
+#UIEnhancer_URLBar[domainVisible][condition='normal'],
+#UIEnhancer_URLBar[domainVisible][condition='arrowHovered']{
+  background-image: url('DevtoolsLight/before_first_normal.png');
+}
+#UIEnhancer_URLBar[domainVisible] > .enhanced-stack:first-child {
+  margin-left: 5px;
+}
+.enhanced-stack { padding: 0px !important; margin: 0px;}
+.enhanced-text, .enhanced-text-anchor, .enhanced-text-queryString , .enhanced-text-noArrow, .enhanced-text-noArrow-anchor, .enhanced-text-noArrow-queryString {
+  margin: 0px !important; background-size: 100% 100%; background-repeat: no-repeat;
+}
+.enhanced-arrow-frontChevron, .enhanced-arrow-backChevron, .enhanced-arrow, .enhanced-arrow-anchor, .enhanced-arrow-queryString {
+  width: 13px; padding: 0px !important; margin: 0px !important;
+  background-size: 100% 100%; background-repeat: no-repeat;
+}
+.enhanced-text-normal, .enhanced-text-noArrow-normal {
+  padding: 3px 2px 0px 2px !important;
+  color: #000 !important;
+}
+.enhanced-text-textHovered, .enhanced-text-noArrow-textHovered {
+  text-shadow:0px 0px 5px rgba(102, 191, 255, 1);
+}
+.enhanced-text-textMouseDown, .enhanced-text-noArrow-textMouseDown,
+.enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown {
+  text-shadow:0px 0px 5px rgba(102, 191, 255, 1);
+  color: rgb(200, 215, 215);
+}
+.enhanced-arrow-normal, .enhanced-arrow-anchor-normal, .enhanced-arrow-queryString-normal,
+.enhanced-arrow-arrowHovered-left, .enhanced-arrow-noArrow-arrowHovered-left,
+.enhanced-arrow-anchor-arrowHovered-left, .enhanced-arrow-noArrow-anchor-arrowHovered-left,
+.enhanced-arrow-queryString-arrowHovered-left, .enhanced-arrow-noArrow-queryString-arrowHovered-left {
+  background-image: url('DevtoolsLight/arrow_normal.png');
+}
+.enhanced-arrow-textHovered-left, .enhanced-arrow-noArrow-textHovered-left,
+.enhanced-arrow-anchor-textHovered-left, .enhanced-arrow-noArrow-anchor-textHovered-left,
+.enhanced-arrow-queryString-textHovered-left, .enhanced-arrow-noArrow-queryString-textHovered-left,
+.enhanced-arrow-mouseScroll-left, .enhanced-arrow-noArrow-mouseScroll-left {
+  background-image: url('DevtoolsLight/arrow_textHovered_left.png');
+}
+.enhanced-arrow-arrowHovered, .enhanced-arrow-anchor-arrowHovered, .enhanced-arrow-queryString-arrowHovered {
+  background-image: url('DevtoolsLight/arrow_arrowHovered.png');
+}
+.enhanced-arrow-textHovered, .enhanced-arrow-anchor-textHovered,
+.enhanced-arrow-queryString-textHovered, .enhanced-arrow-mouseScroll {
+  background-image: url('DevtoolsLight/arrow_textHovered.png');
+}
+.enhanced-arrow-noArrow-textHovered, .enhanced-arrow-noArrow-anchor-textHovered,
+.enhanced-arrow-noArrow-queryString-textHovered, .enhanced-arrow-noArrow-mouseScroll {
+  background-image: url('DevtoolsLight/arrow_noArrow_textHovered.png');
+}
+.enhanced-text-textHovered, .enhanced-text-anchor-textHovered, .enhanced-text-queryString-textHovered,
+.enhanced-text-noArrow-textHovered, .enhanced-text-noArrow-anchor-textHovered, .enhanced-text-noArrow-queryString-textHovered,
+.enhanced-text-mouseScroll, .enhanced-text-noArrow-mouseScroll {
+  background-image: url('DevtoolsLight/text_textHovered.png');
+}
+.enhanced-text-arrowHovered, .enhanced-text-noArrow-arrowHovered,
+.enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown,
+.enhanced-text-textHovered, .enhanced-text-noArrow-textHovered,
+.enhanced-text-anchor-normal, .enhanced-text-noArrow-anchor-normal,
+.enhanced-text-anchor-textHovered, .enhanced-text-noArrow-anchor-textHovered,
+.enhanced-text-anchor-arrowHovered, .enhanced-text-noArrow-anchor-arrowHovered,
+.enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown,
+.enhanced-text-queryString-normal, .enhanced-text-noArrow-queryString-normal,
+.enhanced-text-queryString-textHovered, .enhanced-text-noArrow-queryString-textHovered,
+.enhanced-text-queryString-arrowHovered, .enhanced-text-noArrow-queryString-arrowHovered,
+.enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
+  padding: 3px 2px 0px 2px !important;
+}
+.enhanced-arrow-textMouseDown, .enhanced-arrow-noArrow-textMouseDown,
+.enhanced-arrow-anchor-textMouseDown, .enhanced-arrow-noArrow-anchor-textMouseDown,
+.enhanced-arrow-queryString-textMouseDown, .enhanced-arrow-noArrow-queryString-textMouseDown,
+.enhanced-arrow-arrowMouseDown, .enhanced-arrow-noArrow-arrowMouseDown,
+.enhanced-arrow-anchor-arrowMouseDown, .enhanced-arrow-noArrow-anchor-arrowMouseDown,
+.enhanced-arrow-queryString-arrowMouseDown, .enhanced-arrow-noArrow-queryString-arrowMouseDown{
+  background-image: url('DevtoolsLight/arrow_textMouseDown.png');
+}
+.enhanced-text-textMouseDown, .enhanced-text-noArrow-textMouseDown,
+.enhanced-text-anchor-textMouseDown, .enhanced-text-noArrow-anchor-textMouseDown,
+.enhanced-text-queryString-textMouseDown, .enhanced-text-noArrow-queryString-textMouseDown,
+.enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown,
+.enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown,
+.enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
+  padding: 3px 2px 0px 2px !important;
+  background-image: url('DevtoolsLight/text_textMouseDown.png');
+}
+.enhanced-arrow-textMouseDown-left, .enhanced-arrow-noArrow-textMouseDown-left,
+.enhanced-arrow-anchor-textMouseDown-left, .enhanced-arrow-noArrow-anchor-textMouseDown-left,
+.enhanced-arrow-queryString-textMouseDown-left, .enhanced-arrow-noArrow-queryString-textMouseDown-left,
+.enhanced-arrow-arrowMouseDown-left, .enhanced-arrow-noArrow-arrowMouseDown-left,
+.enhanced-arrow-anchor-arrowMouseDown-left, .enhanced-arrow-noArrow-anchor-arrowMouseDown-left,
+.enhanced-arrow-queryString-arrowMouseDown-left, .enhanced-arrow-noArrow-queryString-arrowMouseDown-left {
+  background-image: url('DevtoolsLight/arrow_textMouseDown_left.png');
+}
+.enhanced-text-mouseScroll, .enhanced-text-noArrow-mouseScroll {
+  padding: 3px 2px 0px 2px !important;
+  color: orange;
+  text-shadow: 0px 0px 5px rgba(255, 158, 1, 0.8);
+}
+.enhanced-arrow-mouseScroll-leftScrolled, .enhanced-arrow-noArrow-mouseScroll-leftScrolled {
+  background-image: url('DevtoolsLight/arrow_textHovered_continuous.png');
+}
+.enhanced-text-anchor, .enhanced-text-noArrow-anchor { color: rgb(102, 191, 255);}
+.enhanced-text-anchor-textHovered, .enhanced-text-noArrow-anchor-textHovered,
+.enhanced-text-anchor-textMouseDown, .enhanced-text-noArrow-anchor-textMouseDown,
+.enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown{
+  text-shadow:0px 0px 5px rgba(102, 204, 255, 1);
+}
+.enhanced-text-anchor-textMouseDown, .enhanced-text-noArrow-anchor-textMouseDown,
+.enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown {
+  color: rgba(204, 255, 255, 0.8);
+}
+.enhanced-text-queryString, .enhanced-text-noArrow-queryString { color: rgb(30, 190, 57);}
+.enhanced-text-queryString-textHovered, .enhanced-text-noArrow-queryString-textHovered,
+.enhanced-text-queryString-textMouseDown, .enhanced-text-noArrow-queryString-textMouseDown,
+.enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
+  text-shadow:0px 0px 5px rgba(87, 239, 30, 1);
+}
+.enhanced-text-queryString-textMouseDown, .enhanced-text-noArrow-queryString-textMouseDown,
+.enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
+  color: rgba(8, 231, 0, 0.8);
+}
+.enhanced-arrow-noArrow, .enhanced-arrow-noArrow-anchor, .enhanced-arrow-noArrow-queryString {
+  width: 13px; padding: 0px !important; margin: 0px !important;
+  background-size: 100% 100%; background-repeat: no-repeat;
+}
+.enhanced-arrow-noArrow-normal, .enhanced-arrow-noArrow-anchor-normal, .enhanced-arrow-noArrow-queryString-normal,
+.enhanced-arrow-noArrow-arrowHovered, .enhanced-arrow-noArrow-anchor-arrowHovered , .enhanced-arrow-noArrow-queryString-arrowHovered  {
+  background-image: url('DevtoolsLight/arrow_noArrow_normal.png');
+}
+.enhanced-arrow-noArrow-arrowMouseDown, .enhanced-arrow-noArrow-textMouseDown,
+.enhanced-arrow-noArrow-anchor-arrowMouseDown, .enhanced-arrow-noArrow-anchor-textMouseDown,
+.enhanced-arrow-noArrow-queryString-arrowMouseDown, .enhanced-arrow-noArrow-queryString-textMouseDown {
+  background-image: url('DevtoolsLight/arrow_noArrow_textMouseDown.png');
+}
+.enhanced-nonDomainPart { color: rgb(100,100,100) !important; opacity: 0.8 !important;}
+.enhanced-arrow-backChevron-normal { background-image: url('DevtoolsLight/backChevron_normal.png');}
+.enhanced-arrow-backChevron-arrowHovered, .enhanced-arrow-backChevron-arrowMouseDown {
+  background-image: url('DevtoolsLight/backChevron_arrowHovered.png');
+}
+.enhanced-arrow-frontChevron-normal { background-image: url('DevtoolsLight/frontChevron_normal.png');}
+.enhanced-arrow-frontChevron-arrowHovered, .enhanced-arrow-frontChevron-arrowMouseDown {
+  background-image: url('DevtoolsLight/frontChevron_arrowHovered.png');
+}
