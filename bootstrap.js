@@ -603,7 +603,7 @@ function changeUI(window) {
     Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
 
     if (fx15Plus && enhancedURLBar.hasAttribute("domainVisible"))
-      partsWidth += 5;
+      partsWidth += 7;
     if (partsWidth > getMaxWidth() || showingHidden)
       enhancedURLBar.style.width = getMaxWidth() + "px";
     else
@@ -1527,6 +1527,7 @@ function changeUI(window) {
     }
     let url1,url2,part1,part2,urlmatch,p1,itemsB4 = min(currentI,3);
     let i = (currentI != null?currentI:0);
+    let fileNamePattern = false;
     while (itemsB4 < 7 && i >= 0 && resultArray[0][0].replace(/[^0-9]/g,"")*1 > delta) {
       url1 = resultArray[i][1].replace(preURL, "");
       part1 = resultArray[i][0];
@@ -1535,16 +1536,34 @@ function changeUI(window) {
       p1 = part1.replace(/[^0-9]/g,"")*1;
       if (i == length || part1 == part2 || p1 - part2.replace(/[^0-9]/g,"")*1 > delta) {
         part2 = part1.replace(/[0-9]/g,"") + (p1 - delta)*1;
-        if (part1.replace(/[0-9 ]/g,"").length > 0)
+        fileNamePattern = false;
+        if (url1.match(/^[\/&#?]?[^.0-9]{0,}[0-9]+\.[^.0-9]{1,4}$/)) {
+          urlmatch = url1.match(/([\/#&?]?[^.0-9]{0,})([0-9]+)(\.[^.0-9]{1,4})$/);
+          if (urlmatch)
+            fileNamePattern = true;
+        }
+        if (!fileNamePattern && part1.replace(/[0-9 ]/g,"").length > 0)
           urlmatch = url1.match(new RegExp("("+part1.replace(/[0-9 ]/g,"").toLowerCase()
             +")([_= ])?([0-9]{1,})"));
-        else
-          urlmatch = url1.match(/([\/&?#])([_= ])?([0-9]{1,})/);
+        else if (!fileNamePattern)
+          urlmatch = url1.match(/([\/&?#]?)([_= ])?([0-9]{1,})/);
         if (urlmatch == null)
           break;
         if (urlmatch.length != 4)
           break;
-        url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
+        if (fileNamePattern) {
+          let Y = ((p1 - delta)*1).toString();
+          url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"")
+            .concat(urlmatch[2].length > Y.length?
+                    ("000000000000000000".slice(0, urlmatch[2].length - Y.length) + Y):
+                    Y,(urlmatch[3]||"")));
+          part2 = (urlmatch[1]||"1").slice(1).concat((urlmatch[2].length > Y.length?
+                    ("000000000000000000".slice(0, urlmatch[2].length - Y.length) + Y):
+                    Y) + (urlmatch[3]?urlmatch[3]:""));
+          Y = null;
+        }
+        else
+          url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 - delta)*1));
         resultArray.splice(i,0,[part2,url2,true]);
         currentI++;
       }
@@ -1565,16 +1584,34 @@ function changeUI(window) {
       p1 = part1.replace(/[^0-9]/g,"")*1;
       if (i == length || part2.replace(/[^0-9]/g,"")*1 - p1 > delta) {
         part2 = part1.replace(/[0-9]/g,"") + (p1 + delta)*1;
-        if (part1.replace(/[0-9 ]/g,"").length > 0)
+        fileNamePattern = false;
+        if (url1.match(/^[\/&#?]?[^.0-9]{0,}[0-9]+\.[^.0-9]{1,4}$/)) {
+          urlmatch = url1.match(/^([\/#&?]?[^.0-9]{0,})([0-9]+)(\.[^.0-9]{1,4})$/);
+          if (urlmatch)
+            fileNamePattern = true;
+        }
+        if (!fileNamePattern && part1.replace(/[0-9 ]/g,"").length > 0)
           urlmatch = url1.match(new RegExp("("+part1.replace(/[0-9 ]/g,"").toLowerCase()
             +")([_= ])?([0-9]{1,})"));
-        else
+        else if (!fileNamePattern)
           urlmatch = url1.match(/([\/&?#])([_= ])?([0-9]{1,})/);
         if (urlmatch == null)
           break;
         if (urlmatch.length != 4)
           continue;
-        url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
+        if (fileNamePattern) {
+          let Y = ((p1 + delta)*1).toString();
+          url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"")
+            .concat(urlmatch[2].length > Y.length?
+                    ("000000000000000000".slice(0, urlmatch[2].length - Y.length) + Y):
+                    Y,(urlmatch[3]||"")));
+          part2 = (urlmatch[1]||"1").slice(1).concat((urlmatch[2].length > Y.length?
+                    ("000000000000000000".slice(0, urlmatch[2].length - Y.length) + Y):
+                    Y) + (urlmatch[3]?urlmatch[3]:""));
+          Y = null;
+        }
+        else
+          url2 = preURL + url1.replace(urlmatch[0],(urlmatch[1]||"").concat((urlmatch[2]||""),(p1 + delta)*1));
         resultArray.splice(i,0,[part2,url2,true]);
         length++;
       }
@@ -1608,9 +1645,9 @@ function changeUI(window) {
           let valB = b.url.replace(/^(https?:\/\/)/,"");
           valA = valA.slice(partURL.length, valA.length);
           valB = valB.slice(partURL.length, valB.length);
-          valA = valA.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "");
+          valA = valA.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
           let aa = valA.split(/[0-9]+/g);
-          valB = valB.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "");
+          valB = valB.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
           let bb = valB.split(/[0-9]+/g);
           // Case when one is in number form and other is not
           if (aa.length != 2 && bb.length == 2 && bb[1] == "") {

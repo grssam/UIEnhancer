@@ -78,7 +78,7 @@
     <checkbox id="useStyleSheetCheckBox" preference="useStyleSheet" oncommand="optionsWindow.toggleStylesSettings();"
       tooltiptext="&useStyleSheet.tooltip;" label="&useStyleSheet.label;" accesskey="&useStyleSheet.accesskey;" />
     <groupbox id="customStyleSheet" orient="horizontal" align="center">
-      <caption label="&customStyleSheet.label;" tooltiptext="customStyleSheet.tooltip;" />
+      <caption label="&customStyleSheet.label;" tooltiptext="&customStyleSheet.tooltip;" />
       <button id="browseStyleSheetButton" label="&browse.label;" oncommand="optionsWindow.openFile();"
         tooltiptext="&browse.tooltip;" accesskey="&browse.accesskey;" style="margin-right:5px;"/>
       <label id="userStyleSheetPathLabel" value="" crop="start" style="color:#444; max-width:200px;"/>
