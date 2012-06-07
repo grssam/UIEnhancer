@@ -3615,11 +3615,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // calling the function to setup everything
   init();
 
-  if ((reason == 7 || reason == 5) && data.version == "4.7")
+  if ((reason == 7 || reason == 5) && data.version == "4.8")
     openSite = true;
   watchWindows(function(window) {
     if (openSite) {
-      window.openUILinkIn("http://grssam.com/?p=213", "tab");
+      window.openUILinkIn("http://grssam.com/?p=236", "tab");
       openSite = false;
     }
   });
