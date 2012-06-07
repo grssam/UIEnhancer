@@ -2,6 +2,7 @@ content uienhancer content/
 locale  uienhancer en    locale/en-US/
 locale  uienhancer ja    locale/ja/
 locale  uienhancer de    locale/de/
+locale  uienhancer ro    locale/ro/
 locale  uienhancer ru    locale/ru/
 locale  uienhancer zh-CN locale/zh-CN/
 locale  uienhancer zh-TW locale/zh-TW/
