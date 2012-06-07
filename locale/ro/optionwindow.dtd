@@ -1,0 +1,80 @@
+<!ENTITY window.title "OpÈ›iuni Location Bar Enhancer">
+<!ENTITY generalPane.label "SetÄƒri generale">
+<!ENTITY generalCustomization.label "OpÈ›iuni generale">
+<!ENTITY stylePane.label "Marcaje de navigare">
+<!ENTITY bookmarksPane.label "BarÄƒ de semne de carte">
+<!ENTITY statusPane.label "BarÄƒ de stare">
+<!ENTITY progressPane.label "BarÄƒ de progres">
+<!ENTITY enhanceURLBar.label "Se implementeazÄƒ interfaÈ›a cu marcaje de navigare Ã®n bara de adrese">
+<!ENTITY enhanceURLBar.accesskey "j">
+<!ENTITY enhanceURLBar.tooltip "ActivaÈ›i funcÈ›ionalitatea principalÄƒ a acestui supliment. Adresa oricÄƒrei pagini va fi afiÈ™atÄƒ Ã®ntr-o manierÄƒ Ã®mbunÄƒtÄƒÈ›itÄƒ, cu marcaje de navigare.">
+<!ENTITY removeGibberish.label "Se eliminÄƒ textul fÄƒrÄƒ sens È™i se Ã®nlocuieÈ™te cu date semnificative">
+<!ENTITY removeGibberish.accesskey "x">
+<!ENTITY removeGibberish.tooltip "PermiteÈ›i Ã®nlocuirea textelor cum ar fi simbolurile lungi (00fjhgu4uUA94R23), etc. cu texte semnificative, uÈ™or de Ã®nÈ›eles">
+<!ENTITY makeCapital.label "Se Ã®nlocuiesc cu majuscule iniÈ›ialele fiecÄƒrui cuvÃ¢nt">
+<!ENTITY makeCapital.accesskey "m">
+<!ENTITY makeCapital.tooltip "ÃŽmbunÄƒtÄƒÈ›iÈ›i lizibilitatea pÄƒrÈ›ilor separate de marcaje">
+<!ENTITY useIdentityBox.label "Se foloseÈ™te caseta de identitate (cÃ¢nd este goalÄƒ) pentru a afiÈ™a domeniul paginii">
+<!ENTITY useIdentityBox.accesskey "i">
+<!ENTITY useIdentityBox.tooltip "ActivaÈ›i afiÈ™area È™i evidenÈ›ierea domeniului rÄƒdÄƒcinÄƒ al paginii Ã®n caseta de identitate (din stÃ¢nga barei de adrese)">
+<!ENTITY useDragDrop.label "Se permite glisarea È™i fixarea pÄƒrÈ›ilor separate de marcaje">
+<!ENTITY useDragDrop.accesskey "g">
+<!ENTITY useDragDrop.tooltip "PermiteÈ›i glisarea È™i fixarea oricÄƒrei pÄƒrÈ›i Ã®n bara de semne de carte a pentru a face un semn de carte nou, pe desktop pentru a face o legÄƒturÄƒ rapidÄƒ sau chiar Ã®ntr-o filÄƒ nouÄƒ">
+<!ENTITY combination.label "CombinaÈ›ie de taste pentru accesarea directÄƒ a casetei de opÈ›iuni:">
+<!ENTITY combination.accesskey "t">
+<!ENTITY combination.tooltip "DaÈ›i clic Ã®n caseta text È™i apÄƒsaÈ›i combinaÈ›ia doritÄƒ">
+<!ENTITY bringBookmarksUp.label "Se integreazÄƒ bara de semne de carte Ã®n bara de adrese">
+<!ENTITY bringBookmarksUp.accesskey "b">
+<!ENTITY bringBookmarksUp.tooltip "PermiteÈ›i combinarea barei de semne de carte cu bara de adrese pentru a aloca mai mult spaÈ›iu vertical pentru conÈ›inutul paginii web. Util pentru ecrane cu lÄƒÈ›imea de pÃ¢nÄƒ la 1440 de pixeli">
+<!ENTITY urlBarWidth.label "Lungimea barei de adrese:">
+<!ENTITY urlBarWidth.accesskey "L">
+<!ENTITY urlBarWidth.tooltip "Lungimea este ajustatÄƒ automat pentru a afiÈ™a cÃ¢t mai multe semne de carte È™i, Ã®n acelaÈ™i timp, pentru a lÄƒsa suficient spaÈ›iu pentru bara de adrese. PuteÈ›i defini o valoare proprie care sÄƒ Ã®nlocuiascÄƒ valoarea presatbilitÄƒ">
+<!ENTITY useSmallIcons.label "Se micÈ™oreazÄƒ pictogramele care succed barei de adrese">
+<!ENTITY useSmallIcons.accesskey "m">
+<!ENTITY useSmallIcons.tooltip "PermiteÈ›i ca pictogramele care succed barei de adrese sÄƒ capete un aspect care sÄƒ corespundÄƒ elementelor din bara de semne de carte">
+<!ENTITY animationSpeed.label "Modificare È™i vitezÄƒ de tranziÈ›ie a barei de adrese Ã®n timpul editÄƒrii adresei">
+<!ENTITY animationSpeed.accesskey "V">
+<!ENTITY animationSpeed.tooltip "AlegeÈ›i dacÄƒ bara de adrese Ã®È™i maximizeazÄƒ sau nu lungimea Ã®n momentul editÄƒrii adresei cÃ¢t È™i viteza de tranziÈ›ie">
+<!ENTITY useStyleSheet.label "Se utilizeazÄƒ noua interfaÈ›Äƒ pentru marcajele de navigare">
+<!ENTITY useStyleSheet.accesskey "u">
+<!ENTITY useStyleSheet.tooltip "ActivaÈ›i noul È™i elegantul stil pentru marcaje. DacÄƒ este dezactivat, se foloseÈ™te stilul de navigare din Windows Explorer (Windows Vista)">
+<!ENTITY customStyleSheet.label "Stil personalizat pentru marcajele de navigare">
+<!ENTITY customStyleSheet.tooltip "AlegeÈ›i un fiÈ™ier de stiluri (CSS), corect formatat, de pe disc. Pentru a afla cum se creeazÄƒ un fiÈ™ier de stiluri CSS, vizitaÈ›i pagina gazdÄƒ a suplimentului">
+<!ENTITY browse.label "RÄƒsfoieÈ™teâ€¦">
+<!ENTITY browse.accesskey "R">
+<!ENTITY browse.tooltip "CÄƒutaÈ›i È™i alegeÈ›i un fiÈ™ier de stiluri pentru marcajele de navigare">
+<!ENTITY resetStyleSheet.label "IniÈ›ializeazÄƒ stilul">
+<!ENTITY resetStyleSheet.accesskey "I">
+<!ENTITY resetStyleSheet.tooltip "ReveniÈ›i la stilul prestabilit">
+<!ENTITY showStatusInURLBar.label "Se afiÈ™eazÄƒ starea navigatorului Ã®n bara de adrese">
+<!ENTITY showStatusInURLBar.accesskey "s">
+<!ENTITY showStatusInURLBar.tooltip "NotÄƒ: AceastÄƒ caracteristicÄƒ nu va funcÈ›iona atunci cÃ¢nd caracteristica similarÄƒ a suplimentului â€žStatus-4-Evarâ€ este activÄƒ">
+<!ENTITY useLeftoverSpace.label "Se foloseÈ™te spaÈ›iul liber al barei de adrese pentru afiÈ™area stÄƒrii navigatorului">
+<!ENTITY useLeftoverSpace.accesskey "r">
+<!ENTITY useLeftoverSpace.tooltip "VeÈ›i putea vizualiza adrese È™i stÄƒri de lungime mare">
+<!ENTITY statusWidth.label "Lungimea maximÄƒ a barei de stare">
+<!ENTITY statusWidth.accesskey "x">
+<!ENTITY statusWidth.tooltip "AceastÄƒ lungime se foloseÈ™te atunci cÃ¢nd opÈ›iunea de mai sus este inactivÄƒ. Valoarea este Ã®n pixeli">
+<!ENTITY showProgressInURLBar.label "Se afiÈ™eazÄƒ progresul Ã®ncÄƒrcÄƒrii paginii Ã®n bara de adrese">
+<!ENTITY showProgressInURLBar.accesskey "p">
+<!ENTITY showProgressInURLBar.tooltip "ActivaÈ›i afiÈ™area unei bare de progres Ã®n spatele textului din bara de adrese pentru a evidenÈ›ia progresul Ã®ncÄƒrcÄƒrii paginii">
+<!ENTITY showProgressAsArrow.label "Se foloseÈ™te un marcaj de navigare Ã®n locul barei de progres">
+<!ENTITY showProgressAsArrow.accesskey "m">
+<!ENTITY showProgressAsArrow.tooltip "UtilizaÈ›i aceastÄƒ caracteristicÄƒ pentru a menÈ›ine coerenÈ›a cu noul stil">
+<!ENTITY chooseColor.label "Culoare pentru bara de progres">
+<!ENTITY chooseColor.tooltip "AlegeÈ›i o culoare pentru bara de progres">
+<!ENTITY custom.label "DefinitÄƒ de utilizator">
+<!ENTITY animationSpeed.normal.label "TranziÈ›ie normalÄƒ">
+<!ENTITY animationSpeed.normal.accesskey "n">
+<!ENTITY animationSpeed.fast.label "TranziÈ›ie rapidÄƒ">
+<!ENTITY animationSpeed.fast.accesskey "r">
+<!ENTITY animationSpeed.none.label "FÄƒrÄƒ modificare">
+<!ENTITY animationSpeed.none.accesskey "F">
+<!ENTITY identityBoxLeftClickChanged.label "Se navigheazÄƒ cÄƒtre domeniul rÄƒdÄƒcinÄƒ cu clic pe caseta de identitate dacÄƒ aceasta conÈ›ine informaÈ›ii">
+<!ENTITY identityBoxLeftClickChanged.accesskey "d">
+<!ENTITY identityBoxLeftClickChanged.tooltip "ActivaÈ›i opÈ›iunea pentru a naviga cÄƒtre domeniul rÄƒdÄƒcinÄƒ al paginii Ã®n loc de a afiÈ™a informaiÈ›ii despre identitatea saitului">
+<!ENTITY selectStyleSheet.label "Stil prestabilit pentru marcajele de navigare">
+<!ENTITY selectStyleSheet.tooltip "AlegeÈ›i un stil dintre cele prestabilite ale suplimentului. Stilurile â€žlightâ€ sunt pentru temele luminoase ale Firefox, iar cele â€ždarkâ€ pentru cele intunecate">
+<!ENTITY chooseStyle.label "Stil prestabilit:">
+<!ENTITY chooseStyle.accesskey "S">
+<!ENTITY chooseStyle.tooltip "SelectaÈ›i din lista derulantÄƒ">

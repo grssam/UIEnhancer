@@ -16,6 +16,7 @@
     <translator>velociraptor@BabelZilla (zh-TW)</translator>
     <translator>Axel Grude (RealRaven@BabelZilla) (de)</translator>
     <translator>Nero Wolfe @BabelZilla (ru)</translator>
+    <translator>Cãtãlin Zamfirescu (x10) (ro)</translator>
 
     <localized>
       <Description>
@@ -54,6 +55,15 @@
         <description>使網址列顯示為功能強大的麵包屑界面</description>
         <name>Location Bar Enhancer</name>
         <translator>velociraptor@BabelZilla</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
+        <locale>ro</locale>
+        <description>Implementeazã o interfaþã cu marcaje de navigare îmbunãtãþite în bara de adrese</description>
+        <name>Location Bar Enhancer</name>
+        <translator>Cãtãlin Zamfirescu (x10)</translator>
       </Description>
     </localized>
 
