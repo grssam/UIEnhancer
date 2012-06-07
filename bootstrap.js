@@ -2537,7 +2537,81 @@ function changeUI(window) {
       });
     }
 
+    function createHelperKeys() {
+      function $(id) window.document.getElementById(id);
+      function removeKey() {
+        let keyset = $(keysetID + "Helpers");
+        keyset && keyset.parentNode.removeChild(keyset);
+      }
+      function getNext(delta) {
+        if (enhancedURLBar.lastChild && enhancedURLBar.lastChild.previousSibling) {
+          getAsyncRelatedArray(enhancedURLBar.lastChild.previousSibling,
+            function([aDelta, returnedArray]) {
+              if (returnedArray.length == 1)
+                return;
+              relatedScrolledArray = returnedArray;
+              currentScrolledIndex = null;
+              Array.some(relatedScrolledArray, function(relatedPart, index) {
+                if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+                  .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
+                    currentScrolledIndex = index;
+                    return true;
+                }
+              });
+              if (currentScrolledIndex == null || currentScrolledIndex < 0)
+                return;
+              currentScrolledIndex+=aDelta;
+              try {
+                let url = returnedArray[currentScrolledIndex][1];
+                window.openUILinkIn(url, "current");
+              } catch (ex) {}
+            }, [delta]);
+        }
+      }
+      removeKey();
+      let UIEnhancerKeyset = window.document.createElementNS(XUL, "keyset");
+      UIEnhancerKeyset.setAttribute("id", keysetID + "Helpers");
+      // add shortcut key for going one level up
+      let (upKey = window.document.createElementNS(XUL, "key")) {
+        upKey.setAttribute("id", keyID + "LevelUP");
+        upKey.setAttribute("keycode", "VK_UP");
+        upKey.setAttribute("modifiers", "alt");
+        upKey.setAttribute("oncommand", "void(0);");
+        listen(window, upKey, "command", function() {
+          if (enhancedURLBar.lastChild && enhancedURLBar.lastChild.previousSibling) {
+            let url = enhancedURLBar.lastChild.previousSibling.getAttribute("url");
+            window.openUILinkIn(url, "current");
+          }
+        });
+        $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(upKey);
+      }
+      // add shortcut key for going to next sibling
+      let (nextKey = window.document.createElementNS(XUL, "key")) {
+        nextKey.setAttribute("id", keyID + "SiblingNext");
+        nextKey.setAttribute("keycode", "VK_DOWN");
+        nextKey.setAttribute("modifiers", "control, shift");
+        nextKey.setAttribute("oncommand", "void(0);");
+        listen(window, nextKey, "command", function(){
+          getNext(1);
+        });
+        $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(nextKey);
+      }
+      // add shortcut key for going to previous sibling
+      let (previousKey = window.document.createElementNS(XUL, "key")) {
+        previousKey.setAttribute("id", keyID + "SiblingPrevious");
+        previousKey.setAttribute("keycode", "VK_UP");
+        previousKey.setAttribute("modifiers", "control, shift");
+        previousKey.setAttribute("oncommand", "void(0);");
+        listen(window, previousKey, "command", function(){
+          getNext(-1);
+        });
+        $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(previousKey);
+      }
+      unload(removeKey, window);
+    }
+
     handleURLBarEvents();
+    createHelperKeys();
     updateURL();
     let runOnce = false;
     listen(window, window, "DOMContentLoaded", function() {
