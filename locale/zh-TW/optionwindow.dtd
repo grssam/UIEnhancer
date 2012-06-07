@@ -7,19 +7,19 @@
 <!ENTITY progressPane.label "進度列">
 <!ENTITY enhanceURLBar.label "在網址列使用麵包屑（階層化的分段網址）界面">
 <!ENTITY enhanceURLBar.accesskey "B">
-<!ENTITY enhanceURLBar.tooltip "此為本套件的主打功能。任何頁面的網址址都會以分段樣式化的方式呈現。">
+<!ENTITY enhanceURLBar.tooltip "這是本套件的主打功能。任何頁面的網址都會以分段樣式化的方式呈現。">
 <!ENTITY removeGibberish.label "移除分段中的亂數字串，顯示有意義的資訊。">
 <!ENTITY removeGibberish.accesskey "G">
-<!ENTITY removeGibberish.tooltip "將冗長的代碼 (例如00fjhgu4uUA94R23) 之類字串替換成易懂的文字。">
+<!ENTITY removeGibberish.tooltip "將冗長的代碼 (例如00fjhgu4uUA94R23) 或類似字串替換成易懂的文字。">
 <!ENTITY makeCapital.label "將所有單字的字首轉換成大寫">
 <!ENTITY makeCapital.accesskey "C">
 <!ENTITY makeCapital.tooltip "這個選項能改善麵包屑的外觀。">
 <!ENTITY useIdentityBox.label "利用空置的身分識別區塊顯示網域。">
 <!ENTITY useIdentityBox.accesskey "I">
 <!ENTITY useIdentityBox.tooltip "網頁位址的網域部分會顯示在身分識別區塊（網址列左端），並強調標示。">
-<!ENTITY identityBoxLeftClickChanged.label "左擊身份盒去根域時域裡面。">
+<!ENTITY identityBoxLeftClickChanged.label "網域顯示於身分識別區塊時，可點選開啟根網域。">
 <!ENTITY identityBoxLeftClickChanged.accesskey "L">
-<!ENTITY identityBoxLeftClickChanged.tooltip "當上面的設置被啟用，此設置將取代原來的左鍵點擊顯示頁面信息的行為，去域的網絡地址的行為。">
+<!ENTITY identityBoxLeftClickChanged.tooltip "前一選項啟用時，這個選項會以「點選開啟網頁位址的網域」取代原先「檢視身分識別資訊」的功能。">
 <!ENTITY useDragDrop.label "允許拖放麵包屑">
 <!ENTITY useDragDrop.accesskey "D">
 <!ENTITY useDragDrop.tooltip "讓網址的各個分段都能夠拖放，可以用來新增書籤（拖到書籤工具列）、建立捷徑（拖到桌面）或者開啟到新分頁">
@@ -49,11 +49,11 @@
 <!ENTITY resetStyleSheet.label "重設樣式表">
 <!ENTITY resetStyleSheet.accesskey "R">
 <!ENTITY resetStyleSheet.tooltip "將樣式還原為預設值">
-<!ENTITY selectStyleSheet.label  "或者選擇以下方式:">
-<!ENTITY selectStyleSheet.tooltip  "擠滿了這個附加元件。光樣式的默認樣式“選擇淺色的Firefox主題和黑暗的風格，深色的Firefox主題">
+<!ENTITY selectStyleSheet.label  "或者從下列樣式中選擇:">
+<!ENTITY selectStyleSheet.tooltip  "挑選套件內附的預設樣式。Light 樣式適合淺色調的主題，Dark 樣式則適合深色調主題。">
 <!ENTITY chooseStyle.label  "請選擇">
 <!ENTITY chooseStyle.accesskey  "S">
-<!ENTITY chooseStyle.tooltip  "從列表中選擇.">
+<!ENTITY chooseStyle.tooltip  "從清單選擇。">
 <!ENTITY showStatusInURLBar.label "在位址列顯示狀態文字。">
 <!ENTITY showStatusInURLBar.accesskey "S">
 <!ENTITY showStatusInURLBar.tooltip "注意：若 Status-4-Evar套件的同一功能已經啟用，這個選項將無法作用。">
