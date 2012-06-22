@@ -1331,7 +1331,7 @@ function changeUI(window) {
           tempPart = null;
       }
       // If hiddenStartingIndex is 1 , bring it back if iLabel is same
-      if (lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
+      if (!fx15Plus && lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
         && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
@@ -1364,7 +1364,7 @@ function changeUI(window) {
           }
           hiddenStartingIndex = 0;
       }
-      else if (lastPart && hiddenStartingIndex == 1 && !enhancedURLBar.firstChild
+      else if (!fx15Plus && lastPart && hiddenStartingIndex == 1 && !enhancedURLBar.firstChild
         && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           tStack = createStack(urlArray_updateURL[0], urlValue.slice(0,
             urlPartArray[0]), "domain", false);
@@ -1381,10 +1381,14 @@ function changeUI(window) {
           enhancedURLBar.insertBefore(tStack, enhancedURLBar.firstChild);
           tStack = null;
       }
-      if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild == null)
+      if (lastPart && hiddenStartingIndex > 0 && enhancedURLBar.firstChild == null) {
         setOpacity(1);
-      else
+        enhancedURLBar.style.display = "none";
+      }
+      else {
         setOpacity(0);
+        enhancedURLBar.style.display = "-moz-box";
+      }
     }
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
@@ -2194,7 +2198,12 @@ function changeUI(window) {
       if (!fx15Plus)
         origIdentity.collapsed = !pref("useIdentityBox");
     } catch (ex) {}
-    urlValue = decodeURI(getURI().spec);
+    try {
+      urlValue = decodeURI(getURI().spec);
+    }
+    catch (ex) {
+      urlValue = getURI().spec;
+    }
     try {
       URLDisplayed = enhancedURLBar.lastChild.getAttribute("url");
     } catch (ex) {
@@ -2215,6 +2224,8 @@ function changeUI(window) {
       updateLook();
       return;
     }
+    if (window.InstantFox.removeShadowNodes)
+      window.InstantFox.removeShadowNodes();
     counter = 0;
     initial = 0;
     hiddenStartingIndex = 0;
@@ -2465,7 +2476,7 @@ function changeUI(window) {
         reset(1);
         gURLBar.selectTextRange(0, gURLBar.value.length);
       });
-      listen(window, gURLBar, "blur", function() {
+      listen(window, gURLBar, "blur", function(e) {
         reset(0);
         if (!tabChanged)
           async(updateURL, pref("animationSpeed") != "none"? 210: 10);
@@ -3424,7 +3435,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     firstRunAfterInstall = true;
   else
     normalStartup = true;
-  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner", "Bookmarks Enhancer", "Status-4-Evar"];
+  let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner",
+                           "Bookmarks Enhancer", "Status-4-Evar", "InstantFox"];
   // Function to load stylesheets
   function loadStyles(style) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].

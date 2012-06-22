@@ -203,67 +203,6 @@ function unload2(callback, container) {
   return removeUnloader;
 }
 
-function unload3(callback, container) {
-  // Initialize the array of unloaders on the first usage
-  let unloaders = unload3.unloaders;
-  let unloading = unload3.unloading;
-  let newUnloaders = unload3.newUnloaders;
-  if (unloaders == null)
-    unloaders = unload3.unloaders = [];
-
-  // Calling with no arguments runs all the unloader callbacks
-  if (callback == null) {
-    unloading = true;
-    unloaders.slice().forEach(function(unloader) unloader());
-    unloading = false;
-    unloaders.length = 0;
-    unloaders = newUnloaders;
-    return;
-  }
-
-  // The callback is bound to the lifetime of the container if we have one
-  if (container != null) {
-    // Remove the unloader when the container unloads
-    container.addEventListener("unload", removeUnloader, false);
-
-    // Wrap the callback to additionally remove the unload listener
-    let origCallback = callback;
-    callback = function() {
-      container.removeEventListener("unload", removeUnloader, false);
-      origCallback();
-    }
-  }
-
-  // Wrap the callback in a function that ignores failures
-  function unloader() {
-    try {
-      callback();
-    }
-    catch(ex) {
-      Cc["@mozilla.org/consoleservice;1"]
-       .getService(Ci.nsIConsoleService)
-       .logStringMessage("An unloader callback threw: " + ex);
-    }
-  }
-  if (unloading)
-    newUnloaders.push(unloader);
-  else
-    unloaders.push(unloader);
-
-  // Provide a way to remove the unloader
-  function removeUnloader() {
-    let index = unloaders.indexOf(unloader);
-    if (index != -1)
-      unloaders.splice(index, 1);
-    else {
-      index = newUnloaders.indexOf(unloader);
-      if (index != -1)
-        newUnloaders.splice(index, 1);
-    }
-  }
-  return removeUnloader;
-}
-
 function watchWindows(callback) {
   var unloaded = false;
   unload(function() unloaded = true);
@@ -378,12 +317,12 @@ function makeWindowHelpers(window) {
         return;
       clearTimeout(timer);
       timer = null;
-      unUnload();
-      unUnload = null;
+      //unUnload();
+      //unUnload = null;
     }
 
     // Make sure to stop the timer when unloading
-    let unUnload = unload3(stopTimer, window);
+    //let unUnload = unload3(stopTimer, window);
 
     // Give the caller a way to cancel the timer
     //return stopTimer;
