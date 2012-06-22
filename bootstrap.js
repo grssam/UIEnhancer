@@ -413,11 +413,17 @@ function changeUI(window) {
     setOpacity(0);
   }
 
+  let MAXWIDTH = 0;
   function getMaxWidth() {
     let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
     let showStatusInURLBar = pref("showStatusInURLBar");
     let useLeftoverSpace = pref("useLeftoverSpace");
     let statusWidth = pref("statusWidth");
+    if (showStatusInURLBar && useLeftoverSpace && newStatusCon && newStatus
+      && newStatusCon.style.maxWidth.replace("px","")*1 > 0.5*pref("urlBarWidth")) {
+        newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*pref("urlBarWidth") + "px";
+        return 0.5*pref("urlBarWidth");
+    }
     let (udb = $("urlbar-display-box")) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
@@ -447,7 +453,8 @@ function changeUI(window) {
             - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + someWidth)
             : 160 + someWidth);
       }
-      return maxWidth;
+      MAXWIDTH = Math.min(maxWidth, pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100);
+      return MAXWIDTH;
     }
   }
 
@@ -612,7 +619,7 @@ function changeUI(window) {
     if (fx15Plus && enhancedURLBar.hasAttribute("domainVisible"))
       partsWidth += 7;
     if (partsWidth > getMaxWidth() || showingHidden)
-      enhancedURLBar.style.width = getMaxWidth() + "px";
+      enhancedURLBar.style.width = MAXWIDTH + "px";
     else
       enhancedURLBar.style.width = partsWidth + "px";
   }
@@ -1323,9 +1330,9 @@ function changeUI(window) {
     let tempPart = null;
     // Hiding the first parts on overflow if not mouseScrolled
     // else trimming the last parts further more
-    if (partsWidth > getMaxWidth() && !mouseScrolled && !showingHidden) {
+    if (partsWidth > MAXWIDTH && !mouseScrolled && !showingHidden) {
       let isDomainHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true";
-      while (partsWidth > getMaxWidth() -
+      while (partsWidth > MAXWIDTH -
         (isDomainHidden || (hiddenStartingIndex > 0)? 15: 0)) {
           if (enhancedURLBar.firstChild == null)
             break;
@@ -1399,21 +1406,21 @@ function changeUI(window) {
     }
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
-    else if (partsWidth > getMaxWidth() && mouseScrolled && !showingHidden) {
+    else if (partsWidth > MAXWIDTH && mouseScrolled && !showingHidden) {
       let pixelPerWord = scrolledStack.firstChild.boxObject.width/
         scrolledStack.firstChild.getAttribute("value").length;
       if (scrolledStack == enhancedURLBar.lastChild)
         scrolledStack.firstChild.setAttribute("value",
           trimWord(scrolledStack.firstChild.getAttribute("value"),
-          (getMaxWidth() - partsWidth + scrolledStack.firstChild.boxObject.width)
+          (MAXWIDTH - partsWidth + scrolledStack.firstChild.boxObject.width)
           /pixelPerWord));
       else {
         tempPart = enhancedURLBar.lastChild;
-        while (partsWidth > getMaxWidth() && !tempPart && tempPart != scrolledStack) {
+        while (partsWidth > MAXWIDTH && !tempPart && tempPart != scrolledStack) {
           partsWidth -= tempPart.boxObject.width;
-          if (getMaxWidth() - partsWidth >= 30) {
+          if (MAXWIDTH - partsWidth >= 30) {
             tempPart.firstChild.setAttribute("value", trimWord(
-              tempPart.firstChild.getAttribute("value"), (getMaxWidth()
+              tempPart.firstChild.getAttribute("value"), (MAXWIDTH
               - partsWidth)/pixelPerWord));
             partsWidth += tempPart.boxObject.width;
             tempPart = tempPart.previousSibling;
@@ -1455,7 +1462,7 @@ function changeUI(window) {
       if (tempP == null || tempP.getAttribute("isDomain") == "true")
         return;
       let width = tempP.firstChild.boxObject.width;
-      let chars = (getMaxWidth() - partsWidth + width - 20)/
+      let chars = (MAXWIDTH - partsWidth + width - 20)/
         (width/tempP.firstChild.getAttribute("value").length);
       if (chars > tempP.firstChild.getAttribute("value").length) {
         tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart, chars));
@@ -1463,7 +1470,7 @@ function changeUI(window) {
         partsWidth += tempP.firstChild.boxObject.width - width;
         width = tempP.firstChild.boxObject.width;
         tempP.firstChild.setAttribute("value", trimWord(lastUsefulPart,
-          (getMaxWidth() - partsWidth + width - 20)/
+          (MAXWIDTH - partsWidth + width - 20)/
           (width/tempP.firstChild.getAttribute("value").length)));
         partsWidth += tempP.firstChild.boxObject.width - width;
       }
@@ -2387,6 +2394,7 @@ function changeUI(window) {
     // resetting the enhancedURLBar
     reset(0);
     redRemoved = 0;
+    getMaxWidth();
     for (index = 0; index < urlArray_updateURL.length; index++) {
       urlVal_updateURL = urlArray_updateURL[index];
       isSetting_updateURL = false;
@@ -3189,6 +3197,7 @@ function changeUI(window) {
   /*
   * Code to put status bar in location bar starts here
   */
+  let newStatus = null, newStatusCon = null;
   function setupStatusBar() {
     let statusBar = $("statusbar-display");
     let (origSetter = statusBar.__lookupSetter__("label")) {
@@ -3209,7 +3218,7 @@ function changeUI(window) {
       + window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1;
     if (isLinux)
       height += 2;
-    let newStatusCon = window.document.createElementNS(XUL, "hbox");
+    newStatusCon = window.document.createElementNS(XUL, "hbox");
     newStatusCon.setAttribute("id", "UIEnhancer_StatusBar");
     newStatusCon.setAttribute("pack", "end");
     newStatusCon.style.display = "-moz-box";
@@ -3224,7 +3233,7 @@ function changeUI(window) {
         + STATUS + "'); background-size: 110% 100%; padding: 0px; margin: 0px;");
     newStatusIcon.setAttribute("flex", 0);
     newStatusCon.appendChild(newStatusIcon);
-    let newStatus = window.document.createElementNS(XUL, "label");
+    newStatus = window.document.createElementNS(XUL, "label");
     newStatus.setAttribute("flex", 0);
     newStatus.setAttribute("crop", "center");
     if (isMac)
@@ -3277,17 +3286,24 @@ function changeUI(window) {
         origInput.setAttribute("flex", 1);
       }
       else {
+        getMaxWidth();
         animateToggleEnhancedURLBar(true);
-        if ((pref("useLeftoverSpace")? (getMaxWidth() + 225 - partsWidth):
+        newStatus.setAttribute("flex", 0);
+        if ((pref("useLeftoverSpace")? (MAXWIDTH + 225 - partsWidth):
           pref("statusWidth"))/value.length < 8)
             newStatus.setAttribute("flex", 1);
-        else
-          newStatus.setAttribute("flex", 0);
-        newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
+        newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? MAXWIDTH
           + 225 - partsWidth: pref("statusWidth"))+ "px";
         newStatus.value = value;
         origInput.setAttribute("flex", 0);
         newStatusCon.collapsed = false;
+        async(function() {
+          if (gURLBar.boxObject.x + newStatusCon.boxObject.width
+            + enhancedURLBar.boxObject.width > Math.min(gURLBar.boxObject.x
+            + gURLBar.boxObject.width, window.screen.width))
+              newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
+                + 225 - partsWidth: pref("statusWidth"))+ "px";
+        }, 20);
       }
     }
     unload(function() {
