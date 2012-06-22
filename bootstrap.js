@@ -400,8 +400,10 @@ function changeUI(window) {
       });
 
     unload(function() {
-      gURLBar.mInputField.parentNode.removeChild(gURLBar.mInputField.previousSibling);
-      urlBarHeight = enhancedURLBar = origInput = null;
+      try {
+        window.gURLBar.mInputField.parentNode.removeChild(gURLBar.mInputField.previousSibling);
+        urlBarHeight = enhancedURLBar = origInput = null;
+      } catch(e){}
     }, window);
     setOpacity(0);
   }
@@ -2224,7 +2226,7 @@ function changeUI(window) {
       updateLook();
       return;
     }
-    if (window.InstantFox.removeShadowNodes)
+    if (window.InstantFox && window.InstantFox.removeShadowNodes)
       window.InstantFox.removeShadowNodes();
     counter = 0;
     initial = 0;
@@ -2478,6 +2480,10 @@ function changeUI(window) {
       });
       listen(window, gURLBar, "blur", function(e) {
         reset(0);
+        async(function() {
+          if (window.InstantFox && window.InstantFox.removeShadowNodes)
+            window.InstantFox.removeShadowNodes();
+        },250);
         if (!tabChanged)
           async(updateURL, pref("animationSpeed") != "none"? 210: 10);
       });
@@ -3437,6 +3443,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     normalStartup = true;
   let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner",
                            "Bookmarks Enhancer", "Status-4-Evar", "InstantFox"];
+  let conflictingAddonsId = ["searchy@searchy"];
   // Function to load stylesheets
   function loadStyles(style) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
@@ -3621,8 +3628,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   function checkConflict(addon) {
     if (addon.id == "BookmarksEnhancer@girishsharma.com")
       setPref("bringBookmarksUp", false);
-    if (conflictingAddons.indexOf(addon.name) >= 0)
-      reload();
+    if (conflictingAddons.indexOf(addon.name) >= 0
+      || conflictingAddonsId.indexOf(addon.id) >= 0) {
+        Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer)
+          .initWithCallback({notify:function(){reload()},}, addon.id == "searchy@searchy"? 500:0, Ci.nsITimer.TYPE_ONE_SHOT);
+    }
   }
   // calling the function to setup everything
   init();
