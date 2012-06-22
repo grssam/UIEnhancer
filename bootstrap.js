@@ -1515,11 +1515,16 @@ function changeUI(window) {
       tab = "tab";
     if (partText != "") {
       mouseScrolled = false;
+      if (partText == "about")
+        partText += ":";
       window.openUILinkIn(partText, tab);
     }
     else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled || tab == "tab") {
       mouseScrolled = false;
-      window.openUILinkIn(clickedStack.getAttribute("url"), tab);
+      let url = clickedStack.getAttribute("url");
+      if (url == "about")
+        url += ":";
+      window.openUILinkIn(url, tab);
     }
   }
 
@@ -1972,6 +1977,17 @@ function changeUI(window) {
     createdStack = null;
   }
 
+  function getAboutUrls() {
+    let sub="@mozilla.org/network/protocol/about;1?what=", ans=[];
+    for (let url in Cc)
+      if (url.indexOf(sub) == 0) {
+        let name = url.substr(sub.length);
+        if (name.length > 0)
+          ans.push([makeCapital(name),'about:'+ name]);
+      }
+    return ans.sort();
+  }
+
   function getMenuItems(arrowedStack) {
     function createToolbarButton(tooltip, image, label) {
       let button = document.createElementNS(XUL, "menuitem");
@@ -2074,6 +2090,18 @@ function changeUI(window) {
       highlightPart(arrowedStack, true, true, '>');
     else
       highlightPart(arrowedStack, "partial", true, 'v');
+    if (arrowedStack.getAttribute("url") == "about") {
+      let last = resultArray.pop();
+      let total = getAboutUrls();
+      let found = false;
+      total.forEach(function([name,url]) {
+        if (name == last[0])
+          found = true;
+      });
+      if (!found)
+        total.push(last);
+      resultArray = total;
+    }
     // Adding the base domain if domain in Identity Box
     if (arrowedStack.getAttribute("isDomain") == "true")
       resultArray.push([arrowedStack.firstChild.getAttribute("value"),
