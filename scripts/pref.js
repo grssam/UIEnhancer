@@ -60,6 +60,7 @@ pref.defaults = {
   animationSpeed: "normal",
   makeCapital: true,
   useIdentityBox: true,
+  useIdentityEverytime: false,
   identityBoxLeftClickChanged: true,
   useDragDrop: true,
   useSmallIcons: false,
