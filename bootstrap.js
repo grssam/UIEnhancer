@@ -144,7 +144,11 @@ function changeUI(window) {
   function $(id) document.getElementById(id);
   let async = makeWindowHelpers(window).async;
   let fx15Plus = Services.appinfo.platformVersion.split(".")[0]*1 > 14;
-
+  if (gURLBar.parentNode.parentNode.id != "personal-titlebar")
+    async(function () {
+      if (gURLBar.parentNode.parentNode.id == "personal-titlebar")
+        reload();
+    },2500);
   // Disable the add-on when customizing
   listen(window, window, "beforecustomization", function() {
     if (gAddon.userDisabled)
@@ -2311,7 +2315,12 @@ function changeUI(window) {
         length = null;
         return true;
       });
-      urlValue = decodeURI(getURI().spec);
+      try {
+        urlValue = decodeURI(getURI().spec);
+      }
+      catch (ex) {
+        urlValue = getURI().spec;
+      }
       if (settingsStartIndex == null)
         settingsStartIndex = (urlPostSetting.length > 0? urlPartArray.length: null);
       urlPostSetting.split(/[?&#]/).forEach(function(valueVal) {
@@ -3471,7 +3480,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     normalStartup = true;
   let conflictingAddons = ["Mozilla Labs: Prospector - OneLiner",
                            "Bookmarks Enhancer", "Status-4-Evar", "InstantFox"];
-  let conflictingAddonsId = ["searchy@searchy"];
+  let conflictingAddonsId = ["searchy@searchy", "personaltitlebar@moztw.org"];
   // Function to load stylesheets
   function loadStyles(style) {
     let sss = Cc["@mozilla.org/content/style-sheet-service;1"].
