@@ -3168,7 +3168,19 @@ function changeUI(window) {
     });
     // Event listener to detect window's dimension change
     listen(window, window, "resize", windowResized);
+    // Mutation Observer to observe any dynamic addition to the nav-bar.
+    let observer = new (window.MutationObserver || window.MozMutationObserver)(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList') {
+          async(setupBookmarksUI,10);
+          return;
+        }
+      });
+    });
+    observer.observe($("nav-bar"), {childList: true});
     unload(function() {
+      observer.disconnect();
+      observer = null;
       addBookmarkListeners = function() {};
       try {
         gURLBar.removeEventListener("mousemove", temp, false);
@@ -3302,7 +3314,7 @@ function changeUI(window) {
             + enhancedURLBar.boxObject.width > Math.min(gURLBar.boxObject.x
             + gURLBar.boxObject.width, window.screen.width))
               newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
-                + 225 - partsWidth: pref("statusWidth"))+ "px";
+                + 200 - partsWidth: pref("statusWidth"))+ "px";
         }, 20);
       }
     }
