@@ -3709,7 +3709,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     openSite = true;
   watchWindows(function(window) {
     if (openSite) {
-      window.openUILinkIn("http://grssam.com/?p=236", "tab");
+      window.openUILinkIn("http://grssam.com/?p=259", "tab");
       openSite = false;
     }
   });
