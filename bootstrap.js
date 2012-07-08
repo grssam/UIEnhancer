@@ -453,7 +453,7 @@ function changeUI(window) {
             - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + someWidth)
             : 160 + someWidth);
       }
-      MAXWIDTH = Math.min(maxWidth, pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100);
+      MAXWIDTH = Math.max(Math.min(maxWidth, pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100), 0);
       return MAXWIDTH;
     }
   }
@@ -2407,7 +2407,7 @@ function changeUI(window) {
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
     }
     if (fx15Plus && !(pref("useIdentityBox") && pref("useIdentityEverytime"))) {
-      if (enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
+      if (enhancedURLBar.firstChild && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
         enhancedURLBar.setAttribute("domainVisible", true);}
       else
         try {
@@ -3169,23 +3169,25 @@ function changeUI(window) {
     // Event listener to detect window's dimension change
     listen(window, window, "resize", windowResized);
     // Mutation Observer to observe any dynamic addition to the nav-bar.
-    let observer = new (window.MutationObserver || window.MozMutationObserver)(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if (mutation.type === 'childList') {
-          async(setupBookmarksUI,10);
-          return;
-        }
+    if (window.MutationObserver || window.MozMutationObserver) {
+      let observer = new (window.MutationObserver || window.MozMutationObserver)(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'childList') {
+            async(setupBookmarksUI,10);
+            return;
+          }
+        });
       });
-    });
-    observer.observe($("nav-bar"), {childList: true});
-    unload(function() {
-      observer.disconnect();
-      observer = null;
-      addBookmarkListeners = function() {};
-      try {
-        gURLBar.removeEventListener("mousemove", temp, false);
-      } catch(ex) {}
-    }, window);
+      observer.observe($("nav-bar"), {childList: true});
+      unload(function() {
+        observer.disconnect();
+        observer = null;
+        addBookmarkListeners = function() {};
+        try {
+          gURLBar.removeEventListener("mousemove", temp, false);
+        } catch(ex) {}
+      }, window);
+    }
     listen(window, $("toolbar-context-menu"), "click", function() {
       async(function() {
         bookmarksToolbar.collapsed = $("nav-bar").collapsed;
@@ -3705,7 +3707,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // calling the function to setup everything
   init();
 
-  if ((reason == 7 || reason == 5) && data.version == "4.8")
+  if ((reason == 7 || reason == 5) && data.version == "4.9")
     openSite = true;
   watchWindows(function(window) {
     if (openSite) {
