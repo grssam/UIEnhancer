@@ -2653,8 +2653,8 @@ function changeUI(window) {
       // add shortcut key for going one level up
       let (upKey = window.document.createElementNS(XUL, "key")) {
         upKey.setAttribute("id", keyID + "LevelUP");
-        upKey.setAttribute("keycode", "VK_UP");
-        upKey.setAttribute("modifiers", "alt");
+        upKey.setAttribute("keycode", pref("levelUpKey"));
+        upKey.setAttribute("modifiers", pref("levelUpModifiers"));
         upKey.setAttribute("oncommand", "void(0);");
         listen(window, upKey, "command", function() {
           if (enhancedURLBar.lastChild && enhancedURLBar.lastChild.previousSibling) {
@@ -2667,8 +2667,8 @@ function changeUI(window) {
       // add shortcut key for going to next sibling
       let (nextKey = window.document.createElementNS(XUL, "key")) {
         nextKey.setAttribute("id", keyID + "SiblingNext");
-        nextKey.setAttribute("keycode", "VK_DOWN");
-        nextKey.setAttribute("modifiers", "control, shift");
+        nextKey.setAttribute("keycode", pref("levelNextKey"));
+        nextKey.setAttribute("modifiers", pref("levelNextModifiers"));
         nextKey.setAttribute("oncommand", "void(0);");
         listen(window, nextKey, "command", function(){
           getNext(1);
@@ -2678,8 +2678,8 @@ function changeUI(window) {
       // add shortcut key for going to previous sibling
       let (previousKey = window.document.createElementNS(XUL, "key")) {
         previousKey.setAttribute("id", keyID + "SiblingPrevious");
-        previousKey.setAttribute("keycode", "VK_UP");
-        previousKey.setAttribute("modifiers", "control, shift");
+        previousKey.setAttribute("keycode", pref("levelPreviousKey"));
+        previousKey.setAttribute("modifiers", pref("levelPreviousModifiers"));
         previousKey.setAttribute("oncommand", "void(0);");
         listen(window, previousKey, "command", function(){
           getNext(-1);

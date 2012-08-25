@@ -81,6 +81,12 @@ pref.defaults = {
   useLeftoverSpace: true,
   statusWidth: 250,
   toggleToReload: true,
+  levelUpKey: "VK_UP",
+  levelUpModifiers: "alt",
+  levelNextKey: "VK_DOWN",
+  levelNextModifiers: "control, shift",
+  levelPreviousKey: "VK_UP",
+  levelPreviousModifiers: "control, shift",
 };
 
 pref.observe = function(prefs, callback) {
