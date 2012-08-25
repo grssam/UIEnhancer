@@ -72,7 +72,7 @@ pref.defaults = {
   buttonParentID: "addon-bar",
   buttonNextSiblingID: "",
   shortcutKey: "L",
-  shortcutModifiers: "accel, shift",
+  shortcutModifiers: "accel, alt",
   showStatusInURLBar: true,
   showProgressInURLBar: true,
   showProgressAsArrow: false,

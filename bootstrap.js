@@ -1177,13 +1177,19 @@ function changeUI(window) {
 
     // Adding the Text Stack
     let tempS = document.createElementNS(XUL, "label");
-    tempS.setAttribute("value", trimWord(createVal));
+    let trimmedVal = trimWord(createVal);
+    tempS.setAttribute("value", trimmedVal);
     tempS.setAttribute("id", "UIEnhancer_URLBar_Stack_Text");
     //tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
-    tempS.setAttribute("tooltiptext", l10n("rightClick.tooltip")
-      + (!enhancedURLBar.firstChild? ".": " " + l10n("sibling.tooltip"))
-      + l10n("dragDrop.tooltip"));
+    if (trimmedVal == createVal) {
+      tempS.setAttribute("tooltiptext", l10n("rightClick.tooltip")
+        + (!enhancedURLBar.firstChild? ".": " " + l10n("sibling.tooltip"))
+        + l10n("dragDrop.tooltip"));
+    }
+    else {
+      tempS.setAttribute("tooltiptext", createVal);
+    }
     if ((partType == "domain" && (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime")))) || hiddenArrow)
       tempS.style.display = "none";
     else
@@ -3324,7 +3330,7 @@ function changeUI(window) {
           if (gURLBar.boxObject.x + newStatusCon.boxObject.width
             + enhancedURLBar.boxObject.width > Math.min(gURLBar.boxObject.x
             + gURLBar.boxObject.width, window.screen.width))
-              newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? MAXWIDTH
+              newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
                 + 200 - partsWidth: pref("statusWidth"))+ "px";
         }, 20);
       }
