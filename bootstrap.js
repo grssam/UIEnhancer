@@ -189,6 +189,7 @@ function changeUI(window) {
   let tabChanged = false;
   let showingHidden = false;
   let hiddenStartingIndex = 0;
+  let locationBarEnterPressed = false;
   unload(function() {
     urlPartArray = partPointer = arrowMouseDown = tabChanged = titleChanged
       = textMouseDown = partsWidth = newDocumentLoaded = hiddenStartingIndex
@@ -2247,11 +2248,17 @@ function changeUI(window) {
       if (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime")))
         origIdentity.collapsed = !pref("useIdentityBox");
     } catch (ex) {}
-    try {
-      urlValue = decodeURI(getURI().spec);
+    if (locationBarEnterPressed) {
+      urlValue = gURLBar.value;
+      locationBarEnterPressed = false;
     }
-    catch (ex) {
-      urlValue = getURI().spec;
+    else {
+      try {
+        urlValue = decodeURI(getURI().spec);
+      }
+      catch (ex) {
+        urlValue = getURI().spec;
+      }
     }
     try {
       URLDisplayed = enhancedURLBar.lastChild.getAttribute("url");
@@ -2540,6 +2547,13 @@ function changeUI(window) {
         },250);
         if (!tabChanged)
           async(updateURL, pref("animationSpeed") != "none"? 210: 10);
+      });
+      listen(window, gURLBar, "keydown", function(e) {
+        switch (e.keyCode) {
+          case e.DOM_VK_ENTER:
+          case e.DOM_VK_RETURN:
+            locationBarEnterPressed = true;
+        }
       });
       listen(window, gURLBar, "mouseout", function() {
         if (ctrlMouseHover && !gURLBar.focused) {
