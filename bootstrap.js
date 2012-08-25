@@ -424,19 +424,20 @@ function changeUI(window) {
         newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*pref("urlBarWidth") + "px";
         return 0.5*pref("urlBarWidth");
     }
+    let origBoxObject = origIdentity.boxObject;
     let (udb = $("urlbar-display-box")) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
       if (udb == null) {
         // case when internal status pref'd on
         if (showStatusInURLBar && !S4E_statusInURLBar)
-          return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
+          return pref("urlBarWidth")*1 - origBoxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
         // case otherwise
         else
-          return pref("urlBarWidth")*1 - origIdentity.boxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+          return pref("urlBarWidth")*1 - origBoxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
       }
       let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
-        - origIdentity.boxObject.x - origIdentity.boxObject.width;
+        - origBoxObject.x - origBoxObject.width;
       if (showStatusInURLBar && !S4E_statusInURLBar)
         maxWidth -= (useLeftoverSpace? 250: Math.max(statusWidth, 60));
       else
@@ -446,14 +447,14 @@ function changeUI(window) {
         let someWidth = udb.parentNode.lastChild.boxObject.x
           - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width;
         if (showStatusInURLBar && !S4E_statusInURLBar)
-          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
+          maxWidth = pref("urlBarWidth")*1 - origBoxObject.width
             - (useLeftoverSpace? 250: Math.max(statusWidth, 160));
         else
-          maxWidth = pref("urlBarWidth")*1 - origIdentity.boxObject.width
+          maxWidth = pref("urlBarWidth")*1 - origBoxObject.width
             - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + someWidth)
             : 160 + someWidth);
       }
-      MAXWIDTH = Math.max(Math.min(maxWidth, pref("urlBarWidth")*1 - origIdentity.boxObject.width - 100), 0);
+      MAXWIDTH = Math.max(Math.min(maxWidth, pref("urlBarWidth")*1 - origBoxObject.width - 100), 0);
       return MAXWIDTH;
     }
   }
@@ -597,7 +598,7 @@ function changeUI(window) {
       enhancedURLBar.parentNode.insertBefore(tStack, enhancedURLBar.nextSibling);
       isMac = null;
     }
-    else if (partsWidth < (getMaxWidth() - 10) && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
+    else if (partsWidth < (MAXWIDTH - 10) && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       partPointer = enhancedURLBar.firstChild;
       arrowMouseDown = false;
       updateURL();
@@ -2558,7 +2559,15 @@ function changeUI(window) {
           }
         }, 10);
       });
-      listen(window, window, "resize", function() {async(function() {updateURL(true);});});
+      let lastInnerWidth = 0;
+      listen(window, window, "resize", function() {
+        if (Math.abs(lastInnerWidth - window.innerWidth) > 5) {
+          lastInnerWidth = window.innerWidth;
+          async(function() {
+            updateURL(true);
+          });
+        }
+      }, false);
       // Mouse dragging event listeners
       let dragStarted = false;
       let firstHidden = false;
@@ -3315,7 +3324,7 @@ function changeUI(window) {
           if (gURLBar.boxObject.x + newStatusCon.boxObject.width
             + enhancedURLBar.boxObject.width > Math.min(gURLBar.boxObject.x
             + gURLBar.boxObject.width, window.screen.width))
-              newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? getMaxWidth()
+              newStatusCon.style.maxWidth = newStatus.style.maxWidth = (pref("useLeftoverSpace")? MAXWIDTH
                 + 200 - partsWidth: pref("statusWidth"))+ "px";
         }, 20);
       }
