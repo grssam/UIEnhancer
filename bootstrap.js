@@ -2321,9 +2321,13 @@ function changeUI(window) {
       }
       else
         urlPostSetting = "";
-      initial = urlValue.indexOf("://") > 0 ? urlValue.indexOf("://") + 3: 0;
+      initial = urlValue.indexOf(":///") > 0
+        ? urlValue.indexOf(":///") + 4
+        : urlValue.indexOf("://") > 0
+          ? urlValue.indexOf("://") + 3
+          : 0;
       urlArray_updateURL = urlValue.split(/[\/#]/).filter(function(valueVal) {
-        if (valueVal.match(/(https?:)/))
+        if (valueVal.match(/(https?:)|(file:)|(chrome:)|(wysiwyg:)/))
           return false;
         else if (valueVal == "") {
           counter++;
