@@ -3756,11 +3756,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   // calling the function to setup everything
   init();
 
-  if ((reason == 7 || reason == 5) && data.version == "4.9")
+  if ((reason == 7 || reason == 5) && data.version == "5.0")
     openSite = true;
   watchWindows(function(window) {
     if (openSite) {
-      window.openUILinkIn("http://grssam.com/?p=259", "tab");
+      window.openUILinkIn("http://grssam.com/?p=303", "tab");
       openSite = false;
     }
   });
