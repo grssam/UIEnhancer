@@ -63,7 +63,7 @@ const styleSheetList = [
   "DevtoolsLight",
 ];
 let usedStyleIndex = 0;
-let showUserPassInBreadcrumbs = false;
+let showUserPassInBreadcrumbs = false, splitQueryStrings = false;
 // variable to store localized strings
 let strings = {str:null};
 XPCOMUtils.defineLazyGetter(strings, "str", function () {
@@ -2355,7 +2355,8 @@ function changeUI(window) {
       }
       if (settingsStartIndex == null)
         settingsStartIndex = (urlPostSetting.length > 0? urlPartArray.length: null);
-      urlPostSetting.split(/[?&#]/).forEach(function(valueVal) {
+      urlPostSetting.split(new RegExp("[?&#" + (splitQueryStrings?"/":"") + "]"))
+        .forEach(function(valueVal) {
         if (valueVal == "") {
           counter++;
           return;
@@ -3612,6 +3613,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     // adding the custom color to the progressColorList
     progressColorList[3] = pref("progressBarCustomColor");
     showUserPassInBreadcrumbs = pref("showUserPassInBreadcrumbs");
+    splitQueryStrings = pref("splitQueryStrings");
 
     // check if S4E is there, if yes, update the variable
     try {
@@ -3666,9 +3668,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       progressColorList[3] = pref("progressBarCustomColor");
     });
     pref.observe([
-      "showUserPassInBreadcrumbs"
+      "showUserPassInBreadcrumbs",
+      "splitQueryStrings"
     ], function() {
       showUserPassInBreadcrumbs = pref("showUserPassInBreadcrumbs");
+      splitQueryStrings = pref("splitQueryStrings");
     });
     // Making makeCapital optional behind a pref
     let (orig = makeCapital) {

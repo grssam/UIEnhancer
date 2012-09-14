@@ -88,6 +88,7 @@ pref.defaults = {
   levelPreviousKey: "VK_UP",
   levelPreviousModifiers: "control, shift",
   showUserPassInBreadcrumbs: false,
+  splitQueryStrings: false,
 };
 
 pref.observe = function(prefs, callback) {
