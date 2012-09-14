@@ -87,6 +87,7 @@ pref.defaults = {
   levelNextModifiers: "control, shift",
   levelPreviousKey: "VK_UP",
   levelPreviousModifiers: "control, shift",
+  showUserPassInBreadcrumbs: false,
 };
 
 pref.observe = function(prefs, callback) {

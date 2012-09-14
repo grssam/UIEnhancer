@@ -63,6 +63,7 @@ const styleSheetList = [
   "DevtoolsLight",
 ];
 let usedStyleIndex = 0;
+let showUserPassInBreadcrumbs = false;
 // variable to store localized strings
 let strings = {str:null};
 XPCOMUtils.defineLazyGetter(strings, "str", function () {
@@ -2260,6 +2261,11 @@ function changeUI(window) {
         urlValue = getURI().spec;
       }
     }
+    if (!showUserPassInBreadcrumbs
+      && urlValue.match(/(https?:\/\/)?[^\.:]+:[^@]+@[^\.]+\./)) {
+      let userPass = urlValue.match(/(https?:\/\/)?([^\.:]+:[^@]+@)[^\.]+\./)[2];
+      urlValue = urlValue.replace(userPass, "");
+    }
     try {
       URLDisplayed = enhancedURLBar.lastChild.getAttribute("url");
     } catch (ex) {
@@ -3601,6 +3607,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     }
     // adding the custom color to the progressColorList
     progressColorList[3] = pref("progressBarCustomColor");
+    showUserPassInBreadcrumbs = pref("showUserPassInBreadcrumbs");
 
     // check if S4E is there, if yes, update the variable
     try {
@@ -3653,6 +3660,11 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "progressBarCustomColor"
     ], function() {
       progressColorList[3] = pref("progressBarCustomColor");
+    });
+    pref.observe([
+      "showUserPassInBreadcrumbs"
+    ], function() {
+      showUserPassInBreadcrumbs = pref("showUserPassInBreadcrumbs");
     });
     // Making makeCapital optional behind a pref
     let (orig = makeCapital) {
