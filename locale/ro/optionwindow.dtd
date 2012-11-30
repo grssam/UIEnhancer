@@ -26,18 +26,6 @@
 <!ENTITY combination.label "Combinație de taste pentru accesarea directă a casetei de opțiuni:">
 <!ENTITY optionsShortcutTextBox.accesskey "t">
 <!ENTITY optionsShortcutTextBox.tooltip "Dați clic în caseta text și apăsați combinația dorită">
-<!ENTITY bringBookmarksUp.label "Se integrează bara de semne de carte în bara de adrese">
-<!ENTITY bringBookmarksUp.accesskey "b">
-<!ENTITY bringBookmarksUp.tooltip "Permiteți combinarea barei de semne de carte cu bara de adrese pentru a aloca mai mult spațiu vertical pentru conținutul paginii web. Util pentru ecrane cu lățimea de până la 1440 de pixeli">
-<!ENTITY urlBarWidth.label "Lungimea barei de adrese:">
-<!ENTITY urlBarWidth.accesskey "L">
-<!ENTITY urlBarWidth.tooltip "Lungimea este ajustată automat pentru a afișa cât mai multe semne de carte și, în același timp, pentru a lăsa suficient spațiu pentru bara de adrese. Puteți defini o valoare proprie care să înlocuiască valoarea presatbilită">
-<!ENTITY useSmallIcons.label "Se micșorează pictogramele care succed barei de adrese">
-<!ENTITY useSmallIcons.accesskey "m">
-<!ENTITY useSmallIcons.tooltip "Permiteți ca pictogramele care succed barei de adrese să capete un aspect care să corespundă elementelor din bara de semne de carte">
-<!ENTITY animationSpeed.label "Modificare și viteză de tranziție a barei de adrese în timpul editării adresei">
-<!ENTITY animationSpeed.accesskey "V">
-<!ENTITY animationSpeed.tooltip "Alegeți dacă bara de adrese își maximizează sau nu lungimea în momentul editării adresei cât și viteza de tranziție">
 <!ENTITY useStyleSheet.label "Se utilizează noua interfață pentru marcajele de navigare">
 <!ENTITY useStyleSheet.accesskey "u">
 <!ENTITY useStyleSheet.tooltip "Activați noul și elegantul stil pentru marcaje. Dacă este dezactivat, se folosește stilul de navigare din Windows Explorer (Windows Vista)">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label "Culoare pentru bara de progres">
 <!ENTITY chooseColor.tooltip "Alegeți o culoare pentru bara de progres">
 <!ENTITY custom.label "Definită de utilizator">
-<!ENTITY animationSpeed.normal.label "Tranziție normală">
-<!ENTITY animationSpeed.normal.accesskey "n">
-<!ENTITY animationSpeed.fast.label "Tranziție rapidă">
-<!ENTITY animationSpeed.fast.accesskey "r">
-<!ENTITY animationSpeed.none.label "Fără modificare">
-<!ENTITY animationSpeed.none.accesskey "F">
