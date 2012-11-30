@@ -2250,6 +2250,9 @@ function changeUI(window) {
         urlValue = getURI().spec;
       }
     }
+    if (urlValue.length > 1000) {
+      return;
+    }
     if (!showUserPassInBreadcrumbs
       && urlValue.match(/(https?:\/\/)?[^\.:]+:[^@]+@[^\.]+\./)) {
       let userPass = urlValue.match(/(https?:\/\/)?([^\.:]+:[^@]+@)[^\.]+\./)[2];
