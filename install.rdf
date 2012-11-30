@@ -61,9 +61,9 @@
     <localized>
       <Description>
         <locale>ro</locale>
-        <description>Implementeazã o interfaþã cu marcaje de navigare îmbunãtãþite în bara de adrese</description>
+        <description>Implementează o interfaţă cu marcaje de navigare îmbunătăţite în bara de adrese</description>
         <name>Location Bar Enhancer</name>
-        <translator>Cãtãlin Zamfirescu (x10)</translator>
+        <translator>Cătălin Zamfirescu (x10)</translator>
       </Description>
     </localized>
 
