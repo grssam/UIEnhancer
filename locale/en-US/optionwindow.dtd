@@ -26,6 +26,10 @@
 <!ENTITY identityBoxLeftClickChanged.accesskey     "L">
 <!ENTITY identityBoxLeftClickChanged.tooltip       "When the above setting is enabled, this setting will replace the original left click to show page info behavior to go to the domain of web address behavior.">
 
+<!ENTITY refreshOnLastPartClick.label         "Reload the web page on clicking the last breadbrumb">
+<!ENTITY refreshOnLastPartClick.accesskey     "R">
+<!ENTITY refreshOnLastPartClick.tooltip       "If this is unchecked, left clicking the last breadcrumb (without pressing Ctrl) will do nothing.">
+
 <!ENTITY useDragDrop.label            "Allow dragging and dropping of Breadcrumb parts">
 <!ENTITY useDragDrop.accesskey        "D">
 <!ENTITY useDragDrop.tooltip          "Each part can be dragged and dropped to make a new bookmark in Bookmarks Toolbar or to make a link shortcut on Desktop, or even in a new Tab">

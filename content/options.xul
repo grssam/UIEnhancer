@@ -51,6 +51,7 @@
       <preference id="useIdentityBox" name="extensions.UIEnhancer.useIdentityBox" type="bool"/>
       <preference id="useDragDrop" name="extensions.UIEnhancer.useDragDrop" type="bool"/>
       <preference id="identityBoxLeftClickChanged" name="extensions.UIEnhancer.identityBoxLeftClickChanged" type="bool"/>
+      <preference id="refreshOnLastPartClick" name="extensions.UIEnhancer.refreshOnLastPartClick" type="bool"/>
     </preferences>
     <vbox flex="0">
       <checkbox id="enhanceURLBarCheckBox" preference="enhanceURLBar" oncommand="optionsWindow.toggleURLBarSettings();"
@@ -66,6 +67,9 @@
         <checkbox id="identityBoxLeftClickChangedCheckBox" preference="identityBoxLeftClickChanged"
           oncommand="optionsWindow.notifyChange();" tooltiptext="&identityBoxLeftClickChanged.tooltip;"
           label="&identityBoxLeftClickChanged.label;" accesskey="&identityBoxLeftClickChanged.accesskey;" />
+        <checkbox id="refreshOnLastPartClickCheckBox" preference="refreshOnLastPartClick"
+          oncommand="optionsWindow.notifyChange();" tooltiptext="&refreshOnLastPartClick.tooltip;"
+          label="&refreshOnLastPartClick.label;" accesskey="&refreshOnLastPartClick.accesskey;" />
       </groupbox>
       <checkbox id="useDragDropCheckBox" preference="useDragDrop" oncommand="optionsWindow.notifyChange();"
         tooltiptext="&useDragDrop.tooltip;" label="&useDragDrop.label;" accesskey="&useDragDrop.accesskey;" />

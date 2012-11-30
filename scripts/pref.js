@@ -86,6 +86,8 @@ pref.defaults = {
   showUserPassInBreadcrumbs: false,
   splitQueryStrings: false,
   provideFirstRunExperience: true,
+  refreshOnLastPartClick: false,
+  dndReload: false,
 };
 
 pref.observe = function(prefs, callback) {

@@ -1564,6 +1564,41 @@ function changeUI(window) {
         url += ":";
       window.openUILinkIn(url, tab);
     }
+    else if (clickedStack == enhancedURLBar.lastChild && pref("refreshOnLastPartClick")) {
+      mouseScrolled = false;
+      let url = clickedStack.getAttribute("url");
+      if (url == "about")
+        url += ":";
+      window.openUILinkIn(url, tab);
+    }
+    else if (clickedStack == enhancedURLBar.lastChild &&
+             !pref("refreshOnLastPartClick") && !pref("dndReload")) {
+      let buttons = [{
+        label: l10n("reloadOnce.label"),
+        accessKey: l10n("reloadOnce.accesskey")
+      },{
+        label: l10n("reloadAlways.label"),
+        accessKey: l10n("reloadAlways.accesskey")
+      },{
+        label: l10n("neverAskAgain.label"),
+        accessKey: l10n("neverAskAgain.accesskey")
+      }];
+      showContentNotification(l10n("shouldReload.label"), l10n("UIE.label"),
+        buttons, function(decision) {
+          if (decision == 0 || decision == 1) {
+            if (decision == 1)
+              pref("refreshOnLastPartClick", true);
+            mouseScrolled = false;
+            let url = clickedStack.getAttribute("url");
+            if (url == "about")
+              url += ":";
+            window.openUILinkIn(url, tab);
+          }
+          else if (decision == 2) {
+            pref("dndReload", true);
+          }
+        }, 10000);
+    }
   }
 
   // Helper function used to fill missing entries in the relatedArray
