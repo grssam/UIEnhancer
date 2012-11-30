@@ -26,18 +26,6 @@
 <!ENTITY combination.label "快速鍵組合:">
 <!ENTITY combination.accesskey "K">
 <!ENTITY combination.tooltip "在框內點一下之後按下要設定的組合">
-<!ENTITY bringBookmarksUp.label "將書籤工具列移到位址列旁">
-<!ENTITY bringBookmarksUp.accesskey "B">
-<!ENTITY bringBookmarksUp.tooltip "將位址列和書籤工具列並排，增加瀏覽區的顯示空間。對寬1440px以上解析度的螢幕來說很好用。">
-<!ENTITY urlBarWidth.label "位址列長度限制">
-<!ENTITY urlBarWidth.accesskey "W">
-<!ENTITY urlBarWidth.tooltip "位址列長度會自動變更以取得書籤及網址顯示空間的平衡。您可以在此指定優先於自動設定的長度值。">
-<!ENTITY useSmallIcons.label "縮小位址列後方的圖示。">
-<!ENTITY useSmallIcons.accesskey "I">
-<!ENTITY useSmallIcons.tooltip "配合書籤工具列轉換排在網址列之後的圖示樣式。">
-<!ENTITY animationSpeed.label "轉換時動畫顯示的速度">
-<!ENTITY animationSpeed.accesskey "S">
-<!ENTITY animationSpeed.tooltip "請選擇三種動畫速度的其中之一">
 <!ENTITY useStyleSheet.label "使用新式的麵包屑界面">
 <!ENTITY useStyleSheet.accesskey "U">
 <!ENTITY useStyleSheet.tooltip "啟用新穎精緻的麵包屑設計。停用時，麵包屑樣式會恢復為新版 Windows 檔案總管一般的導航列樣式。">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label "選擇進度列色彩">
 <!ENTITY chooseColor.tooltip "選擇進度列色彩">
 <!ENTITY custom.label "自訂">
-<!ENTITY animationSpeed.normal.label "正常速度">
-<!ENTITY animationSpeed.normal.accesskey "N">
-<!ENTITY animationSpeed.fast.label "較快">
-<!ENTITY animationSpeed.fast.accesskey "F">
-<!ENTITY animationSpeed.none.label "無動畫">
-<!ENTITY animationSpeed.none.accesskey "A">

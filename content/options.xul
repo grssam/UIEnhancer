@@ -104,35 +104,6 @@
       </hbox>
     </groupbox>
   </prefpane>
-  <prefpane id="UIEnhancerBookmarksPrefPane" label="&bookmarksPane.label;" image="star.png">
-    <preferences>
-      <preference id="bringBookmarksUp" name="extensions.UIEnhancer.bringBookmarksUp" type="bool"/>
-      <preference id="urlBarWidth" name="extensions.UIEnhancer.urlBarWidth" type="string"/>
-      <preference id="useSmallIcons" name="extensions.UIEnhancer.useSmallIcons" type="bool"/>
-      <preference id="animationSpeed" name="extensions.UIEnhancer.animationSpeed" type="string"/>
-    </preferences>
-    <checkbox id="bringBookmarksUpCheckBox" preference="bringBookmarksUp" oncommand="optionsWindow.toggleBookmarksSettings();"
-      tooltiptext="&bringBookmarksUp.tooltip;" label="&bringBookmarksUp.label;" accesskey="&bringBookmarksUp.accesskey;" />
-    <hbox>
-      <label id="urlBarWidthLabel" value="&urlBarWidth.label;" tooltiptext="&urlBarWidth.tooltip;"
-        accesskey="&urlBarWidth.accesskey;" control="urlBarWidthTextBox" style="padding: 5px 0px;"/>
-      <textbox id="urlBarWidthTextBox" preference="urlBarWidth" oncommand="optionsWindow.notifyChange();" flex="1"/>
-    </hbox>
-    <checkbox id="useSmallIconsCheckBox" preference="useSmallIcons" oncommand="optionsWindow.notifyChange();"
-      tooltiptext="&useSmallIcons.tooltip;" label="&useSmallIcons.label;" accesskey="&useSmallIcons.accesskey;" />
-    <groupbox>
-      <caption tooltiptext="&animationSpeed.tooltip;" label="&animationSpeed.label;" accesskey="&animationSpeed.accesskey;"/>
-      <radiogroup id="animationSpeedRadioGroup" preference="animationSpeed"
-        oncommand="optionsWindow.notifyChange();" orient="horizontal">
-          <radio id="animationSpeedNormal" label="&animationSpeed.normal.label;"
-            accesskey="&animationSpeed.normal.accesskey;" value="normal"/>
-          <radio id="animationSpeedFast" label="&animationSpeed.fast.label;"
-            accesskey="&animationSpeed.fast.accesskey;" value="fast"/>
-          <radio id="animationSpeedNone" label="&animationSpeed.none.label;"
-            accesskey="&animationSpeed.none.accesskey;" value="none"/>
-      </radiogroup>
-    </groupbox>
-  </prefpane>
   <prefpane id="UIEnhancerProgressPrefPane" label="&progressPane.label;" image="progress.gif">
     <preferences>
       <preference id="showProgressInURLBar" name="extensions.UIEnhancer.showProgressInURLBar" type="bool"/>

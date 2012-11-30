@@ -55,15 +55,11 @@ function pref(key, val) {
 // Set custom values for this add-on
 pref.root = "extensions.UIEnhancer.";
 pref.defaults = {
-  bringBookmarksUp: false,
-  urlBarWidth: "700",
-  animationSpeed: "normal",
   makeCapital: true,
   useIdentityBox: true,
   useIdentityEverytime: false,
   identityBoxLeftClickChanged: true,
   useDragDrop: true,
-  useSmallIcons: false,
   enhanceURLBar: true,
   useStyleSheet: true,
   usedStyleIndex: 3,

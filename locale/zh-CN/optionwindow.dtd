@@ -26,18 +26,6 @@
 <!ENTITY combination.label  "快捷键组合">
 <!ENTITY combination.accesskey  "K">
 <!ENTITY combination.tooltip  "点击上面文本框并按下快捷键组合">
-<!ENTITY bringBookmarksUp.label  "在地址栏右侧显示书签工具栏">
-<!ENTITY bringBookmarksUp.accesskey  "B">
-<!ENTITY bringBookmarksUp.tooltip  "在同一行显示地址栏和书签工具栏以节省垂直空间，增大网页显示区域。适用于横向宽度不小于 1440 像素的屏幕。">
-<!ENTITY urlBarWidth.label  "地址栏宽度">
-<!ENTITY urlBarWidth.accesskey  "W">
-<!ENTITY urlBarWidth.tooltip  "在保证地址栏留有足够宽度的的同时，自动设置地址栏宽度以适应所有的书签工具栏项。您可以在这里设置一个宽度值来代替自适应值。">
-<!ENTITY useSmallIcons.label  "缩小显示地址栏后的图标">
-<!ENTITY useSmallIcons.accesskey  "I">
-<!ENTITY useSmallIcons.tooltip  "地址栏后面的图标显示为与书签工具栏项相一致的大小。">
-<!ENTITY animationSpeed.label  "地址栏动态变化的显示速度">
-<!ENTITY animationSpeed.accesskey  "S">
-<!ENTITY animationSpeed.tooltip  "从以下三个值中选择地址栏动态变化显示速度">
 <!ENTITY useStyleSheet.label  "显示面包屑地址栏的新外观">
 <!ENTITY useStyleSheet.accesskey  "U">
 <!ENTITY useStyleSheet.tooltip  "启用平滑雅致的面包屑地址栏新外观。如果禁用该选项，面包屑地址栏将显示为与 Windows 资源管理器导航栏相一致的外观。">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label  "选择进度条的颜色">
 <!ENTITY chooseColor.tooltip  "选择进度条的颜色">
 <!ENTITY custom.label  "习俗">
-<!ENTITY animationSpeed.normal.label  "正常">
-<!ENTITY animationSpeed.normal.accesskey  "N">
-<!ENTITY animationSpeed.fast.label  "快速">
-<!ENTITY animationSpeed.fast.accesskey  "F">
-<!ENTITY animationSpeed.none.label  "无动画特效">
-<!ENTITY animationSpeed.none.accesskey  "A">

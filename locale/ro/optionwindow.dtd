@@ -23,18 +23,6 @@
 <!ENTITY combination.label "CombinaÈ›ie de taste pentru accesarea directÄƒ a casetei de opÈ›iuni:">
 <!ENTITY combination.accesskey "t">
 <!ENTITY combination.tooltip "DaÈ›i clic Ã®n caseta text È™i apÄƒsaÈ›i combinaÈ›ia doritÄƒ">
-<!ENTITY bringBookmarksUp.label "Se integreazÄƒ bara de semne de carte Ã®n bara de adrese">
-<!ENTITY bringBookmarksUp.accesskey "b">
-<!ENTITY bringBookmarksUp.tooltip "PermiteÈ›i combinarea barei de semne de carte cu bara de adrese pentru a aloca mai mult spaÈ›iu vertical pentru conÈ›inutul paginii web. Util pentru ecrane cu lÄƒÈ›imea de pÃ¢nÄƒ la 1440 de pixeli">
-<!ENTITY urlBarWidth.label "Lungimea barei de adrese:">
-<!ENTITY urlBarWidth.accesskey "L">
-<!ENTITY urlBarWidth.tooltip "Lungimea este ajustatÄƒ automat pentru a afiÈ™a cÃ¢t mai multe semne de carte È™i, Ã®n acelaÈ™i timp, pentru a lÄƒsa suficient spaÈ›iu pentru bara de adrese. PuteÈ›i defini o valoare proprie care sÄƒ Ã®nlocuiascÄƒ valoarea presatbilitÄƒ">
-<!ENTITY useSmallIcons.label "Se micÈ™oreazÄƒ pictogramele care succed barei de adrese">
-<!ENTITY useSmallIcons.accesskey "m">
-<!ENTITY useSmallIcons.tooltip "PermiteÈ›i ca pictogramele care succed barei de adrese sÄƒ capete un aspect care sÄƒ corespundÄƒ elementelor din bara de semne de carte">
-<!ENTITY animationSpeed.label "Modificare È™i vitezÄƒ de tranziÈ›ie a barei de adrese Ã®n timpul editÄƒrii adresei">
-<!ENTITY animationSpeed.accesskey "V">
-<!ENTITY animationSpeed.tooltip "AlegeÈ›i dacÄƒ bara de adrese Ã®È™i maximizeazÄƒ sau nu lungimea Ã®n momentul editÄƒrii adresei cÃ¢t È™i viteza de tranziÈ›ie">
 <!ENTITY useStyleSheet.label "Se utilizeazÄƒ noua interfaÈ›Äƒ pentru marcajele de navigare">
 <!ENTITY useStyleSheet.accesskey "u">
 <!ENTITY useStyleSheet.tooltip "ActivaÈ›i noul È™i elegantul stil pentru marcaje. DacÄƒ este dezactivat, se foloseÈ™te stilul de navigare din Windows Explorer (Windows Vista)">
@@ -64,12 +52,6 @@
 <!ENTITY chooseColor.label "Culoare pentru bara de progres">
 <!ENTITY chooseColor.tooltip "AlegeÈ›i o culoare pentru bara de progres">
 <!ENTITY custom.label "DefinitÄƒ de utilizator">
-<!ENTITY animationSpeed.normal.label "TranziÈ›ie normalÄƒ">
-<!ENTITY animationSpeed.normal.accesskey "n">
-<!ENTITY animationSpeed.fast.label "TranziÈ›ie rapidÄƒ">
-<!ENTITY animationSpeed.fast.accesskey "r">
-<!ENTITY animationSpeed.none.label "FÄƒrÄƒ modificare">
-<!ENTITY animationSpeed.none.accesskey "F">
 <!ENTITY identityBoxLeftClickChanged.label "Se navigheazÄƒ cÄƒtre domeniul rÄƒdÄƒcinÄƒ cu clic pe caseta de identitate dacÄƒ aceasta conÈ›ine informaÈ›ii">
 <!ENTITY identityBoxLeftClickChanged.accesskey "d">
 <!ENTITY identityBoxLeftClickChanged.tooltip "ActivaÈ›i opÈ›iunea pentru a naviga cÄƒtre domeniul rÄƒdÄƒcinÄƒ al paginii Ã®n loc de a afiÈ™a informaiÈ›ii despre identitatea saitului">

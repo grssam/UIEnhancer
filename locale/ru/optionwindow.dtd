@@ -26,18 +26,6 @@
 <!ENTITY combination.label "Горячие клавиши:">
 <!ENTITY combination.accesskey "K">
 <!ENTITY combination.tooltip "Кликните в текстовом поле и нажмите желаемую комбинацию клавиш">
-<!ENTITY bringBookmarksUp.label "Вывести Панель закладок поверх строки адреса">
-<!ENTITY bringBookmarksUp.accesskey "B">
-<!ENTITY bringBookmarksUp.tooltip "Данная опция совмещает Панель закладок и строку адреса, для экономии места на экране по вертикали. Полезно для мониторов с шириной 1440 пикселей и более.">
-<!ENTITY urlBarWidth.label "Ширина строки адреса">
-<!ENTITY urlBarWidth.accesskey "W">
-<!ENTITY urlBarWidth.tooltip "Ширина строки адреса выбирается автоматически, но вы можете назначить свое значение ширины.">
-<!ENTITY useSmallIcons.label "Уменьшить значки после строки адреса.">
-<!ENTITY useSmallIcons.accesskey "I">
-<!ENTITY useSmallIcons.tooltip "Приводит значки, расположенные после строки адреса, к стилю значков в панели закладок.">
-<!ENTITY animationSpeed.label "Скорость анимации в строке адреса">
-<!ENTITY animationSpeed.accesskey "S">
-<!ENTITY animationSpeed.tooltip "Выберите скорость анимации их трех вариантов">
 <!ENTITY useStyleSheet.label "Использовать новый интерфейс для Навигационной цепочки">
 <!ENTITY useStyleSheet.accesskey "U">
 <!ENTITY useStyleSheet.tooltip "Включает новый сглаженный дизайн интерфейса Навигационной цепочки. Если отключено, то стиль Навигационной цепочки будет соответствовать стилю панели навигации Windows Explorer.">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label  "Выберите цвет прогресс-бар">
 <!ENTITY chooseColor.tooltip  "Выберите цвет прогресс-бар">
 <!ENTITY custom.label  "обычай">
-<!ENTITY animationSpeed.normal.label "Нормальная">
-<!ENTITY animationSpeed.normal.accesskey "N">
-<!ENTITY animationSpeed.fast.label "Быстрая">
-<!ENTITY animationSpeed.fast.accesskey "F">
-<!ENTITY animationSpeed.none.label "Отключена">
-<!ENTITY animationSpeed.none.accesskey "A">

@@ -26,18 +26,6 @@
 <!ENTITY combination.label  "ショートカットキーの組み合わせ:">
 <!ENTITY combination.accesskey  "K">
 <!ENTITY combination.tooltip  "テキストボックス内をクリックし、目的の組み合わせを押します">
-<!ENTITY bringBookmarksUp.label  "ロケーションバーの横にブックマークツールバーを持ち出す">
-<!ENTITY bringBookmarksUp.accesskey  "B">
-<!ENTITY bringBookmarksUp.tooltip  "ページコンテンツの垂直方向のスペースを節約するために並んでロケーションバーとブックマークツールバーを兼ね備えています。 1440pxの幅と上記の画面のために有用な.">
-<!ENTITY urlBarWidth.label  "ロケーションバーの幅">
-<!ENTITY urlBarWidth.accesskey  "W">
-<!ENTITY urlBarWidth.tooltip  "幅は、すべてのブックマークツールバーの項目と、ロケーションバーに十分なスペースを残してするように自動的に設定されています。あなたは、自動設定をオーバライドするためにここにカスタム値を設定することができます">
-<!ENTITY useSmallIcons.label  "ロケーションバーの後にアイコンを小さくする.">
-<!ENTITY useSmallIcons.accesskey  "I">
-<!ENTITY useSmallIcons.tooltip  "ツールバーのブックマークの項目に一致するスタイルにロケーションバーの後にアイコンを変換します">
-<!ENTITY animationSpeed.label  "遷移時にロケーションバーのアニメーションの速度">
-<!ENTITY animationSpeed.accesskey  "S">
-<!ENTITY animationSpeed.tooltip  "3つの値から、アニメーションの速度を選択">
 <!ENTITY useStyleSheet.label  "ブレッドクラムのための新しいインタフェースを使用して">
 <!ENTITY useStyleSheet.accesskey  "U">
 <!ENTITY useStyleSheet.tooltip  "ロケーションバーの新機能と洗練されたデザインが可能になります。無効になっている場合は、ブレッドクラム·スタイルは、Windowsエクスプローラのナビゲーションバーのスタイルと一致するように戻すでしょう">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label  "プログレスバーの色を選択します">
 <!ENTITY chooseColor.tooltip  "プログレスバーの色を選択します">
 <!ENTITY custom.label  "カスタム">
-<!ENTITY animationSpeed.normal.label  "ノーマルスピード">
-<!ENTITY animationSpeed.normal.accesskey  "N">
-<!ENTITY animationSpeed.fast.label  "速いスピード">
-<!ENTITY animationSpeed.fast.accesskey  "F">
-<!ENTITY animationSpeed.none.label  "いいえアニメーションません">
-<!ENTITY animationSpeed.none.accesskey  "A">

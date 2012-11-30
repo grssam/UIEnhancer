@@ -41,7 +41,6 @@ let gAddon;
 let firstRunAfterInstall = false;
 let normalStartup = false;
 let reload = function() {};
-let recheckOnTabChange = false;
 let openSite = false;
 // Array of progress colors
 let progressColorList = [
@@ -421,10 +420,11 @@ function changeUI(window) {
     let showStatusInURLBar = pref("showStatusInURLBar");
     let useLeftoverSpace = pref("useLeftoverSpace");
     let statusWidth = pref("statusWidth");
+    let urlBarWidth = gURLBar.boxObject.width || 1000;
     if (showStatusInURLBar && useLeftoverSpace && newStatusCon && newStatus
-      && newStatusCon.style.maxWidth.replace("px","")*1 > 0.5*pref("urlBarWidth")) {
-        newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*pref("urlBarWidth") + "px";
-        return 0.5*pref("urlBarWidth");
+      && newStatusCon.style.maxWidth.replace("px","")*1 > 0.5*urlBarWidth) {
+        newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*urlBarWidth + "px";
+        return 0.5*urlBarWidth;
     }
     let origBoxObject = origIdentity.boxObject;
     let (udb = $("urlbar-display-box")) {
@@ -433,10 +433,10 @@ function changeUI(window) {
       if (udb == null) {
         // case when internal status pref'd on
         if (showStatusInURLBar && !S4E_statusInURLBar)
-          return pref("urlBarWidth")*1 - origBoxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
+          return urlBarWidth - origBoxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
         // case otherwise
         else
-          return pref("urlBarWidth")*1 - origBoxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+          return urlBarWidth - origBoxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
       }
       let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
         - origBoxObject.x - origBoxObject.width;
@@ -445,18 +445,7 @@ function changeUI(window) {
       else
         maxWidth -= (S4E_statusInURLBar? Math.max(udb.nextSibling.boxObject.x,
           0.3*gURLBar.boxObject.width)*0.33: 60);
-      if (pref("bringBookmarksUp") && maxWidth > pref("urlBarWidth")*1 - 100) {
-        let someWidth = udb.parentNode.lastChild.boxObject.x
-          - udb.nextSibling.boxObject.x + udb.parentNode.lastChild.boxObject.width;
-        if (showStatusInURLBar && !S4E_statusInURLBar)
-          maxWidth = pref("urlBarWidth")*1 - origBoxObject.width
-            - (useLeftoverSpace? 250: Math.max(statusWidth, 160));
-        else
-          maxWidth = pref("urlBarWidth")*1 - origBoxObject.width
-            - (S4E_statusInURLBar? Math.max(pref("urlBarWidth")*0.33, 160 + someWidth)
-            : 160 + someWidth);
-      }
-      MAXWIDTH = Math.max(Math.min(maxWidth, pref("urlBarWidth")*1 - origBoxObject.width - 100), 0);
+      MAXWIDTH = Math.max(Math.min(maxWidth, urlBarWidth - origBoxObject.width - 100), 0);
       return MAXWIDTH;
     }
   }
@@ -2557,7 +2546,7 @@ function changeUI(window) {
             window.InstantFox.removeShadowNodes();
         },250);
         if (!tabChanged)
-          async(updateURL, pref("animationSpeed") != "none"? 210: 10);
+          async(updateURL, 10);
       });
       listen(window, gURLBar, "keydown", function(e) {
         switch (e.keyCode) {
@@ -2739,515 +2728,6 @@ function changeUI(window) {
   * URLBar Look Enhancer Code Ends
   */
 
-  /*
-  * Bookmarks UI Enhancer Code Begins
-  */
-  // Global Variables to this part of Addon
-  let urlBar;
-  let bookmarksToolbar;
-  let bookmarkStyle;
-  let hovered = false;
-  let onBookmarks = false;
-  let newMargin;
-  let origBTStyle;
-  let origURLStyle;
-  let limitX;
-  let limitXBig;
-  let temp;
-  let afterURLBar = [];
-  let origCollapsedState;
-  let timeInterval = 0;
-  let enoughSpace = true;
-  let firstRun = false;
-  let isAfterUrl = false;
-  let spaceAfterBookmarks = 0;
-  let bookmarksWidth = 0;
-  let currentTabsOnTop = true;
-  unload(function() {
-    hovered = onBookmarks = newMargin = limitX = limitXBig = temp = bookmarksWidth
-      = origURLStyle = origBTStyle = isAfterUrl = currentTabsOnTop = spaceAfterBookmarks
-      = timeInterval = enoughSpace = firstRun = recheckOnTabChange = null;
-  }, window);
-  // Handle the rest of the user customized icons on the nav-bar
-  function handleRest() {
-    let d = $("urlbar-container").nextSibling;
-    let someThingB4 = false;
-    while (d != null) {
-      if (((d.id == "reload-button" && d.nextSibling.id == "stop-button")
-        || (d.id == "stop-button" && d.previousSibling.id == "reload-button"))
-        && !someThingB4) {
-          d = d.nextSibling;
-          continue;
-      }
-      if (d.id == "search-container")
-        d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
-      someThingB4 = true;
-      let b = d;
-      d = d.nextSibling;
-      afterURLBar.push(new handleDOM(b, bookmarksToolbar, false));
-    }
-    unload(function() {
-      afterURLBar.reverse().forEach(function(d) {
-        d.unloader();
-      });
-      afterURLBar = null;
-    }, window);
-  }
-
-  function enableBookmarksToolbar() {
-    try {
-      $("toolbar-context-menu").openPopup();
-      $("toolbar-context-menu").hidePopup();
-      let (tabsOnTop = $("toolbar-context-menu").firstChild) {
-        while (tabsOnTop != null) {
-          if (tabsOnTop.getAttribute("label") == "Tabs on Top")
-            break;
-          else
-            tabsOnTop = tabsOnTop.nextSibling;
-        }
-        if (tabsOnTop != null)
-          currentTabsOnTop = tabsOnTop.getAttribute("checked");
-      }
-      $("toggle_PersonalToolbar").setAttribute("checked",true);
-      $("toggle_PersonalToolbar").doCommand();
-    } catch (ex) {}
-  }
-
-  function setupBookmarksUI() {
-    let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
-    urlBar = $("urlbar");
-    origURLStyle = urlBar.style;
-    bookmarksToolbar = $("PersonalToolbar");
-    origBTStyle = bookmarksToolbar.style;
-    // Setting paddings, widths and heights used for bookmarks toolbar
-    let paddingBottom = 0;
-    let pHeight = $("PersonalToolbar").boxObject.height;
-    let nHeight = $("nav-bar").boxObject.height;
-    if (pHeight == 0)
-      pHeight = 26;
-    if (nHeight == 0) {
-      // Most probably we are on a In-content UI Page
-      recheckOnTabChange = normalStartup = true;
-      return;
-    }
-    // Dont do anything until page changed
-    // if we are on about:addons page and changing values
-    if (recheckOnTabChange)
-      return;
-    origCollapsedState = bookmarksToolbar.collapsed;
-    enableBookmarksToolbar();
-
-    $("TabsToolbar").style.background = "rgba(255,255,255,0)";
-    try {
-      if ($("bookmarks-menu-button").parentNode.id != "personal-bookmarks") {
-        let bookmarkButton = new handleDOM($("bookmarks-menu-button"), $("personal-bookmarks"), false);
-        if (bookmarkButton.hasClass("toolbarbutton-1")) {
-          bookmarkButton.removeClass("toolbarbutton-1");
-          bookmarkButton.addClass("bookmark-item");
-        }
-        unload(function() {
-          bookmarkButton.unloader();
-          if ($("bookmarks-menu-button").parentNode.id != "personal-bookmarks") {
-            bookmarkButton.removeClass("bookmark-item");
-            bookmarkButton.addClass("toolbarbutton-1");
-          }
-        }, window);
-      }
-    }
-    // Exception occurs if there is no bookmarks menu button to begin with
-    // ie, the user has removed it by customizing.
-    catch (ex) {}
-
-    if ($("personal-bookmarks").parentNode == $("nav-bar")) {
-      let (urlContainer = $("urlbar-container")) {
-        let temp = urlContainer;
-        while (temp != null) {
-          if (temp == $("personal-bookmarks")) {
-            isAfterUrl = true;
-            break;
-          }
-          temp = temp.nextSibling;
-        }
-      }
-    }
-    if ($("personal-bookmarks").parentNode != bookmarksToolbar &&
-      ($("personal-bookmarks").parentNode != $("nav-bar") || isAfterUrl)) {
-        let bookmarkItems = new handleDOM($("personal-bookmarks"), bookmarksToolbar, true);
-        unload(function() {
-          bookmarkItems.unloader();
-        }, window);
-    }
-
-    // Checking if we even have space to bring bookmarks toolbar up
-    if (window.innerWidth - urlBar.boxObject.x - 100*(isAfterUrl?1:0) < pref("urlBarWidth")*1)
-      enoughSpace = false;
-
-    if (enoughSpace) {
-      if (pref("useSmallIcons"))
-        handleRest();
-      try {
-        if ($("search-container").parentNode == bookmarksToolbar && pref("useSmallIcons"))
-          $("search-container").style.minWidth = $("search-container").style.maxWidth
-            = $("search-container").style.width = 250 + "px";
-      } catch(ex) {}
-    }
-    // Calculating widths for various elements
-    bookmarksWidth = 0;
-    try {
-      if ($("personal-bookmarks").nextSibling != null && pref("useSmallIcons"))
-        bookmarksWidth += 20 + window.innerWidth - $("personal-bookmarks").nextSibling.boxObject.x;
-      if ($("bookmarks-menu-button") != null)
-        bookmarksWidth += $("bookmarks-menu-button").boxObject.width;
-      spaceAfterBookmarks = bookmarksWidth;
-      if (!pref("useSmallIcons")) {
-        bookmarksWidth += 15;
-        let d = $("urlbar-container").nextSibling;
-        let someThingB4 = false;
-        while (d != null) {
-          if (((d.id == "reload-button" && d.nextSibling.id == "stop-button")
-            || (d.id == "stop-button" && d.previousSibling.id == "reload-button"))
-            && !someThingB4) {
-              d = d.nextSibling;
-              continue;
-          }
-          if (d.id == "search-container") {
-            d.style.minWidth = d.style.maxWidth = d.style.width = 250 + "px";
-            spaceAfterBookmarks += 260;
-          }
-          else
-            spaceAfterBookmarks += (d.boxObject.width +
-              1*window.getComputedStyle(d).marginLeft.replace("px", "") +
-              1*window.getComputedStyle(d).marginRight.replace("px", ""));
-          d = d.nextSibling;
-        }
-      }
-      if ($("PlacesToolbarItems").lastChild != null) {
-        bookmarksWidth += $("PlacesToolbarItems").lastChild.boxObject.x +
-          $("PlacesToolbarItems").lastChild.boxObject.width;
-        if ($("PlacesToolbarItems").firstChild != null)
-          bookmarksWidth -= $("PlacesToolbarItems").firstChild.boxObject.x;
-      }
-      else
-        bookmarksWidth += 200;
-      if (firstRunAfterInstall) {
-        firstRunAfterInstall = false;
-        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
-            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
-        else
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
-            10*Math.floor(max(urlBar.boxObject.width - bookmarksWidth, 500 +
-            (window.screen.width - 1200)/4)/10));
-      }
-      else if (normalStartup) {
-        normalStartup = false;
-        if (urlBar.boxObject.width - bookmarksWidth > pref("urlBarWidth")*1)
-          Services.prefs.setCharPref("extensions.UIEnhancer.urlBarWidth", "" +
-            10*Math.floor((urlBar.boxObject.width - bookmarksWidth)/10));
-      }
-    } catch (ex) {}
-    urlBar.removeAttribute("max-width");
-    urlBar.style.maxWidth = pref("urlBarWidth") + "px";
-    if (!isMac) paddingBottom = (nHeight - (pHeight>=26?24:pHeight))/2;
-    newMargin = "" + (-nHeight) + "px " + (pref("useSmallIcons")?0:
-      $("bookmarks-menu-button") != null? spaceAfterBookmarks -
-      $("bookmarks-menu-button").boxObject.width: spaceAfterBookmarks)
-      + "px 0px " + (pref("urlBarWidth")*1 + max(gURLBar.boxObject.x*1, 70) + 10) +
-      "px; min-height: " + (nHeight - 2*paddingBottom) + "px; padding: " +
-      paddingBottom + "px 0px; max-height: " + nHeight + "px;";
-    if (enoughSpace)
-      bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-        + " margin: " + newMargin + " border: none !important;"
-        + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
-
-    bookmarkStyle = bookmarksToolbar.style;
-    limitXBig = limitX = max($("urlbar-display-box").nextSibling.boxObject.x - 40, pref("urlBarWidth")*1);
-    // Setting the collapse state according to nav-bar's
-    bookmarksToolbar.collapsed = $("nav-bar").collapsed;
-    unload(function() {
-      urlBar.setAttribute("style", origURLStyle);
-      $("PersonalToolbar").setAttribute("style", origBTStyle);
-      $("PersonalToolbar").collapsed = origCollapsedState;
-    }, window);
-
-    // Decide the animation transition interval timeInterval
-    if (pref("animationSpeed") == "fast")
-      timeInterval = 125;
-    else if (pref("animationSpeed") == "none") {
-      // User wants static thingy so
-      animateHide = animateShow = onBookmarksMouseOut = function() {};
-      onBookmarksMouseOver = onBlur = onFocus = onMouseMove = function() {};
-      onMouseOut = onMouseOver = function() {};
-      timeInterval = 0;
-    }
-    else
-      timeInterval = 300;
-    if (enoughSpace)
-      firstRun = true;
-  }
-
-  function animateShow() {
-    async(function() {
-      if (recheckOnTabChange)
-        return;
-      if ((gURLBar.focused && !onBookmarks) || (hovered && !gURLBar.focused)) {
-        urlBar.setAttribute("style","-moz-transition-property: max-width, -moz-box-shadow; "
-          + "-moz-transition-duration: " + timeInterval + "ms;-moz-transition-delay: "
-          + timeInterval > 0? 100: 0 + "ms; "
-          + "-moz-box-shadow: 0px 0px 2px 2px highlight !important;");
-        urlBar.style.maxWidth = 2000 + "px";
-        if (enoughSpace) {
-          bookmarksToolbar.setAttribute("style", "margin: " + newMargin
-            + "; background: " + bookmarkStyle.background
-            + "; border: " + bookmarkStyle.border
-            + (pref("useSmallIcons")?"":"; max-width: " + bookmarksWidth + "px !important")
-            + "; opacity:0;-moz-transition-property: opacity; "
-            + "-moz-transition-duration: " + max(timeInterval - 100, 0)
-            + "ms;-moz-transition-delay: 0ms;");
-          if (pref("useSmallIcons"))
-            afterURLBar.forEach(function(d) {
-              d.transferTo($("nav-bar"));
-            });
-        }
-        async(function() {
-          if ($("urlbar-display-box").nextSibling.boxObject.x > limitXBig)
-            limitXBig = $("urlbar-display-box").nextSibling.boxObject.x;
-        }, timeInterval + 50);
-      }
-    },400);
-  }
-
-  function animateHide() {
-    async(function() {
-      if (!hovered && !recheckOnTabChange) {
-        urlBar.setAttribute("style","max-width: " + min(pref("urlBarWidth")*1,
-          window.innerWidth - urlBar.boxObject.x)
-          + "px !important; -moz-transition-property: max-width; "
-          + "-moz-transition-duration: " + max(timeInterval - 50, 0)
-          + "ms;-moz-transition-delay: 0ms;");
-        if (gURLBar.focused)
-          urlBar.setAttribute("style",urlBar.getAttribute("style")
-            + "-moz-box-shadow: 0px 0px 2px 2px highlight !important;");
-        if (enoughSpace) {
-          bookmarksToolbar.setAttribute("style", "margin: " + newMargin
-            + "; background: " + bookmarkStyle.background
-            + "; border: " + bookmarkStyle.border
-            + (pref("useSmallIcons")?"":"; max-width: " + bookmarksWidth + "px !important")
-            + "; opacity:1;-moz-transition-property: opacity; "
-            + "-moz-transition-duration: " + max(timeInterval - 150, 0)
-            + "ms;-moz-transition-delay: " + max(timeInterval - 75, 0) + "ms;");
-          if (pref("useSmallIcons"))
-            afterURLBar.forEach(function(d) {
-              d.transferTo(bookmarksToolbar);
-            });
-        }
-      }
-    }, 200);
-  }
-
-  let lastResizeTime = 0, currentResizeTime = 0;
-  function windowResized() {
-    currentResizeTime = (new Date()).getTime();
-    if (currentResizeTime - lastResizeTime > 200 && !firstRunAfterInstall)
-      lastResizeTime = currentResizeTime;
-    else
-      return;
-    if (pref("urlBarWidth")*1 + spaceAfterBookmarks > window.innerWidth -
-      urlBar.boxObject.x - 100*(isAfterUrl?1:0) && enoughSpace) {
-        enoughSpace = false;
-        if (pref("useSmallIcons"))
-          afterURLBar.forEach(function(d) {
-            d.transferTo($("nav-bar"));
-          });
-        try {
-          bookmarksToolbar.setAttribute("style", origBTStyle);
-        } catch (ex) {}
-    }
-    else if (pref("urlBarWidth")*1 + spaceAfterBookmarks < window.innerWidth -
-      urlBar.boxObject.x - 100*(isAfterUrl?1:0) && !enoughSpace) {
-        enoughSpace = true;
-        if (!firstRun) {
-          bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-            + " margin: " + newMargin + "border : none !important;"
-            + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
-          if (afterURLBar.length == 0 && pref("useSmallIcons"))
-            handleRest();
-          firstRun = true;
-        }
-        bookmarksToolbar.setAttribute("style","background:rgba(255,255,255,0) !important;"
-          + " margin: " + newMargin + "border : none !important;"
-          + (pref("useSmallIcons")? "": " max-width: " + bookmarksWidth + "px !important;"));
-        if (pref("useSmallIcons"))
-          afterURLBar.forEach(function(d) {
-            d.transferTo(bookmarksToolbar);
-          });
-    }
-  }
-
-  unload(function() {
-    animateShow = function() {};
-    animateHide = function() {};
-  }, window);
-
-  function onBookmarksMouseOver(e) {
-    onBookmarks = true;
-    if (!gURLBar.focused || recheckOnTabChange)
-      return;
-    if (e.pageX >= limitXBig) {
-      bookmarksToolbar.collapsed = true;
-      let tempMove, tempOut;
-      gURLBar.addEventListener("mousemove", tempMove = function(event) {
-        if (event.pageX <= limitXBig) {
-          gURLBar.removeEventListener("mousemove", tempMove, false);
-          bookmarksToolbar.collapsed = false;
-        }
-      });
-      gURLBar.addEventListener("mouseout", tempOut = function() {
-        gURLBar.removeEventListener("mouseout", tempOut, false);
-        gURLBar.removeEventListener("mousemove", tempMove, false);
-        bookmarksToolbar.collapsed = false;
-      });
-      return;
-    }
-    animateHide();
-  }
-
-  function onBookmarksMouseOut() {
-    onBookmarks = false;
-    if (!gURLBar.focused || recheckOnTabChange)
-      return;
-    animateShow();
-  }
-
-  unload(function() {
-    onBookmarksMouseOver = function() {};
-    onBookmarksMouseOut = function() {};
-  }, window);
-
-  function onFocus() {
-    if (recheckOnTabChange)
-      return;
-    animateShow();
-    gURLBar.removeEventListener("focus", onFocus, false);
-    gURLBar.addEventListener("blur", onBlur);
-    async(function() {
-      if (hovered && !gURLBar.focused && enoughSpace)
-        bookmarksToolbar.collapsed = true;
-    },500);
-  }
-
-  function onBlur() {
-    if (recheckOnTabChange)
-      return;
-    animateHide();
-    gURLBar.removeEventListener("blur", onBlur, false);
-    gURLBar.addEventListener("focus", onFocus);
-    if (bookmarksToolbar.collapsed)
-      bookmarksToolbar.collapsed = false;
-  }
-
-  function onMouseMove(event) {
-    if (recheckOnTabChange)
-      return;
-    if (event.pageX < limitX && hovered) {
-      gURLBar.removeEventListener("mousemove", temp, false);
-      animateShow();
-    }
-    else if (!hovered)
-      gURLBar.removeEventListener("mousemove", temp, false);
-  }
-
-  function onMouseOver(e) {
-    if (recheckOnTabChange)
-      return;
-    hovered = true;
-    if (e.pageX >= limitX) {
-      gURLBar.addEventListener("mousemove", temp = function(event) {onMouseMove(event)});
-      return;
-    }
-    animateShow();
-    async(function() {
-      if (hovered && !gURLBar.focused && enoughSpace)
-        bookmarksToolbar.collapsed = true;
-    },500);
-  }
-
-  function onMouseOut() {
-    hovered = false;
-    if (!gURLBar.focused || recheckOnTabChange)
-      animateHide();
-    try {
-      gURLBar.removeEventListener("mousemove", temp, false);
-    } catch(ex) {}
-    if (bookmarksToolbar.collapsed)
-      bookmarksToolbar.collapsed = false;
-  }
-
-  unload(function() {
-    onFocus = function() {};
-    onBlur = function() {};
-    onMouseOver = function() {};
-    onMouseOut = function() {};
-  }, window);
-
-  function addBookmarkListeners() {
-    listen(window, gURLBar, "blur", onBlur);
-    listen(window, gURLBar, "focus", onFocus);
-    listen(window, gURLBar, "mouseover", function(event) {onMouseOver(event)});
-    listen(window, gURLBar, "mouseout", onMouseOut);
-    listen(window, bookmarksToolbar, "mouseout", onBookmarksMouseOut);
-    listen(window, bookmarksToolbar, "mouseover", function(event) {onBookmarksMouseOver(event)});
-    listen(window, gBrowser.tabContainer, "TabSelect", function() {
-      if (recheckOnTabChange) {
-        recheckOnTabChange = false;
-        async(setupBookmarksUI);
-      }
-      async(function() {
-        bookmarksToolbar.collapsed = $("nav-bar").collapsed;
-      });
-    });
-    // Event listener to detect window's dimension change
-    listen(window, window, "resize", windowResized);
-    // Mutation Observer to observe any dynamic addition to the nav-bar.
-    if (window.MutationObserver || window.MozMutationObserver) {
-      let observer = new (window.MutationObserver || window.MozMutationObserver)(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.type === 'childList') {
-            async(setupBookmarksUI,10);
-            return;
-          }
-        });
-      });
-      observer.observe($("nav-bar"), {childList: true});
-      unload(function() {
-        observer.disconnect();
-        observer = null;
-        addBookmarkListeners = function() {};
-        try {
-          gURLBar.removeEventListener("mousemove", temp, false);
-        } catch(ex) {}
-      }, window);
-    }
-    listen(window, $("toolbar-context-menu"), "click", function() {
-      async(function() {
-        bookmarksToolbar.collapsed = $("nav-bar").collapsed;
-      });
-      async(function() {
-        let tabsOnTop = $("toolbar-context-menu").firstChild;
-        while (tabsOnTop != null) {
-          if (tabsOnTop.getAttribute("accesskey") == "T")
-            break;
-          else
-            tabsOnTop = tabsOnTop.nextSibling;
-        }
-        if (tabsOnTop && tabsOnTop.getAttribute("checked") != currentTabsOnTop)
-          reload();
-      }, 50);
-    });
-  }
-  /*
-  * Bookmarks UI Enhancer Code Ends
-  */
   /*
   * Code to put status bar in location bar starts here
   */
@@ -3437,18 +2917,6 @@ function changeUI(window) {
   * Code to put progress meter in urll bar ends here
   */
   // Function Callings
-  if(pref("bringBookmarksUp")) {
-    if (pref("useSmallIcons"))
-      async(function() {
-        setupBookmarksUI();
-        addBookmarkListeners();
-      }, 5);
-    else
-      async(function() {
-        setupBookmarksUI();
-        addBookmarkListeners();
-      }, 200);
-  }
   if (pref("enhanceURLBar"))
     enhanceURLBar();
   if (pref("showStatusInURLBar") && !S4E_statusInURLBar)
@@ -3627,8 +3095,6 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     // Watch for preference changes to reprocess the keyword data
     pref.observe([
       "useStyleSheet",
-      "bringBookmarksUp",
-      "animationSpeed",
       "enhanceURLBar",
       "removeGibberish",
       "useIdentityBox",
@@ -3644,18 +3110,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
           reload();
     });
     pref.observe([
-      "useSmallIcons"
-    ], function() {
-      if (!Services.prefs.getBranch("browser.").getBoolPref("preferences.instantApply")
-        || !isOptionsOpen())
-          specialReload();
-    });
-    pref.observe([
       "toggleToReload"
     ], reload);
-    pref.observe([
-      "urlBarWidth",
-    ], reloadOnTabChange);
     pref.observe([
       "shortcutKey",
       "shortcutModifiers"
@@ -3725,10 +3181,6 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     reload();
   }
 
-  function reloadOnTabChange() {
-    recheckOnTabChange = true;
-  }
-
   // Conflicting addon fixes start hereby
   function setupFixForS4E(addon) {
     function intPref(branch, prefName) {
@@ -3745,8 +3197,6 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
 
   // Adding listener to reload add-on whena conflicting add-on gets installed or enabled/disabled
   function checkConflict(addon) {
-    if (addon.id == "BookmarksEnhancer@girishsharma.com")
-      setPref("bringBookmarksUp", false);
     if (conflictingAddons.indexOf(addon.name) >= 0
       || conflictingAddonsId.indexOf(addon.id) >= 0) {
         Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer)

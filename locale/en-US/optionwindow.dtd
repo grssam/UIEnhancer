@@ -34,22 +34,6 @@
 <!ENTITY combination.accesskey        "K">
 <!ENTITY combination.tooltip          "Click in the text box and press the desired combination">
 
-<!ENTITY bringBookmarksUp.label       "Bring Bookmarks Toolbar up alongside the Location Bar">
-<!ENTITY bringBookmarksUp.accesskey   "B">
-<!ENTITY bringBookmarksUp.tooltip     "Combines the Location Bar and Bookmarks Toolbar alongside for saving Vertical Space for the Web Page Content. Useful for screens with width of 1440px and above.">
-
-<!ENTITY urlBarWidth.label            "Width of the Location Bar">
-<!ENTITY urlBarWidth.accesskey        "W">
-<!ENTITY urlBarWidth.tooltip          "The width is set automatically to accompany all the Bookmarks Toolbar Items as well as leaving enough space for Location Bar. You can set a custom value here to overide the automatic setting.">
-
-<!ENTITY useSmallIcons.label          "Make the icons after the Location Bar smaller.">
-<!ENTITY useSmallIcons.accesskey      "I">
-<!ENTITY useSmallIcons.tooltip        "Converts the Icons after the Location Bar to a style that matches the Bookmarks Items in the Bookmarks Toolbar.">
-
-<!ENTITY animationSpeed.label         "Animation Speed of the Location Bar during transitions">
-<!ENTITY animationSpeed.accesskey     "S">
-<!ENTITY animationSpeed.tooltip       "Select the animation speed from the three values">
-
 <!ENTITY useStyleSheet.label          "Use the new Interface for the Breadcrumbs">
 <!ENTITY useStyleSheet.accesskey      "U">
 <!ENTITY useStyleSheet.tooltip        "Enables the new and sleek design for the Breadcrumbs. If disabled, the Breadcrumbs' style would revert back to match Windows Explorer Navigation Bar style.">
@@ -95,12 +79,3 @@
 <!ENTITY chooseColor.label              "Choose Color of Progress Bar">
 <!ENTITY chooseColor.tooltip            "Choose Color of Progress Bar">
 <!ENTITY custom.label                   "Custom">
-
-<!ENTITY animationSpeed.normal.label       "Normal Speed">
-<!ENTITY animationSpeed.normal.accesskey   "N">
-
-<!ENTITY animationSpeed.fast.label         "Fast Speed">
-<!ENTITY animationSpeed.fast.accesskey     "F">
-
-<!ENTITY animationSpeed.none.label         "No Animation">
-<!ENTITY animationSpeed.none.accesskey     "A">

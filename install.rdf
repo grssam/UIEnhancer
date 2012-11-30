@@ -5,7 +5,7 @@
     <creator>Girish Sharma</creator>
     <id>UIEnhancer@girishsharma</id>
     <name>Location Bar Enhancer</name>
-    <version>5.0</version>
+    <version>5.1</version>
     <bootstrap>true</bootstrap>
     <type>2</type>
     <homepageURL>https://addons.mozilla.org/en-US/firefox/addon/ui-enhancer/</homepageURL>
@@ -74,7 +74,7 @@
       <r:Description>
         <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
         <minVersion>8.0</minVersion>
-        <maxVersion>18.0a1</maxVersion>
+        <maxVersion>20.0a1</maxVersion>
       </r:Description>
     </targetApplication>
   </r:Description>

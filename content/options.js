@@ -74,7 +74,6 @@ let optionsWindow = {
      function $(id) document.getElementById(id);
     $("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
       pref("userStylePath"): optionsWindow.STR("nocustomstyle"));
-    this.toggleBookmarksSettings(true);
     this.toggleStylesSettings(true);
     this.toggleURLBarSettings(true);
     this.toggleStatusSettings(true);
@@ -91,8 +90,7 @@ let optionsWindow = {
     optionsWindow.shortcutTextBox.addEventListener("keydown", optionsWindow.handleShortcutChange, false);
     let win = $("UIEnhancerOptionsWindow");
     let bottom = $("shortcutContainer").getBoundingClientRect().bottom;
-    let right = Math.max($("UIEnhancerStatusPrefPane").getBoundingClientRect().right,
-      $("animationSpeedRadioGroup").getBoundingClientRect().right);
+    let right = $("UIEnhancerStatusPrefPane").getBoundingClientRect().right;
     win.setAttribute("width", Math.min(Math.max(right, win.width), 600));
     win.setAttribute("height", Math.min(Math.max(bottom + 150, win.height), 400));
   },
@@ -213,20 +211,6 @@ let optionsWindow = {
     pref("progressBarCustomColor", $("progressBarColorPicker").color);
   },
 
-  toggleBookmarksSettings: function OW_toggleBookmarksSettings(check) {
-    function $(id) document.getElementById(id);
-    function $$(idList, attr, val) idList.forEach(function(id) $(id).setAttribute(attr, val));
-    let bookmarksEnabled = $("bringBookmarksUpCheckBox").checked;
-    $$(["useSmallIconsCheckBox",
-        "animationSpeedNormal",
-        "animationSpeedFast",
-        "animationSpeedNone",
-        "urlBarWidthLabel"],
-      "disabled", !bookmarksEnabled);
-    if (!check)
-      this.notifyChange();
-  },
-
   notifyChange: function OW_notifyChange(val) {
     if (val) {
       val = val.toLowerCase().replace("ctrl", "accel").split(" + ");
@@ -257,8 +241,7 @@ let optionsWindow = {
       = optionsWindow.resetStyleSheet = optionsWindow.toggleStylesSettings
       = optionsWindow.toggleURLBarSettings = optionsWindow.toggleStatusSettings
       = optionsWindow.toggleProgressSettings = optionsWindow.changeColor
-      = optionsWindow.onColorChange = optionsWindow.toggleBookmarksSettings
-      = optionsWindow.notifyChange = optionsWindow = null;
+      = optionsWindow.onColorChange = optionsWindow.notifyChange = optionsWindow = null;
     global = null;
   },
 };

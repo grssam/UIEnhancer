@@ -26,18 +26,6 @@
 <!ENTITY combination.label "Tastenkombination:">
 <!ENTITY combination.accesskey "T">
 <!ENTITY combination.tooltip "Klicken Sie in das Textfeld an und drücken die gewünschte Tasten-Kombination">
-<!ENTITY bringBookmarksUp.label "Lesezeichen-Symbolleiste in die Navigationsleiste integrieren">
-<!ENTITY bringBookmarksUp.accesskey "I">
-<!ENTITY bringBookmarksUp.tooltip "Kombiniert die Adressleiste und Lesezeichen-Symbolleiste um Höhe für die Darstellung der Webseiten einzusparen. Nützlich für Bildschirme mit einer Breite von 1440px und höher.">
-<!ENTITY urlBarWidth.label "Breite der Adress-Zeile">
-<!ENTITY urlBarWidth.accesskey "B">
-<!ENTITY urlBarWidth.tooltip "Die Breite wird automatisch gesetzt, um alle Lesezeichen sowie die Adressleiste unterzubringen. Ein benutzerdefinierten Wert überschreibt die automatische Einstellung.">
-<!ENTITY useSmallIcons.label "Symbole nach der Adressleiste verkleinert darstellen.">
-<!ENTITY useSmallIcons.accesskey "k">
-<!ENTITY useSmallIcons.tooltip "Konvertiert die Symbole nach der Adressleiste zu einem Stil, der dem der Lesezeichen entspricht.">
-<!ENTITY animationSpeed.label "Animationsgeschwindigkeit der Adressleiste während der Übergänge">
-<!ENTITY animationSpeed.accesskey "A">
-<!ENTITY animationSpeed.tooltip "Wählen Sie die Geschwindigkeit der Bewegung aus den drei Werten">
 <!ENTITY useStyleSheet.label "Neue Schnittstelle für die Breadcrumbs verwenden">
 <!ENTITY useStyleSheet.accesskey "N">
 <!ENTITY useStyleSheet.tooltip "Aktiviert das neue und elegante Design für die Breadcrumbs. Wird diese Option deaktiviert, entspricht das Aussehen dem der neuen Windows Explorer Adressleiste.">
@@ -72,9 +60,3 @@
 <!ENTITY chooseColor.label "Farbe des Fortschrittsbalkens auswählen">
 <!ENTITY chooseColor.tooltip "Farbe des Fortschrittsbalkens auswählen">
 <!ENTITY custom.label "benutzerdefiniert">
-<!ENTITY animationSpeed.normal.label "Normale Geschwindigkeit">
-<!ENTITY animationSpeed.normal.accesskey "N">
-<!ENTITY animationSpeed.fast.label "Schnelle Geschwindigkeit">
-<!ENTITY animationSpeed.fast.accesskey "G">
-<!ENTITY animationSpeed.none.label "Keine Animation">
-<!ENTITY animationSpeed.none.accesskey "K">
