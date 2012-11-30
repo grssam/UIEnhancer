@@ -2015,6 +2015,28 @@ function changeUI(window) {
     createdStack = null;
   }
 
+  function getCurrentPageHREFs() {
+    let urls = window.content.window.document.getElementsByTagName("a");
+    let list = [];
+    let map = {};
+    for (let i = 0; i < Math.min(20, urls.length); i++) {
+      let u = urls[i];
+      let rawURL = u.getAttribute("href");
+      if (rawURL == null || rawURL == "#" || rawURL.search("javascript:") == 0)
+        continue;
+
+      let title = u.textContent.trim();
+      if (title.length < 2 || (map[title] && map[title] == 1))
+        continue;
+
+      map[title] = 1;
+      list.push([u.href, title]);
+    }
+    map = null;
+    urls = null;
+    return list;
+  }
+
   function getAboutUrls() {
     let sub="@mozilla.org/network/protocol/about;1?what=", ans=[];
     for (let url in Cc)
@@ -2140,10 +2162,6 @@ function changeUI(window) {
         total.push(last);
       resultArray = total;
     }
-    // Adding the base domain if domain in Identity Box
-    if (arrowedStack.getAttribute("isDomain") == "true")
-      resultArray.push([arrowedStack.firstChild.getAttribute("value"),
-        arrowedStack.getAttribute("url"),""]);
     // Show the diff history results for that part
     for (let i = 0; i < resultArray.length; i++) {
       let arrowVal = resultArray[i][0];
@@ -2181,13 +2199,71 @@ function changeUI(window) {
       }, false);
       mainPopup.appendChild(part);
     }
+    if (arrowedStack == enhancedURLBar.lastChild) {
+      let pageLinks = getCurrentPageHREFs();
+      if (pageLinks.length > 0) {
+        let part = document.createElementNS(XUL, "menuitem");
+        part.setAttribute("id", "UIEnhancer_Page_Link_Info");
+        part.setAttribute("class", "menuitem-iconic");
+        part.setAttribute("label", l10n("href.label"));
+        part.setAttribute("disabled", true);
+        if (resultArray.length > 0)
+          mainPopup.appendChild(document.createElementNS(XUL, "menuseparator"));
+        mainPopup.appendChild(part);
+        mainPopup.appendChild(document.createElementNS(XUL, "menuseparator"));
+      }
+      for (let i = 0; i < pageLinks.length; i++) {
+        let arrowVal = pageLinks[i][1];
+        let url = pageLinks[i][0];
+        let part = document.createElementNS(XUL, "menuitem");
+        part.setAttribute("id", "UIEnhancer_Page_Link_" + i);
+        part.setAttribute("class", "menuitem-iconic");
+        // Applying Bold style to current url
+        // Thus traversing to the last sibling of arrowedStack
+        part.style.fontWeight = "normal";
+        // since this part is href, style it differently
+        part.style.color = "rgb(10,75,200)";
+        part.setAttribute("tooltiptext", l10n("href.tooltip") + " " + url);
+        part.setAttribute("label", arrowVal);
+        listen(window, part, "click", function(e) {
+          if (e.button == 2)
+            return;
+          try {
+            mainPopup.hidePopup();
+          } catch(ex) {}
+          siblingsShown = arrowMouseDown = false;
+          highlightPart(arrowedStack, false, false, '>');
+          handleTextClick(url, null, null, e.ctrlKey || (e.button == 1));
+        }, false);
+        mainPopup.appendChild(part);
+      }
+    }
     if (arrowedStack.getAttribute("isDomain") == "true") {
+      // Adding the base domain if domain in Identity Box
+      let part = document.createElementNS(XUL, "menuitem");
+      part.setAttribute("id", "UIEnhancer_Popup_Link_Domain");
+      part.setAttribute("class", "menuitem-iconic");
+      part.style.fontWeight = "normal";
+      // since this part is href, style it differently
+      let url = arrowedStack.getAttribute("url");
+      part.setAttribute("label", url);
+      listen(window, part, "click", function(e) {
+        if (e.button == 2)
+          return;
+        try {
+          mainPopup.hidePopup();
+        } catch(ex) {}
+        siblingsShown = arrowMouseDown = false;
+        highlightPart(arrowedStack, false, false, '>');
+        handleTextClick(url, null, null, e.ctrlKey || (e.button == 1));
+      }, false);
+      mainPopup.appendChild(part);
       mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
         mainPopup.lastChild);
     }
 
     // Adding text when showing siblingsShown or children
-    if (mainPopup.firstChild != null) {
+    if (mainPopup.firstChild != null && resultArray.length > 0) {
       let part = document.createElementNS(XUL, "menuitem");
       part.setAttribute("id", "UIEnhancer_Popup_Info");
       part.setAttribute("class", "menuitem-iconic");
@@ -2200,7 +2276,7 @@ function changeUI(window) {
       mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
         mainPopup.firstChild.nextSibling);
     }
-    else {
+    else if (mainPopup.firstChild == null) {
       let part = document.createElementNS(XUL, "menuitem");
       part.setAttribute("id", "UIEnhancer_No_Suggestion");
       part.setAttribute("class", "menuitem-iconic");
@@ -2460,51 +2536,6 @@ function changeUI(window) {
         } catch (e) {}
     }
     updateLook();
-    // Removing last arrow if no suggestion possible
-    if (enhancedURLBar.lastChild && enhancedURLBar.firstChild)
-      spinQueryAsync(DBConnection, {
-        names: ["url","title"],
-        query: "SELECT * " +
-               "FROM moz_places " +
-               "WHERE url LIKE '%" + enhancedURLBar.lastChild.getAttribute("url")
-               .replace(/^(https?:\/\/)?(www\.)?/,"") + "%' " +
-               "ORDER BY frecency DESC " +
-               "LIMIT 3",
-      }, {
-        callback: function([urlPart, resultArray]) {
-          if (!enhancedURLBar.lastChild)
-            return;
-          if (!enhancedURLBar || enhancedURLBar.lastChild.getAttribute("url").slice(-1*urlPart.length)
-            .replace(/^(https?:\/\/)?(www\.)?/, "") != urlPart
-            .replace(/^(https?:\/\/)?(www\.)?/, ""))
-              return;
-          resultArray = resultArray.filter(function({url, title}) {
-            if (url.replace(/^(https?:\/\/)?(www\.)?/, "")
-              .slice(urlPart.replace(/^(https?:\/\/)?(www\.)?/, "").length).search(/[\/?&#]/) != 0)
-                return false;
-            else
-              return true;
-          });
-          if (resultArray.length == 0) {
-            enhancedURLBar.lastChild.setAttribute("lastArrowHidden", true);
-            enhancedURLBar.lastChild.lastChild.removeAttribute("tooltiptext");
-            if (!pref("useStyleSheet"))
-              enhancedURLBar.lastChild.lastChild.style.display = "none";
-            else
-              highlightPart(enhancedURLBar.lastChild, false, false);
-          }
-          else {
-            enhancedURLBar.lastChild.setAttribute("lastArrowHidden", false);
-            if (!pref("useStyleSheet"))
-              enhancedURLBar.lastChild.lastChild.style.display = "-moz-box";
-            else
-              highlightPart(enhancedURLBar.lastChild, false, false)
-          }
-          // Updating look again
-          updateLook();
-        },
-        args : [urlValue.slice(0, urlPartArray[urlPartArray.length - 1])]
-      });
   }
 
   function enhanceURLBar() {
