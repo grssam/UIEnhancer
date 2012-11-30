@@ -184,7 +184,9 @@ let optionsWindow = {
     $$(["removeGibberishCheckBox",
         "makeCapitalCheckBox",
         "useIdentityBoxCheckBox",
-        "useDragDropCheckBox"],
+        "useDragDropCheckBox",
+        "refreshOnLastPartClickCheckBox",
+        "identityBoxLeftClickChangedCheckBox"],
       "disabled", !urlBarEnabled);
     if (!check)
       this.notifyChange();

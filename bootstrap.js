@@ -63,6 +63,7 @@ const styleSheetList = [
 ];
 let usedStyleIndex = 0;
 let showUserPassInBreadcrumbs = false, splitQueryStrings = false;
+let showPreURLParts = !Services.prefs.getBoolPref("browser.urlbar.trimURLs");
 // variable to store localized strings
 let strings = {str:null};
 XPCOMUtils.defineLazyGetter(strings, "str", function () {
@@ -2362,6 +2363,7 @@ function changeUI(window) {
   let index = 0;
   let urlVal_updateURL;
   let URLDisplayed = "";
+  let prePart = "";
   unload(function() {
     initial = urlValue = urlArray_updateURL = counter = iLabel
       = anchorTagIndex = isSetting_updateURL = iCountry
@@ -2421,6 +2423,7 @@ function changeUI(window) {
       window.InstantFox.removeShadowNodes();
     counter = 0;
     initial = 0;
+    prePart = "";
     hiddenStartingIndex = 0;
     urlPartArray = [];
     anchorTagIndex = settingsStartIndex = null;
@@ -2458,8 +2461,10 @@ function changeUI(window) {
           ? urlValue.indexOf("://") + 3
           : 0;
       urlArray_updateURL = urlValue.split(/[\/#]/).filter(function(valueVal) {
-        if (valueVal.match(/(https?:)|(file:)|(chrome:)|(wysiwyg:)/))
+        if (valueVal.match(/(https?:)|(file:)|(chrome:)|(wysiwyg:)/)) {
+          prePart = valueVal;
           return false;
+        }
         else if (valueVal == "") {
           counter++;
           return false;
@@ -2556,7 +2561,8 @@ function changeUI(window) {
       isSetting_updateURL = false;
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
       if ((index == 0 && fx15Plus) || (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null))
-        addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), fx15Plus || (pref("useIdentityBox")
+        addPart((showPreURLParts? prePart + "///".slice(0, initial - prePart.length):"") + urlVal_updateURL,
+          urlValue.slice(0, urlPartArray[index]), fx15Plus || (pref("useIdentityBox")
           && ($("identity-box").boxObject.width > 0)), isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), false,
@@ -3249,6 +3255,33 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       onEnabled : checkConflict
     };
     AddonManager.addAddonListener(conflictListener);
+
+    let myPrefObserver = {
+      register: function() {
+        let prefService = Services.prefs;
+        this.branch = prefService.getBranch("browser.urlbar.");
+        if (!("addObserver" in this.branch))
+          this.branch.QueryInterface(Ci.nsIPrefBranch2);
+        this.branch.addObserver("", this, false);
+      },
+
+      unregister: function() {
+        this.branch.removeObserver("", this);
+      },
+
+      observe: function(aSubject, aTopic, aData) {
+        switch (aData) {
+          case "trimURLs":
+            showPreURLParts = !this.branch.getBoolPref("trimURLs");
+            break;
+        }
+      }
+    }
+    myPrefObserver.register();
+    unload(function() {
+      myPrefObserver.unregister();
+      myPrefObserver = null;
+    });
 
     unload(function() {
       AddonManager.removeAddonListener(conflictListener);
