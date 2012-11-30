@@ -71,7 +71,7 @@ let optionsWindow = {
   },
 
   onLoad: function OW_onLoad() {
-     function $(id) document.getElementById(id);
+    function $(id) document.getElementById(id);
     $("userStyleSheetPathLabel").value = (pref("userStylePath").length > 0?
       pref("userStylePath"): optionsWindow.STR("nocustomstyle"));
     this.toggleStylesSettings(true);
@@ -93,6 +93,45 @@ let optionsWindow = {
     let right = $("UIEnhancerStatusPrefPane").getBoundingClientRect().right;
     win.setAttribute("width", Math.min(Math.max(right, win.width), 600));
     win.setAttribute("height", Math.min(Math.max(bottom + 150, win.height), 400));
+    // Setting up first run experience if required.
+    if (window.arguments && window.arguments[0]) {
+      let args = window.arguments[0];
+      if (args instanceof Ci.nsIDialogParamBlock) {
+        args = JSON.parse(args.GetString(0));
+      }
+      if (args === true) {
+        let anchor = window.document.getAnonymousNodes($("UIEnhancerOptionsWindow"))[0]
+            .firstChild.firstChild;
+        window.setTimeout(function() {
+          optionsWindow.openPanelWithTextAt(anchor, optionsWindow.STR("generalSettings.info"), function() {
+            anchor = anchor.nextSibling;
+            optionsWindow.openPanelWithTextAt(anchor, optionsWindow.STR("styleSettings.info"), function() {
+              anchor = anchor.nextSibling;
+              optionsWindow.openPanelWithTextAt(anchor, optionsWindow.STR("progressBarSettings.info"), function() {
+                anchor = anchor.nextSibling;
+                optionsWindow.openPanelWithTextAt(anchor, optionsWindow.STR("statusBarSettings.info"), null, 3500);
+              }, 3500);
+            }, 3500);
+          }, 3500);
+        }, 1000);
+      }
+    }
+  },
+
+  openPanelWithTextAt: function OW_openPanelWithTextAt(anchor, text, callback, delay) {
+    let panel = window.document.getElementById("popupPanel");
+    if (panel.state == "open") {
+      panel.hidePopup();
+      window.setTimeout(function() {
+        optionsWindow.openPanelWithTextAt(anchor, text, callback, delay);
+      }, 1000);
+      return;
+    }
+    window.document.getElementById("arrowPanelDesc").value = text;
+    panel.openPopup(anchor, "after_start", anchor.boxObject.width/2, 0);
+    window.setTimeout(function() {
+      callback && callback();
+    }, delay);
   },
 
   saveChanges: function OW_saveChanges() {

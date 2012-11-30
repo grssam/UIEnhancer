@@ -36,6 +36,13 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="options.js"/>
   <notificationbox id="changeNotificationBox" flex="1"/>
+  <panel id="popupPanel" type="arrow">
+    <hbox align="start">
+      <vbox>
+        <description id="arrowPanelDesc" style="font-size:20px"/>
+      </vbox>
+    </hbox>
+  </panel>
   <prefpane id="UIEnhancerGeneralPrefPane" label="&generalPane.label;" image="logo.png">
     <preferences>
       <preference id="enhanceURLBar" name="extensions.UIEnhancer.enhanceURLBar" type="bool"/>

@@ -543,3 +543,74 @@ function trimWord(trimVal, limit, start) {
   }
   else return trimVal;
 }
+
+function showNotification(aText, aTitle, aButtons, aCallback, aTimeout) {
+  let window = Services.wm.getMostRecentWindow("navigator:browser");
+  const XULNS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+  let notificationBox = window.document.getElementById("USM-sync-notifications");
+  if (!notificationBox) {
+    notificationBox = window.document.createElementNS(XULNS, "notificationbox");
+    notificationBox.id = "USM-sync-notifications";
+    notificationBox.setAttribute("flex", "1");
+    notificationBox.setAttribute("style", "max-height: 0px;");
+
+    let navigationBox = window.document.getElementById("navigator-toolbox");
+    navigationBox.parentNode.insertBefore(notificationBox, navigationBox.nextSibling);
+    unload(function() {
+      try {
+        notificationBox.removeAllNotifications();
+        notificationBox.parentNode.removeChild(notificationBox);
+        notificationBox = null;
+      } catch(ex) {}
+    }, window);
+  }
+  // Force a style flush to ensure that our binding is attached.
+  notificationBox.clientTop;
+
+  let buttons = [], i = 0, choiceSelected = false;
+  let timeoutChecker = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+
+  for each (let button in aButtons) {
+    let index = JSON.parse(JSON.stringify(i++));
+    buttons.push({
+      label: button.label,
+      accessKey: button.accessKey,
+      callback: function() {
+        choiceSelected = true;
+        try {
+          timeoutChecker.cancel();
+          timeoutChecker = null;
+          notificationBox.removeAllNotifications();
+        } catch (ex) {}
+        aCallback(index);
+      }
+    });
+  }
+  notificationBox.removeAllNotifications();
+  notificationBox.appendNotification(aText, "", null,
+                                     notificationBox.PRIORITY_INFO_MEDIUM,
+                                     buttons, null);
+  let checkChoiceSelected = {
+    notify: function () {
+      if (!choiceSelected) {
+        choiceSelected = true;
+        notificationBox.removeAllNotifications();
+        notificationBox.blur();
+        aCallback(-1);
+        try {
+          timeoutChecker.cancel();
+          timeoutChecker = null;
+        } catch (ex) {}
+      }
+    }
+  };
+
+  timeoutChecker.initWithCallback(checkChoiceSelected, aTimeout || 60000,
+                                  Ci.nsITimer.TYPE_ONE_SHOT);
+  unload(function() {
+    try {
+      timeoutChecker.cancel();
+      timeoutChecker = null;
+    } catch (ex) {}
+  });
+}

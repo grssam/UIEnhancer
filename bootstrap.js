@@ -131,11 +131,39 @@ function handleDOM(object, newParent, insertFirst) {
   }
 }
 
-function openOptions() {
+function openOptions(firstRun) {
+  let args = Cc["@mozilla.org/embedcomp/dialogparam;1"]
+               .createInstance(Ci.nsIDialogParamBlock);
+  args.SetNumberStrings(1);
+  args.SetString(0, JSON.stringify(firstRun));
   Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher)
     .openWindow(null, "chrome://uienhancer/content/options.xul",
                 "Location Bar Enhancer Options",
-                "chrome,resizable,centerscreen,toolbar", null);
+                "chrome,resizable,centerscreen,toolbar", args);
+}
+
+function tellAboutOptionsWindow() {
+  function switchToOpenOptions(decision) {
+    switch(decision) {
+      case 0:
+        openOptions(true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  function openOptionsNotification() {
+    pref("provideFirstRunExperience", false);
+    let buttons = [{
+      label: l10n("openOptionsButton.label"),
+      accessKey: l10n("openOptionsButton.accesskey")
+    }];
+    showNotification(l10n("openOptions.label"), l10n("UIE.label"),
+                     buttons, switchToOpenOptions);
+  }
+  makeWindowHelpers(Services.wm.getMostRecentWindow("navigator:browser"))
+    .async(openOptionsNotification, 2000);
 }
 
 function changeUI(window) {
@@ -3208,6 +3236,10 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   }
   // calling the function to setup everything
   init();
+
+  if ((reason == 7 || reason == 5) && pref("provideFirstRunExperience")) {
+    tellAboutOptionsWindow();
+  }
 
   if ((reason == 7 || reason == 5) && data.version == "5.0")
     openSite = true;

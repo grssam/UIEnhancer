@@ -85,6 +85,7 @@ pref.defaults = {
   levelPreviousModifiers: "control, shift",
   showUserPassInBreadcrumbs: false,
   splitQueryStrings: false,
+  provideFirstRunExperience: true,
 };
 
 pref.observe = function(prefs, callback) {
