@@ -69,7 +69,7 @@ pref.defaults = {
   buttonNextSiblingID: "",
   shortcutKey: "L",
   shortcutModifiers: "accel, alt",
-  showStatusInURLBar: true,
+  showStatusInURLBar: false,
   showProgressInURLBar: true,
   showProgressAsArrow: false,
   progressBarColorIndex: 0,
