@@ -64,6 +64,10 @@ const styleSheetList = [
 let usedStyleIndex = 0;
 let showUserPassInBreadcrumbs = false, splitQueryStrings = false;
 let showPreURLParts = !Services.prefs.getBoolPref("browser.urlbar.trimURLs");
+// Holds upto 10 url's href list
+let HREFMap = {}, HREFMapList = [];
+// Holds upto 10 url's related array
+let URLMap = {}, URLMapList = [];
 // variable to store localized strings
 let strings = {str:null};
 XPCOMUtils.defineLazyGetter(strings, "str", function () {
@@ -1709,149 +1713,174 @@ function changeUI(window) {
 
   // Helper function used to get related history items
   function getAsyncRelatedArray(concernedStack, aCallback, aArgs) {
+    function callbackFunction([concernedStack, aCallback, aArgs, resultArray]) {
+      let similarPattern = true;
+      let delta = 9999;
+      let tmpDelta = null;
+      // Sorting the array based on the fact that if the text contains number
+      // then sort taking into account the number as number and not string
+      resultArray.sort(function(a, b) {
+        let partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
+        let valA = a.url.replace(/^(https?:\/\/)/,"");
+        let valB = b.url.replace(/^(https?:\/\/)/,"");
+        valA = valA.slice(partURL.length, valA.length);
+        valB = valB.slice(partURL.length, valB.length);
+        valA = valA.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
+        let aa = valA.split(/[0-9]+/g);
+        valB = valB.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
+        let bb = valB.split(/[0-9]+/g);
+        // Case when one is in number form and other is not
+        if (aa.length != 2 && bb.length == 2 && bb[1] == "") {
+          if (aa != "")
+            similarPattern = false;
+          return -1;
+        }
+        else if (bb.length != 2 && aa.length == 2 && aa[1] == "") {
+          if (bb != "")
+            similarPattern = false;
+          return 1;
+        }
+        // Case when both are not in number form
+        else if (aa.length != 2 || bb.length != 2
+          || aa[aa.length - 1] != "" || bb[bb.length - 1] != "") {
+            if (aa != "" || bb != "")
+              similarPattern = false;
+            return 0;
+        }
+        // Case when both in number form
+        else if (aa[0].replace(/[\\\/?\-=+_]/g, "").toLowerCase()
+          == bb[0].replace(/[\\\/?\-=+_]/g, "").toLowerCase()) {
+            tmpDelta = valA.match(/[0-9]+/g)*1 - valB.match(/[0-9]+/g)*1;
+            if (tmpDelta != 0 && delta > Math.abs(tmpDelta))
+              delta = Math.abs(tmpDelta);
+            return tmpDelta;
+        }
+      });
+      let returnArray = [];
+      let hasCurrentUrl = false;
+      let currentUrlIndex = null;
+      let reduceIndex = 0;
+      let currentURL = enhancedURLBar.lastChild.getAttribute("url")
+        .replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
+      let matching = false;
+      let partURL,relatedVal,tempVal;
+      partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
+      for (let i = 0; i < resultArray.length; i++) {
+        let url = resultArray[i].url;
+        let title = resultArray[i].title;
+        relatedVal = "";
+        url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
+        relatedVal = url.slice(partURL.length, url.length).replace(/[\-_+]/g," ").replace("=", " =");
+        if (relatedVal.match(/^[[\/?#&: ]{1}[[\/?#&: ]{0,1}$/) != null
+          || !(relatedVal.length > 0 && relatedVal[0].match(/[\/?#&:]/))) {
+            reduceIndex++;
+            continue;
+        }
+        // Correcting the value to match the global styling
+        relatedVal = relatedVal.slice(1).replace(/[\-_+]/g, " ").replace("=", "= ")
+          .split(/[&\/?#]+/g).filter(function(v) { return v.length > 0;});
+        Array.some(relatedVal, function(v, index) {
+          if (gibberish(v) != false) {
+            if (title != null && title.length > 0) {
+              tempVal = trimWord(removeRedundantText(url.split(/[\/?&#]/)
+                .filter(function(v) { return v.length > 0;}), title), 75);
+              if (tempVal.length == 0 || tempVal == " ")
+                relatedVal[index] = title;
+              else
+                relatedVal[index] = tempVal;
+            }
+            return true;
+          }
+        });
+        relatedVal = makeCapital(relatedVal.join(" > ").replace(/^(\s<\s)/,""));
+        matching = false;
+        Array.some(returnArray, function(tempP, index) {
+          if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
+            && (tempP[1].toLowerCase() == url.toLowerCase()
+            || tempP[1].toLowerCase() == currentURL.toLowerCase())) {
+                matching = true;
+                return true;
+          }
+          else if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
+            && tempP[1].toLowerCase() != currentURL.toLowerCase()){
+                returnArray.splice(index, 1);
+                if (currentUrlIndex != null && index < currentUrlIndex)
+                  currentUrlIndex--;
+                else (currentUrlIndex == null)
+                  reduceIndex++;
+          }
+        });
+        if (matching) {
+          reduceIndex++;
+          continue;
+        }
+        else {
+          if (url.toLowerCase() == currentURL.toLowerCase()) {
+            hasCurrentUrl = true;
+            currentUrlIndex = i - reduceIndex;
+          }
+          returnArray.push([relatedVal,url,title]);
+        }
+      }
+      if (!hasCurrentUrl && concernedStack != enhancedURLBar.lastChild) {
+        relatedVal = "";
+        let tempS = concernedStack.nextSibling;
+        while (tempS != null) {
+          relatedVal += trimWord(tempS.firstChild.getAttribute("value"));
+          tempS = tempS.nextSibling;
+          if (tempS != null)
+            relatedVal += " > ";
+        }
+        if (returnArray.length >= 15)
+          returnArray.pop();
+        returnArray.push([relatedVal,currentURL,""]);
+        currentUrlIndex = returnArray.length - 1;
+      }
+      resultArray = null;
+      if (similarPattern && delta != 9999)
+        fillMissingEntries(returnArray, partURL, delta, currentUrlIndex, aCallback, aArgs);
+      else if (similarPattern && returnArray.length == 1)
+        fillMissingEntries(returnArray, partURL, 1, currentUrlIndex, aCallback, aArgs);
+      else {
+        // Calling the callback function for Async operations
+        aArgs[aArgs.length] = returnArray;
+        returnArray = null;
+        aCallback(aArgs);
+      }
+    }
+    let location = concernedStack.getAttribute("url").replace(/^(https?:\/\/)?(www\.)?/,"");
+    if (URLMap[location]) {
+      let index = URLMap[location][0];
+      URLMapList.splice(index, 1);
+      URLMapList.push(location);
+      URLMap[location][0] = URLMapList.length - 1;
+      callbackFunction([concernedStack, aCallback, aArgs, URLMap[location][1]]);
+      return;
+    }
+
     spinQueryAsync(DBConnection, {
       names: ["url","title"],
       query: "SELECT * " +
              "FROM moz_places " +
-             "WHERE url LIKE '%" + concernedStack.getAttribute("url")
-             .replace(/^(https?:\/\/)?(www\.)?/,"") + "%' " +
+             "WHERE url LIKE '%" + location + "%' " +
              "ORDER BY frecency DESC " +
              "LIMIT 15",
     }, {
       callback: function([concernedStack, aCallback, aArgs, resultArray]) {
-        let similarPattern = true;
-        let delta = 9999;
-        let tmpDelta = null;
-        // Sorting the array based on the fact that if the text contains number
-        // then sort taking into account the number as number and not string
-        resultArray.sort(function(a, b) {
-          let partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
-          let valA = a.url.replace(/^(https?:\/\/)/,"");
-          let valB = b.url.replace(/^(https?:\/\/)/,"");
-          valA = valA.slice(partURL.length, valA.length);
-          valB = valB.slice(partURL.length, valB.length);
-          valA = valA.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
-          let aa = valA.split(/[0-9]+/g);
-          valB = valB.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
-          let bb = valB.split(/[0-9]+/g);
-          // Case when one is in number form and other is not
-          if (aa.length != 2 && bb.length == 2 && bb[1] == "") {
-            if (aa != "")
-              similarPattern = false;
-            return -1;
+        let len = URLMapList.length;
+        if (len > 0) {
+          if (len > 9) {
+            let oldLoc = URLMapList.splice(0,1)[0];
+            delete URLMap[oldLoc];
           }
-          else if (bb.length != 2 && aa.length == 2 && aa[1] == "") {
-            if (bb != "")
-              similarPattern = false;
-            return 1;
-          }
-          // Case when both are not in number form
-          else if (aa.length != 2 || bb.length != 2
-            || aa[aa.length - 1] != "" || bb[bb.length - 1] != "") {
-              if (aa != "" || bb != "")
-                similarPattern = false;
-              return 0;
-          }
-          // Case when both in number form
-          else if (aa[0].replace(/[\\\/?\-=+_]/g, "").toLowerCase()
-            == bb[0].replace(/[\\\/?\-=+_]/g, "").toLowerCase()) {
-              tmpDelta = valA.match(/[0-9]+/g)*1 - valB.match(/[0-9]+/g)*1;
-              if (tmpDelta != 0 && delta > Math.abs(tmpDelta))
-                delta = Math.abs(tmpDelta);
-              return tmpDelta;
-          }
-        });
-        let returnArray = [];
-        let hasCurrentUrl = false;
-        let currentUrlIndex = null;
-        let reduceIndex = 0;
-        let currentURL = enhancedURLBar.lastChild.getAttribute("url")
-          .replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
-        let matching = false;
-        let partURL,relatedVal,tempVal;
-        partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
-        for (let i = 0; i < resultArray.length; i++) {
-          let url = resultArray[i].url;
-          let title = resultArray[i].title;
-          relatedVal = "";
-          url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
-          relatedVal = url.slice(partURL.length, url.length).replace(/[\-_+]/g," ").replace("=", " =");
-          if (relatedVal.match(/^[[\/?#&: ]{1}[[\/?#&: ]{0,1}$/) != null
-            || !(relatedVal.length > 0 && relatedVal[0].match(/[\/?#&:]/))) {
-              reduceIndex++;
-              continue;
-          }
-          // Correcting the value to match the global styling
-          relatedVal = relatedVal.slice(1).replace(/[\-_+]/g, " ").replace("=", "= ")
-            .split(/[&\/?#]+/g).filter(function(v) { return v.length > 0;});
-          Array.some(relatedVal, function(v, index) {
-            if (gibberish(v) != false) {
-              if (title != null && title.length > 0) {
-                tempVal = trimWord(removeRedundantText(url.split(/[\/?&#]/)
-                  .filter(function(v) { return v.length > 0;}), title), 75);
-                if (tempVal.length == 0 || tempVal == " ")
-                  relatedVal[index] = title;
-                else
-                  relatedVal[index] = tempVal;
-              }
-              return true;
-            }
-          });
-          relatedVal = makeCapital(relatedVal.join(" > ").replace(/^(\s<\s)/,""));
-          matching = false;
-          Array.some(returnArray, function(tempP, index) {
-            if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
-              && (tempP[1].toLowerCase() == url.toLowerCase()
-              || tempP[1].toLowerCase() == currentURL.toLowerCase())) {
-                  matching = true;
-                  return true;
-            }
-            else if (tempP[0].toLowerCase() == relatedVal.toLowerCase()
-              && tempP[1].toLowerCase() != currentURL.toLowerCase()){
-                  returnArray.splice(index, 1);
-                  if (currentUrlIndex != null && index < currentUrlIndex)
-                    currentUrlIndex--;
-                  else (currentUrlIndex == null)
-                    reduceIndex++;
-            }
-          });
-          if (matching) {
-            reduceIndex++;
-            continue;
-          }
-          else {
-            if (url.toLowerCase() == currentURL.toLowerCase()) {
-              hasCurrentUrl = true;
-              currentUrlIndex = i - reduceIndex;
-            }
-            returnArray.push([relatedVal,url,title]);
-          }
+          URLMapList.push(location);
+          URLMap[location] = [URLMapList.length - 1, resultArray];
         }
-        if (!hasCurrentUrl && concernedStack != enhancedURLBar.lastChild) {
-          relatedVal = "";
-          let tempS = concernedStack.nextSibling;
-          while (tempS != null) {
-            relatedVal += trimWord(tempS.firstChild.getAttribute("value"));
-            tempS = tempS.nextSibling;
-            if (tempS != null)
-              relatedVal += " > ";
-          }
-          if (returnArray.length >= 15)
-            returnArray.pop();
-          returnArray.push([relatedVal,currentURL,""]);
-          currentUrlIndex = returnArray.length - 1;
-        }
-        resultArray = null;
-        if (similarPattern && delta != 9999)
-          fillMissingEntries(returnArray, partURL, delta, currentUrlIndex, aCallback, aArgs);
-        else if (similarPattern && returnArray.length == 1)
-          fillMissingEntries(returnArray, partURL, 1, currentUrlIndex, aCallback, aArgs);
         else {
-          // Calling the callback function for Async operations
-          aArgs[aArgs.length] = returnArray;
-          returnArray = null;
-          aCallback(aArgs);
+          URLMap[location] = [0, resultArray];
+          URLMapList[0] = location;
         }
+        callbackFunction([concernedStack, aCallback, aArgs, resultArray]);
       },
       args : [concernedStack, aCallback, aArgs]
     });
@@ -2052,6 +2081,14 @@ function changeUI(window) {
   }
 
   function getCurrentPageHREFs() {
+    let location = window.content.window.document.location;
+    if (HREFMap[location]) {
+      let index = HREFMap[location][0];
+      HREFMapList.splice(index, 1);
+      HREFMapList.push(location);
+      HREFMap[location][0] = HREFMapList.length - 1;
+      return HREFMap[location][1];
+    }
     let urls = window.content.window.document.getElementsByTagName("a");
     let list = [];
     let map = {};
@@ -2070,6 +2107,19 @@ function changeUI(window) {
     }
     map = null;
     urls = null;
+    let len = HREFMapList.length;
+    if (len > 0) {
+      if (len > 9) {
+        let oldLoc = HREFMapList.splice(0,1)[0];
+        delete HREFMap[oldLoc];
+      }
+      HREFMapList.push(location);
+      HREFMap[location] = [HREFMapList.length - 1, list];
+    }
+    else {
+      HREFMap[location] = [0, list];
+      HREFMapList[0] = location;
+    }
     return list;
   }
 
@@ -2248,7 +2298,7 @@ function changeUI(window) {
         mainPopup.appendChild(part);
         mainPopup.appendChild(document.createElementNS(XUL, "menuseparator"));
       }
-      for (let i = 0; i < pageLinks.length; i++) {
+      for (let i = 0; i < Math.min(pageLinks.length, 28 - resultArray.length); i++) {
         let arrowVal = pageLinks[i][1];
         let url = pageLinks[i][0];
         let part = document.createElementNS(XUL, "menuitem");
