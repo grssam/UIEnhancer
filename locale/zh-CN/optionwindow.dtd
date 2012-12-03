@@ -60,3 +60,6 @@
 <!ENTITY chooseColor.label  "选择进度条的颜色">
 <!ENTITY chooseColor.tooltip  "选择进度条的颜色">
 <!ENTITY custom.label  "习俗">
+<!ENTITY refreshOnLastPartClick.label "点击面包屑最后一部分时重新载入网页">
+<!ENTITY refreshOnLastPartClick.accesskey "R">
+<!ENTITY refreshOnLastPartClick.tooltip "取消勾选该项，则左键点击面包屑最后一部分（不按 Ctrl）时不执行任何操作。">
