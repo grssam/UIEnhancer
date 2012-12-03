@@ -5,58 +5,81 @@
 <!ENTITY bookmarksPane.label "Bară de semne de carte">
 <!ENTITY statusPane.label "Bară de stare">
 <!ENTITY progressPane.label "Bară de progres">
+
 <!ENTITY enhanceURLBar.label "Se implementează interfața cu marcaje de navigare în bara de adrese">
 <!ENTITY enhanceURLBar.accesskey "j">
 <!ENTITY enhanceURLBar.tooltip "Activați funcționalitatea principală a acestui supliment. Adresa oricărei pagini va fi afișată într-o manieră îmbunătățită, cu marcaje de navigare.">
+
 <!ENTITY removeGibberish.label "Se elimină textul fără sens și se înlocuiește cu date semnificative">
 <!ENTITY removeGibberish.accesskey "x">
 <!ENTITY removeGibberish.tooltip "Permiteți înlocuirea textelor cum ar fi simbolurile lungi (00fjhgu4uUA94R23), etc. cu texte semnificative, ușor de înțeles">
+
 <!ENTITY makeCapital.label "Se înlocuiesc cu majuscule inițialele fiecărui cuvânt">
 <!ENTITY makeCapital.accesskey "m">
 <!ENTITY makeCapital.tooltip "Îmbunătățiți lizibilitatea părților separate de marcaje">
+
 <!ENTITY useIdentityBox.label "Se folosește caseta de identitate (când este goală) pentru a afișa domeniul paginii">
 <!ENTITY useIdentityBox.accesskey "i">
 <!ENTITY useIdentityBox.tooltip "Activați afișarea și evidențierea domeniului rădăcină al paginii în caseta de identitate (din stânga barei de adrese)">
+
 <!ENTITY identityBoxLeftClickChanged.label "Se navighează către domeniul rădăcină cu clic pe caseta de identitate dacă aceasta conține informații">
 <!ENTITY identityBoxLeftClickChanged.accesskey "d">
 <!ENTITY identityBoxLeftClickChanged.tooltip "Activați opțiunea pentru a naviga către domeniul rădăcină al paginii în loc de a afișa informaiții despre identitatea saitului">
+
+<!ENTITY refreshOnLastPartClick.label "Se reîncarcă pagina web cu clic pe ultimul marcaj de navigare">
+<!ENTITY refreshOnLastPartClick.accesskey "r">
+<!ENTITY refreshOnLastPartClick.tooltip "Dacă opțiunea nu este selectată, la clic pe ultimul marcaj (fără a fi apăsat Ctrl) nu se produce niciun efect">
+
 <!ENTITY useDragDrop.label "Se permite glisarea și fixarea părților separate de marcaje">
 <!ENTITY useDragDrop.accesskey "g">
 <!ENTITY useDragDrop.tooltip "Permiteți glisarea și fixarea oricărei părți în bara de semne de carte a pentru a face un semn de carte nou, pe desktop pentru a face o legătură rapidă sau chiar într-o filă nouă">
+
 <!ENTITY combination.label "Combinație de taste pentru accesarea directă a casetei de opțiuni:">
-<!ENTITY optionsShortcutTextBox.accesskey "t">
-<!ENTITY optionsShortcutTextBox.tooltip "Dați clic în caseta text și apăsați combinația dorită">
+<!ENTITY combination.accesskey "t">
+<!ENTITY combination.tooltip "Dați clic în această casetă și tastați combinația dorită">
+
 <!ENTITY useStyleSheet.label "Se utilizează noua interfață pentru marcajele de navigare">
 <!ENTITY useStyleSheet.accesskey "u">
 <!ENTITY useStyleSheet.tooltip "Activați noul și elegantul stil pentru marcaje. Dacă este dezactivat, se folosește stilul de navigare din Windows Explorer (Windows Vista)">
+
 <!ENTITY customStyleSheet.label "Stil personalizat pentru marcajele de navigare">
 <!ENTITY customStyleSheet.tooltip "Alegeți un fișier de stiluri (CSS), corect formatat, de pe disc. Pentru a afla cum se creează un fișier de stiluri CSS, vizitați pagina gazdă a suplimentului">
+
 <!ENTITY browse.label "Răsfoiește…">
 <!ENTITY browse.accesskey "R">
 <!ENTITY browse.tooltip "Căutați și alegeți un fișier de stiluri pentru marcajele de navigare">
+
 <!ENTITY resetStyleSheet.label "Inițializează stilul">
 <!ENTITY resetStyleSheet.accesskey "I">
 <!ENTITY resetStyleSheet.tooltip "Reveniți la stilul prestabilit">
+
 <!ENTITY selectStyleSheet.label "Stil prestabilit pentru marcajele de navigare">
 <!ENTITY selectStyleSheet.tooltip "Alegeți un stil dintre cele prestabilite ale suplimentului. Stilurile „light” sunt pentru temele luminoase ale Firefox, iar cele „dark” pentru cele intunecate">
+
 <!ENTITY chooseStyle.label "Stil prestabilit:">
 <!ENTITY chooseStyle.accesskey "S">
 <!ENTITY chooseStyle.tooltip "Selectați din lista derulantă">
-<!ENTITY showStatusInURLBar.label "Se afișează starea navigatorului în bara de adrese">
+
+<!ENTITY showStatusInURLBar.label "Se afișează mesajele de stare a navigatorului în bara de adrese">
 <!ENTITY showStatusInURLBar.accesskey "s">
 <!ENTITY showStatusInURLBar.tooltip "Notă: Această caracteristică nu va funcționa atunci când caracteristica similară a suplimentului „Status-4-Evar” este activă">
-<!ENTITY useLeftoverSpace.label "Se folosește spațiul liber al barei de adrese pentru afișarea stării navigatorului">
+
+<!ENTITY useLeftoverSpace.label "Se folosește spațiul liber al barei de adrese pentru afișarea mesajelor de stăre a navigatorului">
 <!ENTITY useLeftoverSpace.accesskey "r">
-<!ENTITY useLeftoverSpace.tooltip "Veți putea vizualiza adrese și stări de lungime mare">
+<!ENTITY useLeftoverSpace.tooltip "Veți putea vizualiza adrese și mesaje de stare de lungime mare">
+
 <!ENTITY statusWidth.label "Lungimea maximă a barei de stare">
 <!ENTITY statusWidth.accesskey "x">
 <!ENTITY statusWidth.tooltip "Această lungime se folosește atunci când opțiunea de mai sus este inactivă. Valoarea este în pixeli">
-<!ENTITY showProgressInURLBar.label "Se afișează progresul încărcării paginii în bara de adrese">
+
+<!ENTITY showProgressInURLBar.label "Se afișează progresul încărcării paginii în fundalul barei de adrese">
 <!ENTITY showProgressInURLBar.accesskey "p">
-<!ENTITY showProgressInURLBar.tooltip "Activați afișarea unei bare de progres în spatele textului din bara de adrese pentru a evidenția progresul încărcării paginii">
+<!ENTITY showProgressInURLBar.tooltip "Selectați opțiunea penatru a afișa o bară de progres a încărcării paginii în spatele textului din bara de adrese">
+
 <!ENTITY showProgressAsArrow.label "Se folosește un marcaj de navigare în locul barei de progres">
 <!ENTITY showProgressAsArrow.accesskey "m">
-<!ENTITY showProgressAsArrow.tooltip "Utilizați această caracteristică pentru a menține coerența cu noul stil">
+<!ENTITY showProgressAsArrow.tooltip "Selectati opțiunea pentru a menține un aspect asemănător al barei de progres cu noul stil">
+
 <!ENTITY chooseColor.label "Culoare pentru bara de progres">
 <!ENTITY chooseColor.tooltip "Alegeți o culoare pentru bara de progres">
 <!ENTITY custom.label "Definită de utilizator">
