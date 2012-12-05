@@ -1560,21 +1560,21 @@ function changeUI(window) {
       mouseScrolled = false;
       if (partText == "about")
         partText += ":";
-      window.openUILinkIn(partText, tab);
+      window.openUILinkIn(partText, tab, {relatedToCurrent:true});
     }
     else if (clickedStack != enhancedURLBar.lastChild || mouseScrolled || tab == "tab") {
       mouseScrolled = false;
       let url = clickedStack.getAttribute("url");
       if (url == "about")
         url += ":";
-      window.openUILinkIn(url, tab);
+      window.openUILinkIn(url, tab, {relatedToCurrent:true});
     }
     else if (clickedStack == enhancedURLBar.lastChild && pref("refreshOnLastPartClick")) {
       mouseScrolled = false;
       let url = clickedStack.getAttribute("url");
       if (url == "about")
         url += ":";
-      window.openUILinkIn(url, tab);
+      window.openUILinkIn(url, tab, {relatedToCurrent:true});
     }
     else if (clickedStack == enhancedURLBar.lastChild &&
              !pref("refreshOnLastPartClick") && !pref("dndReload")) {
@@ -1597,7 +1597,7 @@ function changeUI(window) {
             let url = clickedStack.getAttribute("url");
             if (url == "about")
               url += ":";
-            window.openUILinkIn(url, tab);
+            window.openUILinkIn(url, tab, {relatedToCurrent:true});
           }
           else if (decision == 2) {
             pref("dndReload", true);
