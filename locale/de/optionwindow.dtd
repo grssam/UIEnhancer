@@ -1,62 +1,85 @@
-<!ENTITY window.title "Location Bar Enhancer Optionen">
-<!ENTITY generalPane.label "Allgemeine Einstellungen">
-<!ENTITY generalCustomization.label "Anpassung (allgemein)">
-<!ENTITY stylePane.label "Breadcrumb-Styles">
-<!ENTITY bookmarksPane.label "Bookmarks Enhancer">
-<!ENTITY statusPane.label "Statuszeile">
-<!ENTITY progressPane.label "Fortschritts-Balken">
-<!ENTITY enhanceURLBar.label "Breadcrumbs Benutzeroberfläche in Navigationsleiste aktivieren">
-<!ENTITY enhanceURLBar.accesskey "B">
-<!ENTITY enhanceURLBar.tooltip "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
-<!ENTITY removeGibberish.label "Kauderwelsch aus den Elementen entfernen und mit aussagekräftigen Daten ersetzen">
-<!ENTITY removeGibberish.accesskey "K">
-<!ENTITY removeGibberish.tooltip "Texte wie lange Zeichenketten (00fjhgu4uUA94R23) usw. werden durch leicht lesbaren und aussagekräftigen Text ersetzt.">
-<!ENTITY makeCapital.label "Alle Anfangsbuchstaben groß schreiben">
-<!ENTITY makeCapital.accesskey "A">
-<!ENTITY makeCapital.tooltip "Dies macht Breadcrumbs leichter lesbar.">
-<!ENTITY useIdentityBox.label "Domäne in Identitäts-Box anzeigen (falls nicht schon Zertifikat oder Land angezeigt werden)">
-<!ENTITY useIdentityBox.accesskey "I">
-<!ENTITY useIdentityBox.tooltip "Die Domäne der Webseite würde in der Identitäts-Box (links neben der Adressleiste) hervorgehoben dargestellt werden.">
-<!ENTITY identityBoxLeftClickChanged.label "Linker Klick auf Identity-Box, um Root-Domain gehen, wenn Domäne drin.">
-<!ENTITY identityBoxLeftClickChanged.accesskey "L">
-<!ENTITY identityBoxLeftClickChanged.tooltip "Wenn die oben genannte Einstellung aktiviert ist, wird diese Einstellung ersetzen die ursprüngliche linken Seite klicken Sie auf das Info Verhalten zeigen, um in den Bereich der Web-Adresse Verhalten gehen.">
-<!ENTITY useDragDrop.label "Drag und Drop von Breadcrumb Elementen erlauben">
-<!ENTITY useDragDrop.accesskey "D">
-<!ENTITY useDragDrop.tooltip "Jedes Element kann per Drag und Drop benutzt werden um ein neues Lesezeichen im Lesezeichen-Symbolleiste oder eine Verknüpfung auf dem Desktop zu erstellen, oder um ein neues Tab zu öffnen">
-<!ENTITY combination.label "Tastenkombination:">
-<!ENTITY combination.accesskey "T">
-<!ENTITY combination.tooltip "Klicken Sie in das Textfeld an und drücken die gewünschte Tasten-Kombination">
-<!ENTITY useStyleSheet.label "Neue Schnittstelle für die Breadcrumbs verwenden">
-<!ENTITY useStyleSheet.accesskey "N">
-<!ENTITY useStyleSheet.tooltip "Aktiviert das neue und elegante Design für die Breadcrumbs. Wird diese Option deaktiviert, entspricht das Aussehen dem der neuen Windows Explorer Adressleiste.">
-<!ENTITY customStyleSheet.label "Benuterdefiniertes Layout für die Breadcrumbs (mittels Style Sheet)">
-<!ENTITY customStyleSheet.tooltip "Wählen Sie ein korrekt formatiertes Stylesheet von Ihrer Festplatte. Um mehr darüber zu erfahren, wie man ein benutzerdefiniertes Stylesheet erstellt, bitte die Homepage des Add-ons besuchen">
-<!ENTITY browse.label "Durchsuchen…">
-<!ENTITY browse.accesskey "B">
-<!ENTITY browse.tooltip "Festplatte nach benutzerdefinierten Stylesheets für Breadcrumbs durchsuchen.">
-<!ENTITY resetStyleSheet.label "Style Sheet zurücksetzen">
-<!ENTITY resetStyleSheet.accesskey "z">
-<!ENTITY resetStyleSheet.tooltip "Setzt das Layout auf das Standard-Stylesheet zurück.">
-<!ENTITY selectStyleSheet.label  "Oder wählen Sie aus den folgenden Stile:">
-<!ENTITY selectStyleSheet.tooltip  "Wählen Sie aus den Standard-Stile mit diesem Add-on. Licht-Styles sind für helle und dunkle Firefox-Themes Styles für dunkle Firefox-Themes.">
-<!ENTITY chooseStyle.label  "Bitte wählen">
-<!ENTITY chooseStyle.accesskey  "B">
-<!ENTITY chooseStyle.tooltip  "aus der Liste auswählen.">
-<!ENTITY showStatusInURLBar.label "Status in der Adressleiste anzeigen.">
+<!ENTITY window.title                 "Location Bar Enhancer Optionen">
+<!ENTITY generalPane.label            "Allgemeine Einstellungen">
+<!ENTITY generalCustomization.label   "Anpassung (allgemein)">
+<!ENTITY stylePane.label              "Breadcrumb-Styles">
+<!ENTITY bookmarksPane.label          "Bookmarks Enhancer">
+<!ENTITY statusPane.label             "Statuszeile">
+<!ENTITY progressPane.label           "Fortschritts-Balken">
+
+<!ENTITY enhanceURLBar.label          "Breadcrumbs Benutzeroberfläche in Navigationsleiste aktivieren">
+<!ENTITY enhanceURLBar.accesskey      "B">
+<!ENTITY enhanceURLBar.tooltip        "Dies ist das Hauptmerkmal dieses addon. Die Adresse einer beliebigen Seite in einem funktionsreichen breadcrumb Stil-Display angezeigt.">
+
+<!ENTITY removeGibberish.label        "Kauderwelsch aus den Elementen entfernen und mit aussagekräftigen Daten ersetzen">
+<!ENTITY removeGibberish.accesskey    "K">
+<!ENTITY removeGibberish.tooltip      "Texte wie lange Zeichenketten (00fjhgu4uUA94R23) usw. werden durch leicht lesbaren und aussagekräftigen Text ersetzt.">
+
+<!ENTITY makeCapital.label            "Alle Anfangsbuchstaben groß schreiben">
+<!ENTITY makeCapital.accesskey        "A">
+<!ENTITY makeCapital.tooltip          "Dies macht Breadcrumbs leichter lesbar.">
+
+<!ENTITY useIdentityBox.label         "Domäne in Identitäts-Box anzeigen (falls nicht schon Zertifikat oder Land angezeigt werden)">
+<!ENTITY useIdentityBox.accesskey     "I">
+<!ENTITY useIdentityBox.tooltip       "Die Domäne der Webseite würde in der Identitäts-Box (links neben der Adressleiste) hervorgehoben dargestellt werden.">
+
+<!ENTITY identityBoxLeftClickChanged.label         "Linker Klick auf Identity-Box, um Root-Domain gehen, wenn Domäne drin.">
+<!ENTITY identityBoxLeftClickChanged.accesskey     "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip       "Wenn die oben genannte Einstellung aktiviert ist, wird diese Einstellung ersetzen die ursprüngliche linken Seite klicken Sie auf das Info Verhalten zeigen, um in den Bereich der Web-Adresse Verhalten gehen.">
+
+<!ENTITY refreshOnLastPartClick.label         "Webseite neuladen: Klicken Sie auf das letzte Schaltelement">
+<!ENTITY refreshOnLastPartClick.accesskey     "n">
+<!ENTITY refreshOnLastPartClick.tooltip       "Wenn diese Option deaktiviert ist, dann ist das Schaltelement  am Ende der Zeile deaktiviert">
+
+<!ENTITY useDragDrop.label            "Drag und Drop von Breadcrumb Elementen erlauben">
+<!ENTITY useDragDrop.accesskey        "D">
+<!ENTITY useDragDrop.tooltip          "Jedes Element kann per Drag und Drop benutzt werden um ein neues Lesezeichen im Lesezeichen-Symbolleiste oder eine Verknüpfung auf dem Desktop zu erstellen, oder um ein neues Tab zu öffnen">
+
+<!ENTITY combination.label            "Tastenkombination:">
+<!ENTITY combination.accesskey        "T">
+<!ENTITY combination.tooltip          "Klicken Sie in das Textfeld an und drücken die gewünschte Tasten-Kombination">
+
+<!ENTITY useStyleSheet.label          "Neue Schnittstelle für die Breadcrumbs verwenden">
+<!ENTITY useStyleSheet.accesskey      "N">
+<!ENTITY useStyleSheet.tooltip        "Aktiviert das neue und elegante Design für die Breadcrumbs. Wird diese Option deaktiviert, entspricht das Aussehen dem der neuen Windows Explorer Adressleiste.">
+
+<!ENTITY customStyleSheet.label       "Benuterdefiniertes Layout für die Breadcrumbs (mittels Style Sheet)">
+<!ENTITY customStyleSheet.tooltip     "Wählen Sie ein korrekt formatiertes Stylesheet von Ihrer Festplatte. Um mehr darüber zu erfahren, wie man ein benutzerdefiniertes Stylesheet erstellt, bitte die Homepage des Add-ons besuchen">
+
+<!ENTITY browse.label                 "Durchsuchen…">
+<!ENTITY browse.accesskey             "B">
+<!ENTITY browse.tooltip               "Festplatte nach benutzerdefinierten Stylesheets für Breadcrumbs durchsuchen.">
+
+<!ENTITY resetStyleSheet.label        "Style Sheet zurücksetzen">
+<!ENTITY resetStyleSheet.accesskey    "z">
+<!ENTITY resetStyleSheet.tooltip      "Setzt das Layout auf das Standard-Stylesheet zurück.">
+
+<!ENTITY selectStyleSheet.label       "Oder wählen Sie aus den folgenden Stile:">
+<!ENTITY selectStyleSheet.tooltip     "Wählen Sie aus den Standard-Stile mit diesem Add-on. Licht-Styles sind für helle und dunkle Firefox-Themes Styles für dunkle Firefox-Themes.">
+
+<!ENTITY chooseStyle.label            "Bitte wählen">
+<!ENTITY chooseStyle.accesskey        "B">
+<!ENTITY chooseStyle.tooltip          "aus der Liste auswählen.">
+
+<!ENTITY showStatusInURLBar.label     "Status in der Adressleiste anzeigen.">
 <!ENTITY showStatusInURLBar.accesskey "S">
-<!ENTITY showStatusInURLBar.tooltip "Hinweis: Diese Funktion funktioniert nicht, wenn eine ähnliche Funktion des Status-4-Evar Add-on aktiviert ist">
-<!ENTITY useLeftoverSpace.label "Übrig gebliebenen Platz in der Adressleiste für den Status verwenden">
-<!ENTITY useLeftoverSpace.accesskey "V">
-<!ENTITY useLeftoverSpace.tooltip "Dies ermöglicht die Anzeige von langen Adressen und Statusmeldungen">
-<!ENTITY statusWidth.label "Maximale Breite der Statusleiste">
-<!ENTITY statusWidth.accesskey "M">
-<!ENTITY statusWidth.tooltip "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Wert wird Pixeln angegeben">
-<!ENTITY showProgressInURLBar.label "Lade - Fortschritt in der Adressleiste anzeigen.">
+<!ENTITY showStatusInURLBar.tooltip   "Hinweis: Diese Funktion funktioniert nicht, wenn eine ähnliche Funktion des Status-4-Evar Add-on aktiviert ist">
+
+<!ENTITY useLeftoverSpace.label       "Übrig gebliebenen Platz in der Adressleiste für den Status verwenden">
+<!ENTITY useLeftoverSpace.accesskey   "V">
+<!ENTITY useLeftoverSpace.tooltip     "Dies ermöglicht die Anzeige von langen Adressen und Statusmeldungen">
+
+<!ENTITY statusWidth.label            "Maximale Breite der Statusleiste">
+<!ENTITY statusWidth.accesskey        "M">
+<!ENTITY statusWidth.tooltip          "Diese Breite wird verwendet, wenn die oben genannte Einstellung deaktiviert ist. Wert wird Pixeln angegeben">
+
+<!ENTITY showProgressInURLBar.label     "Lade - Fortschritt in der Adressleiste anzeigen.">
 <!ENTITY showProgressInURLBar.accesskey "F">
-<!ENTITY showProgressInURLBar.tooltip "Zeigt einen Fortschrittsbalken im Hintergrund der Adressleiste während die Seite geladen wird.">
-<!ENTITY showProgressAsArrow.label "Brotkrümel statt Fortschrittsbalken verwenden">
-<!ENTITY showProgressAsArrow.accesskey "B">
-<!ENTITY showProgressAsArrow.tooltip "Verwenden Sie diese Option um die Kohärenz mit dem neuen Stil zu erhalten">
-<!ENTITY chooseColor.label "Farbe des Fortschrittsbalkens auswählen">
-<!ENTITY chooseColor.tooltip "Farbe des Fortschrittsbalkens auswählen">
-<!ENTITY custom.label "benutzerdefiniert">
+<!ENTITY showProgressInURLBar.tooltip   "Zeigt einen Fortschrittsbalken im Hintergrund der Adressleiste während die Seite geladen wird.">
+
+<!ENTITY showProgressAsArrow.label      "Brotkrümel statt Fortschrittsbalken verwenden">
+<!ENTITY showProgressAsArrow.accesskey  "B">
+<!ENTITY showProgressAsArrow.tooltip    "Verwenden Sie diese Option um die Kohärenz mit dem neuen Stil zu erhalten">
+
+<!ENTITY chooseColor.label              "Farbe des Fortschrittsbalkens auswählen">
+<!ENTITY chooseColor.tooltip            "Farbe des Fortschrittsbalkens auswählen">
+<!ENTITY custom.label                   "benutzerdefiniert">
