@@ -2445,8 +2445,8 @@ function changeUI(window) {
       return;
     }
     if (!showUserPassInBreadcrumbs
-      && urlValue.match(/(https?:\/\/)?[^\.:]+:[^@]+@[^\.]+\./)) {
-      let userPass = urlValue.match(/(https?:\/\/)?([^\.:]+:[^@]+@)[^\.]+\./)[2];
+      && urlValue.match(/^https?:\/\/([^:]+:.+@)[^\.]+\./)) {
+      let userPass = urlValue.match(/^https?:\/\/([^:]+:.+@)[^\.]+\./)[1];
       urlValue = urlValue.replace(userPass, "");
     }
     try {

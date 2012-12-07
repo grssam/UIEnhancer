@@ -1,5 +1,5 @@
 content uienhancer content/
-locale  uienhancer en    locale/en-US/
+locale  uienhancer en-US locale/en-US/
 locale  uienhancer ja    locale/ja/
 locale  uienhancer de    locale/de/
 locale  uienhancer ro    locale/ro/
