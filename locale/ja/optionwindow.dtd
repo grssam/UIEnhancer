@@ -1,62 +1,85 @@
-<!ENTITY window.title  "ロケーションバーエンハンサーオプション">
-<!ENTITY generalPane.label  "般的な設定">
-<!ENTITY generalCustomization.label  "般的なカスタマイズ">
-<!ENTITY stylePane.label  "ロケーションバーのスタイル">
-<!ENTITY bookmarksPane.label  "ブックマークエンハンサー">
-<!ENTITY statusPane.label  "ステータスバー">
-<!ENTITY progressPane.label  "プログレスバー">
-<!ENTITY enhanceURLBar.label  "ロケーションバーで実装するブレッドクラム·ユーザー·インタフェース">
-<!ENTITY enhanceURLBar.accesskey  "B">
-<!ENTITY enhanceURLBar.tooltip  "これは、このアドオンの主な機能です。任意のページのアドレスは、パンくずのスタイルのディスプレイに表示されます。">
-<!ENTITY removeGibberish.label  "部品から役に立たないデータを削除します">
-<!ENTITY removeGibberish.accesskey  "G">
-<!ENTITY removeGibberish.tooltip  "トークンのような長いテキストが意味のあるデータで置き換えられます.">
-<!ENTITY makeCapital.label  "各単語の資本の最初のアルファベットを作る">
-<!ENTITY makeCapital.accesskey  "C">
-<!ENTITY makeCapital.tooltip  "これは、ブレッドクラムのインターフェイスを向上させます">
-<!ENTITY useIdentityBox.label  "ページのドメインを表示するには、アイデンティティ·ボックス（空）を使用します">
-<!ENTITY useIdentityBox.accesskey  "I">
-<!ENTITY useIdentityBox.tooltip  "（ロケーションバーの左側）のアイデンティティボックスに表示されているページのドメイが強調表示されます">
-<!ENTITY identityBoxLeftClickChanged.label "ルートドメインに移動するには、アイデンティティ·ボックス上で左クリックしたときに内部ドメイン.">
-<!ENTITY identityBoxLeftClickChanged.accesskey "L">
-<!ENTITY identityBoxLeftClickChanged.tooltip "上記の設定が有効になっている場合、この設定は、Webアドレスの動作のドメインに移動するには、ページ情報の動作を表示するには、元の左クリックに置き換えられます。">
-<!ENTITY useDragDrop.label  "ブレッドクラムの部分からドラッグアンドドロップを許可">
-<!ENTITY useDragDrop.accesskey  "D">
-<!ENTITY useDragDrop.tooltip  "をブックマークツールバーに新しいブックマークを作成したり、デスクトップ上のリンクのショートカットを作るためにドロップすることができ、あるいは、新しいタブで">
-<!ENTITY combination.label  "ショートカットキーの組み合わせ:">
-<!ENTITY combination.accesskey  "K">
-<!ENTITY combination.tooltip  "テキストボックス内をクリックし、目的の組み合わせを押します">
-<!ENTITY useStyleSheet.label  "ブレッドクラムのための新しいインタフェースを使用して">
-<!ENTITY useStyleSheet.accesskey  "U">
-<!ENTITY useStyleSheet.tooltip  "ロケーションバーの新機能と洗練されたデザインが可能になります。無効になっている場合は、ブレッドクラム·スタイルは、Windowsエクスプローラのナビゲーションバーのスタイルと一致するように戻すでしょう">
-<!ENTITY customStyleSheet.label  "スタイルブレッドクラムをする独自のスタイルシートを使用します">
-<!ENTITY customStyleSheet.tooltip  "ハードディスクから適切に準備スタイルシートを選択してください。カスタムスタイルシートを作成する方法についての詳細を知るためには、アドオンのホームページをご覧ください。">
-<!ENTITY browse.label  "ブラウズ…">
-<!ENTITY browse.accesskey  "B">
-<!ENTITY browse.tooltip  "スタイルブレッドクラムを、カスタムスタイルシートを参照.">
-<!ENTITY resetStyleSheet.label  "スタイルシートをリセットする">
-<!ENTITY resetStyleSheet.accesskey  "R">
-<!ENTITY resetStyleSheet.tooltip  "デフォルトのスタイルシートに戻す.">
-<!ENTITY selectStyleSheet.label  "または次のスタイルから選択：">
-<!ENTITY selectStyleSheet.tooltip  "このアドオンのライトのスタイルを充填したデフォルトのスタイルからお選びくださいダーク色のFirefoxのテーマのために明るい色のFirefoxテーマとダークスタイルのためのものです">
-<!ENTITY chooseStyle.label  "選択してください">
-<!ENTITY chooseStyle.accesskey  "S">
-<!ENTITY chooseStyle.tooltip  "リストから選択します">
-<!ENTITY showStatusInURLBar.label  "ロケーションバーにステータスを表示する.">
-<!ENTITY showStatusInURLBar.accesskey  "S">
-<!ENTITY showStatusInURLBar.tooltip  "注：ステータス-4-EVARの同様の機能はアドオンは、次の場合にこの機能は動作しません有効になっています">
-<!ENTITY useLeftoverSpace.label  "ステータスのロケーションバー内の残りのスペースを使用します">
-<!ENTITY useLeftoverSpace.accesskey  "L">
-<!ENTITY useLeftoverSpace.tooltip  "これは、ロケーションバーの長いアドレスの表示を支援">
-<!ENTITY statusWidth.label  "ステータスバーの最大幅">
-<!ENTITY statusWidth.accesskey  "W">
-<!ENTITY statusWidth.tooltip  "上記の設定が無効になっている場合、この幅が使用されます。値はピクセルである">
-<!ENTITY showProgressInURLBar.label  "ロケーションバーにページの読み込みの進行状況を表示します。">
-<!ENTITY showProgressInURLBar.accesskey  "P">
-<!ENTITY showProgressInURLBar.tooltip   "ページのロードの進行状況を表示するロケーションバーにテキストの背後にあるプログレスバーを有効にします">
-<!ENTITY showProgressAsArrow.label  "代わりに、プログレスバーのブレッドクラムを使用して、">
+<!ENTITY window.title                 "Location Bar Enhancer オプション">
+<!ENTITY generalPane.label            "一般">
+<!ENTITY generalCustomization.label   "一般的なカスタマイズ">
+<!ENTITY stylePane.label              "パンくずリストのスタイル">
+<!ENTITY bookmarksPane.label          "Bookmarks Enhancer">
+<!ENTITY statusPane.label             "ステータスバー">
+<!ENTITY progressPane.label           "進行状況バー">
+
+<!ENTITY enhanceURLBar.label          "ロケーションバーをパンくずリスト表示にする">
+<!ENTITY enhanceURLBar.accesskey      "B">
+<!ENTITY enhanceURLBar.tooltip        "これは、このアドオンの主な機能です。ページのアドレスは、機能豊富なパンくずリストで表示されます。">
+
+<!ENTITY removeGibberish.label        "部品から役に立たないデータを削除する">
+<!ENTITY removeGibberish.accesskey    "G">
+<!ENTITY removeGibberish.tooltip      "トークンのような長いテキストは意味のあるデータに置き換えられます">
+
+<!ENTITY makeCapital.label            "各単語の資本の最初のアルファベットを作る">
+<!ENTITY makeCapital.accesskey        "C">
+<!ENTITY makeCapital.tooltip          "これは、パンくずリストのインターフェイスを向上させます">
+
+<!ENTITY useIdentityBox.label         "ページのドメインを表示するには、アイデンティティ·ボックス（空）を使用する">
+<!ENTITY useIdentityBox.accesskey     "I">
+<!ENTITY useIdentityBox.tooltip       "（ロケーションバーの左側）のアイデンティティボックスに表示されているページのドメインが強調表示されます">
+
+<!ENTITY identityBoxLeftClickChanged.label         "ルートドメインに移動するには、アイデンティティ·ボックス上で左クリックしたときに内部ドメイン.">
+<!ENTITY identityBoxLeftClickChanged.accesskey     "L">
+<!ENTITY identityBoxLeftClickChanged.tooltip       "上記の設定が有効になっている場合、この設定は、Webアドレスの動作のドメインに移動するには、ページ情報の動作を表示するには、元の左クリックに置き換えられます。">
+
+<!ENTITY refreshOnLastPartClick.label         "最後のパンくずリストをクリックしてもWebページを再読み込みする">
+<!ENTITY refreshOnLastPartClick.accesskey     "R">
+<!ENTITY refreshOnLastPartClick.tooltip       "このチェックボックスをオフにすると、最後のパンくずリストを左クリックしても再読み込みしません。">
+
+<!ENTITY useDragDrop.label            "パンくずリストの部分からドラッグアンドドロップを許可">
+<!ENTITY useDragDrop.accesskey        "D">
+<!ENTITY useDragDrop.tooltip          "をブックマークツールバーに新しいブックマークを作成したり、デスクトップ上のリンクのショートカットを作るためにドロップすることができ、あるいは、新しいタブで">
+
+<!ENTITY combination.label            "ショートカットキーの組み合わせ:">
+<!ENTITY combination.accesskey        "K">
+<!ENTITY combination.tooltip          "テキストボックス内をクリックし、目的の組み合わせを押します">
+
+<!ENTITY useStyleSheet.label          "パンくずリストの新しいインターフェイスを使用する">
+<!ENTITY useStyleSheet.accesskey      "U">
+<!ENTITY useStyleSheet.tooltip        "ロケーションバーの新機能と洗練されたデザインが可能になります。無効になっている場合は、パンくずリストは、Windowsエクスプローラのナビゲーションバーのスタイルと同様の表示になります。">
+
+<!ENTITY customStyleSheet.label       "パンくずリストに独自のスタイルシートを使用する">
+<!ENTITY customStyleSheet.tooltip     "ハードディスクから適切に準備したスタイルシートを選択してください。カスタムスタイルシートを作成する方法についての詳細を知るためには、アドオンのホームページをご覧ください。">
+
+<!ENTITY browse.label                 "参照…">
+<!ENTITY browse.accesskey             "B">
+<!ENTITY browse.tooltip               "パンくずリストに使用するカスタムスタイルシートを参照します">
+
+<!ENTITY resetStyleSheet.label        "スタイルシートをリセット">
+<!ENTITY resetStyleSheet.accesskey    "R">
+<!ENTITY resetStyleSheet.tooltip      "デフォルトのスタイルシートに戻す.">
+
+<!ENTITY selectStyleSheet.label       "次のスタイルから選択：">
+<!ENTITY selectStyleSheet.tooltip     "このアドオン用のいくつかのスタイルから選ぶことができます。Light style は明るい色の Firefox テーマ用で Dark Style は暗い色の Firefox テーマ用です。 ">
+
+<!ENTITY chooseStyle.label            "選択">
+<!ENTITY chooseStyle.accesskey        "S">
+<!ENTITY chooseStyle.tooltip          "リストから選択します">
+
+<!ENTITY showStatusInURLBar.label     "ロケーションバーにステータスを表示する.">
+<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.tooltip   "注：この機能は Status-4-Evar の同様の機能が有効になっている場合動作しません">
+
+<!ENTITY useLeftoverSpace.label       "ステータスのロケーションバー内の残りのスペースを使用します">
+<!ENTITY useLeftoverSpace.accesskey   "L">
+<!ENTITY useLeftoverSpace.tooltip     "これは、ロケーションバーの長いアドレスの表示を支援します">
+
+<!ENTITY statusWidth.label            "ステータスバーの最大幅">
+<!ENTITY statusWidth.accesskey        "W">
+<!ENTITY statusWidth.tooltip          "上記の設定が無効になっている場合、この幅が使用されます。値はピクセルです">
+
+<!ENTITY showProgressInURLBar.label     "ロケーションバーにページの読み込みの進行状況を表示する">
+<!ENTITY showProgressInURLBar.accesskey "P">
+<!ENTITY showProgressInURLBar.tooltip   "有効にするとロケーションバーのテキストの背後にページの読み込み進行状況バーを表示します">
+
+<!ENTITY showProgressAsArrow.label      "進行状況バーの代わりにパンくずリストを使用する">
 <!ENTITY showProgressAsArrow.accesskey  "B">
-<!ENTITY showProgressAsArrow.tooltip  "新しいスタイルとの整合性を維持するために、この機能を使用する.">
-<!ENTITY chooseColor.label  "プログレスバーの色を選択します">
-<!ENTITY chooseColor.tooltip  "プログレスバーの色を選択します">
-<!ENTITY custom.label  "カスタム">
+<!ENTITY showProgressAsArrow.tooltip    "新しいスタイルとの整合性を維持するために、この機能を使用します">
+
+<!ENTITY chooseColor.label              "色を選択">
+<!ENTITY chooseColor.tooltip            "進行状況バーの色を選択します">
+<!ENTITY custom.label                   "カスタム">

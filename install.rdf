@@ -60,6 +60,16 @@
 
     <localized>
       <Description>
+        <locale>ja</locale>
+        <homepageURL>https://addons.mozilla.org/ja/firefox/addon/ui-enhancer/</homepageURL>
+        <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
+        <name>Location Bar Enhancer</name>
+        <translator>haebaru (@BabelZilla)</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
         <locale>ro</locale>
         <description>Implementează o interfaţă cu marcaje de navigare îmbunătăţite în bara de adrese</description>
         <name>Location Bar Enhancer</name>
