@@ -1900,6 +1900,9 @@ function changeUI(window) {
     // add Unicode & HTML flavors to the transferable widget
     let trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
     if (!trans) return;
+    if ("init" in trans) {
+      trans.init(null);
+    }
     trans.addDataFlavor("text/unicode");
     trans.setTransferData("text/unicode", str, copyURL.length * 2);
     trans.addDataFlavor("text/html");
