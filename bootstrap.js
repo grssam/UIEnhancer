@@ -3391,7 +3391,7 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
     openSite = true;
   watchWindows(function(window) {
     if (openSite) {
-      window.openUILinkIn("http://grssam.com/?p=303", "tab");
+      window.openUILinkIn("http://grssam.com/?p=384", "tab");
       openSite = false;
     }
   });
