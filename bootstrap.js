@@ -2296,7 +2296,6 @@ function changeUI(window) {
         if (resultArray.length > 0)
           mainPopup.appendChild(document.createElementNS(XUL, "menuseparator"));
         mainPopup.appendChild(part);
-        mainPopup.appendChild(document.createElementNS(XUL, "menuseparator"));
       }
       for (let i = 0; i < Math.min(pageLinks.length, 28 - resultArray.length); i++) {
         let arrowVal = pageLinks[i][1];
@@ -2359,8 +2358,6 @@ function changeUI(window) {
         part.setAttribute("label", l10n("children.label"));
       part.setAttribute("disabled", true);
       mainPopup.insertBefore(part, mainPopup.firstChild);
-      mainPopup.insertBefore(document.createElementNS(XUL, "menuseparator"),
-        mainPopup.firstChild.nextSibling);
     }
     else if (mainPopup.firstChild == null) {
       let part = document.createElementNS(XUL, "menuitem");
