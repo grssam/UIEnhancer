@@ -7,79 +7,79 @@
 <!ENTITY progressPane.label           "Индикатор загрузки">
 
 <!ENTITY enhanceURLBar.label          "Задействовать интерфейс Навигационной цепочки в строке адреса">
-<!ENTITY enhanceURLBar.accesskey      "B">
+<!ENTITY enhanceURLBar.accesskey      "Н">
 <!ENTITY enhanceURLBar.tooltip        "Это основная функция этого расширения. Строка адреса будет показана с использованием элементов интерфейса Навигационной цепочки.">
 
 <!ENTITY removeGibberish.label        "Убрать нечитаемый текст в адресе и заменить его на более информативный.">
-<!ENTITY removeGibberish.accesskey    "G">
-<!ENTITY removeGibberish.tooltip      "Длинный текст (например, 00fjhgu4uUA94R23 и подобные) будет заменен на более информативный и читаемый.">
+<!ENTITY removeGibberish.accesskey    "У">
+<!ENTITY removeGibberish.tooltip      "Длинный текст (например, 00fjhgu4uUA94R23 и подобные) будет заменен на более информативный и читабельный.">
 
 <!ENTITY makeCapital.label            "Сделать первые буквы частей адреса заглавными">
-<!ENTITY makeCapital.accesskey        "C">
+<!ENTITY makeCapital.accesskey        "П">
 <!ENTITY makeCapital.tooltip          "Эта опция улучшает интерфейс Навигационной цепочки.">
 
-<!ENTITY useIdentityBox.label         "Использовать Identity Box (когда пустой) для отображение домена вэбстраницы.">
+<!ENTITY useIdentityBox.label         "Использовать Identity Box (когда пустой) для отображения домена вэбстраницы.">
 <!ENTITY useIdentityBox.accesskey     "I">
 <!ENTITY useIdentityBox.tooltip       "Домен вэбстраницы будет подсвечиваться и отображаться в Identity Box (в левой части строки адреса).">
 
-<!ENTITY identityBoxLeftClickChanged.label         "Щелкните левой кнопкой мыши на идентичность Box идти корневого домена, когда домен внутри него.">
-<!ENTITY identityBoxLeftClickChanged.accesskey     "Щ">
-<!ENTITY identityBoxLeftClickChanged.tooltip       "Когда выше параметр включен, этот параметр будет заменить оригинальный левой кнопкой мыши, чтобы показать поведение информационной странице, чтобы перейти на домен веб-поведение-адрес.">
+<!ENTITY identityBoxLeftClickChanged.label         "Нажмите левой кнопкой мыши на Identity Box для перехода к корневому домену, когда он внутри Identity Box.">
+<!ENTITY identityBoxLeftClickChanged.accesskey     "К">
+<!ENTITY identityBoxLeftClickChanged.tooltip       "Когда этот параметр включен, стандартный левый клик мышкой, для отображения информации о странице, будет заменен, на переход к корневому домену.">
 
-<!ENTITY refreshOnLastPartClick.label         "Reload the web page on clicking the last breadbrumb">
-<!ENTITY refreshOnLastPartClick.accesskey     "R">
-<!ENTITY refreshOnLastPartClick.tooltip       "If this is unchecked, left clicking the last breadcrumb (without pressing Ctrl) will do nothing.">
+<!ENTITY refreshOnLastPartClick.label         "Обновлять страницу при нажатии на последний элемент Навигационной цепочки">
+<!ENTITY refreshOnLastPartClick.accesskey     "О">
+<!ENTITY refreshOnLastPartClick.tooltip       "Если галочка снята, то при нажатии левой кнопкой на последний элемент Навигационной цепочки (без зажатого Ctrl) ничего не произойдет.">
 
 <!ENTITY useDragDrop.label            "Разрешить перетаскивание частей адреса страницы">
-<!ENTITY useDragDrop.accesskey        "D">
+<!ENTITY useDragDrop.accesskey        "Р">
 <!ENTITY useDragDrop.tooltip          "Каждую часть адреса можно перетаскивать, для того чтобы создать новую закладку или создать ярлык на Рабочем столе, или для открытия страницы в новой вкладке">
 
 <!ENTITY combination.label            "Горячие клавиши:">
-<!ENTITY combination.accesskey        "K">
+<!ENTITY combination.accesskey        "Г">
 <!ENTITY combination.tooltip          "Кликните в текстовом поле и нажмите желаемую комбинацию клавиш">
 
 <!ENTITY useStyleSheet.label          "Использовать новый интерфейс для Навигационной цепочки">
-<!ENTITY useStyleSheet.accesskey      "U">
+<!ENTITY useStyleSheet.accesskey      "И">
 <!ENTITY useStyleSheet.tooltip        "Включает новый сглаженный дизайн интерфейса Навигационной цепочки. Если отключено, то стиль Навигационной цепочки будет соответствовать стилю панели навигации Windows Explorer.">
 
 <!ENTITY customStyleSheet.label       "Использовать пользовательскую таблицу стилей">
 <!ENTITY customStyleSheet.tooltip     "Выберите правильно сформированный стиль с вашего локального диска. Подробности на домашней странице расширения">
 
-<!ENTITY browse.label                 "Выбрать...">
-<!ENTITY browse.accesskey             "B">
+<!ENTITY browse.label                 "Обзор...">
+<!ENTITY browse.accesskey             "Б">
 <!ENTITY browse.tooltip               "Выбрать пользовательский стиль для Навигационной цепочки.">
 
 <!ENTITY resetStyleSheet.label        "Сбросить таблицу стилей">
-<!ENTITY resetStyleSheet.accesskey    "R">
+<!ENTITY resetStyleSheet.accesskey    "Т">
 <!ENTITY resetStyleSheet.tooltip      "Вернуться к стилю по умолчанию.">
 
 <!ENTITY selectStyleSheet.label       "Или выбрать из следующих стилей:">
-<!ENTITY selectStyleSheet.tooltip     "Выберите один из стилей по умолчанию упакованы с этим дополнением. Стилей Света для светлой темы Firefox и темные Стили для темного цвета темы Firefox.">
+<!ENTITY selectStyleSheet.tooltip     "Выберите один из стилей по умолчанию включенных в дополнение. Светлые стили для светлых тем Firefox и темные стили для темных тем Firefox.">
 
 <!ENTITY chooseStyle.label            "Выберите">
-<!ENTITY chooseStyle.accesskey        "В">
-<!ENTITY chooseStyle.tooltip          "выберите из списка.">
+<!ENTITY chooseStyle.accesskey        "Ы">
+<!ENTITY chooseStyle.tooltip          "Выберите из списка.">
 
 <!ENTITY showStatusInURLBar.label     "Показывать статус в строке адреса.">
-<!ENTITY showStatusInURLBar.accesskey "S">
+<!ENTITY showStatusInURLBar.accesskey "С">
 <!ENTITY showStatusInURLBar.tooltip   "Важно: Эта опция не будет работать если включена аналогичная опция в Status-4-Evar.">
 
-<!ENTITY useLeftoverSpace.label       "Использовать оставшееся места строки адреса для отображения статуса">
-<!ENTITY useLeftoverSpace.accesskey   "L">
-<!ENTITY useLeftoverSpace.tooltip     "Это позволит показывать длинные вэбадреса ссылок и статусы">
+<!ENTITY useLeftoverSpace.label       "Использовать свободное пространство адресной строки для отображения статуса">
+<!ENTITY useLeftoverSpace.accesskey   "А">
+<!ENTITY useLeftoverSpace.tooltip     "Это позволит показывать длинные адреса ссылок и статусы">
 
-<!ENTITY statusWidth.label            "Максимальная шина строки статуса">
-<!ENTITY statusWidth.accesskey        "W">
+<!ENTITY statusWidth.label            "Максимальная ширина строки статуса">
+<!ENTITY statusWidth.accesskey        "Ш">
 <!ENTITY statusWidth.tooltip          "Это значение будет использовано если настройка выше отключена. Значение в пикселях">
 
 <!ENTITY showProgressInURLBar.label     "Показать прогресса загрузки страницы в адресной строке.">
-<!ENTITY showProgressInURLBar.accesskey "П">
-<!ENTITY showProgressInURLBar.tooltip   "Включение индикатора за текст в адресной строке, чтобы показать прогресс загрузки страницы">
+<!ENTITY showProgressInURLBar.accesskey "З">
+<!ENTITY showProgressInURLBar.tooltip   "Включение индикатора загрузки за текстом в адресной строке, чтобы показать прогресс загрузки страницы">
 
-<!ENTITY showProgressAsArrow.label      "Используйте цепочку, а индикатор">
+<!ENTITY showProgressAsArrow.label      "Использовать Навигационную цепочку вместо индикатора загрузки">
 <!ENTITY showProgressAsArrow.accesskey  "И">
-<!ENTITY showProgressAsArrow.tooltip    "Для поддержания совместимости с новым стилем, использовать эту функцию.">
+<!ENTITY showProgressAsArrow.tooltip    "Используйте эту функцию, для поддержания совместимости с новым стилем.">
 
-<!ENTITY chooseColor.label              "Выберите цвет прогресс-бар">
-<!ENTITY chooseColor.tooltip            "Выберите цвет прогресс-бар">
-<!ENTITY custom.label                   "обычай">
+<!ENTITY chooseColor.label              "Выберите цвет индикатора загрузки">
+<!ENTITY chooseColor.tooltip            "Выберите цвет индикатора загрузки">
+<!ENTITY custom.label                   "Пользовательский">
