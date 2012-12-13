@@ -16,6 +16,7 @@
     <translator>velociraptor@BabelZilla (zh-TW)</translator>
     <translator>Axel Grude (RealRaven@BabelZilla) (de)</translator>
     <translator>Nero Wolfe @BabelZilla (ru)</translator>
+    <translator>Kamui-Solo (ru)</translator>
     <translator>Cătălin Zamfirescu (x10) (ro)</translator>
     <translator>haebaru (@BabelZilla) (ja)</translator>
 
@@ -35,7 +36,7 @@
         <homepageURL>https://addons.mozilla.org/ru/firefox/addon/ui-enhancer/</homepageURL>
         <description>Орудия имеют богатый Breadcrumb пользовательского интерфейса в адресной строке</description>
         <name>Location Bar Enhancer</name>
-        <translator>Nero Wolfe (@BabelZilla)</translator>
+        <translator>Nero Wolfe (@BabelZilla), Kamui-Solo</translator>
       </Description>
     </localized>
 
