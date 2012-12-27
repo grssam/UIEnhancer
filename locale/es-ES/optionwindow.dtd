@@ -6,7 +6,7 @@
 <!ENTITY statusPane.label             "Barra de Estado">
 <!ENTITY progressPane.label           "Barra de Progreso">
 
-<!ENTITY enhanceURLBar.label          "Implementar la Interfaz en forma de Ruta de Navegación en la Barra de Direcciones ">
+<!ENTITY enhanceURLBar.label          "Usar la Interfaz en forma de Ruta de Navegación en la Barra de Direcciones ">
 <!ENTITY enhanceURLBar.accesskey      "B">
 <!ENTITY enhanceURLBar.tooltip        "Esta es la característica principal del complemento. La dirección de cualquier página se muestra en forma de ruta de navegación.">
 
