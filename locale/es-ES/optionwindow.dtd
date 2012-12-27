@@ -6,11 +6,11 @@
 <!ENTITY statusPane.label             "Barra de Estado">
 <!ENTITY progressPane.label           "Barra de Progreso">
 
-<!ENTITY enhanceURLBar.label          "Usar la Interfaz en forma de Ruta de Navegación en la Barra de Direcciones ">
+<!ENTITY enhanceURLBar.label          "Utilizar la ruta de navegación en la barra de direcciones ">
 <!ENTITY enhanceURLBar.accesskey      "B">
-<!ENTITY enhanceURLBar.tooltip        "Esta es la característica principal del complemento. La dirección de cualquier página se muestra en forma de ruta de navegación.">
+<!ENTITY enhanceURLBar.tooltip        "Esta es la característica principal del complemento. La dirección de cualquier página será mostrada en forma de ruta de navegación.">
 
-<!ENTITY removeGibberish.label        "Eliminar los Textos sin Significado y reemplazarlos por palabras Significativas.">
+<!ENTITY removeGibberish.label        "Eliminar los textos sin significado y reemplazarlos por palabras significativas.">
 <!ENTITY removeGibberish.accesskey    "T">
 <!ENTITY removeGibberish.tooltip      "Textos como largos códigos (00fjhgu4uUA94R23) son reemplazados con palabras fáciles de percibir y con un significado apropiado.">
 
@@ -20,9 +20,9 @@
 
 <!ENTITY useIdentityBox.label         "Usar el Cuadro de Identidad (cuando está vacío) para mostrar el dominio de la página web.">
 <!ENTITY useIdentityBox.accesskey     "I">
-<!ENTITY useIdentityBox.tooltip       "El dominio de la página web se resaltará y se mostrará en el Cuadro de Identidad (a la izquierda de la Barra de Direcciones).">
+<!ENTITY useIdentityBox.tooltip       "El dominio de la página web se resaltará y se mostrará en el Cuadro de Identidad (a la izquierda de la barra de direcciones).">
 
-<!ENTITY identityBoxLeftClickChanged.label         "Habilitar click Izquierdo en el Cuadro de Identidad para ir a la raíz del dominio con su dirección">
+<!ENTITY identityBoxLeftClickChanged.label         "Al hacer click en el Cuadro de Identidad, se dirigirá al dominio ubicado en su interior.">
 <!ENTITY identityBoxLeftClickChanged.accesskey     "D">
 <!ENTITY identityBoxLeftClickChanged.tooltip       "Cuando la opción de arriba está habilitada, esta opción hará que al hacer click izquierdo se diriga al dominio de la dirección web en lugar de mostrar la información de la página.">
 
@@ -30,26 +30,26 @@
 <!ENTITY refreshOnLastPartClick.accesskey     "R">
 <!ENTITY refreshOnLastPartClick.tooltip       "Si esto se desactiva, al hacer click izquierdo en la última parte de la ruta (sin presionar Ctrl) no se llevará a cabo ninguna acción.">
 
-<!ENTITY useDragDrop.label            "Habilitar la función de Arrastrar y Soltar las partes de la Ruta de Navegación">
+<!ENTITY useDragDrop.label            "Habilitar la función de arrastrar y soltar las partes de la ruta de navegación">
 <!ENTITY useDragDrop.accesskey        "A">
-<!ENTITY useDragDrop.tooltip          "Cada parte puede ser arrastrada y soltada para crear un nuevo marcador en la Barra de Marcadores o para crear un acceso directo en el Escritorio, e inclusive en una nueva Pestaña.">
+<!ENTITY useDragDrop.tooltip          "Cada parte puede ser arrastrada y soltada para crear un nuevo marcador en la barra de marcadores y para crear un acceso directo en el Escritorio o en la nueva pestaña.">
 
 <!ENTITY combination.label            "Combinación de Teclas:">
 <!ENTITY combination.accesskey        "C">
 <!ENTITY combination.tooltip          "Haga click en el cuadro de texto y presione la combinación de teclas deseada">
 
-<!ENTITY useStyleSheet.label          "Usar la nueva Interfaz para las partes de la ruta de navegación">
+<!ENTITY useStyleSheet.label          "Usar la Interfaz nueva para la ruta de navegación">
 <!ENTITY useStyleSheet.accesskey      "U">
-<!ENTITY useStyleSheet.tooltip        "Habilita el diseño nuevo y limpio para la ruta de navegación. Si se deshabilita, el estilo de la ruta de navegación cambiará para coincidir con el estilo del Explorador de Windows.">
+<!ENTITY useStyleSheet.tooltip        "Habilita un diseño más nuevo y limpio para la ruta de navegación. Si se deshabilita, el estilo de la ruta de navegación cambiará para coincidir con el estilo del Explorador de Windows.">
 
-<!ENTITY customStyleSheet.label       "Usa su propia Hoja de Estilos para dar estilo a la ruta de navegación.">
-<!ENTITY customStyleSheet.tooltip     "Elija una Hoja de Estilos preparada correctamente de su disco duro. Para saber más acerca de cómo crear su propio estilo, visite la página principal de este complemento.">
+<!ENTITY customStyleSheet.label       "Use su propia hoja de estilos para cambiar la apariencia de la ruta de navegación.">
+<!ENTITY customStyleSheet.tooltip     "Elija una hoja de estilos de su disco duro diseñada para este complemento. Para saber más acerca de cómo crear su propio estilo, visite la página principal de este complemento.">
 
 <!ENTITY browse.label                 "Explorar...">
 <!ENTITY browse.accesskey             "E">
-<!ENTITY browse.tooltip               "Buscar su propia Hoja de Estilos para dar estilo a la ruta de Navegación.">
+<!ENTITY browse.tooltip               "Buscar su propia hoja de estilos para cambiar la apariencia de la ruta de navegación.">
 
-<!ENTITY resetStyleSheet.label        "Reiniciar la Hoja de Estilos">
+<!ENTITY resetStyleSheet.label        "Reiniciar la hoja de estilos">
 <!ENTITY resetStyleSheet.accesskey    "R">
 <!ENTITY resetStyleSheet.tooltip      "Volver a la hoja de estios predeterminada.">
 
@@ -58,28 +58,28 @@
 
 <!ENTITY chooseStyle.label            "Por Favor Seleccione">
 <!ENTITY chooseStyle.accesskey        "S">
-<!ENTITY chooseStyle.tooltip          "Seleccionar de la lista.">
+<!ENTITY chooseStyle.tooltip          "Seleccione de la lista.">
 
-<!ENTITY showStatusInURLBar.label     "Mostrar la Barra de Estado en la Barra de Direcciones.">
+<!ENTITY showStatusInURLBar.label     "Mostrar la barra de estado en la barra de direcciones.">
 <!ENTITY showStatusInURLBar.accesskey "M">
 <!ENTITY showStatusInURLBar.tooltip   "Nota: Esta característica no funcionará si la misma característica del complemento Status-4-Evar está habilitada.">
 
-<!ENTITY useLeftoverSpace.label       "Usar el espacio Restante en la Barra de Direcciones para mostrar la Barra de Estado">
+<!ENTITY useLeftoverSpace.label       "Usar el espacio restante en la barra de direcciones para mostrar la barra de estado">
 <!ENTITY useLeftoverSpace.accesskey   "R">
-<!ENTITY useLeftoverSpace.tooltip     "Esto habilita la posibilidad de ver enlaces largos y estados de carga de la página. ">
+<!ENTITY useLeftoverSpace.tooltip     "Esto le permite ver enlaces y estados de carga de la página más largos ">
 
-<!ENTITY statusWidth.label            "Ancho máximo de la Barra de Estado">
+<!ENTITY statusWidth.label            "Ancho máximo de la barra de estado:">
 <!ENTITY statusWidth.accesskey        "A">
 <!ENTITY statusWidth.tooltip          "Este ancho será usado cuando la opción de arriba esté deshabilitada. El valor se mide en píxeles">
 
-<!ENTITY showProgressInURLBar.label     "Mostar el progreso de carga de la página en la Barra de Direcciones.">
+<!ENTITY showProgressInURLBar.label     "Mostar el progreso de carga de la página en la barra de direcciones.">
 <!ENTITY showProgressInURLBar.accesskey "P">
-<!ENTITY showProgressInURLBar.tooltip   "Habilitar una barra de progreso por detrás del texto de la barra de direcciones para mostrar el progreso de carga de la página">
+<!ENTITY showProgressInURLBar.tooltip   "Muestra una barra de progreso por detrás del texto de la barra de direcciones para ver el progreso de carga de la página">
 
 <!ENTITY showProgressAsArrow.label      "Usar la forma de una de las partes de la ruta de navegación en lugar de una barra de progreso">
 <!ENTITY showProgressAsArrow.accesskey  "F">
 <!ENTITY showProgressAsArrow.tooltip    "Para mantener la consistencia con el nuevo estilo, use esta característica.">
 
-<!ENTITY chooseColor.label              "Elija un color para la Barra de Progreso:">
-<!ENTITY chooseColor.tooltip            "Elija un color para la Barra de Progreso">
+<!ENTITY chooseColor.label              "Elija un color para la barra de progreso:">
+<!ENTITY chooseColor.tooltip            "Elija un color para la barra de progreso">
 <!ENTITY custom.label                   "Personalizar">
