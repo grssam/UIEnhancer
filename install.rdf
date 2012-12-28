@@ -19,6 +19,7 @@
     <translator>Kamui-Solo (ru)</translator>
     <translator>Cătălin Zamfirescu (x10) (ro)</translator>
     <translator>haebaru (@BabelZilla) (ja)</translator>
+    <translator>Alopepeo (es-ES)</translator>
 
     <localized>
       <Description>
@@ -76,6 +77,15 @@
         <description>Implementează o interfaţă cu marcaje de navigare îmbunătăţite în bara de adrese</description>
         <name>Location Bar Enhancer</name>
         <translator>Cătălin Zamfirescu (x10)</translator>
+      </Description>
+    </localized>
+
+    <localized>
+      <Description>
+        <locale>es-ES</locale>
+        <description>Implements feature rich Breadcrumb User Interface in the Location Bar</description>
+        <name>Location Bar Enhancer</name>
+        <translator>Alopepeo</translator>
       </Description>
     </localized>
 
