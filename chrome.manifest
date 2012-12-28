@@ -6,3 +6,5 @@ locale  uienhancer ro    locale/ro/
 locale  uienhancer ru    locale/ru/
 locale  uienhancer zh-CN locale/zh-CN/
 locale  uienhancer zh-TW locale/zh-TW/
+locale  uienhancer es-ES locale/es-ES/
+locale  uienhancer es-AR locale/es-ES/
