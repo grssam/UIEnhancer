@@ -188,3 +188,7 @@
 .enhanced-arrow-frontChevron-normal { background-image: url('defaultThemeDark/frontChevron_normal.png');}
 .enhanced-arrow-frontChevron-arrowHovered { background-image: url('defaultThemeDark/frontChevron_arrowHovered.png');}
 .enhanced-arrow-frontChevron-arrowMouseDown { background-image: url('defaultThemeDark/frontChevron_arrowMouseDown.png');}
+#UIEnhancer_StatusBar > * {
+  color: #fff !important;
+  background: none !important;
+}

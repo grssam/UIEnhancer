@@ -14,7 +14,7 @@
   background-image: url('DevtoolsLight/before_first_normal.png');
 }
 #UIEnhancer_URLBar[domainVisible] > .enhanced-stack:first-child {
-  margin-left: 5px;
+  margin-left: 2px;
 }
 .enhanced-stack { padding: 0px !important; margin: 0px;}
 .enhanced-text, .enhanced-text-anchor, .enhanced-text-queryString , .enhanced-text-noArrow, .enhanced-text-noArrow-anchor, .enhanced-text-noArrow-queryString {
@@ -25,7 +25,7 @@
   background-size: 100% 100%; background-repeat: no-repeat;
 }
 .enhanced-text-normal, .enhanced-text-noArrow-normal {
-  padding: 3px 2px 0px 2px !important;
+  padding: 3px 1px 0px 1px !important;
   color: #000 !important;
 }
 .enhanced-text-textHovered, .enhanced-text-noArrow-textHovered {
@@ -75,7 +75,7 @@
 .enhanced-text-queryString-textHovered, .enhanced-text-noArrow-queryString-textHovered,
 .enhanced-text-queryString-arrowHovered, .enhanced-text-noArrow-queryString-arrowHovered,
 .enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
-  padding: 3px 2px 0px 2px !important;
+  padding: 3px 1px 0px 1px !important;
 }
 .enhanced-arrow-textMouseDown, .enhanced-arrow-noArrow-textMouseDown,
 .enhanced-arrow-anchor-textMouseDown, .enhanced-arrow-noArrow-anchor-textMouseDown,
@@ -91,7 +91,7 @@
 .enhanced-text-arrowMouseDown, .enhanced-text-noArrow-arrowMouseDown,
 .enhanced-text-anchor-arrowMouseDown, .enhanced-text-noArrow-anchor-arrowMouseDown,
 .enhanced-text-queryString-arrowMouseDown, .enhanced-text-noArrow-queryString-arrowMouseDown {
-  padding: 3px 2px 0px 2px !important;
+  padding: 3px 1px 0px 1px !important;
   background-image: url('DevtoolsLight/text_textMouseDown.png');
 }
 .enhanced-arrow-textMouseDown-left, .enhanced-arrow-noArrow-textMouseDown-left,
@@ -103,7 +103,7 @@
   background-image: url('DevtoolsLight/arrow_textMouseDown_left.png');
 }
 .enhanced-text-mouseScroll, .enhanced-text-noArrow-mouseScroll {
-  padding: 3px 2px 0px 2px !important;
+  padding: 3px 1px 0px 1px !important;
   color: orange;
   text-shadow: 0px 0px 5px rgba(255, 158, 1, 0.8);
 }
