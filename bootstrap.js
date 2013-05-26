@@ -581,7 +581,9 @@ function changeUI(window) {
     if (hiddenStartingIndex == 0) {
       async(function() {
         try {
-          enhancedURLBar.removeChild(enhancedURLBar.firstChild);
+          if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
+            enhancedURLBar.removeChild(enhancedURLBar.firstChild);
+          }
           enhancedURLBar.setAttribute("domainVisible", true);
           enhancedURLBar.setAttribute("condition", "normal");
         } catch (ex) {}
