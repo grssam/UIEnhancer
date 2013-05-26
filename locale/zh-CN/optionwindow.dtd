@@ -17,9 +17,9 @@
 <!ENTITY useIdentityBox.label  "在空白的站点标识信息框中显示域名">
 <!ENTITY useIdentityBox.accesskey  "I">
 <!ENTITY useIdentityBox.tooltip  "在地址栏左侧的站点标识信息框中高亮显示网页域名。">
-<!ENTITY identityBoxLeftClickChanged.label "左击身份盒去根域时域里面。">
+<!ENTITY identityBoxLeftClickChanged.label "点击站点标识信息框时打开其根域名。">
 <!ENTITY identityBoxLeftClickChanged.accesskey "L">
-<!ENTITY identityBoxLeftClickChanged.tooltip "当上面的设置被启用，此设置将取代原来的左键点击显示页面信息的行为，去域的网络地址的行为。">
+<!ENTITY identityBoxLeftClickChanged.tooltip "一旦启用该项，点击站点标识信息框将不会显示其页面信息，而是打开根域名。">
 <!ENTITY useDragDrop.label  "允许拖放面包屑地址栏的各部分地址路径">
 <!ENTITY useDragDrop.accesskey  "D">
 <!ENTITY useDragDrop.tooltip  "地址的每个部分都可以拖放出来用于在书签工具栏添加新书签、生成桌面快捷方式或在新标签页打开">
@@ -37,11 +37,11 @@
 <!ENTITY resetStyleSheet.label  "重置样式表">
 <!ENTITY resetStyleSheet.accesskey  "R">
 <!ENTITY resetStyleSheet.tooltip  "恢复为默认的样式表。">
-<!ENTITY selectStyleSheet.label  "或者选择以下方式:">
-<!ENTITY selectStyleSheet.tooltip  "挤满了这个附加元件。光样式的默认样式“选择浅色的Firefox主题和黑暗的风格，深色的Firefox主题">
+<!ENTITY selectStyleSheet.label  "或选择以下样式：">
+<!ENTITY selectStyleSheet.tooltip  "选择扩展自带的几种样式，亮色样式适用于亮色主题的 Firefox，而暗色样式则适用于暗色主题。">
 <!ENTITY chooseStyle.label  "请选择">
 <!ENTITY chooseStyle.accesskey  "S">
-<!ENTITY chooseStyle.tooltip  "从列表中选择.">
+<!ENTITY chooseStyle.tooltip  "从下拉菜单中选择。">
 <!ENTITY showStatusInURLBar.label  "在地址栏显示链接状态">
 <!ENTITY showStatusInURLBar.accesskey  "S">
 <!ENTITY showStatusInURLBar.tooltip  "注意：当启用 Status-4-Evar 扩展类似功能时，该特性不可用。">
@@ -50,16 +50,16 @@
 <!ENTITY useLeftoverSpace.tooltip  "允许在地址栏显示长的地址及链接状态">
 <!ENTITY statusWidth.label  "地址栏最大宽度">
 <!ENTITY statusWidth.accesskey  "W">
-<!ENTITY statusWidth.tooltip  "该宽度将在上述设置禁用时生效，值以像素单位">
-<!ENTITY showProgressInURLBar.label  "在地址栏显示页面载入进度.">
+<!ENTITY statusWidth.tooltip  "该宽度将在上述设置禁用时生效，值以像素为单位">
+<!ENTITY showProgressInURLBar.label  "在地址栏显示网页载入进度。">
 <!ENTITY showProgressInURLBar.accesskey  "P">
-<!ENTITY showProgressInURLBar.tooltip  "使在地址栏后面的文字的进度条显示页面加载进度">
-<!ENTITY showProgressAsArrow.label  "使用面包屑，而不是进度条">
+<!ENTITY showProgressInURLBar.tooltip  "网页载入时会在地址栏文字后面显示一个进度条">
+<!ENTITY showProgressAsArrow.label  "使用面包屑代替进度条">
 <!ENTITY showProgressAsArrow.accesskey  "B">
-<!ENTITY showProgressAsArrow.tooltip  "为了保持与新风格的一致性，使用此功能.">
-<!ENTITY chooseColor.label  "选择进度条的颜色">
-<!ENTITY chooseColor.tooltip  "选择进度条的颜色">
-<!ENTITY custom.label  "习俗">
+<!ENTITY showProgressAsArrow.tooltip  "要保持与新风格的一致，请勾选该项。">
+<!ENTITY chooseColor.label  "选择进度条颜色">
+<!ENTITY chooseColor.tooltip  "选择进度条颜色">
+<!ENTITY custom.label  "自定义">
 <!ENTITY refreshOnLastPartClick.label "点击面包屑最后一部分时重新载入网页">
 <!ENTITY refreshOnLastPartClick.accesskey "R">
 <!ENTITY refreshOnLastPartClick.tooltip "取消勾选该项，则左键点击面包屑最后一部分（不按 Ctrl）时不执行任何操作。">
