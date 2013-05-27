@@ -88,6 +88,8 @@ pref.defaults = {
   provideFirstRunExperience: true,
   refreshOnLastPartClick: false,
   dndReload: false,
+  longURLSettingChosen: false,
+  showLastPartInLongURL: true,
 };
 
 pref.observe = function(prefs, callback) {

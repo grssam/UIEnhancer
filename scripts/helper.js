@@ -587,7 +587,7 @@ function showNotification(aText, aTitle, aButtons, aCallback, aTimeout) {
     });
   }
   notificationBox.removeAllNotifications();
-  notificationBox.appendNotification(aText, "", null,
+  notificationBox.appendNotification(aText, "", LOGO,
                                      notificationBox.PRIORITY_INFO_MEDIUM,
                                      buttons, null);
   let checkChoiceSelected = {
@@ -641,7 +641,7 @@ function showContentNotification(aText, aTitle, aButtons, aCallback, aTimeout) {
     });
   }
   notificationBox.removeAllNotifications();
-  notificationBox.appendNotification(aText, "", null,
+  notificationBox.appendNotification(aText, "", LOGO,
                                      notificationBox.PRIORITY_INFO_MEDIUM,
                                      buttons, null);
   let checkChoiceSelected = {

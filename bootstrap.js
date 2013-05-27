@@ -634,7 +634,10 @@ function changeUI(window) {
     else if (partsWidth < (MAXWIDTH - 10) && enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
       partPointer = enhancedURLBar.firstChild;
       arrowMouseDown = false;
+      let temp = pref_showLastPartInLongURL;
+      pref_showLastPartInLongURL = true;
       updateURL();
+      pref_showLastPartInLongURL = temp;
       return;
     }
     updateLook();
@@ -1178,6 +1181,12 @@ function changeUI(window) {
     };
   }
 
+  let pref_longURLSettingChosen = pref("longURLSettingChosen");
+  let pref_showLastPartInLongURL = pref("showLastPartInLongURL");
+  pref.observe(["longURLSettingChosen", "showLastPartInLongURL"], function() {
+    pref_longURLSettingChosen = pref("longURLSettingChosen");
+    pref_showLastPartInLongURL = pref("showLastPartInLongURL");
+  });
   function createStack(createVal, partURL, partType, hiddenArrow) {
     if (urlBarHeight == null || urlBarHeight <= 0)
       urlBarHeight = gURLBar.boxObject.height;
@@ -1230,8 +1239,35 @@ function changeUI(window) {
     tempArrow.setAttribute("flex", 0);
     if (!hiddenArrow)
       tempArrow.setAttribute("tooltiptext", l10n("click.tooltip"));
-    if (hiddenArrow)
+    if (hiddenArrow) {
       createdStack.setAttribute("isHiddenArrow", hiddenArrow);
+      if (!pref_longURLSettingChosen) {
+        let buttons = [{
+          label: l10n("showFirstPart.label"),
+          accessKey: l10n("showFirstPart.accesskey")
+        },{
+          label: l10n("showLastPart.label"),
+          accessKey: l10n("showLastPart.accesskey")
+        }];
+        showContentNotification(l10n("longURLReached.label"), l10n("UIE.label"),
+          buttons, function(decision) {
+            if (decision == 0) {
+              pref("longURLSettingChosen", true);
+              pref_longURLSettingChosen = true;
+              pref("showLastPartInLongURL", false);
+              pref_showLastPartInLongURL = false;
+              async(function() updateURL(true), 250);
+            }
+            else if (decision == 1) {
+              pref("longURLSettingChosen", true);
+              pref_longURLSettingChosen = true;
+              pref("showLastPartInLongURL", true);
+              pref_showLastPartInLongURL = true;
+              async(function() updateURL(true), 250);
+            }
+          }, 30000);
+      }
+    }
     else
       createdStack.setAttribute("isHiddenArrow", false);
 
@@ -1361,7 +1397,7 @@ function changeUI(window) {
     let tempPart = null;
     // Hiding the first parts on overflow if not mouseScrolled
     // else trimming the last parts further more
-    if (partsWidth > MAXWIDTH && !mouseScrolled && !showingHidden) {
+    if (partsWidth > MAXWIDTH && !mouseScrolled && !showingHidden && pref_showLastPartInLongURL) {
       let isDomainHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true";
       while (partsWidth > MAXWIDTH -
         (isDomainHidden || (hiddenStartingIndex > 0)? 15: 0)) {
@@ -1433,6 +1469,34 @@ function changeUI(window) {
         setOpacity(0);
         enhancedURLBar.style.display = "-moz-box";
       }
+    }
+    else if (partsWidth > MAXWIDTH && !mouseScrolled && !showingHidden &&
+             !pref_showLastPartInLongURL && !enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
+      hiddenStartingIndex = 0;
+      let tStack = createStack("", "", "null", "after");
+      tStack.addEventListener("mouseover", function(e) {
+        globalEventHandler("mouseoverOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mousedown", function(e) {
+        globalEventHandler("mousedownOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mouseup", function(e) {
+        globalEventHandler("mouseupOnLastChild", e.originalTarget.parentNode, e);
+      });
+      tStack.addEventListener("mouseout", function(e) {
+        globalEventHandler("mouseout", e.originalTarget.parentNode, e);
+      });
+      let isMac = window.navigator.oscpu.toLowerCase().indexOf("mac") >= 0;
+      if (isMac)
+        tStack.style.margin = "-"
+          + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 3)
+          + "px 0px -"
+          + (window.getComputedStyle(gURLBar).paddingBottom.replace("px", '')*1 + 2)
+          + "px -"
+          + Math.max(window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1
+          + window.getComputedStyle(gURLBar).paddingLeft.replace("px", '')*1, 3) + "px";
+      enhancedURLBar.parentNode.insertBefore(tStack, enhancedURLBar.nextSibling);
+      isMac = null;
     }
     // else if statement to handle the condition when we scroll on a part
     // and the total url overflows
@@ -1600,7 +1664,7 @@ function changeUI(window) {
           else if (decision == 2) {
             pref("dndReload", true);
           }
-        }, 10000);
+        }, 30000);
     }
   }
 
