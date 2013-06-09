@@ -48,7 +48,7 @@
       <preference id="enhanceURLBar" name="extensions.UIEnhancer.enhanceURLBar" type="bool"/>
       <preference id="removeGibberish" name="extensions.UIEnhancer.removeGibberish" type="bool"/>
       <preference id="makeCapital" name="extensions.UIEnhancer.makeCapital" type="bool"/>
-      <preference id="useIdentityBox" name="extensions.UIEnhancer.useIdentityBox" type="bool"/>
+      <preference id="useIdentityEverytime" name="extensions.UIEnhancer.useIdentityEverytime" type="bool"/>
       <preference id="useDragDrop" name="extensions.UIEnhancer.useDragDrop" type="bool"/>
       <preference id="identityBoxLeftClickChanged" name="extensions.UIEnhancer.identityBoxLeftClickChanged" type="bool"/>
       <preference id="refreshOnLastPartClick" name="extensions.UIEnhancer.refreshOnLastPartClick" type="bool"/>
@@ -62,7 +62,7 @@
           tooltiptext="&removeGibberish.tooltip;" label="&removeGibberish.label;" accesskey="&removeGibberish.accesskey;" />
         <checkbox id="makeCapitalCheckBox" preference="makeCapital" oncommand="optionsWindow.notifyChange();"
           tooltiptext="&makeCapital.tooltip;" label="&makeCapital.label;" accesskey="&makeCapital.accesskey;" />
-        <checkbox id="useIdentityBoxCheckBox" preference="useIdentityBox" oncommand="optionsWindow.notifyChange();"
+        <checkbox id="useIdentityEverytimeCheckBox" preference="useIdentityEverytime" oncommand="optionsWindow.notifyChange();"
           tooltiptext="&useIdentityBox.tooltip;" label="&useIdentityBox.label;" accesskey="&useIdentityBox.accesskey;" />
         <checkbox id="identityBoxLeftClickChangedCheckBox" preference="identityBoxLeftClickChanged"
           oncommand="optionsWindow.notifyChange();" tooltiptext="&identityBoxLeftClickChanged.tooltip;"

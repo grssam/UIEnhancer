@@ -56,7 +56,6 @@ function pref(key, val) {
 pref.root = "extensions.UIEnhancer.";
 pref.defaults = {
   makeCapital: true,
-  useIdentityBox: true,
   useIdentityEverytime: false,
   identityBoxLeftClickChanged: true,
   useDragDrop: true,

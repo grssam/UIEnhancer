@@ -176,7 +176,6 @@ function changeUI(window) {
   let {gURLBar, gBrowser, document} = window;
   function $(id) document.getElementById(id);
   let async = makeWindowHelpers(window).async;
-  let fx15Plus = Services.appinfo.platformVersion.split(".")[0]*1 > 14;
   if (gURLBar.parentNode.parentNode.id != "personal-titlebar")
     async(function () {
       if (gURLBar.parentNode.parentNode.id == "personal-titlebar")
@@ -281,10 +280,10 @@ function changeUI(window) {
   origIdentity = $("identity-icon-labels");
   if (pref("enhanceURLBar")) {
     // Get references to existing UI elements
-    if (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime"))) {
+    if (pref("useIdentityEverytime")) {
       origILabel = $("identity-icon-label");
       origICountryLabel = $("identity-icon-country-label");
-      origIdentity.collapsed = !pref("useIdentityBox");
+      origIdentity.collapsed = false;
 
       identityLabel = document.createElementNS(XUL, "label");
       identityLabel.setAttribute("id","UIEnhancer_Identity_Label");
@@ -363,7 +362,7 @@ function changeUI(window) {
       if (isWindows)
         enhancedURLBar.style.margin = "-" + window.getComputedStyle(gURLBar).paddingTop + " 0px -"
           + window.getComputedStyle(gURLBar).paddingBottom + " -"
-          + (window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1 + (fx15Plus?1:0)) + "px";
+          + (window.getComputedStyle(origIdentity).marginRight.replace("px", '')*1 + 1) + "px";
       else if (isLinux)
         enhancedURLBar.style.margin = "-"
           + (window.getComputedStyle(gURLBar).paddingTop.replace("px", '')*1 + 1)
@@ -389,7 +388,7 @@ function changeUI(window) {
 
     // Listening for right click on identity box if Firefox 14 and below
     // or the user has enabled hidden pref for securedIdentityBox
-    if (pref("useIdentityBox") && (!fx15Plus || pref("useIdentityEverytime")))
+    if (pref("useIdentityEverytime"))
       listen(window, origIdentity, "click", function(e) {
         if (pref("identityBoxLeftClickChanged") && e.button <= 1
           && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
@@ -442,8 +441,10 @@ function changeUI(window) {
 
     unload(function() {
       try {
-        window.gURLBar.mInputField.parentNode.removeChild(gURLBar.mInputField.previousSibling);
-        urlBarHeight = enhancedURLBar = origInput = null;
+        let e = $("UIEnhancer_URLBar");
+        e && e.nextSibling.hasAttribute("isHiddenArrow") && e.parentNode.removeChild(e.nextSibling);
+        e && e.parentNode.removeChild(e);
+        e = urlBarHeight = enhancedURLBar = origInput = null;
       } catch(e){}
     }, window);
     setOpacity(0);
@@ -458,6 +459,7 @@ function changeUI(window) {
     useLeftoverSpace = pref("useLeftoverSpace");
     statusWidth = pref("statusWidth");
   });
+  let udb = $("urlbar-display-box");
   function getMaxWidth() {
     let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
     let urlBarWidth = gURLBar.boxObject.width || 1000;
@@ -467,7 +469,7 @@ function changeUI(window) {
         return 0.5*urlBarWidth;
     }
     let origBoxObject = origIdentity.boxObject;
-    let (udb = $("urlbar-display-box")) {
+    if (udb) {
       while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
         udb = udb.nextSibling;
       if (udb == null) {
@@ -653,7 +655,7 @@ function changeUI(window) {
     partsWidth = 0;
     Array.forEach(enhancedURLBar.childNodes, function(child) partsWidth += child.boxObject.width);
 
-    if (fx15Plus && enhancedURLBar.hasAttribute("domainVisible"))
+    if (enhancedURLBar.hasAttribute("domainVisible"))
       partsWidth += 7;
     if (partsWidth > getMaxWidth() || showingHidden)
       enhancedURLBar.style.width = MAXWIDTH + "px";
@@ -1207,7 +1209,7 @@ function changeUI(window) {
       createdStack.setAttribute("isAnchorTag", false);
     if (partType == "domain") {
       createdStack.setAttribute("isDomain", true);
-      if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
+      if (pref_useIdentityEverytime)
         $("identity-box").setAttribute("isDomain", true);
     }
     else {
@@ -1225,7 +1227,7 @@ function changeUI(window) {
     //tempS.style.minHeight = (urlBarHeight - (pref("useStyleSheet")? 0: 4)) + "px";
     // Adding tooltip texts
     tempS.setAttribute("tooltiptext", createVal);
-    if ((partType == "domain" && (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))) || hiddenArrow)
+    if ((partType == "domain" && pref_useIdentityEverytime) || hiddenArrow)
       tempS.style.display = "none";
     else
       tempS.style.display = "-moz-box";
@@ -1292,7 +1294,7 @@ function changeUI(window) {
       tempArrow.style.margin = "0px";
       if (partType != "domain" && !hiddenArrow)
         tempArrow.style.padding = "2px 1px 1px 2px";
-      else if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
+      else if (pref_useIdentityEverytime)
         tempArrow.style.padding = "2px 2px 1px 2px";
       tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
       tempArrow.style.border = "1px solid rgba(255,255,255,0)";
@@ -1340,7 +1342,7 @@ function changeUI(window) {
       }
       else if (domain == true) {
         partPointer.setAttribute("isDomain", true);
-        if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime)) {
+        if (pref_useIdentityEverytime) {
           $("identity-box").setAttribute("isDomain", true);
           partPointer.firstChild.style.display = "none";
         }
@@ -1412,7 +1414,7 @@ function changeUI(window) {
           tempPart = null;
       }
       // If hiddenStartingIndex is 1 , bring it back if iLabel is same
-      if ((!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime)) && lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
+      if (pref_useIdentityEverytime && lastPart && hiddenStartingIndex == 1 && enhancedURLBar.firstChild
         && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           if (enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "true") {
             enhancedURLBar.firstChild.firstChild.style.display = "none";
@@ -1444,7 +1446,7 @@ function changeUI(window) {
           }
           hiddenStartingIndex = 0;
       }
-      else if ((!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime)) && lastPart && hiddenStartingIndex == 1 && !enhancedURLBar.firstChild
+      else if (pref_useIdentityEverytime && lastPart && hiddenStartingIndex == 1 && !enhancedURLBar.firstChild
         && urlArray_updateURL[0].replace("www.", "") == identityLabel.value.toLowerCase()) {
           tStack = createStack(urlArray_updateURL[0], urlValue.slice(0,
             urlPartArray[0]), "domain", false);
@@ -1580,13 +1582,19 @@ function changeUI(window) {
     hiddenStartingIndex = 0;
     // opacity 1 means we are hiding the enhancedURLBar
     if (opacity == 1) {
-      if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
+      if (pref_useIdentityEverytime)
         identityLabel.collapsed = identityCountryLabel.collapsed = true;
       enhancedURLBar.style.width = "0px";
       enhancedURLBar.style.display = "none";
+      if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
+        enhancedURLBar.nextSibling.style.display = "none";
+      }
     }
     else if (opacity == 0) {
       enhancedURLBar.style.display = "-moz-box";
+      if (enhancedURLBar.nextSibling.hasAttribute("isHiddenArrow")) {
+        enhancedURLBar.nextSibling.style.display = "-moz-box";
+      }
     }
   }
 
@@ -1983,7 +1991,7 @@ function changeUI(window) {
     editing = true;
     arrowMouseDown = siblingsShown = false;
     if (editingPart == enhancedURLBar.firstChild) {
-      if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
+      if (pref_useIdentityEverytime)
         try {
           identityCountryLabel.collapsed = identityLabel.collapsed = true;
         } catch (ex) {}
@@ -2068,9 +2076,9 @@ function changeUI(window) {
     listen(window, createdStack.firstChild, "blur", function(e) {
       editing = false;
       if (e.target.parentNode == enhancedURLBar.firstChild) {
-        if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
+        if (pref_useIdentityEverytime)
           try {
-            identityCountryLabel.collapsed = identityLabel.collapsed = !pref_useIdentityBox;
+            identityCountryLabel.collapsed = identityLabel.collapsed = false;
           } catch (ex) {}
         partPointer = enhancedURLBar.firstChild.nextSibling;
       }
@@ -2483,11 +2491,9 @@ function changeUI(window) {
   }, window);
 
   // Function to change urlBar's UI
-  let pref_useIdentityBox = pref("useIdentityBox");
   let pref_useIdentityEverytime = pref("useIdentityEverytime");
   let pref_useStyleSheet = pref("useStyleSheet");
-  pref.observe(["useIdentityBox", "useIdentityEverytime", "useStyleSheet"], function() {
-    pref_useIdentityBox = pref("useIdentityBox");
+  pref.observe(["useIdentityEverytime", "useStyleSheet"], function() {
     pref_useIdentityEverytime = pref("useIdentityEverytime");
     pref_useStyleSheet = pref("useStyleSheet");
   });
@@ -2496,8 +2502,8 @@ function changeUI(window) {
       || window.getComputedStyle(gURLBar).visibility == "collapse")
         return;
     try {
-      if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime))
-        origIdentity.collapsed = !pref_useIdentityBox;
+      if (pref_useIdentityEverytime)
+        origIdentity.collapsed = false;
     } catch (ex) {}
     if (locationBarEnterPressed) {
       urlValue = gURLBar.value;
@@ -2526,13 +2532,10 @@ function changeUI(window) {
     }
     if (URLDisplayed == urlValue && !showingHidden && !titleChanged && !mouseScrolled && !forcedUpdate) {
       try {
-        if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime)) {
+        if (pref_useIdentityEverytime) {
           identityLabel.value = makeCapital(iLabel.replace("www.", ""));
           identityCountryLabel.value = iCountry;
-          if (!pref_useIdentityBox)
-            origIdentity.collapsed = identityLabel.collapsed = iLabel.length == 0;
-          else
-            origIdentity.collapsed = identityLabel.collapsed = false;
+          origIdentity.collapsed = identityLabel.collapsed = false;
           identityCountryLabel.collapsed = iCountry.length == 0;
         }
       } catch (ex) {}
@@ -2653,23 +2656,19 @@ function changeUI(window) {
         urlArray_updateURL[index] = urlArray_updateURL[index].replace(/[\-]/g, " ");
       urlArray_updateURL[index] = urlArray_updateURL[index].replace("=", " = ");
     }
-    if (!fx15Plus || (pref_useIdentityBox && pref_useIdentityEverytime)) {
+    if (pref_useIdentityEverytime) {
       iCountry = iLabel = "";
-      if ((!origILabel || origILabel.value.search(" ") < 0 || pref_useIdentityEverytime) && pref_useIdentityBox)
+      if (!origILabel || origILabel.value.search(" ") < 0 || pref_useIdentityEverytime)
         iLabel = urlArray_updateURL[0];
       else
         iLabel = origILabel? origILabel.value: "";
-      iCountry = (pref_useIdentityBox && pref_useIdentityEverytime)?"":
-        (origICountryLabel? origICountryLabel.value: "");
+      iCountry = pref_useIdentityEverytime?"":(origICountryLabel? origICountryLabel.value: "");
 
       //trimming the iLabel to 50 characters
       iLabel = trimWord(iLabel, 54);
       identityLabel.value = makeCapital(iLabel.replace("www.", ""));
       identityCountryLabel.value = iCountry;
-      if (!pref_useIdentityBox)
-        origIdentity.collapsed = identityLabel.collapsed = (iLabel.length == 0);
-      else
-        origIdentity.collapsed = identityLabel.collapsed = false;
+      origIdentity.collapsed = identityLabel.collapsed = false;
       identityCountryLabel.collapsed = (iCountry.length == 0);
     }
     // resetting the enhancedURLBar
@@ -2680,15 +2679,15 @@ function changeUI(window) {
       urlVal_updateURL = urlArray_updateURL[index];
       isSetting_updateURL = false;
       [urlVal_updateURL, isSetting_updateURL] = replaceGibberishText(urlVal_updateURL, urlArray_updateURL, index);
-      if ((index == 0 && fx15Plus) || (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null))
+      if (index == 0 || (index == 0 && iLabel == urlVal_updateURL && urlArray_updateURL[1] != null))
         addPart((showPreURLParts? prePart + "///".slice(0, initial - prePart.length):"") + urlVal_updateURL,
-          urlValue.slice(0, urlPartArray[index]), fx15Plus || (pref_useIdentityBox
-          && ($("identity-box").boxObject.width > 0)), isSetting_updateURL, index == urlArray_updateURL.length - 1);
+          urlValue.slice(0, urlPartArray[index]), $("identity-box").boxObject.width > 0,
+                         isSetting_updateURL, index == urlArray_updateURL.length - 1);
       else
         addPart(urlVal_updateURL, urlValue.slice(0, urlPartArray[index]), false,
           isSetting_updateURL, index == urlArray_updateURL.length - 1);
     }
-    if (fx15Plus && !(pref_useIdentityBox && pref_useIdentityEverytime)) {
+    if (!pref_useIdentityEverytime) {
       if (enhancedURLBar.firstChild && enhancedURLBar.firstChild.getAttribute("isDomain") == "true") {
         enhancedURLBar.setAttribute("domainVisible", true);}
       else
@@ -2709,11 +2708,11 @@ function changeUI(window) {
         onLocationChange: function(aProgress, aRequest, aURI) {
           newDocumentLoaded = true;
           refreshRelatedArray = true;
-          if (!tabChanged && (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime"))))
+          if (!tabChanged && (pref("useIdentityEverytime")))
             origIdentity.collapsed = identityLabel.collapsed
-              = identityCountryLabel.collapsed = !pref("useIdentityBox");
+              = identityCountryLabel.collapsed = !pref("useIdentityEverytime");
           async(function() {
-            if (!tabChanged)
+            if (!tabChanged) 
               updateURL();
             else
               tabChanged = false;
@@ -2725,12 +2724,12 @@ function changeUI(window) {
         gBrowser.removeProgressListener(changeListener);
       }, window);
       listen(window, gBrowser.tabContainer, "TabSelect", function() {
-        if (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime")))
+        if (pref("useIdentityEverytime"))
           origIdentity.collapsed = identityLabel.collapsed
-            = identityCountryLabel.collapsed = !pref("useIdentityBox");
+            = identityCountryLabel.collapsed = !pref("useIdentityEverytime");
         tabChanged = true;
         try {
-          if (showingHidden && enhancedURLBar.firstChild && (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime"))))
+          if (showingHidden && enhancedURLBar.firstChild && (pref("useIdentityEverytime")))
             enhancedURLBar.firstChild.collapsed = false;
         } catch (ex) {}
         showingHidden = false;
@@ -2793,9 +2792,9 @@ function changeUI(window) {
         if (e.originalTarget != gBrowser.contentWindow.document)
           return;
         async(function() {
-          if (!gURLBar.focused && newDocumentLoaded && (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime")))) {
+          if (!gURLBar.focused && newDocumentLoaded && (pref("useIdentityEverytime"))) {
             origIdentity.collapsed = identityLabel.collapsed
-              = identityCountryLabel.collapsed = !pref("useIdentityBox");
+              = identityCountryLabel.collapsed = !pref("useIdentityEverytime");
             titleChanged = true;
             updateURL();
             newDocumentLoaded = false;
@@ -2829,7 +2828,7 @@ function changeUI(window) {
           dt.setData("text/plain", url);
           firstHidden = enhancedURLBar.firstChild.getAttribute("isDomain") == "true"
             && enhancedURLBar.firstChild.getAttribute("isHiddenArrow") == "false"
-            && (!fx15Plus || (pref("useIdentityBox") && pref("useIdentityEverytime")));
+            && pref("useIdentityEverytime");
           if (firstHidden)
             enhancedURLBar.firstChild.firstChild.style.display = "-moz-box";
           updateLook();
@@ -2928,7 +2927,7 @@ function changeUI(window) {
 
     handleURLBarEvents();
     createHelperKeys();
-    updateURL();
+    async(function() updateURL(), 250);
     let runOnce = false;
     listen(window, window, "DOMContentLoaded", function() {
       if (runOnce)
@@ -3322,7 +3321,6 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       "useStyleSheet",
       "enhanceURLBar",
       "removeGibberish",
-      "useIdentityBox",
       "useIdentityEverytime",
       "userStylePath",
       "showStatusInURLBar",
