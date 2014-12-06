@@ -275,6 +275,50 @@ function changeUI(window) {
       = lastScrolledUrl = restyleEnhancedURLBarOnTabChange = siblingsShown
       = urlBarHeight = DBConnection = null;
   }, window);
+
+  let MAXWIDTH = 0;
+  let showStatusInURLBar = pref("showStatusInURLBar");
+  let useLeftoverSpace = pref("useLeftoverSpace");
+  let statusWidth = pref("statusWidth");
+  pref.observe(["showStatusInURLBar", "useLeftoverSpace", "statusWidth"], function() {
+    showStatusInURLBar = pref("showStatusInURLBar");
+    useLeftoverSpace = pref("useLeftoverSpace");
+    statusWidth = pref("statusWidth");
+  });
+  let udb = $("urlbar-display-box");
+
+  function getMaxWidth() {
+    let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
+    let urlBarWidth = gURLBar.boxObject.width || 1000;
+    if (showStatusInURLBar && useLeftoverSpace && newStatusCon && newStatus
+      && newStatusCon.style.maxWidth.replace("px","")*1 > 0.5*urlBarWidth) {
+        newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*urlBarWidth + "px";
+        return 0.5*urlBarWidth;
+    }
+    let origBoxObject = origIdentity.boxObject;
+    if (udb) {
+      while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
+        udb = udb.nextSibling;
+      if (udb == null) {
+        // case when internal status pref'd on
+        if (showStatusInURLBar && !S4E_statusInURLBar)
+          return urlBarWidth - origBoxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
+        // case otherwise
+        else
+          return urlBarWidth - origBoxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
+      }
+      let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
+        - origBoxObject.x - origBoxObject.width;
+      if (showStatusInURLBar && !S4E_statusInURLBar)
+        maxWidth -= (useLeftoverSpace? 250: Math.max(statusWidth, 60));
+      else
+        maxWidth -= (S4E_statusInURLBar? Math.max(udb.nextSibling.boxObject.x,
+          0.3*gURLBar.boxObject.width)*0.33: 60);
+      MAXWIDTH = Math.max(Math.min(maxWidth, urlBarWidth - origBoxObject.width - 100), 0);
+      return MAXWIDTH;
+    }
+  }
+
   // Get references to existing UI elements
   origInput = gURLBar.mInputField;
   origIdentity = $("identity-icon-labels");
@@ -314,7 +358,7 @@ function changeUI(window) {
         d.style.opacity = opacity;
         d = d.nextSibling;
       }
-      let d = origInput.nextSibling;
+      d = origInput.nextSibling;
       while (d != null) {
         if (d.id == "UIEnhancer_StatusBar") {
           d = d.nextSibling;
@@ -448,48 +492,6 @@ function changeUI(window) {
       } catch(e){}
     }, window);
     setOpacity(0);
-  }
-
-  let MAXWIDTH = 0;
-  let showStatusInURLBar = pref("showStatusInURLBar");
-  let useLeftoverSpace = pref("useLeftoverSpace");
-  let statusWidth = pref("statusWidth");
-  pref.observe(["showStatusInURLBar", "useLeftoverSpace", "statusWidth"], function() {
-    showStatusInURLBar = pref("showStatusInURLBar");
-    useLeftoverSpace = pref("useLeftoverSpace");
-    statusWidth = pref("statusWidth");
-  });
-  let udb = $("urlbar-display-box");
-  function getMaxWidth() {
-    let whiteListAddons = ["mafArchiveInfoUrlbarBox", "omnibar-in-urlbar"];
-    let urlBarWidth = gURLBar.boxObject.width || 1000;
-    if (showStatusInURLBar && useLeftoverSpace && newStatusCon && newStatus
-      && newStatusCon.style.maxWidth.replace("px","")*1 > 0.5*urlBarWidth) {
-        newStatusCon.style.maxWidth = newStatus.style.maxWidth = 0.45*urlBarWidth + "px";
-        return 0.5*urlBarWidth;
-    }
-    let origBoxObject = origIdentity.boxObject;
-    if (udb) {
-      while (whiteListAddons.indexOf(udb.nextSibling.id) >= 0)
-        udb = udb.nextSibling;
-      if (udb == null) {
-        // case when internal status pref'd on
-        if (showStatusInURLBar && !S4E_statusInURLBar)
-          return urlBarWidth - origBoxObject.width - 100 - (useLeftoverSpace? 250: statusWidth);
-        // case otherwise
-        else
-          return urlBarWidth - origBoxObject.width - 250 - (S4E_statusInURLBar? 100: 0);
-      }
-      let maxWidth = Math.max(udb.nextSibling.boxObject.x, 0.3*gURLBar.boxObject.width)
-        - origBoxObject.x - origBoxObject.width;
-      if (showStatusInURLBar && !S4E_statusInURLBar)
-        maxWidth -= (useLeftoverSpace? 250: Math.max(statusWidth, 60));
-      else
-        maxWidth -= (S4E_statusInURLBar? Math.max(udb.nextSibling.boxObject.x,
-          0.3*gURLBar.boxObject.width)*0.33: 60);
-      MAXWIDTH = Math.max(Math.min(maxWidth, urlBarWidth - origBoxObject.width - 100), 0);
-      return MAXWIDTH;
-    }
   }
 
   // Function to use gibberish and remove redundant text
@@ -1299,9 +1301,9 @@ function changeUI(window) {
       tempArrow.style.backgroundImage = "rgba(255,255,255,0)";
       tempArrow.style.border = "1px solid rgba(255,255,255,0)";
       if (hiddenArrow == true)
-        tempArrow.setAttribute("value", "«");
+        tempArrow.setAttribute("value", "Â«");
       else if (hiddenArrow)
-        tempArrow.setAttribute("value", "»");
+        tempArrow.setAttribute("value", "Â»");
       else
         tempArrow.setAttribute("value", ">");
     }
@@ -2712,7 +2714,7 @@ function changeUI(window) {
             origIdentity.collapsed = identityLabel.collapsed
               = identityCountryLabel.collapsed = !pref("useIdentityEverytime");
           async(function() {
-            if (!tabChanged) 
+            if (!tabChanged)
               updateURL();
             else
               tabChanged = false;
