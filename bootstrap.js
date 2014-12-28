@@ -782,7 +782,7 @@ function changeUI(window) {
             relatedScrolledArray = returnedArray;
             currentScrolledIndex = null;
             Array.some(relatedScrolledArray, function(relatedPart, index) {
-              if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+              if (enhancedURLBar.lastChild.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"")
                 .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
                   currentScrolledIndex = index;
                   return true;
@@ -798,7 +798,7 @@ function changeUI(window) {
         else if (scrolledStack.previousSibling != null) {
           currentScrolledIndex = null;
           Array.some(relatedScrolledArray, function(relatedPart, index) {
-            if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+            if (enhancedURLBar.lastChild.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"")
               .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
                 currentScrolledIndex = index;
                 return true;
@@ -1792,9 +1792,9 @@ function changeUI(window) {
       // Sorting the array based on the fact that if the text contains number
       // then sort taking into account the number as number and not string
       resultArray.sort(function(a, b) {
-        let partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
-        let valA = a.url.replace(/^(https?:\/\/)/,"");
-        let valB = b.url.replace(/^(https?:\/\/)/,"");
+        let partURL = concernedStack.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"");
+        let valA = a.url.replace(/^((?:https?|ftp):\/\/)/,"");
+        let valB = b.url.replace(/^((?:https?|ftp):\/\/)/,"");
         valA = valA.slice(partURL.length, valA.length);
         valB = valB.slice(partURL.length, valB.length);
         valA = valA.replace(/[\-_=]/g," ").replace(/[\/\\?&]/g, "").replace(/\.[^.]+$/, "");
@@ -1833,15 +1833,15 @@ function changeUI(window) {
       let currentUrlIndex = null;
       let reduceIndex = 0;
       let currentURL = enhancedURLBar.lastChild.getAttribute("url")
-        .replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
+        .replace(/^((?:https?|ftp):\/\/)/,"").replace(/(\/)$/, "");
       let matching = false;
       let partURL,relatedVal,tempVal;
-      partURL = concernedStack.getAttribute("url").replace(/^(https?:\/\/)/,"");
+      partURL = concernedStack.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"");
       for (let i = 0; i < resultArray.length; i++) {
         let url = resultArray[i].url;
         let title = resultArray[i].title;
         relatedVal = "";
-        url = url.replace(/^(https?:\/\/)/,"").replace(/(\/)$/, "");
+        url = url.replace(/^((?:https?|ftp):\/\/)/,"").replace(/(\/)$/, "");
         relatedVal = url.slice(partURL.length, url.length).replace(/[\-_+]/g," ").replace("=", " =");
         if (relatedVal.match(/^[[\/?#&: ]{1}[[\/?#&: ]{0,1}$/) != null
           || !(relatedVal.length > 0 && relatedVal[0].match(/[\/?#&:]/))) {
@@ -1920,7 +1920,7 @@ function changeUI(window) {
         aCallback(aArgs);
       }
     }
-    let location = concernedStack.getAttribute("url").replace(/^(https?:\/\/)?(www\.)?/,"");
+    let location = concernedStack.getAttribute("url").replace(/^((?:https?|ftp):\/\/)?(www\.)?/,"");
     if (URLMap[location]) {
       let index = URLMap[location][0];
       URLMapList.splice(index, 1);
@@ -2341,7 +2341,7 @@ function changeUI(window) {
       }
       let isCurrent = false;
       let tempS = enhancedURLBar.lastChild;
-      if (tempS && tempS.getAttribute("url").replace(/^(https?:\/\/)/,"")
+      if (tempS && tempS.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"")
         .replace(/[\/]$/, "") == url.replace(/[\/]$/, "")) {
           part.style.fontWeight = "bold";
           isCurrent = true;
@@ -2522,7 +2522,7 @@ function changeUI(window) {
     if (urlValue.length > 1000) {
       return;
     }
-    let userPassRegex = /^https?:\/\/([^:]+:.+@)[^\.]+\./;
+    let userPassRegex = /^(?:https?|ftp):\/\/([^:]+:.+@)[^\.]+\./;
     if (!showUserPassInBreadcrumbs && userPassRegex.test(urlValue)) {
       let userPass = userPassRegex.exec(urlValue)[1];
       urlValue = urlValue.replace(userPass, "");
@@ -2586,7 +2586,7 @@ function changeUI(window) {
           ? urlValue.indexOf("://") + 3
           : 0;
       urlArray_updateURL = urlValue.split(/[\/#]/).filter(function(valueVal) {
-        if (valueVal.match(/(https?:)|(file:)|(chrome:)|(wysiwyg:)/)) {
+        if (valueVal.match(/(https?:)|(ftp:)|(file:)|(chrome:)|(wysiwyg:)/)) {
           prePart = valueVal;
           return false;
         }
@@ -2869,7 +2869,7 @@ function changeUI(window) {
               relatedScrolledArray = returnedArray;
               currentScrolledIndex = null;
               Array.some(relatedScrolledArray, function(relatedPart, index) {
-                if (enhancedURLBar.lastChild.getAttribute("url").replace(/^(https?:\/\/)/,"")
+                if (enhancedURLBar.lastChild.getAttribute("url").replace(/^((?:https?|ftp):\/\/)/,"")
                   .replace(/[\/]$/, "") == relatedPart[1].replace(/[\/]$/, "")) {
                     currentScrolledIndex = index;
                     return true;
