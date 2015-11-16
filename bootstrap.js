@@ -2652,7 +2652,8 @@ function changeUI(window) {
     }
     urlPostSetting = null;
 
-    for (index = 0; index < urlArray_updateURL.length; index++) {
+    // begin from index 1, do not alter domain name
+    for (index = 1; index < urlArray_updateURL.length; index++) {
       urlArray_updateURL[index] = unescape(urlArray_updateURL[index].replace(/[_+]/g, " "));
       if (urlArray_updateURL[index].split("-").length > 2 && urlArray_updateURL[index].indexOf("/") < 0)
         urlArray_updateURL[index] = urlArray_updateURL[index].replace(/[\-]/g, " ");
