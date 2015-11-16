@@ -3257,10 +3257,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
   }
 
   // Load various javascript includes for helper functions
-  ["helper", "pref"].forEach(function(fileName) {
-    let fileURI = addon.getResourceURI("scripts/" + fileName + ".js");
-    Services.scriptloader.loadSubScript(fileURI.spec, global);
-  });
+  Services.scriptloader.loadSubScript("chrome://uienhancer/content/scripts/helper.js", global);
+  Services.scriptloader.loadSubScript("chrome://uienhancer/content/scripts/pref.js", global);
   if (Services.vc.compare(Services.appinfo.platformVersion, "10.0") < 0)
     Components.manager.addBootstrappedManifestLocation(data.installPath);
 

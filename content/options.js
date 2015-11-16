@@ -34,17 +34,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/NetUtil.jsm");
 Cu.import("resource://gre/modules/FileUtils.jsm");
 
-function getURIForFile2(filepath, rootDir) {
-  let file = FileUtils.getFile("ProfD", rootDir?[rootDir]:["extensions"]);
-  if (rootDir == null)
-    file.append("UIEnhancer@girishsharma.xpi");
-  return Services.io.newURI("jar:file:///" + file.path.replace(/[\\]/g, "/") + "!/" + filepath, null, null);
-}
-
-["pref"].forEach(function(fileName) {
-  let fileURI = getURIForFile2("scripts/" + fileName + ".js");
-  Services.scriptloader.loadSubScript(fileURI.spec, global);
-});
+Services.scriptloader.loadSubScript("chrome://uienhancer/content/scripts/pref.js", global);
 
 let optionsWindow = {
   shortcutTextBox: null,
