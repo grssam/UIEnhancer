@@ -451,7 +451,8 @@ function changeUI(window) {
           mainPopup.appendChild(getMenuItems(popupStack));
           // Displaying the domain along with these buttons
           mainPopup.appendChild(window.document.createElementNS(XUL, "menuseparator"));
-          let (part = document.createElementNS(XUL, "menuitem")) {
+          {
+            let part = document.createElementNS(XUL, "menuitem");
             part.setAttribute("id", "UIEnhancer_Popup_Link_0");
             part.setAttribute("class", "menuitem-iconic");
             let url = urlValue.slice(0, urlPartArray[0]);
@@ -694,7 +695,8 @@ function changeUI(window) {
     }
     if (currentScrolledIndex != indexB4Scrolling) {
       partPointer = scrolledStack;
-      let (tempPart = enhancedURLBar.firstChild) {
+      {
+      let tempPart = enhancedURLBar.firstChild;
         partsWidth = 0;
         while (tempPart != partPointer) {
           partsWidth += tempPart.boxObject.width;
@@ -1131,7 +1133,8 @@ function changeUI(window) {
         highlightedObj.lastChild.setAttribute("class", "enhanced-arrow" + bC + " enhanced-arrow-" + c + nD);
         if (highlightedObj.previousSibling && c.search("normal") < 0 &&
           highlightedObj.previousSibling.getAttribute("isHiddenArrow") == "false") {
-            let (d = "-left") {
+            {
+              let d = "-left";
               if (mouseScrolled && highlightedObj != scrolledStack)
                 d += "Scrolled";
               highlightedObj.previousSibling.lastChild.setAttribute("class",
@@ -2110,7 +2113,8 @@ function changeUI(window) {
           if (!e.target.value.match(/^[\/?#&]{1,2}/)
             && e.target.parentNode != enhancedURLBar.firstChild) {
               // If the user did not enter a value starting with /, ?/& or #
-              let (curNode = e.target.parentNode) {
+              {
+                let curNode = e.target.parentNode;
                 if (curNode.previousSibling == enhancedURLBar.firstChild
                   && enhancedURLBar.firstChild.firstChild.getAttribute("value")
                   .toLowerCase() == "about" && e.target.value.indexOf(":") < 0)
@@ -2820,7 +2824,8 @@ function changeUI(window) {
           return;
         dragStarted = true;
         let url = enhancedURLBar.lastChild.getAttribute("url");
-        let (dt = event.dataTransfer) {
+        {
+          let dt = event.dataTransfer;
           let title = enhancedURLBar.lastChild.firstChild.getAttribute("value");
           if (event.originalTarget.parentNode.parentNode == enhancedURLBar)
             title = event.originalTarget.getAttribute("value");
@@ -2889,7 +2894,8 @@ function changeUI(window) {
       let UIEnhancerKeyset = window.document.createElementNS(XUL, "keyset");
       UIEnhancerKeyset.setAttribute("id", keysetID + "Helpers");
       // add shortcut key for going one level up
-      let (upKey = window.document.createElementNS(XUL, "key")) {
+      {
+        let upKey = window.document.createElementNS(XUL, "key");
         upKey.setAttribute("id", keyID + "LevelUP");
         upKey.setAttribute("keycode", pref("levelUpKey"));
         upKey.setAttribute("modifiers", pref("levelUpModifiers"));
@@ -2903,7 +2909,8 @@ function changeUI(window) {
         $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(upKey);
       }
       // add shortcut key for going to next sibling
-      let (nextKey = window.document.createElementNS(XUL, "key")) {
+      {
+        let nextKey = window.document.createElementNS(XUL, "key");
         nextKey.setAttribute("id", keyID + "SiblingNext");
         nextKey.setAttribute("keycode", pref("levelNextKey"));
         nextKey.setAttribute("modifiers", pref("levelNextModifiers"));
@@ -2914,7 +2921,8 @@ function changeUI(window) {
         $("mainKeyset").parentNode.appendChild(UIEnhancerKeyset).appendChild(nextKey);
       }
       // add shortcut key for going to previous sibling
-      let (previousKey = window.document.createElementNS(XUL, "key")) {
+      {
+        let previousKey = window.document.createElementNS(XUL, "key");
         previousKey.setAttribute("id", keyID + "SiblingPrevious");
         previousKey.setAttribute("keycode", pref("levelPreviousKey"));
         previousKey.setAttribute("modifiers", pref("levelPreviousModifiers"));
@@ -2958,7 +2966,8 @@ function changeUI(window) {
   let newStatus = null, newStatusCon = null;
   function setupStatusBar() {
     let statusBar = $("statusbar-display");
-    let (origSetter = statusBar.__lookupSetter__("label")) {
+    {
+      let origSetter = statusBar.__lookupSetter__("label");
       statusBar.__defineSetter__("label", function (x) {
         origSetter.apply(this, [x]);
         updateStatus(statusBar.getAttribute("label"), statusBar.getAttribute("inactive"));
@@ -3216,7 +3225,8 @@ function createHotKey(window) {
   let UIEnhancerKeyset = window.document.createElementNS(XUL, "keyset");
   UIEnhancerKeyset.setAttribute("id", keysetID);
   // add hotkey
-  let (optionsKey = window.document.createElementNS(XUL, "key")) {
+  {
+    let optionsKey = window.document.createElementNS(XUL, "key");
     optionsKey.setAttribute("id", keyID);
     optionsKey.setAttribute("key", pref("shortcutKey"));
     optionsKey.setAttribute("modifiers", pref("shortcutModifiers"));
@@ -3356,7 +3366,8 @@ function startup(data, reason) AddonManager.getAddonByID(data.id, function(addon
       splitQueryStrings = pref("splitQueryStrings");
     });
     // Making makeCapital optional behind a pref
-    let (orig = makeCapital) {
+    {
+      let orig = makeCapital;
       makeCapital = function(word, len) {
         try {
           if (pref("makeCapital"))
