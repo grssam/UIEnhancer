@@ -183,7 +183,7 @@ let optionsWindow = {
     let urlBarEnabled = $("enhanceURLBarCheckBox").checked;
     $$(["removeGibberishCheckBox",
         "makeCapitalCheckBox",
-        "useIdentityBoxCheckBox",
+        "useIdentityEverytimeCheckBox",
         "useDragDropCheckBox",
         "refreshOnLastPartClickCheckBox",
         "identityBoxLeftClickChangedCheckBox"],
