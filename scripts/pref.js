@@ -113,7 +113,8 @@ pref.observe = function(prefs, callback) {
 };
 
 // Initialize default preferences
-let (branch = Services.prefs.getDefaultBranch(pref.root)) {
+{
+  let branch = Services.prefs.getDefaultBranch(pref.root);
   for (let [key, val] in Iterator(pref.defaults)) {
     switch (typeof val) {
       case "boolean":
@@ -130,7 +131,8 @@ let (branch = Services.prefs.getDefaultBranch(pref.root)) {
 }
 
 function setPref(k, v) {
-  let (branch = Services.prefs.getDefaultBranch(pref.root)) {
+  {
+    let branch = Services.prefs.getDefaultBranch(pref.root);
     switch (typeof v) {
       case "boolean":
         branch.setBoolPref(k, v);
