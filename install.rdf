@@ -5,7 +5,7 @@
     <creator>Girish Sharma</creator>
     <id>UIEnhancer@girishsharma</id>
     <name>Location Bar Enhancer</name>
-    <version>5.1</version>
+    <version>5.3</version>
     <bootstrap>true</bootstrap>
     <type>2</type>
     <homepageURL>https://addons.mozilla.org/en-US/firefox/addon/ui-enhancer/</homepageURL>
@@ -92,6 +92,7 @@
     <contributor>Girish Sharma</contributor>
     <contributor>Axel Grude</contributor>
     <contributor>Fabrizio La Rosa (Mac fixes)</contributor>
+    <contributor>tumpio (Firefox 44+ compat)</contributor>
     <targetApplication>
       <r:Description>
         <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
