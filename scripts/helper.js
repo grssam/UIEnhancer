@@ -570,7 +570,8 @@ function showNotification(aText, aTitle, aButtons, aCallback, aTimeout) {
   let buttons = [], i = 0, choiceSelected = false;
   let timeoutChecker = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
-  for each (let button in aButtons) {
+  for (let property in aButtons) {
+    let button = buttons[property];
     let index = JSON.parse(JSON.stringify(i++));
     buttons.push({
       label: button.label,
@@ -624,7 +625,8 @@ function showContentNotification(aText, aTitle, aButtons, aCallback, aTimeout) {
   let buttons = [], i = 0, choiceSelected = false;
   let timeoutChecker = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
-  for each (let button in aButtons) {
+  for (let property in aButtons) {
+    let button = buttons[property];
     let index = JSON.parse(JSON.stringify(i++));
     buttons.push({
       label: button.label,
