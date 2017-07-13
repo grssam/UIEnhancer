@@ -991,6 +991,9 @@ function changeUI(window) {
         && e.originalTarget.nextSibling)
           globalEventHandler("clickOnFirstChild", e.originalTarget.parentNode, e);
     });
+    listen(window, enhancedURLBar, "auxclick", function(e) {
+      if (e.button == 2) e.preventDefault();
+    });
     listen(window, enhancedURLBar, "DOMMouseScroll", function(e) {
       if (e.originalTarget.parentNode.parentNode == enhancedURLBar)
         globalEventHandler("scroll", e.originalTarget.parentNode, e);
